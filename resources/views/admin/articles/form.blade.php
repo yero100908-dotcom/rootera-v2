@@ -75,7 +75,7 @@
                 <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
                     <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:.95rem;color:#374151;margin-bottom:1.25rem">Thumbnail</h3>
                     @if($article->thumbnail)
-                    <img src="{{ asset('storage/'.$article->thumbnail) }}" alt="thumbnail" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:1rem">
+                    <img src="{{ Storage::url($article->thumbnail) }}" alt="thumbnail" style="width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:1rem">
                     @endif
                     <div class="form-group">
                         <label for="thumbnail">Pilih Gambar</label>

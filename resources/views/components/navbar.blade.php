@@ -2,7 +2,7 @@
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="ROOTERA - Beranda">
-            <span class="logo-root">ROOT</span><span class="logo-era">ERA</span>
+            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" style="height: 180px; width: auto; object-fit: contain;">
         </a>
 
         {{-- Desktop Menu --}}

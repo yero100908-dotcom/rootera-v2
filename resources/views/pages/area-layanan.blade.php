@@ -19,8 +19,8 @@
             @foreach($areas as $i => $area)
             <article class="service-card fade-in" style="animation-delay:{{ $i * 0.08 }}s" itemscope itemtype="https://schema.org/Place">
                 <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-                    @if($area->image && file_exists(public_path('storage/'.$area->image)))
-                        <img src="{{ asset('storage/'.$area->image) }}" alt="{{ $area->name }}" style="width:56px;height:56px;border-radius:12px;object-fit:cover" loading="lazy">
+                    @if($area->image)
+                        <img src="{{ Storage::url($area->image) }}" alt="{{ $area->name }}" style="width:56px;height:56px;border-radius:12px;object-fit:cover" loading="lazy">
                     @else
                         <div style="width:56px;height:56px;border-radius:12px;background:{{ $areaColors[$i % 6] }};display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;flex-shrink:0">
                             📍
@@ -36,7 +36,7 @@
                 @if($area->description)
                 <p itemprop="description">{{ $area->description }}</p>
                 @endif
-                <a href="https://wa.me/6285691779889?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="margin-top:1rem;font-size:.88rem" target="_blank" rel="noopener">
+                <a href="https://wa.me/6281385404000?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="margin-top:1rem;font-size:.88rem" target="_blank" rel="noopener">
                     Pesan di {{ $area->name }}
                 </a>
             </article>

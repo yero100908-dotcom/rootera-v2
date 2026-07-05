@@ -22,7 +22,7 @@
             <article class="blog-card fade-in" itemscope itemtype="https://schema.org/Article">
                 <div class="blog-card-img">
                     @if($article->thumbnail)
-                        <img src="{{ asset('storage/'.$article->thumbnail) }}" alt="{{ $article->title }}" loading="lazy" width="400" height="225" itemprop="image">
+                        <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}" loading="lazy" width="400" height="225" itemprop="image">
                     @else
                         <div style="background:linear-gradient(135deg,#0A2E78,#169F81);height:200px;display:flex;align-items:center;justify-content:center;font-size:3rem">📰</div>
                     @endif

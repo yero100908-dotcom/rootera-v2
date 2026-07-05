@@ -30,7 +30,7 @@
                     </div>
                     <div class="ci-text">
                         <strong>WhatsApp (Utama)</strong>
-                        <a href="https://wa.me/6285691779889" target="_blank" rel="noopener">+62 856-9177-9889</a>
+                        <a href="https://wa.me/6281385404000" target="_blank" rel="noopener">0813-8540-4000</a>
                     </div>
                 </div>
                 <div class="ci-item">

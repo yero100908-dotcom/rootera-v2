@@ -23,7 +23,7 @@
         <tr>
             <td>
                 @if($article->thumbnail)
-                    <img src="{{ asset('storage/'.$article->thumbnail) }}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:6px">
+                    <img src="{{ Storage::url($article->thumbnail) }}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:6px">
                 @else
                     <div style="width:60px;height:40px;background:#f3f4f6;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">📰</div>
                 @endif

@@ -33,7 +33,7 @@
       "@type": "LocalBusiness",
       "name": "ROOTERA",
       "description": "Jasa cleaning service pipa dan wastafel mampet profesional",
-      "telephone": "+6285691779889",
+      "telephone": "+6281385404000",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Jakarta",

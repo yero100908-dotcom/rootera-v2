@@ -39,7 +39,7 @@
         <div class="article-body">
             @if($article->thumbnail)
             <figure style="margin-bottom:2.5rem;border-radius:16px;overflow:hidden">
-                <img src="{{ asset('storage/'.$article->thumbnail) }}" alt="{{ $article->title }}" style="width:100%;height:auto" loading="eager">
+                <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}" style="width:100%;height:auto" loading="eager">
             </figure>
             @endif
             <div style="color:#374151">
@@ -48,7 +48,7 @@
             <div style="margin-top:3rem;padding:2rem;background:#f0fdf4;border-radius:16px;border:1px solid #bbf7d0">
                 <p style="font-size:.92rem;color:#166534;margin:0">
                     <strong>💡 Butuh bantuan profesional?</strong> Jika masalah pipa Anda tidak bisa diatasi sendiri, jangan ragu hubungi tim ROOTERA.
-                    <a href="https://wa.me/6285691779889" style="color:#169F81;font-weight:600" target="_blank" rel="noopener">Chat WhatsApp sekarang →</a>
+                    <a href="https://wa.me/6281385404000" style="color:#169F81;font-weight:600" target="_blank" rel="noopener">Chat WhatsApp sekarang →</a>
                 </p>
             </div>
         </div>
@@ -64,7 +64,7 @@
             <article class="blog-card">
                 <div class="blog-card-img">
                     @if($rel->thumbnail)
-                        <img src="{{ asset('storage/'.$rel->thumbnail) }}" alt="{{ $rel->title }}" loading="lazy" width="400" height="225">
+                        <img src="{{ Storage::url($rel->thumbnail) }}" alt="{{ $rel->title }}" loading="lazy" width="400" height="225">
                     @else
                         <div style="background:linear-gradient(135deg,#0A2E78,#169F81);height:180px;display:flex;align-items:center;justify-content:center;font-size:2.5rem">📰</div>
                     @endif

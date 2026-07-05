@@ -17,8 +17,8 @@
             @endphp
             @foreach($serviceAreas->take(6) as $i => $area)
             <article class="area-card fade-in" style="animation-delay:{{ $i * 0.08 }}s" aria-label="{{ $area->name }}">
-                @if($area->image && file_exists(public_path('storage/'.$area->image)))
-                    <img src="{{ asset('storage/'.$area->image) }}" alt="Area layanan {{ $area->name }}" class="area-card-img" loading="lazy" width="400" height="300">
+                @if($area->image)
+                    <img src="{{ Storage::url($area->image) }}" alt="Area layanan {{ $area->name }}" class="area-card-img" loading="lazy" width="400" height="300">
                 @else
                     <div class="area-card-img" style="background:linear-gradient(135deg,{{ $areaColors[$i % 6][0] }},{{ $areaColors[$i % 6][1] }});display:flex;align-items:center;justify-content:center;font-size:3rem;height:100%;min-height:160px">
                         {{ $areaEmojis[$i % 6] }}

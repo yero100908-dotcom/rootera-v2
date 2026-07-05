@@ -16,7 +16,7 @@
             @foreach($photos as $photo)
             <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;transition:all .2s" onmouseover="this.style.boxShadow='0 4px 20px rgba(10,46,120,.12)'" onmouseout="this.style.boxShadow='none'">
                 <div style="aspect-ratio:1;overflow:hidden;position:relative">
-                    <img src="{{ asset('storage/'.$photo->image) }}" alt="{{ $photo->title }}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="{{ Storage::url($photo->image) }}" alt="{{ $photo->title }}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                     @if(!$photo->is_active)
                     <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:600">NONAKTIF</div>
                     @endif

@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label for="image">Gambar Area</label>
                 @if($area->image)
-                    <img src="{{ asset('storage/'.$area->image) }}" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:.75rem">
+                    <img src="{{ Storage::url($area->image) }}" alt="" style="width:120px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:.75rem">
                 @endif
                 <input type="file" id="image" name="image" accept="image/*">
             </div>
