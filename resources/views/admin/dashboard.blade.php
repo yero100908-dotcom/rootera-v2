@@ -1,0 +1,105 @@
+@extends('layouts.admin')
+@section('title','Dashboard')
+@section('page-title','Dashboard')
+
+@push('styles')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+@endpush
+
+@section('admin-content')
+{{-- Stats Grid --}}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:2rem">
+    @php
+    $stats = [
+        ['label'=>'Total Pesanan','value'=>$totalContacts,'icon'=>'📋','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+        ['label'=>'Pesanan Baru','value'=>$newContacts,'icon'=>'🆕','color'=>'#1E73D8','bg'=>'rgba(30,115,216,.08)'],
+        ['label'=>'Selesai','value'=>$completedOrders,'icon'=>'✅','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
+        ['label'=>'Total Pemasukan','value'=>'Rp '.number_format($totalRevenue,0,',','.'),'icon'=>'💰','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
+        ['label'=>'Total Artikel','value'=>$totalArticles,'icon'=>'📰','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+    ];
+    @endphp
+    @foreach($stats as $s)
+    <div class="stat-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+            <span style="font-size:.82rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em">{{ $s['label'] }}</span>
+            <span style="width:40px;height:40px;background:{{ $s['bg'] }};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">{{ $s['icon'] }}</span>
+        </div>
+        <div class="stat-num" style="color:{{ $s['color'] }}">{{ $s['value'] }}</div>
+    </div>
+    @endforeach
+</div>
+
+{{-- Charts --}}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+    <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78;margin-bottom:1.25rem">📊 Pesanan per Bulan</h3>
+        <canvas id="contactsChart" height="250"></canvas>
+    </div>
+    <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78;margin-bottom:1.25rem">💰 Pemasukan per Bulan</h3>
+        <canvas id="revenueChart" height="250"></canvas>
+    </div>
+</div>
+
+{{-- Recent Contacts --}}
+<div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78">📥 Pesanan Terbaru</h3>
+        <a href="{{ route('admin.contacts.index') }}" style="font-size:.85rem;color:#169F81;font-weight:600">Lihat Semua →</a>
+    </div>
+    <table class="admin-table">
+        <thead><tr><th>Nama</th><th>Telepon</th><th>Layanan</th><th>Area</th><th>Status</th><th>Tanggal</th></tr></thead>
+        <tbody>
+        @foreach($recentContacts as $c)
+        <tr>
+            <td><strong>{{ $c->name }}</strong></td>
+            <td>{{ $c->phone }}</td>
+            <td>{{ $c->service_type ?? '-' }}</td>
+            <td>{{ $c->area ?? '-' }}</td>
+            <td><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
+            <td>{{ $c->created_at->format('d/m/Y') }}</td>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+const labels = @json($chartLabels);
+const contactData = @json($contactData);
+const revenueData = @json($revenueData);
+
+new Chart(document.getElementById('contactsChart'), {
+    type: 'bar',
+    data: {
+        labels,
+        datasets: [{
+            label: 'Jumlah Pesanan',
+            data: contactData,
+            backgroundColor: 'rgba(10,46,120,.7)',
+            borderRadius: 6,
+        }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } } }
+});
+
+new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+        labels,
+        datasets: [{
+            label: 'Pemasukan (Rp)',
+            data: revenueData,
+            borderColor: '#169F81',
+            backgroundColor: 'rgba(22,159,129,.1)',
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#169F81',
+        }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } } }
+});
+</script>
+@endpush
