@@ -3,15 +3,15 @@
 @push('styles')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Article",
+  "@@context": "https://schema.org",
+  "@@type": "Article",
   "headline": "{{ $article->title }}",
   "description": "{{ $article->excerpt }}",
-  "author": {"@type":"Person","name":"{{ $article->author }}"},
+  "author": {"@@type":"Person","name":"{{ $article->author }}"},
   "datePublished": "{{ $article->published_at?->toIso8601String() }}",
   "dateModified": "{{ $article->updated_at->toIso8601String() }}",
-  "publisher": {"@type":"Organization","name":"ROOTERA","logo":{"@type":"ImageObject","url":"{{ asset('images/logo.png') }}"}},
-  "mainEntityOfPage": {"@type":"WebPage","@id":"{{ url()->current() }}"}
+  "publisher": {"@@type":"Organization","name":"ROOTERA","logo":{"@@type":"ImageObject","url":"{{ asset('images/logo.png') }}"}},
+  "mainEntityOfPage": {"@@type":"WebPage","@@id":"{{ url()->current() }}"}
 }
 </script>
 <style>
