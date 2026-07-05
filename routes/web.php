@@ -67,6 +67,8 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+    // Redirect /admin directly to dashboard
+    Route::redirect('/', '/admin/dashboard');
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -71,7 +71,7 @@ p{line-height:1.7}
 /* ---- NAVBAR ---- */
 .navbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-100);transition:var(--transition)}
 .navbar.scrolled{box-shadow:var(--shadow-md)}
-.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:2rem;height:200px}
+.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:2rem;height:80px}
 .nav-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
 .logo-root,.logo-root-white{color:var(--blue)}
 .logo-era,.logo-era-green{color:var(--green)}

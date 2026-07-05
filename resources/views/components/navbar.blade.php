@@ -2,7 +2,7 @@
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="ROOTERA - Beranda">
-            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" style="height: 180px; width: auto; object-fit: contain;">
+            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" style="height: 80px; width: auto; object-fit: contain; transform: scale(1.8); transform-origin: left center;">
         </a>
 
         {{-- Desktop Menu --}}
