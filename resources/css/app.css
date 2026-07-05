@@ -293,16 +293,21 @@ p{line-height:1.7}
   .footer-container{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
-  .nav-menu,.nav-cta{display:none}
-  .nav-hamburger{display:flex}
-  .area-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-menu{display:none}
+  .nav-cta{display:flex; padding:.4rem .8rem; font-size:.8rem} /* Keep CTA visible but smaller */
+  .nav-hamburger{display:flex; margin-left:auto}
+  .area-grid{grid-template-columns:1fr} /* Change to 1 col on mobile */
   .cards-grid{grid-template-columns:1fr}
   .form-row{grid-template-columns:1fr}
   .footer-container{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .section{padding:3.5rem 0}
+  .whatsapp-float{bottom:5rem; right:1.5rem} /* Safe area from mobile footer */
 }
 @media(max-width:480px){
-  .area-grid{grid-template-columns:1fr 1fr}
-  .hero-stats{gap:1.25rem}
+  .hero-actions{flex-direction:column; width:100%}
+  .hero-actions .btn{width:100%; justify-content:center}
+  .hero-stats{gap:1rem; flex-wrap:wrap}
+  .stat-item{flex:1; min-width:40%}
+  .nav-cta{display:none} /* Hide CTA on extra small screens if it doesn't fit */
 }

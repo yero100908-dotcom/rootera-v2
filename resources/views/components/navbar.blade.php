@@ -1,8 +1,19 @@
+<style>
+    .nav-logo-img { height: 80px; width: auto; object-fit: contain; transform-origin: left center; transform: scale(1.8); }
+    @media (max-width: 768px) {
+        .nav-logo-img { transform: scale(1.4); } /* Scale down on mobile to prevent overlap */
+        .nav-cta { display: none !important; } /* Hide CTA completely on mobile to save space */
+    }
+    @media (max-width: 480px) {
+        .nav-logo-img { transform: scale(1.2); } /* Even smaller on tiny screens */
+    }
+</style>
+
 <nav id="navbar" class="navbar" role="navigation" aria-label="Navigasi utama">
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="ROOTERA - Beranda">
-            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" style="height: 80px; width: auto; object-fit: contain; transform: scale(1.8); transform-origin: left center;">
+            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" class="nav-logo-img">
         </a>
 
         {{-- Desktop Menu --}}
@@ -38,3 +49,5 @@
         </ul>
     </div>
 </nav>
+
+
