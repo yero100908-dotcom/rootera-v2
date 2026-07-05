@@ -48,7 +48,7 @@
                     </div>
                     <div class="ci-text">
                         <strong>Area Layanan</strong>
-                        <span>Jabodetabek, Cirebon, Semarang,<br>Yogyakarta, Lampung & Metro</span>
+                        <span>Jabodetabek, Cirebon, Semarang,<br>Yogyakarta, Lampung & Bandung</span>
                     </div>
                 </div>
                 <div class="ci-item">
@@ -104,7 +104,7 @@
                                 <option value="Semarang"    {{ old('area')=='Semarang'?'selected':'' }}>Semarang</option>
                                 <option value="Yogyakarta"  {{ old('area')=='Yogyakarta'?'selected':'' }}>Yogyakarta</option>
                                 <option value="Lampung"     {{ old('area')=='Lampung'?'selected':'' }}>Lampung</option>
-                                <option value="Metro"       {{ old('area')=='Metro'?'selected':'' }}>Metro</option>
+                                <option value="Bandung"       {{ old('area')=='Bandung'?'selected':'' }}>Bandung</option>
                             </select>
                         </div>
                     </div>
