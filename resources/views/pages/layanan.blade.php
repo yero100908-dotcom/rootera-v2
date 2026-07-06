@@ -20,7 +20,7 @@
             <h2 class="section-title" id="tools-heading" style="margin-top:.75rem">Peralatan <span>Modern</span> Kami</h2>
             <p class="section-sub">Metode mekanis non-destruktif — saluran bersih tanpa harus membongkar dinding atau lantai.</p>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             @foreach($tools as $i => $tool)
             @php
                 $toolIcons = [
