@@ -66,8 +66,8 @@
 
         {{-- Bottom Bar --}}
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} <strong>ROOTERA</strong>. Hak cipta dilindungi undang-undang.</p>
-            <p>Dibuat dengan ❤️ untuk pelanggan setia kami</p>
+            <p>&copy; {{ date('Y') }} <strong>ROOTERA</strong>.  Developed by Desty Mikayla Ariana & Yero Virdhan Akifan </p>
+            <p></p>
         </div>
     </div>
 </footer>
