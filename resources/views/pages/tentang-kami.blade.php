@@ -34,7 +34,7 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
                 @php
                 $stats2 = [
-                    ['num'=>'5000+','label'=>'Proyek Selesai','color'=>'#0A2E78'],
+                    ['num'=>'2300+','label'=>'Proyek Selesai','color'=>'#0A2E78'],
                     ['num'=>'6','label'=>'Kota Jangkauan','color'=>'#169F81'],
                     ['num'=>'100%','label'=>'Bergaransi','color'=>'#1E73D8'],
                     ['num'=>'24/7','label'=>'Siap Melayani','color'=>'#0A2E78'],

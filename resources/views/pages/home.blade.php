@@ -25,7 +25,7 @@
             </div>
             <div class="hero-stats">
                 <div class="stat-item">
-                    <div class="stat-num" data-counter data-target="5000" data-suffix="+">5000+</div>
+                    <div class="stat-num" data-counter data-target="2300" data-suffix="+">2300+</div>
                     <div class="stat-label">Proyek Selesai</div>
                 </div>
                 <div class="stat-item">
