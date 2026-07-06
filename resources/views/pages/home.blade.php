@@ -23,33 +23,10 @@
                 </a>
                 <a href="{{ route('layanan') }}" class="btn btn-white">Lihat Layanan</a>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-num" data-counter data-target="2300" data-suffix="+">2300+</div>
-                    <div class="stat-label">Proyek Selesai</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num" data-counter data-target="6" data-suffix=" Kota">6 Kota</div>
-                    <div class="stat-label">Area Jangkauan</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num" data-counter data-target="100" data-suffix="%">100%</div>
-                    <div class="stat-label">Bergaransi</div>
-                </div>
-            </div>
+            
         </div>
         <div class="hero-visual" aria-hidden="true">
-            <div class="hero-card">
-                <div class="hero-card-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                </div>
-                <h3 style="color:#fff;margin-bottom:.5rem">Teknologi Modern</h3>
-                <p style="color:rgba(255,255,255,.8);font-size:.9rem">Hydrojet, CCTV Pipe Inspection, Electric Snake — tanpa bongkar dinding!</p>
-                <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
-                    <span style="background:rgba(22,159,129,.3);color:#6ee7cc;padding:.25rem .7rem;border-radius:50px;font-size:.78rem;font-weight:600">✓ Non-Destruktif</span>
-                    <span style="background:rgba(30,115,216,.3);color:#93c5fd;padding:.25rem .7rem;border-radius:50px;font-size:.78rem;font-weight:600">✓ Bergaransi</span>
-                </div>
-            </div>
+            <img src="{{ asset('images/JnJ.jpeg') }}" alt="Pengerjaan ROOTERA" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
             <div class="hero-floating hero-floating-1">
                 <div class="dot"></div>
                 <span>Respon Cepat 24 Jam</span>
@@ -57,6 +34,21 @@
             <div class="hero-floating hero-floating-2">
                 <div class="dot"></div>
                 <span>⭐ 4.9/5 Rating Pelanggan</span>
+            </div>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num" data-counter data-target="2300" data-suffix="+">2300+</div>
+                <div class="stat-label">Proyek Selesai</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" data-counter data-target="6" data-suffix=" Kota">6 Kota</div>
+                <div class="stat-label">Area Jangkauan</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" data-counter data-target="100" data-suffix="%">100%</div>
+                <div class="stat-label">Bergaransi</div>
             </div>
         </div>
     </div>
