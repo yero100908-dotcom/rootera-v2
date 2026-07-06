@@ -10,13 +10,27 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
-        'service_category_id', 'name', 'slug', 'short_description',
-        'content', 'image', 'icon', 'price_start', 'is_active',
-        'sort_order', 'meta_title', 'meta_description',
+        'service_category_id',
+        'name',
+        'title',
+        'slug',
+        'short_description',
+        'full_description',
+        'content',
+        'image',
+        'image_path',
+        'icon',
+        'price_start',
+        'price_residential',
+        'price_commercial',
+        'is_active',
+        'sort_order',
+        'meta_title',
+        'meta_description',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'  => 'boolean',
         'price_start' => 'decimal:2',
     ];
 
@@ -27,6 +41,17 @@ class Service extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('images/placeholder.jpg');
+        $path = $this->image_path ?? $this->image;
+        return $path ? asset('storage/' . $path) : asset('images/placeholder.jpg');
+    }
+
+    public function getPriceResidentialFormattedAttribute(): string
+    {
+        return $this->price_residential ?? 'Hubungi Kami';
+    }
+
+    public function getPriceCommercialFormattedAttribute(): string
+    {
+        return $this->price_commercial ?? 'Hubungi Kami';
     }
 }

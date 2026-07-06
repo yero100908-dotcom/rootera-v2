@@ -14,6 +14,9 @@ use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceAreaController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\ContactManageController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\TechnologyController;
+use App\Http\Controllers\Admin\ServiceSectorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,4 +109,31 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/contacts/{contact}', [ContactManageController::class, 'show'])->name('contacts.show');
     Route::put('/contacts/{contact}', [ContactManageController::class, 'update'])->name('contacts.update');
     Route::delete('/contacts/{contact}', [ContactManageController::class, 'destroy'])->name('contacts.destroy');
+
+    // =====================================================
+    // FAQ CRUD
+    // =====================================================
+    Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+    Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+    Route::patch('/faqs/{faq}/toggle', [FaqController::class, 'toggleActive'])->name('faqs.toggle');
+    Route::delete('/faqs/{faq}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+
+    // =====================================================
+    // Technologies CRUD
+    // =====================================================
+    Route::get('/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
+    Route::post('/technologies', [TechnologyController::class, 'store'])->name('technologies.store');
+    Route::put('/technologies/{technology}', [TechnologyController::class, 'update'])->name('technologies.update');
+    Route::patch('/technologies/{technology}/toggle', [TechnologyController::class, 'toggleActive'])->name('technologies.toggle');
+    Route::delete('/technologies/{technology}', [TechnologyController::class, 'destroy'])->name('technologies.destroy');
+
+    // =====================================================
+    // Service Sectors CRUD
+    // =====================================================
+    Route::get('/service-sectors', [ServiceSectorController::class, 'index'])->name('service-sectors.index');
+    Route::post('/service-sectors', [ServiceSectorController::class, 'store'])->name('service-sectors.store');
+    Route::put('/service-sectors/{serviceSector}', [ServiceSectorController::class, 'update'])->name('service-sectors.update');
+    Route::patch('/service-sectors/{serviceSector}/toggle', [ServiceSectorController::class, 'toggleActive'])->name('service-sectors.toggle');
+    Route::delete('/service-sectors/{serviceSector}', [ServiceSectorController::class, 'destroy'])->name('service-sectors.destroy');
 });

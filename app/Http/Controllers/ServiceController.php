@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ServiceCategory;
 use App\Models\Service;
+use App\Models\Technology;
+use App\Models\Faq;
 
 class ServiceController extends Controller
 {
@@ -21,33 +23,16 @@ class ServiceController extends Controller
             'og_image'    => asset('images/og-layanan.jpg'),
         ];
 
-        $tools = [
-            [
-                'name'        => 'Hidrojet / Water Jetting',
-                'icon'        => 'jet',
-                'description' => 'Semprotan air bertekanan tinggi yang mampu menghancurkan dan membersihkan sumbatan berat seperti lemak, kerak mineral, dan akar pohon tanpa merusak pipa.',
-                'benefit'     => 'Tekanan hingga 4000 PSI',
-            ],
-            [
-                'name'        => 'Electric Drain Snake',
-                'icon'        => 'snake',
-                'description' => 'Alat mekanis bermotor yang mampu menerobos sumbatan padat di dalam pipa dengan rotasi presisi tinggi untuk membersihkan secara menyeluruh.',
-                'benefit'     => 'Jangkauan hingga 30 meter',
-            ],
-            [
-                'name'        => 'CCTV Camera Pipe Inspection',
-                'icon'        => 'camera',
-                'description' => 'Kamera miniatur yang dimasukkan ke dalam pipa untuk mendiagnosis secara akurat lokasi dan jenis kerusakan sebelum dilakukan tindakan.',
-                'benefit'     => 'Diagnosa 100% akurat',
-            ],
-            [
-                'name'        => 'Vacuum Pump Industrial',
-                'icon'        => 'vacuum',
-                'description' => 'Pompa vakum berkapasitas tinggi untuk menyedot dan membersihkan kotoran padat maupun cairan dari sistem saluran pembuangan secara efisien.',
-                'benefit'     => 'Kapasitas 500 liter/menit',
-            ],
-        ];
+        // Ambil teknologi dari database (dinamis)
+        $technologies = Technology::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
 
-        return view('pages.layanan', compact('serviceCategories', 'tools', 'seo'));
+        // Ambil FAQ dari database
+        $faqs = Faq::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('pages.layanan', compact('serviceCategories', 'technologies', 'faqs', 'seo'));
     }
 }

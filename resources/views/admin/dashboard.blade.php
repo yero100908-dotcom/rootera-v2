@@ -47,21 +47,23 @@
         <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78">📥 Pesanan Terbaru</h3>
         <a href="{{ route('admin.contacts.index') }}" style="font-size:.85rem;color:#169F81;font-weight:600">Lihat Semua →</a>
     </div>
-    <table class="admin-table">
-        <thead><tr><th>Nama</th><th>Telepon</th><th>Layanan</th><th>Area</th><th>Status</th><th>Tanggal</th></tr></thead>
-        <tbody>
-        @foreach($recentContacts as $c)
-        <tr>
-            <td><strong>{{ $c->name }}</strong></td>
-            <td>{{ $c->phone }}</td>
-            <td>{{ $c->service_type ?? '-' }}</td>
-            <td>{{ $c->area ?? '-' }}</td>
-            <td><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
-            <td>{{ $c->created_at->format('d/m/Y') }}</td>
-        </tr>
-        @endforeach
-        </tbody>
-    </table>
+    <div class="admin-table-wrapper">
+        <table class="admin-table">
+            <thead><tr><th>Nama</th><th>Telepon</th><th>Layanan</th><th>Area</th><th>Status</th><th>Tanggal</th></tr></thead>
+            <tbody>
+            @foreach($recentContacts as $c)
+            <tr>
+                <td><strong>{{ $c->name }}</strong></td>
+                <td>{{ $c->phone }}</td>
+                <td>{{ $c->service_type ?? '-' }}</td>
+                <td>{{ $c->area ?? '-' }}</td>
+                <td><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
+                <td>{{ $c->created_at->format('d/m/Y') }}</td>
+            </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
 

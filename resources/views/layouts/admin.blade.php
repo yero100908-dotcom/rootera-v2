@@ -6,48 +6,318 @@
     <title>@yield('title', 'Admin') – ROOTERA</title>
     <meta name="robots" content="noindex,nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css'])
     <style>
-        :root{--sidebar-w:260px}
-        body{background:#f1f5f9;font-family:'Inter',sans-serif}
-        .admin-layout{display:flex;min-height:100vh}
-        /* Sidebar */
-        .sidebar{width:var(--sidebar-w);background:linear-gradient(180deg,#0A2E78 0%,#0d3a94 100%);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
-        .sidebar-logo{padding:1.75rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.1)}
-        .sidebar-logo a{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;display:block}
-        .sidebar-logo span.era{color:#6ee7cc}
-        .sidebar-label{padding:.75rem 1.5rem .3rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4)}
-        .sidebar-link{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.5rem;color:rgba(255,255,255,.75);font-size:.9rem;font-weight:500;transition:all .2s;border-left:3px solid transparent}
-        .sidebar-link:hover{background:rgba(255,255,255,.08);color:#fff}
-        .sidebar-link.active{background:rgba(22,159,129,.2);color:#6ee7cc;border-left-color:#6ee7cc}
-        .sidebar-link svg{flex-shrink:0;opacity:.8}
-        .sidebar-bottom{margin-top:auto;padding:1.5rem;border-top:1px solid rgba(255,255,255,.1)}
-        /* Main */
-        .admin-main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
-        .admin-topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-        .admin-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:700;color:#0A2E78}
-        .admin-content{padding:2rem;flex:1}
-        /* Cards */
-        .stat-card{background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb;transition:all .2s}
-        .stat-card:hover{box-shadow:0 4px 20px rgba(10,46,120,.1);transform:translateY(-2px)}
-        .stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:2rem;font-weight:800;margin:.25rem 0}
-        /* Tables */
-        .admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(10,46,120,.06)}
-        .admin-table th{background:#f8fafc;padding:.85rem 1rem;text-align:left;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#374151;border-bottom:1px solid #e5e7eb}
-        .admin-table td{padding:.85rem 1rem;border-bottom:1px solid #f3f4f6;font-size:.9rem;color:#374151;vertical-align:middle}
-        .admin-table tr:last-child td{border-bottom:none}
-        .admin-table tr:hover td{background:#fafafa}
-        /* Status badges */
-        .status-new{background:#dbeafe;color:#1d4ed8;padding:.2rem .65rem;border-radius:50px;font-size:.78rem;font-weight:600}
-        .status-in_progress{background:#fef3c7;color:#92400e;padding:.2rem .65rem;border-radius:50px;font-size:.78rem;font-weight:600}
-        .status-completed{background:#d1fae5;color:#065f46;padding:.2rem .65rem;border-radius:50px;font-size:.78rem;font-weight:600}
-        .status-cancelled{background:#fee2e2;color:#991b1b;padding:.2rem .65rem;border-radius:50px;font-size:.78rem;font-weight:600}
-        /* Buttons */
-        .btn-sm{padding:.35rem .8rem;border-radius:8px;font-size:.8rem;font-weight:600;display:inline-flex;align-items:center;gap:.3rem;cursor:pointer;border:none;transition:all .2s}
-        .btn-edit{background:#eff6ff;color:#1d4ed8}.btn-edit:hover{background:#dbeafe}
-        .btn-del{background:#fef2f2;color:#dc2626}.btn-del:hover{background:#fee2e2}
-        .btn-view{background:#f0fdf4;color:#16a34a}.btn-view:hover{background:#dcfce7}
+        :root {
+            --sidebar-w: 260px;
+            --primary: #0A2E78;
+            --primary-dark: #051438;
+            --accent: #169F81;
+            --accent-light: #6ee7cc;
+            --bg-main: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.05), 0 1px 2px -1px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(10,46,120,0.05), 0 4px 6px -4px rgba(10,46,120,0.05);
+        }
+
+        body {
+            background: var(--bg-main);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Modern SaaS Style */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: radial-gradient(circle at top left, var(--primary-dark), var(--primary));
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+        }
+
+        .sidebar-logo {
+            padding: 1.5rem 1.25rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-logo a {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            display: block;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-logo span.era {
+            color: var(--accent-light);
+        }
+
+        .sidebar-label {
+            padding: 1rem 1.5rem 0.5rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.7rem 1rem;
+            margin: 0.2rem 0.75rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.88rem;
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: none;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(22,159,129,0.15) 0%, rgba(22,159,129,0.03) 100%);
+            color: var(--accent-light);
+            font-weight: 600;
+            box-shadow: inset 3px 0 0 0 var(--accent);
+        }
+
+        .sidebar-link svg {
+            flex-shrink: 0;
+            opacity: 0.85;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-link:hover svg {
+            transform: translateX(1px);
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 1.25rem 0.75rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.15);
+        }
+
+        .sidebar-bottom .sidebar-link {
+            margin: 0.15rem 0;
+        }
+
+        /* Topbar & Header */
+        .admin-main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .admin-topbar {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 4px 12px -5px rgba(0,0,0,0.02);
+        }
+
+        .admin-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        .admin-content {
+            padding: 2.25rem;
+            flex: 1;
+        }
+
+        /* Modernized Cards */
+        .stat-card {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: #cbd5e1;
+        }
+
+        .stat-num {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin: 0.3rem 0;
+            letter-spacing: -0.02em;
+        }
+
+        /* Modern Tables */
+        .admin-table-wrapper {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            border: 1px solid #e2e8f0;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .admin-table th {
+            background: #f8fafc;
+            padding: 0.95rem 1.25rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .admin-table td {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.88rem;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* Clean modern badges */
+        .status-new {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #dbeafe;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-in_progress {
+            background: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fef3c7;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #d1fae5;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-cancelled {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fee2e2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Reusable UI Buttons */
+        .btn-sm {
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #f0fdfa;
+            color: var(--accent);
+            border-color: #ccfbf1;
+        }
+        .btn-edit:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .btn-del {
+            background: #fff5f5;
+            color: #e53e3e;
+            border-color: #fed7d7;
+        }
+        .btn-del:hover {
+            background: #e53e3e;
+            color: #fff;
+            border-color: #e53e3e;
+        }
+
+        .btn-view {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #dbeafe;
+        }
+        .btn-view:hover {
+            background: #1d4ed8;
+            color: #fff;
+            border-color: #1d4ed8;
+        }
     </style>
     @stack('styles')
 </head>
@@ -70,13 +340,27 @@
         ];
         @endphp
         <div style="padding:.75rem 0;flex:1">
-            <div class="sidebar-label">Menu</div>
+            <div class="sidebar-label">Menu Utama</div>
             @foreach($nav as $item)
             <a href="{{ route($item['route']) }}" class="sidebar-link {{ request()->routeIs($item['route']) ? 'active' : '' }}">
                 {!! $item['icon'] !!}
                 {{ $item['label'] }}
             </a>
             @endforeach
+
+            <div class="sidebar-label" style="margin-top:.75rem">Konten CMS</div>
+            <a href="{{ route('admin.faqs.index') }}" class="sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                FAQ
+            </a>
+            <a href="{{ route('admin.technologies.index') }}" class="sidebar-link {{ request()->routeIs('admin.technologies.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Teknologi & Alat
+            </a>
+            <a href="{{ route('admin.service-sectors.index') }}" class="sidebar-link {{ request()->routeIs('admin.service-sectors.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                Sektor Layanan
+            </a>
         </div>
         <div class="sidebar-bottom">
             <a href="{{ route('home') }}" class="sidebar-link" target="_blank">

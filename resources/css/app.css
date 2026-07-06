@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
 /* ============================================================
    ROOTERA – Design System
    Colors: #0A2E78 (ROOT/Blue), #169F81 (ERA/Green), #1E73D8 (Accent)
    ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
 /* ---- CSS Variables ---- */
 :root {
