@@ -24,7 +24,7 @@ class ServiceController extends Controller
         ];
 
         // Ambil teknologi dari database (dinamis)
-        $technologies = Technology::where('is_active', true)
+        $tools = Technology::where('is_active', true)
             ->orderBy('sort_order')
             ->get();
 
@@ -33,6 +33,6 @@ class ServiceController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view('pages.layanan', compact('serviceCategories', 'technologies', 'faqs', 'seo'));
+        return view('pages.layanan', compact('serviceCategories', 'tools', 'faqs', 'seo'));
     }
 }

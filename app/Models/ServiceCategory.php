@@ -12,6 +12,7 @@ class ServiceCategory extends Model
     protected $fillable = [
         'name', 'slug', 'description', 'icon', 'image',
         'is_active', 'sort_order', 'meta_title', 'meta_description',
+        'price_home', 'price_corporate', 'price_description',
     ];
 
     protected $casts = [

@@ -3,150 +3,121 @@
 @section('page-title', 'Kelola FAQ')
 
 @section('admin-content')
-<div class="max-w-5xl mx-auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+    <p style="color:#6b7280;font-size:.9rem">Total: <strong>{{ $faqs->count() ?? 0 }}</strong> FAQ</p>
+    <button onclick="document.getElementById('modal-add-faq').style.display='flex'" class="btn btn-primary" style="border-radius:10px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Tambah FAQ
+    </button>
+</div>
 
-    {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Kelola FAQ</h1>
-            <p class="text-sm text-gray-500 mt-1">Atur pertanyaan yang sering diajukan di website</p>
-        </div>
-        <button onclick="document.getElementById('modal-add-faq').classList.remove('hidden')"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition">
-            + Tambah FAQ
-        </button>
-    </div>
+@if(session('success'))
+<div style="background:rgba(22,159,129,.08);border:1px solid rgba(22,159,129,.2);color:#169F81;padding:1rem;border-radius:10px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600">
+    {{ session('success') }}
+</div>
+@endif
 
-    {{-- Flash Message --}}
-    @if(session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    {{-- FAQ Table --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <table class="w-full text-sm">
-            <thead class="bg-gray-50 border-b border-gray-100">
-                <tr>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600">#</th>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600">Pertanyaan</th>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600 w-16">Urutan</th>
-                    <th class="text-center px-6 py-3 font-semibold text-gray-600 w-24">Status</th>
-                    <th class="text-center px-6 py-3 font-semibold text-gray-600 w-28">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-50">
-                @forelse($faqs as $faq)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 text-gray-400">{{ $loop->iteration }}</td>
-                    <td class="px-6 py-4">
-                        <p class="font-medium text-gray-800">{{ Str::limit($faq->question, 70) }}</p>
-                        <p class="text-gray-400 text-xs mt-1">{{ Str::limit($faq->answer, 80) }}</p>
-                    </td>
-                    <td class="px-6 py-4 text-gray-500 text-center">{{ $faq->sort_order }}</td>
-                    <td class="px-6 py-4 text-center">
-                        <button
-                            onclick="toggleFaq({{ $faq->id }}, this)"
-                            data-active="{{ $faq->is_active ? '1' : '0' }}"
-                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none
-                                   {{ $faq->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
-                            <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform
-                                         {{ $faq->is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <button
-                                onclick='openEditFaq({{ json_encode($faq) }})'
-                                class="text-blue-500 hover:text-blue-700 font-medium text-xs px-2 py-1 rounded hover:bg-blue-50 transition">
-                                Edit
-                            </button>
-                            <form method="POST" action="{{ route('admin.faqs.destroy', $faq) }}"
-                                  onsubmit="return confirm('Hapus FAQ ini?')">
-                                @csrf @method('DELETE')
-                                <button class="text-red-500 hover:text-red-700 font-medium text-xs px-2 py-1 rounded hover:bg-red-50 transition">
-                                    Hapus
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-6 py-12 text-center text-gray-400">
-                        Belum ada FAQ. Klik "+ Tambah FAQ" untuk memulai.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+<div style="background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Pertanyaan</th>
+                <th>Urutan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($faqs as $faq)
+        <tr>
+            <td>
+                <strong>{{ Str::limit($faq->question, 50) }}</strong>
+                <div style="font-size:.82rem;color:#6b7280;margin-top:4px">{{ Str::limit($faq->answer, 60) }}</div>
+            </td>
+            <td>{{ $faq->sort_order }}</td>
+            <td>
+                <button onclick="toggleFaq({{ $faq->id }}, this)" data-active="{{ $faq->is_active ? '1' : '0' }}" style="border:none;background:none;cursor:pointer;padding:0">
+                    <span class="{{ $faq->is_active ? 'status-completed' : 'status-cancelled' }}">
+                        {{ $faq->is_active ? 'Aktif' : 'Nonaktif' }}
+                    </span>
+                </button>
+            </td>
+            <td>
+                <div style="display:flex;gap:.4rem">
+                    <button type="button" onclick='openEditFaq(@json($faq))' class="btn-sm btn-edit">Edit</button>
+                    <form action="{{ route('admin.faqs.destroy', $faq) }}" method="POST" onsubmit="return confirm('Hapus FAQ ini?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn-sm btn-del">Hapus</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        @empty
+        <tr><td colspan="4" style="text-align:center;padding:2rem;color:#9ca3af">Belum ada FAQ.</td></tr>
+        @endforelse
+        </tbody>
+    </table>
 </div>
 
 {{-- Modal Tambah FAQ --}}
-<div id="modal-add-faq" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-        <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-lg font-bold text-gray-800">Tambah FAQ</h2>
-            <button onclick="document.getElementById('modal-add-faq').classList.add('hidden')"
-                class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+<div id="modal-add-faq" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Tambah FAQ</h2>
+            <button type="button" onclick="document.getElementById('modal-add-faq').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form method="POST" action="{{ route('admin.faqs.store') }}" class="p-6 space-y-4">
+        <form method="POST" action="{{ route('admin.faqs.store') }}" style="padding:1.5rem">
             @csrf
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
-                <input type="text" name="question" required placeholder="Berapa lama pengerjaan?" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pertanyaan <span style="color:#ef4444">*</span></label>
+                <input type="text" name="question" required placeholder="Berapa lama pengerjaan?" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jawaban <span class="text-red-500">*</span></label>
-                <textarea name="answer" required rows="4" placeholder="Tulis jawaban di sini..." class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span></label>
+                <textarea name="answer" required rows="4" placeholder="Tulis jawaban di sini..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Urutan Tampil</label>
-                <input type="number" name="sort_order" value="0" class="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1.5rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan Tampil</label>
+                <input type="number" name="sort_order" value="0" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button type="button" onclick="document.getElementById('modal-add-faq').classList.add('hidden')"
-                    class="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition">Batal</button>
-                <button type="submit" class="px-5 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition">Simpan</button>
+            <div style="display:flex;justify-content:flex-end;gap:.75rem">
+                <button type="button" onclick="document.getElementById('modal-add-faq').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
+                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 {{-- Modal Edit FAQ --}}
-<div id="modal-edit-faq" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-        <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-lg font-bold text-gray-800">Edit FAQ</h2>
-            <button onclick="document.getElementById('modal-edit-faq').classList.add('hidden')"
-                class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+<div id="modal-edit-faq" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Edit FAQ</h2>
+            <button type="button" onclick="document.getElementById('modal-edit-faq').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form id="edit-faq-form" method="POST" class="p-6 space-y-4">
+        <form id="edit-faq-form" method="POST" style="padding:1.5rem">
             @csrf @method('PUT')
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Pertanyaan <span class="text-red-500">*</span></label>
-                <input type="text" name="question" id="edit-question" required class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pertanyaan <span style="color:#ef4444">*</span></label>
+                <input type="text" name="question" id="edit-question" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Jawaban <span class="text-red-500">*</span></label>
-                <textarea name="answer" id="edit-answer" required rows="4" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span></label>
+                <textarea name="answer" id="edit-answer" required rows="4" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
-            <div class="flex items-center gap-4">
+            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Urutan</label>
-                    <input type="number" name="sort_order" id="edit-sort-order" class="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan</label>
+                    <input type="number" name="sort_order" id="edit-sort-order" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Status Aktif</label>
-                    <input type="checkbox" name="is_active" id="edit-is-active" value="1" class="w-4 h-4 rounded text-blue-600">
+                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Status Aktif</label>
+                    <input type="checkbox" name="is_active" id="edit-is-active" value="1" style="width:18px;height:18px;cursor:pointer">
                 </div>
             </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button type="button" onclick="document.getElementById('modal-edit-faq').classList.add('hidden')"
-                    class="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition">Batal</button>
-                <button type="submit" class="px-5 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition">Perbarui</button>
+            <div style="display:flex;justify-content:flex-end;gap:.75rem">
+                <button type="button" onclick="document.getElementById('modal-edit-faq').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
+                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Perbarui</button>
             </div>
         </form>
     </div>
@@ -160,7 +131,7 @@ function openEditFaq(faq) {
     document.getElementById('edit-answer').value = faq.answer;
     document.getElementById('edit-sort-order').value = faq.sort_order;
     document.getElementById('edit-is-active').checked = faq.is_active == 1;
-    document.getElementById('modal-edit-faq').classList.remove('hidden');
+    document.getElementById('modal-edit-faq').style.display = 'flex';
 }
 
 function toggleFaq(id, btn) {

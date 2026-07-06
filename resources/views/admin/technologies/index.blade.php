@@ -3,160 +3,137 @@
 @section('page-title', 'Kelola Teknologi & Alat')
 
 @section('admin-content')
-<div class="max-w-5xl mx-auto">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+    <p style="color:#6b7280;font-size:.9rem">Total: <strong>{{ $technologies->count() ?? 0 }}</strong> alat/teknologi</p>
+    <button onclick="document.getElementById('modal-add-tech').style.display='flex'" class="btn btn-primary" style="border-radius:10px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Tambah Alat
+    </button>
+</div>
 
-    {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-800">Kelola Teknologi & Alat</h1>
-            <p class="text-sm text-gray-500 mt-1">Atur peralatan modern yang digunakan ROOTERA</p>
-        </div>
-        <button onclick="document.getElementById('modal-add-tech').classList.remove('hidden')"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition">
-            + Tambah Alat/Teknologi
-        </button>
-    </div>
+@if(session('success'))
+<div style="background:rgba(22,159,129,.08);border:1px solid rgba(22,159,129,.2);color:#169F81;padding:1rem;border-radius:10px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600">
+    {{ session('success') }}
+</div>
+@endif
 
-    {{-- Flash Message --}}
-    @if(session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    {{-- Tech Table --}}
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <table class="w-full text-sm">
-            <thead class="bg-gray-50 border-b border-gray-100">
-                <tr>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600 w-16">Foto</th>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600">Nama Alat</th>
-                    <th class="text-left px-6 py-3 font-semibold text-gray-600 w-16">Urutan</th>
-                    <th class="text-center px-6 py-3 font-semibold text-gray-600 w-24">Status</th>
-                    <th class="text-center px-6 py-3 font-semibold text-gray-600 w-28">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-50">
-                @forelse($technologies as $tech)
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4">
-                        <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" class="w-12 h-12 object-cover rounded-lg border">
-                    </td>
-                    <td class="px-6 py-4">
-                        <p class="font-medium text-gray-800">{{ $tech->tool_name }}</p>
-                        <p class="text-gray-400 text-xs mt-1">{{ Str::limit($tech->description, 80) }}</p>
-                    </td>
-                    <td class="px-6 py-4 text-gray-500 text-center">{{ $tech->sort_order }}</td>
-                    <td class="px-6 py-4 text-center">
-                        <button
-                            onclick="toggleTech({{ $tech->id }}, this)"
-                            data-active="{{ $tech->is_active ? '1' : '0' }}"
-                            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none
-                                   {{ $tech->is_active ? 'bg-green-500' : 'bg-gray-300' }}">
-                            <span class="inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform
-                                         {{ $tech->is_active ? 'translate-x-6' : 'translate-x-1' }}"></span>
-                        </button>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <button
-                                onclick='openEditTech({{ json_encode($tech) }})'
-                                class="text-blue-500 hover:text-blue-700 font-medium text-xs px-2 py-1 rounded hover:bg-blue-50 transition">
-                                Edit
-                            </button>
-                            <form method="POST" action="{{ route('admin.technologies.destroy', $tech) }}"
-                                  onsubmit="return confirm('Hapus teknologi/alat ini?')">
-                                @csrf @method('DELETE')
-                                <button class="text-red-500 hover:text-red-700 font-medium text-xs px-2 py-1 rounded hover:bg-red-50 transition">
-                                    Hapus
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-6 py-12 text-center text-gray-400">
-                        Belum ada teknologi. Klik "+ Tambah Alat/Teknologi" untuk memulai.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+<div style="background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nama Alat</th>
+                <th>Urutan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($technologies as $tech)
+        <tr>
+            <td>
+                @if($tech->image_url)
+                <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e5e7eb">
+                @else
+                <div style="width:40px;height:40px;background:#f3f4f6;border-radius:6px;border:1px solid #e5e7eb"></div>
+                @endif
+            </td>
+            <td>
+                <strong>{{ $tech->tool_name }}</strong>
+                <div style="font-size:.82rem;color:#6b7280;margin-top:4px">{{ Str::limit($tech->description, 40) }}</div>
+            </td>
+            <td>{{ $tech->sort_order }}</td>
+            <td>
+                <button onclick="toggleTech({{ $tech->id }}, this)" data-active="{{ $tech->is_active ? '1' : '0' }}" style="border:none;background:none;cursor:pointer;padding:0">
+                    <span class="{{ $tech->is_active ? 'status-completed' : 'status-cancelled' }}">
+                        {{ $tech->is_active ? 'Aktif' : 'Nonaktif' }}
+                    </span>
+                </button>
+            </td>
+            <td>
+                <div style="display:flex;gap:.4rem">
+                    <button type="button" onclick='openEditTech(@json($tech))' class="btn-sm btn-edit">Edit</button>
+                    <form action="{{ route('admin.technologies.destroy', $tech) }}" method="POST" onsubmit="return confirm('Hapus alat ini?')">
+                        @csrf @method('DELETE')
+                        <button type="submit" class="btn-sm btn-del">Hapus</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        @empty
+        <tr><td colspan="5" style="text-align:center;padding:2rem;color:#9ca3af">Belum ada alat/teknologi.</td></tr>
+        @endforelse
+        </tbody>
+    </table>
 </div>
 
 {{-- Modal Tambah Tech --}}
-<div id="modal-add-tech" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-        <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-lg font-bold text-gray-800">Tambah Alat/Teknologi</h2>
-            <button onclick="document.getElementById('modal-add-tech').classList.add('hidden')"
-                class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+<div id="modal-add-tech" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Tambah Alat/Teknologi</h2>
+            <button type="button" onclick="document.getElementById('modal-add-tech').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form method="POST" action="{{ route('admin.technologies.store') }}" enctype="multipart/form-data" class="p-6 space-y-4">
+        <form method="POST" action="{{ route('admin.technologies.store') }}" enctype="multipart/form-data" style="padding:1.5rem">
             @csrf
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Alat <span class="text-red-500">*</span></label>
-                <input type="text" name="tool_name" required placeholder="Contoh: Rigid Sectional Machine" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Nama Alat <span style="color:#ef4444">*</span></label>
+                <input type="text" name="tool_name" required placeholder="Contoh: Rigid Sectional Machine" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Alat</label>
-                <textarea name="description" rows="3" placeholder="Tulis deskripsi fungsi alat..." class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Alat</label>
+                <textarea name="description" rows="3" placeholder="Tulis deskripsi fungsi alat..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Foto Alat</label>
-                <input type="file" name="image_path" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Alat</label>
+                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Urutan Tampil</label>
-                <input type="number" name="sort_order" value="0" class="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1.5rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan Tampil</label>
+                <input type="number" name="sort_order" value="0" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button type="button" onclick="document.getElementById('modal-add-tech').classList.add('hidden')"
-                    class="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition">Batal</button>
-                <button type="submit" class="px-5 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition">Simpan</button>
+            <div style="display:flex;justify-content:flex-end;gap:.75rem">
+                <button type="button" onclick="document.getElementById('modal-add-tech').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
+                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 {{-- Modal Edit Tech --}}
-<div id="modal-edit-tech" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-        <div class="flex items-center justify-between p-6 border-b">
-            <h2 class="text-lg font-bold text-gray-800">Edit Alat/Teknologi</h2>
-            <button onclick="document.getElementById('modal-edit-tech').classList.add('hidden')"
-                class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+<div id="modal-edit-tech" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Edit Alat/Teknologi</h2>
+            <button type="button" onclick="document.getElementById('modal-edit-tech').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form id="edit-tech-form" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+        <form id="edit-tech-form" method="POST" enctype="multipart/form-data" style="padding:1.5rem">
             @csrf @method('PUT')
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Alat <span class="text-red-500">*</span></label>
-                <input type="text" name="tool_name" id="edit-tool-name" required class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Nama Alat <span style="color:#ef4444">*</span></label>
+                <input type="text" name="tool_name" id="edit-tool-name" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Alat</label>
-                <textarea name="description" id="edit-description" rows="3" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Alat</label>
+                <textarea name="description" id="edit-description" rows="3" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Foto Alat (Biarkan kosong jika tidak diganti)</label>
-                <input type="file" name="image_path" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Alat (Biarkan kosong jika tidak diganti)</label>
+                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
             </div>
-            <div class="flex items-center gap-4">
+            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Urutan</label>
-                    <input type="number" name="sort_order" id="edit-sort-order" class="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan</label>
+                    <input type="number" name="sort_order" id="edit-sort-order" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Status Aktif</label>
-                    <input type="checkbox" name="is_active" id="edit-is-active" value="1" class="w-4 h-4 rounded text-blue-600">
+                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Status Aktif</label>
+                    <input type="checkbox" name="is_active" id="edit-is-active" value="1" style="width:18px;height:18px;cursor:pointer">
                 </div>
             </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button type="button" onclick="document.getElementById('modal-edit-tech').classList.add('hidden')"
-                    class="px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition">Batal</button>
-                <button type="submit" class="px-5 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold transition">Perbarui</button>
+            <div style="display:flex;justify-content:flex-end;gap:.75rem">
+                <button type="button" onclick="document.getElementById('modal-edit-tech').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
+                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Perbarui</button>
             </div>
         </form>
     </div>
@@ -170,7 +147,7 @@ function openEditTech(tech) {
     document.getElementById('edit-description').value = tech.description ?? '';
     document.getElementById('edit-sort-order').value = tech.sort_order;
     document.getElementById('edit-is-active').checked = tech.is_active == 1;
-    document.getElementById('modal-edit-tech').classList.remove('hidden');
+    document.getElementById('modal-edit-tech').style.display='flex';
 }
 
 function toggleTech(id, btn) {

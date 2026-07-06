@@ -15,16 +15,22 @@
         ['label'=>'Pesanan Baru','value'=>$newContacts,'icon'=>'🆕','color'=>'#1E73D8','bg'=>'rgba(30,115,216,.08)'],
         ['label'=>'Selesai','value'=>$completedOrders,'icon'=>'✅','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
         ['label'=>'Total Pemasukan','value'=>'Rp '.number_format($totalRevenue,0,',','.'),'icon'=>'💰','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
-        ['label'=>'Total Artikel','value'=>$totalArticles,'icon'=>'📰','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+        ['label'=>'Artikel','value'=>$totalArticles,'icon'=>'📰','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+        ['label'=>'Kategori Layanan','value'=>$totalCategories,'icon'=>'🗂️','color'=>'#eab308','bg'=>'rgba(234,179,8,.1)'],
+        ['label'=>'Area Layanan','value'=>$totalAreas,'icon'=>'📍','color'=>'#ef4444','bg'=>'rgba(239,68,68,.1)'],
+        ['label'=>'Galeri','value'=>$totalGalleries,'icon'=>'🖼️','color'=>'#8b5cf6','bg'=>'rgba(139,92,246,.1)'],
+        ['label'=>'FAQ','value'=>$totalFaqs,'icon'=>'❓','color'=>'#0ea5e9','bg'=>'rgba(14,165,233,.1)'],
+        ['label'=>'Alat & Tech','value'=>$totalTechs,'icon'=>'🔧','color'=>'#f97316','bg'=>'rgba(249,115,22,.1)'],
+        ['label'=>'Sektor','value'=>$totalSectors,'icon'=>'🏢','color'=>'#14b8a6','bg'=>'rgba(20,184,166,.1)'],
     ];
     @endphp
     @foreach($stats as $s)
-    <div class="stat-card">
+    <div class="stat-card" style="background:#fff;border-radius:12px;padding:1.25rem;border:1px solid #e5e7eb;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
-            <span style="font-size:.82rem;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.04em">{{ $s['label'] }}</span>
-            <span style="width:40px;height:40px;background:{{ $s['bg'] }};border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem">{{ $s['icon'] }}</span>
+            <span style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">{{ $s['label'] }}</span>
+            <span style="width:36px;height:36px;background:{{ $s['bg'] }};border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem">{{ $s['icon'] }}</span>
         </div>
-        <div class="stat-num" style="color:{{ $s['color'] }}">{{ $s['value'] }}</div>
+        <div class="stat-num" style="color:{{ $s['color'] }};font-size:1.5rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">{{ $s['value'] }}</div>
     </div>
     @endforeach
 </div>
