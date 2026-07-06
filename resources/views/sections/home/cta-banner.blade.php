@@ -2,6 +2,59 @@
     <div style="position:absolute;inset:0;pointer-events:none" aria-hidden="true">
         <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.05);top:-150px;right:-100px"></div>
         <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.05);bottom:-80px;left:-80px"></div>
+        
+        <!-- Geometris Aliran Pipa Motif for CTA Banner -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0.12;">
+            <defs>
+                <linearGradient id="cta-pipe-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#fff" />
+                    <stop offset="50%" stop-color="#6ee7cc" />
+                    <stop offset="100%" stop-color="#fff" />
+                </linearGradient>
+            </defs>
+            
+            <!-- Flowing pipes stretching across the CTA banner -->
+            <g stroke="url(#cta-pipe-grad)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Top continuous pipe flow -->
+                <path d="M-50,80 H400 V180 H750 V110 H1100 V230 H1490" stroke-width="3" />
+                <path d="M-50,80 H400 V180 H750 V110 H1100 V230 H1490" stroke-width="7" stroke-opacity="0.1" />
+                
+                <!-- Bottom continuous pipe flow -->
+                <path d="M-50,280 H250 V150 H550 V260 H950 V140 H1280 V290 H1490" stroke-width="2.5" />
+                <path d="M-50,280 H250 V150 H550 V260 H950 V140 H1280 V290 H1490" stroke-width="6" stroke-opacity="0.1" />
+                
+                <!-- Dynamic dashed flow lines -->
+                <path d="M250,150 H400 V180 H550" stroke-width="1.5" class="pipe-flow-dash" />
+                <path d="M750,110 H950 V140 H1100" stroke-width="1.5" class="pipe-flow-dash-reverse" />
+                <path d="M550,260 H750 V110 H950" stroke-width="1" stroke-opacity="0.6" class="pipe-flow-dash" />
+            </g>
+            
+            <!-- Junction Nodes -->
+            <g fill="#6ee7cc">
+                <circle cx="400" cy="80" r="4.5" />
+                <circle cx="400" cy="180" r="4.5" />
+                <circle cx="750" cy="180" r="4.5" />
+                <circle cx="750" cy="110" r="4.5" />
+                <circle cx="1100" cy="110" r="4.5" />
+                <circle cx="1100" cy="230" r="4.5" />
+                
+                <circle cx="250" cy="280" r="4" fill="#fff" />
+                <circle cx="250" cy="150" r="4" fill="#fff" />
+                <circle cx="550" cy="150" r="4" fill="#fff" />
+                <circle cx="550" cy="260" r="4" fill="#fff" />
+                <circle cx="950" cy="260" r="4" fill="#fff" />
+                <circle cx="950" cy="140" r="4" fill="#fff" />
+                <circle cx="1280" cy="140" r="4" fill="#fff" />
+                <circle cx="1280" cy="290" r="4" fill="#fff" />
+                
+                <!-- Glowing pulsing nodes at main transitions -->
+                <circle cx="750" cy="150" r="5" fill="#6ee7cc" />
+                <circle cx="750" cy="150" r="12" stroke="#6ee7cc" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 750px 150px;" />
+                
+                <circle cx="1100" cy="170" r="5" fill="#6ee7cc" />
+                <circle cx="1100" cy="170" r="12" stroke="#6ee7cc" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 1100px 170px;" />
+            </g>
+        </svg>
     </div>
     <div class="container text-center" style="position:relative;z-index:1">
         <span class="badge" style="background:rgba(255,255,255,.2);color:#fff;margin-bottom:1rem">Siap Membantu</span>

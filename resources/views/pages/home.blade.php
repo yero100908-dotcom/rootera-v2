@@ -3,7 +3,73 @@
 
 {{-- ===== HERO ===== --}}
 <section class="hero" aria-label="Hero section">
-    <div class="hero-bg-shape" aria-hidden="true"></div>
+    <div class="hero-bg-shape" aria-hidden="true">
+        <!-- Geometric Pipe Flow Pattern -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0.18;">
+            <defs>
+                <linearGradient id="hero-pipe-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6ee7cc" />
+                    <stop offset="100%" stop-color="#3b82f6" />
+                </linearGradient>
+                <linearGradient id="hero-pipe-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#169F81" />
+                </linearGradient>
+            </defs>
+            
+            <!-- Left Piping System -->
+            <g stroke="url(#hero-pipe-grad-1)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Primary pipe -->
+                <path d="M-20,120 H180 V320 H340" stroke-width="4" />
+                <path d="M-20,120 H180 V320 H340" stroke-width="8" stroke-opacity="0.15" />
+                
+                <!-- Secondary branches -->
+                <path d="M100,120 V220 H260 V400 H140" stroke-width="2" class="pipe-flow-dash" />
+                <path d="M180,260 H60 V440 H200" stroke-width="1.5" />
+                
+                <!-- Thin detailed flowing lines -->
+                <path d="M-20,150 H140 V290 H300 V480 H180" stroke-width="1" stroke-opacity="0.5" class="pipe-flow-dash-reverse" />
+            </g>
+            
+            <!-- Left Connection Nodes -->
+            <g fill="#6ee7cc">
+                <circle cx="180" cy="120" r="5" />
+                <circle cx="180" cy="320" r="5" />
+                <circle cx="100" cy="120" r="4" />
+                <circle cx="260" cy="220" r="4" />
+                <circle cx="260" cy="400" r="4" />
+                <circle cx="60" cy="260" r="4" />
+                <!-- Pressure indicators (pulse circle) -->
+                <circle cx="340" cy="320" r="6" fill="#3b82f6" />
+                <circle cx="340" cy="320" r="14" stroke="#3b82f6" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 340px 320px;" />
+            </g>
+            
+            <!-- Right Piping System (behind visual card) -->
+            <g stroke="url(#hero-pipe-grad-2)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Primary pipe -->
+                <path d="M1460,180 H1240 V360 H1080 V500" stroke-width="4.5" />
+                <path d="M1460,180 H1240 V360 H1080 V500" stroke-width="9" stroke-opacity="0.15" />
+                
+                <!-- Secondary branches -->
+                <path d="M1350,180 V280 H1180 V420 H1300" stroke-width="2" class="pipe-flow-dash" />
+                <path d="M1240,300 H1380 V460 H1200" stroke-width="1.5" />
+                <path d="M1460,220 H1290 V330 H1120 V480 H1050" stroke-width="1" stroke-opacity="0.5" class="pipe-flow-dash-reverse" />
+            </g>
+            
+            <!-- Right Connection Nodes -->
+            <g fill="#3b82f6">
+                <circle cx="1240" cy="180" r="5" fill="#169F81" />
+                <circle cx="1240" cy="360" r="5" fill="#169F81" />
+                <circle cx="1350" cy="180" r="4" />
+                <circle cx="1180" cy="280" r="4" />
+                <circle cx="1180" cy="420" r="4" />
+                <circle cx="1380" cy="300" r="4" fill="#169F81" />
+                <!-- Pressure indicators -->
+                <circle cx="1080" cy="500" r="6" fill="#169F81" />
+                <circle cx="1080" cy="500" r="14" stroke="#169F81" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 1080px 500px;" />
+            </g>
+        </svg>
+    </div>
     <div class="hero-container">
         <div class="hero-content">
             <div class="hero-badge fade-in">

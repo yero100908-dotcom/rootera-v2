@@ -329,3 +329,50 @@ p{line-height:1.7}
   .hero-floating-1{top:-0.5rem;right:-0.5rem;}
   .hero-floating-2{bottom:-0.5rem;left:-0.5rem;}
 }
+
+/* ---- GEOMETRIS ALIRAN PIPA (PIPE PATTERNS) ---- */
+.pipe-flow-dash {
+  stroke-dasharray: 10 15;
+  animation: pipeFlow 25s linear infinite;
+}
+.pipe-flow-dash-reverse {
+  stroke-dasharray: 8 12;
+  animation: pipeFlowReverse 20s linear infinite;
+}
+.pipe-pulse-node {
+  animation: pipePulse 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes pipeFlow {
+  from {
+    stroke-dashoffset: 500;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pipeFlowReverse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 500;
+  }
+}
+@keyframes pipePulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0;
+    stroke-width: 0.5px;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
