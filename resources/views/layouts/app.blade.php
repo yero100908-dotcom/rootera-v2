@@ -48,8 +48,9 @@
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "Rp",
       "sameAs": [
-        "https://www.instagram.com/rootera.id",
-        "https://www.facebook.com/rootera.id"
+        "https://www.instagram.com/rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
+        "https://www.facebook.com/rootera.id",
+        "https://www.tiktok.com/@rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h"
       ]
     }
     @endverbatim
