@@ -165,6 +165,93 @@
             flex: 1;
         }
 
+        /* Mobile Sidebar Overrides */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.2rem;
+            margin-right: 0.75rem;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .admin-main {
+                margin-left: 0;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .sidebar-overlay.active {
+                display: block;
+                opacity: 1;
+            }
+            .admin-topbar {
+                padding: 0.85rem 1.25rem;
+            }
+            .admin-content {
+                padding: 1.25rem;
+            }
+            .stat-num {
+                font-size: 1.5rem;
+            }
+            
+            /* Global Fix untuk Inline Grid 2 Kolom (Form, Detail, Charts) */
+            div[style*="grid-template-columns:1fr 320px"],
+            div[style*="grid-template-columns: 1fr 320px"],
+            div[style*="grid-template-columns:1fr 1fr"],
+            div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Global Fix untuk Tabel di Mobile */
+            .admin-main {
+                margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+            .admin-content {
+                padding: 1rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow-x: hidden;
+            }
+            .admin-table-wrapper {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
+                max-width: 100%;
+                display: block;
+            }
+            .admin-table th, .admin-table td {
+                white-space: nowrap;
+            }
+        }
+
         /* Modernized Cards */
         .stat-card {
             background: #fff;
@@ -323,8 +410,11 @@
 </head>
 <body>
 <div class="admin-layout">
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
     {{-- Sidebar --}}
-    <aside class="sidebar" role="navigation" aria-label="Admin navigation">
+    <aside class="sidebar" id="adminSidebar" role="navigation" aria-label="Admin navigation">
         <div class="sidebar-logo">
             <a href="{{ route('admin.dashboard') }}">ROOT<span class="era">ERA</span></a>
             <span style="font-size:.75rem;color:rgba(255,255,255,.5);display:block;margin-top:.2rem">Panel Admin</span>
@@ -380,7 +470,12 @@
     {{-- Main Content --}}
     <div class="admin-main">
         <header class="admin-topbar">
-            <h1 class="admin-title">@yield('page-title', 'Dashboard')</h1>
+            <div style="display:flex;align-items:center;">
+                <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <h1 class="admin-title">@yield('page-title', 'Dashboard')</h1>
+            </div>
             <div style="display:flex;align-items:center;gap:1rem">
                 <span style="font-size:.88rem;color:#6b7280">
                     Halo, <strong style="color:#0A2E78">{{ auth()->user()->name }}</strong>
@@ -400,6 +495,21 @@
     </div>
 </div>
 @vite(['resources/js/app.js'])
+<script>
+    function toggleSidebar() {
+        document.getElementById('adminSidebar').classList.toggle('active');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (overlay.classList.contains('active')) {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.classList.remove('active'), 300);
+        } else {
+            overlay.classList.add('active');
+            // Trigger reflow
+            void overlay.offsetWidth;
+            overlay.style.opacity = '1';
+        }
+    }
+</script>
 @stack('scripts')
 </body>
 </html>
