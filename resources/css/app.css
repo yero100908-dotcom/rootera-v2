@@ -31,21 +31,23 @@
 }
 
 /* ---- Reset & Base ---- */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Inter',sans-serif;color:var(--gray-800);background:var(--white);line-height:1.6;overflow-x:hidden}
-img{max-width:100%;height:auto;display:block}
-a{text-decoration:none;color:inherit}
-ul{list-style:none}
-button{cursor:pointer;border:none;background:none;font-family:inherit}
-address{font-style:normal}
+@layer base {
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;font-size:16px}
+  body{font-family:'Inter',sans-serif;color:var(--gray-800);background:var(--white);line-height:1.6;overflow-x:hidden}
+  img{max-width:100%;height:auto;display:block}
+  a{text-decoration:none;color:inherit}
+  ul{list-style:none}
+  button{cursor:pointer;border:none;background:none;font-family:inherit}
+  address{font-style:normal}
 
-/* ---- Typography ---- */
-h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2;font-weight:700}
-h1{font-size:clamp(2rem,5vw,3.5rem)}
-h2{font-size:clamp(1.5rem,3.5vw,2.5rem)}
-h3{font-size:clamp(1.125rem,2vw,1.5rem)}
-p{line-height:1.7}
+  /* ---- Typography ---- */
+  h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2;font-weight:700}
+  h1{font-size:clamp(2rem,5vw,3.5rem)}
+  h2{font-size:clamp(1.5rem,3.5vw,2.5rem)}
+  h3{font-size:clamp(1.125rem,2vw,1.5rem)}
+  p{line-height:1.7}
+}
 
 /* ---- Utilities ---- */
 .container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
