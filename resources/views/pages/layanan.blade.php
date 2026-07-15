@@ -31,11 +31,19 @@
                 ];
             @endphp
             <div class="tool-card fade-in" style="animation-delay:{{ $i * 0.1 }}s">
-                <div class="tool-icon">{!! $toolIcons[$i % 4] !!}</div>
+                <div class="tool-icon">
+                    @if($tool->image_path)
+                        <img src="{{ $tool->image_url }}" alt="{{ $tool->tool_name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+                    @else
+                        {!! $toolIcons[$i % 4] !!}
+                    @endif
+                </div>
                 <div class="tool-info">
-                    <h4>{{ $tool['name'] }}</h4>
-                    <p>{{ $tool['description'] }}</p>
-                    <span class="tool-badge">{{ $tool['benefit'] }}</span>
+                    <h4>{{ $tool->tool_name }}</h4>
+                    <p>{{ $tool->description }}</p>
+                    @if(!empty($tool->benefit))
+                        <span class="tool-badge">{{ $tool->benefit }}</span>
+                    @endif
                 </div>
             </div>
             @endforeach

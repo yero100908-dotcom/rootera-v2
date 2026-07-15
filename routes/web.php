@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ContactManageController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\ServiceSectorController;
+use App\Http\Controllers\Admin\PartnerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,4 +137,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('/service-sectors/{serviceSector}', [ServiceSectorController::class, 'update'])->name('service-sectors.update');
     Route::patch('/service-sectors/{serviceSector}/toggle', [ServiceSectorController::class, 'toggleActive'])->name('service-sectors.toggle');
     Route::delete('/service-sectors/{serviceSector}', [ServiceSectorController::class, 'destroy'])->name('service-sectors.destroy');
+
+    // =====================================================
+    // Partners (Mitra) CRUD
+    // =====================================================
+    Route::get('/partners', [PartnerController::class, 'index'])->name('partners.index');
+    Route::post('/partners', [PartnerController::class, 'store'])->name('partners.store');
+    Route::put('/partners/{partner}', [PartnerController::class, 'update'])->name('partners.update');
+    Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
 });

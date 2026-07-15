@@ -9,6 +9,7 @@ use App\Models\ServiceArea;
 use App\Models\Article;
 use App\Models\GalleryPhoto;
 use App\Models\User;
+use App\Models\Partner;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -151,6 +152,20 @@ class DatabaseSeeder extends Seeder
 
         foreach ($photos as $photo) {
             GalleryPhoto::updateOrCreate(['title' => $photo['title']], array_merge($photo, ['is_active' => true]));
+        }
+
+        // Seeding Partners
+        $seedPartners = [
+            ['nama_mitra' => 'Pertamina', 'logo' => 'partners/pertamina.png'],
+            ['nama_mitra' => 'PLN', 'logo' => 'partners/pln.png'],
+            ['nama_mitra' => 'Telkom Indonesia', 'logo' => 'partners/telkom.png'],
+            ['nama_mitra' => 'Bank Mandiri', 'logo' => 'partners/mandiri.png'],
+            ['nama_mitra' => 'BCA', 'logo' => 'partners/bca.png'],
+            ['nama_mitra' => 'Indofood', 'logo' => 'partners/indofood.png'],
+        ];
+
+        foreach ($seedPartners as $p) {
+            Partner::updateOrCreate(['nama_mitra' => $p['nama_mitra']], $p);
         }
     }
 }

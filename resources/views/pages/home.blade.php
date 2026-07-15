@@ -134,6 +134,9 @@
 {{-- ===== AREA LAYANAN ===== --}}
 @include('sections.home.areas', ['serviceAreas' => $serviceAreas])
 
+{{-- ===== MITRA KAMI ===== --}}
+@include('sections.home.partners', ['partners' => $partners])
+
 {{-- ===== ARTIKEL TERBARU ===== --}}
 @include('sections.home.latest-articles', ['latestArticles' => $latestArticles])
 

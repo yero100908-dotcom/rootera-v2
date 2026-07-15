@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Models\Faq;
 use App\Models\Technology;
 use App\Models\ServiceSector;
+use App\Models\Partner;
 
 class HomeController extends Controller
 {
@@ -39,6 +40,8 @@ class HomeController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $partners = Partner::all();
+
         $seo = [
             'title'       => 'ROOTERA – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
             'description' => 'ROOTERA solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
@@ -53,6 +56,7 @@ class HomeController extends Controller
             'faqs',
             'technologies',
             'serviceSectors',
+            'partners',
             'seo'
         ));
     }

@@ -26,6 +26,7 @@ class DashboardController extends Controller
         $totalFaqs       = \App\Models\Faq::count();
         $totalTechs      = \App\Models\Technology::count();
         $totalSectors    = \App\Models\ServiceSector::count();
+        $totalPartners   = \App\Models\Partner::count();
 
         // Chart: Monthly contacts (last 12 months)
         $monthlyContacts = Contact::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as total')
@@ -69,7 +70,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact(
             'totalContacts', 'newContacts', 'completedOrders', 'totalRevenue',
             'totalArticles', 'totalCategories', 'totalAreas', 'totalGalleries',
-            'totalFaqs', 'totalTechs', 'totalSectors',
+            'totalFaqs', 'totalTechs', 'totalSectors', 'totalPartners',
             'chartLabels', 'contactData', 'revenueData', 'recentContacts'
         ));
     }

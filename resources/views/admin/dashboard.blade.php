@@ -22,6 +22,7 @@
         ['label'=>'FAQ','value'=>$totalFaqs,'icon'=>'❓','color'=>'#0ea5e9','bg'=>'rgba(14,165,233,.1)'],
         ['label'=>'Alat & Tech','value'=>$totalTechs,'icon'=>'🔧','color'=>'#f97316','bg'=>'rgba(249,115,22,.1)'],
         ['label'=>'Sektor','value'=>$totalSectors,'icon'=>'🏢','color'=>'#14b8a6','bg'=>'rgba(20,184,166,.1)'],
+        ['label'=>'Mitra','value'=>$totalPartners,'icon'=>'🤝','color'=>'#ec4899','bg'=>'rgba(236,72,153,.1)'],
     ];
     @endphp
     @foreach($stats as $s)
