@@ -3,9 +3,16 @@
 
 <div style="background:linear-gradient(135deg,#0A2E78,#0d3a94);padding:5rem 0 5.5rem;position:relative;overflow:hidden">
     {{-- Bottom Wave --}}
-    <div style="position:absolute;bottom:0;left:0;width:100%;height:60px;pointer-events:none;z-index:1" aria-hidden="true">
-        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
-            <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"></path>
+    <div style="position:absolute;bottom:0;left:0;width:100%;height:100px;pointer-events:none;z-index:1" aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+            <!-- Layer 4 (Backmost - 15% Opacity) -->
+            <path d="M0,60 C320,120 720,10 1080,100 C1260,140 1360,90 1440,60 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.15"></path>
+            <!-- Layer 3 (Behind Middle - 25% Opacity) -->
+            <path d="M0,80 C360,10 720,110 1080,30 C1260,20 1360,70 1440,80 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.25"></path>
+            <!-- Layer 2 (Middle - 40% Opacity) -->
+            <path d="M0,50 C240,90 480,20 840,90 C1100,130 1280,50 1440,70 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.40"></path>
+            <!-- Layer 1 (Front - Full Opacity) -->
+            <path d="M0,90 C360,130 720,40 1080,110 C1260,130 1360,100 1440,90 L1440,120 L0,120 Z" fill="#ffffff"></path>
         </svg>
     </div>
 
