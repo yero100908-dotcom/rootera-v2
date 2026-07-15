@@ -9,17 +9,26 @@
         </svg>
     </div>
 
-    {{-- Fluid Smooth Wavy Lines --}}
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.08" aria-hidden="true">
+    {{-- Fluid Smooth Wavy Lines (Rich Pattern) --}}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0.1" aria-hidden="true">
         <defs>
-            <linearGradient id="fluid-wave-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="hero-fluid-wave-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#20b2aa" />
                 <stop offset="100%" stop-color="#6495ed" />
             </linearGradient>
         </defs>
-        <path d="M-100,80 C300,260 600,-40 1000,180 C1200,290 1400,120 1600,220" fill="none" stroke="url(#fluid-wave-grad)" stroke-width="4"></path>
-        <path d="M-50,140 C350,300 650,40 950,220 C1150,320 1350,160 1550,260" fill="none" stroke="url(#fluid-wave-grad)" stroke-width="3"></path>
-        <path d="M-150,30 C250,170 550,-100 900,120 C1100,220 1300,80 1500,170" fill="none" stroke="url(#fluid-wave-grad)" stroke-width="2" stroke-dasharray="12,6"></path>
+        <!-- Line 1: Thick continuous path -->
+        <path d="M-100,80 C300,260 600,-40 1000,180 C1200,290 1400,120 1600,220" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="3"></path>
+        <!-- Line 2: Medium continuous path -->
+        <path d="M-50,140 C350,300 650,40 950,220 C1150,320 1350,160 1550,260" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="2"></path>
+        <!-- Line 3: Thin continuous path -->
+        <path d="M-120,200 C200,80 500,280 800,100 C1100,20 1300,240 1600,120" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="1"></path>
+        <!-- Line 4: Dash pattern 1 -->
+        <path d="M-150,30 C250,170 550,-100 900,120 C1100,220 1300,80 1500,170" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="1.5" stroke-dasharray="5,5"></path>
+        <!-- Line 5: Dash pattern 2 -->
+        <path d="M-80,240 C280,360 620,120 920,280 C1220,400 1380,180 1580,290" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="2" stroke-dasharray="8,4"></path>
+        <!-- Line 6: Diagonal intersecting sweep -->
+        <path d="M-200,280 C100,80 400,20 800,180 C1100,300 1300,120 1650,50" fill="none" stroke="url(#hero-fluid-wave-grad)" stroke-width="1.5"></path>
     </svg>
 
     <div class="container text-center" style="position:relative;z-index:2">
