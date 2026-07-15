@@ -2,8 +2,14 @@
 @section('content')
 
 {{-- Page Header --}}
-<div class="relative overflow-hidden bg-gradient-to-br from-[#0A2E78] to-[#0d3a94] py-16 md:py-24 text-center">
-    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="relative overflow-hidden bg-gradient-to-br from-[#0A2E78] to-[#0d3a94] pt-16 pb-24 md:pt-24 md:pb-32 text-center">
+    {{-- Bottom Wave --}}
+    <div class="absolute bottom-0 left-0 w-full h-[60px] pointer-events-none z-10" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="w-full h-full block">
+            <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"></path>
+        </svg>
+    </div>
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4">Tentang <span class="text-[#6ee7cc]">ROOTERA</span></h1>
         <p class="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">Tim profesional yang berdedikasi untuk memberikan solusi pipa terbaik bagi rumah dan bisnis Anda.</p>
     </div>

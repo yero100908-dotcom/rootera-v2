@@ -1,62 +1,24 @@
 <section aria-labelledby="cta-heading" style="background:linear-gradient(135deg,#0A2E78 0%,#169F81 100%);padding:5rem 0;position:relative;overflow:hidden">
-    <div style="position:absolute;inset:0;pointer-events:none" aria-hidden="true">
-        <div style="position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.05);top:-150px;right:-100px"></div>
-        <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.05);bottom:-80px;left:-80px"></div>
-        
-        <!-- Geometris Aliran Pipa Motif for CTA Banner -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0.12;">
-            <defs>
-                <linearGradient id="cta-pipe-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#fff" />
-                    <stop offset="50%" stop-color="#6ee7cc" />
-                    <stop offset="100%" stop-color="#fff" />
-                </linearGradient>
-            </defs>
-            
-            <!-- Flowing pipes stretching across the CTA banner -->
-            <g stroke="url(#cta-pipe-grad)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Top continuous pipe flow -->
-                <path d="M-50,80 H400 V180 H750 V110 H1100 V230 H1490" stroke-width="3" />
-                <path d="M-50,80 H400 V180 H750 V110 H1100 V230 H1490" stroke-width="7" stroke-opacity="0.1" />
-                
-                <!-- Bottom continuous pipe flow -->
-                <path d="M-50,280 H250 V150 H550 V260 H950 V140 H1280 V290 H1490" stroke-width="2.5" />
-                <path d="M-50,280 H250 V150 H550 V260 H950 V140 H1280 V290 H1490" stroke-width="6" stroke-opacity="0.1" />
-                
-                <!-- Dynamic dashed flow lines -->
-                <path d="M250,150 H400 V180 H550" stroke-width="1.5" class="pipe-flow-dash" />
-                <path d="M750,110 H950 V140 H1100" stroke-width="1.5" class="pipe-flow-dash-reverse" />
-                <path d="M550,260 H750 V110 H950" stroke-width="1" stroke-opacity="0.6" class="pipe-flow-dash" />
-            </g>
-            
-            <!-- Junction Nodes -->
-            <g fill="#6ee7cc">
-                <circle cx="400" cy="80" r="4.5" />
-                <circle cx="400" cy="180" r="4.5" />
-                <circle cx="750" cy="180" r="4.5" />
-                <circle cx="750" cy="110" r="4.5" />
-                <circle cx="1100" cy="110" r="4.5" />
-                <circle cx="1100" cy="230" r="4.5" />
-                
-                <circle cx="250" cy="280" r="4" fill="#fff" />
-                <circle cx="250" cy="150" r="4" fill="#fff" />
-                <circle cx="550" cy="150" r="4" fill="#fff" />
-                <circle cx="550" cy="260" r="4" fill="#fff" />
-                <circle cx="950" cy="260" r="4" fill="#fff" />
-                <circle cx="950" cy="140" r="4" fill="#fff" />
-                <circle cx="1280" cy="140" r="4" fill="#fff" />
-                <circle cx="1280" cy="290" r="4" fill="#fff" />
-                
-                <!-- Glowing pulsing nodes at main transitions -->
-                <circle cx="750" cy="150" r="5" fill="#6ee7cc" />
-                <circle cx="750" cy="150" r="12" stroke="#6ee7cc" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 750px 150px;" />
-                
-                <circle cx="1100" cy="170" r="5" fill="#6ee7cc" />
-                <circle cx="1100" cy="170" r="12" stroke="#6ee7cc" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 1100px 170px;" />
-            </g>
-        </svg>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:1" aria-hidden="true">
+        {{-- Top Waves --}}
+        <div style="position:absolute;top:0;left:0;width:100%;height:120px;overflow:hidden;transform:scaleY(-1)" aria-hidden="true">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="width:100%;height:100%">
+                <path d="M0,32 C240,96 480,16 720,80 C960,144 1200,64 1440,32 L1440,120 L0,120 Z" fill="rgba(110,231,204,0.18)"></path>
+                <path d="M0,64 C360,16 720,112 1080,64 C1260,40 1350,48 1440,64 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.08)"></path>
+                <path d="M0,96 C300,64 600,96 900,80 C1200,64 1320,80 1440,96 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.12)"></path>
+            </svg>
+        </div>
+
+        {{-- Bottom Waves --}}
+        <div style="position:absolute;bottom:0;left:0;width:100%;height:140px;overflow:hidden" aria-hidden="true">
+            <svg viewBox="0 0 1440 120" preserveAspectRatio="none" style="width:100%;height:100%">
+                <path d="M0,32 C240,96 480,16 720,80 C960,144 1200,64 1440,32 L1440,120 L0,120 Z" fill="rgba(110,231,204,0.22)"></path>
+                <path d="M0,64 C360,16 720,112 1080,64 C1260,40 1350,48 1440,64 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.12)"></path>
+                <path d="M0,96 C300,64 600,96 900,80 C1200,64 1320,80 1440,96 L1440,120 L0,120 Z" fill="rgba(255,255,255,0.06)"></path>
+            </svg>
+        </div>
     </div>
-    <div class="container text-center" style="position:relative;z-index:1">
+    <div class="container text-center" style="position:relative;z-index:2">
         <span class="badge" style="background:rgba(255,255,255,.2);color:#fff;margin-bottom:1rem">Siap Membantu</span>
         <h2 id="cta-heading" style="color:#fff;font-size:clamp(1.6rem,4vw,2.6rem);margin-bottom:1rem">
             Saluran Mampet? Hubungi Kami <em style="font-style:normal;color:#6ee7cc">Sekarang!</em>

@@ -1,8 +1,14 @@
 @extends('layouts.app')
 @section('content')
 
-<div style="background:linear-gradient(135deg,#0A2E78,#0d3a94);padding:5rem 0 4rem">
-    <div class="container text-center">
+<div style="background:linear-gradient(135deg,#0A2E78,#0d3a94);padding:5rem 0 5.5rem;position:relative;overflow:hidden">
+    {{-- Bottom Wave --}}
+    <div style="position:absolute;bottom:0;left:0;width:100%;height:60px;pointer-events:none;z-index:1" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+            <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"></path>
+        </svg>
+    </div>
+    <div class="container text-center" style="position:relative;z-index:2">
         <h1 style="color:#fff;margin-bottom:.75rem">Area <span style="color:#6ee7cc">Layanan</span></h1>
         <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Tim ROOTERA telah menjangkau berbagai kota besar di Indonesia untuk melayani kebutuhan pipa dan sanitasi Anda.</p>
     </div>
