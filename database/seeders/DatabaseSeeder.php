@@ -156,16 +156,72 @@ class DatabaseSeeder extends Seeder
 
         // Seeding Partners
         $seedPartners = [
-            ['nama_mitra' => 'Pertamina', 'logo' => 'partners/pertamina.png'],
-            ['nama_mitra' => 'PLN', 'logo' => 'partners/pln.png'],
-            ['nama_mitra' => 'Telkom Indonesia', 'logo' => 'partners/telkom.png'],
-            ['nama_mitra' => 'Bank Mandiri', 'logo' => 'partners/mandiri.png'],
-            ['nama_mitra' => 'BCA', 'logo' => 'partners/bca.png'],
-            ['nama_mitra' => 'Indofood', 'logo' => 'partners/indofood.png'],
+            ['nama_mitra' => 'Pertamina', 'logo' => 'partners/pertamina.svg'],
+            ['nama_mitra' => 'PLN', 'logo' => 'partners/pln.svg'],
+            ['nama_mitra' => 'Telkom Indonesia', 'logo' => 'partners/telkom.svg'],
+            ['nama_mitra' => 'Bank Mandiri', 'logo' => 'partners/mandiri.svg'],
+            ['nama_mitra' => 'BCA', 'logo' => 'partners/bca.svg'],
+            ['nama_mitra' => 'Indofood', 'logo' => 'partners/indofood.svg'],
         ];
 
         foreach ($seedPartners as $p) {
             Partner::updateOrCreate(['nama_mitra' => $p['nama_mitra']], $p);
+        }
+
+        // Seeding SEO Pages
+        $seedSeo = [
+            [
+                'page_name' => 'Beranda',
+                'route_name' => 'home',
+                'meta_title' => 'ROOTERA – Jasa Pipa Mampet & Saluran Tersumbat No. 1',
+                'meta_description' => 'Atasi saluran mampet tanpa bongkar! Garansi bersih, pengerjaan cepat menggunakan hydro-jetting modern 24/7 di Jabodetabek & Bandung. Hubungi kami.',
+                'canonical_url' => url('/'),
+                'is_indexable' => true
+            ],
+            [
+                'page_name' => 'Layanan',
+                'route_name' => 'layanan',
+                'meta_title' => 'Layanan ROOTERA – Solusi Pipa Mampet & Instalasi Sanitary',
+                'meta_description' => 'Temukan semua layanan ROOTERA: pembersihan saluran mampet, cuci toren, dan instalasi pipa profesional menggunakan alat modern tanpa bongkar bangunan.',
+                'canonical_url' => url('/layanan'),
+                'is_indexable' => true
+            ],
+            [
+                'page_name' => 'Tentang Kami',
+                'route_name' => 'tentang-kami',
+                'meta_title' => 'Tentang Kami – Tim Plumbing Profesional ROOTERA',
+                'meta_description' => 'Mengenal ROOTERA lebih dekat. Penyedia jasa plumbing profesional dengan peralatan modern, bergaransi, dan didukung teknisi berpengalaman.',
+                'canonical_url' => url('/tentang-kami'),
+                'is_indexable' => true
+            ],
+            [
+                'page_name' => 'Area Layanan',
+                'route_name' => 'area-layanan',
+                'meta_title' => 'Area Jangkauan Layanan Plumbing ROOTERA',
+                'meta_description' => 'ROOTERA melayani perbaikan pipa air & saluran mampet di Jabodetabek, Bandung, Cirebon, Semarang, Yogyakarta, dan Lampung. Hubungi kami terdekat.',
+                'canonical_url' => url('/area-layanan'),
+                'is_indexable' => true
+            ],
+            [
+                'page_name' => 'Blog Artikel',
+                'route_name' => 'blog',
+                'meta_title' => 'Blog & Tips Perawatan Pipa Air – ROOTERA',
+                'meta_description' => 'Tips mengatasi wastafel mampet, cuci toren air, dan informasi penting seputar saluran pembuangan serta instalasi plumbing rumah Anda.',
+                'canonical_url' => url('/blog'),
+                'is_indexable' => true
+            ],
+            [
+                'page_name' => 'Hubungi Kontak',
+                'route_name' => 'kontak',
+                'meta_title' => 'Hubungi ROOTERA – Layanan Darurat Saluran Air Mampet',
+                'meta_description' => 'Hubungi tim sales/support ROOTERA untuk respon cepat darurat pipa mampet, kran bocor, cuci toren air, atau konsultasi gratis.',
+                'canonical_url' => url('/kontak'),
+                'is_indexable' => true
+            ]
+        ];
+
+        foreach ($seedSeo as $s) {
+            \App\Models\SeoPage::updateOrCreate(['route_name' => $s['route_name']], $s);
         }
     }
 }

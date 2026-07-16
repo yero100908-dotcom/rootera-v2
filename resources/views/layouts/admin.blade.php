@@ -11,10 +11,10 @@
     <style>
         :root {
             --sidebar-w: 260px;
-            --primary: #0A2E78;
-            --primary-dark: #051438;
-            --accent: #169F81;
-            --accent-light: #6ee7cc;
+            --primary: #0F2A44;
+            --primary-dark: #071727;
+            --accent: #1FAF5A;
+            --accent-light: #a3f0c2;
             --bg-main: #f8fafc;
             --text-dark: #1e293b;
             --text-muted: #64748b;
@@ -23,7 +23,7 @@
             --radius-sm: 8px;
             --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.05), 0 1px 2px -1px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(10,46,120,0.05), 0 4px 6px -4px rgba(10,46,120,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(15,42,68,0.05), 0 4px 6px -4px rgba(15,42,68,0.05);
         }
 
         body {
@@ -165,25 +165,32 @@
             flex: 1;
         }
 
-        /* Mobile Sidebar Overrides */
+        /* Mobile Sidebar Overrides & Touch Friendly Targets */
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
             color: var(--primary);
             cursor: pointer;
-            padding: 0.2rem;
+            width: 44px;
+            height: 44px;
             margin-right: 0.75rem;
             align-items: center;
             justify-content: center;
+            border-radius: var(--radius-sm);
+            transition: background 0.2s;
+        }
+
+        .mobile-menu-btn:active {
+            background: rgba(15, 42, 68, 0.08);
         }
         
         .sidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
+            background: rgba(15, 42, 68, 0.4);
+            backdrop-filter: blur(4px);
             z-index: 90;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -199,6 +206,9 @@
             }
             .admin-main {
                 margin-left: 0;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
             }
             .mobile-menu-btn {
                 display: flex !important;
@@ -208,30 +218,7 @@
                 opacity: 1;
             }
             .admin-topbar {
-                padding: 0.85rem 1.25rem;
-            }
-            .admin-content {
-                padding: 1.25rem;
-            }
-            .stat-num {
-                font-size: 1.5rem;
-            }
-            
-            /* Global Fix untuk Inline Grid 2 Kolom (Form, Detail, Charts) */
-            div[style*="grid-template-columns:1fr 320px"],
-            div[style*="grid-template-columns: 1fr 320px"],
-            div[style*="grid-template-columns:1fr 1fr"],
-            div[style*="grid-template-columns: 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Global Fix untuk Tabel di Mobile */
-            .admin-main {
-                margin-left: 0;
-                width: 100%;
-                max-width: 100%;
-                overflow-x: hidden;
-                box-sizing: border-box;
+                padding: 0.75rem 1rem;
             }
             .admin-content {
                 padding: 1rem;
@@ -240,15 +227,101 @@
                 box-sizing: border-box;
                 overflow-x: hidden;
             }
+            .stat-num {
+                font-size: 1.5rem;
+            }
+            
+            /* Touch Friendly Targets on Mobile */
+            .sidebar-link {
+                padding: 0.85rem 1.25rem; /* Larger tap targets */
+                margin: 0.3rem 0.75rem;
+            }
+
+            .btn-sm {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                min-height: 40px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .form-group input, 
+            .form-group select, 
+            .form-group textarea {
+                padding: 0.85rem 1rem;
+                font-size: 16px !important; /* Prevents auto-zoom on iOS */
+            }
+
+            /* Global Fix untuk Inline Grid 2 Kolom (Form, Detail, Charts, dll.) */
+            div[style*="grid-template-columns:1fr 320px"],
+            div[style*="grid-template-columns: 1fr 320px"],
+            div[style*="grid-template-columns:1fr 1fr"],
+            div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+
+            /* Global responsive table support */
             .admin-table-wrapper {
                 overflow-x: auto !important;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
                 max-width: 100%;
                 display: block;
+                border-radius: var(--radius-md);
             }
+            
             .admin-table th, .admin-table td {
                 white-space: nowrap;
+            }
+
+            /* Alternative Card-Based Table Layout on Mobile */
+            .table-responsive-card thead {
+                display: none;
+            }
+            .table-responsive-card, 
+            .table-responsive-card tbody, 
+            .table-responsive-card tr, 
+            .table-responsive-card td {
+                display: block;
+                width: 100%;
+            }
+            .table-responsive-card tr {
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: var(--radius-md);
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+                box-shadow: var(--shadow-sm);
+            }
+            .table-responsive-card tr:last-child {
+                margin-bottom: 0;
+            }
+            .table-responsive-card td {
+                text-align: right;
+                padding: 0.65rem 0;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.88rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                white-space: normal !important; /* Wrap content on mobile card */
+            }
+            .table-responsive-card td:last-child {
+                border-bottom: none;
+                padding-top: 0.85rem;
+                justify-content: flex-end;
+            }
+            .table-responsive-card td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 0.72rem;
+                color: var(--text-muted);
+                margin-right: 1.5rem;
+                text-align: left;
+                flex-shrink: 0;
             }
         }
 
@@ -454,6 +527,10 @@
             <a href="{{ route('admin.partners.index') }}" class="sidebar-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 Mitra Kami
+            </a>
+            <a href="{{ route('admin.seo.index') }}" class="sidebar-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><path d="M11 8v6M8 11h6"/></svg>
+                SEO Central
             </a>
         </div>
         <div class="sidebar-bottom">

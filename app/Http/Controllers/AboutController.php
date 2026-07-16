@@ -23,9 +23,9 @@ class AboutController extends Controller
         ];
 
         $advantages = [
-            ['title' => 'Profesional & Berpengalaman', 'description' => 'Tim teknisi kami terlatih dan bersertifikat, dengan pengalaman menangani ribuan kasus saluran mampet di berbagai jenis bangunan.', 'icon' => 'badge'],
-            ['title' => 'Respon Cepat 24 Jam',         'description' => 'Kami siap melayani panggilan darurat kapan saja. Tim kami berkomitmen tiba di lokasi dalam waktu yang telah disepakati.',             'icon' => 'clock'],
-            ['title' => 'Bergaransi & Terpercaya',     'description' => 'Setiap pekerjaan yang kami selesaikan dilengkapi dengan garansi layanan, memastikan kepuasan dan ketenangan pikiran Anda.',           'icon' => 'shield'],
+            ['title' => 'Teknologi Tanpa Bongkar', 'description' => 'Menggunakan spiral cable modern dan Hydro-Jetting bertekanan tinggi untuk melancarkan saluran tumpat secara efektif tanpa proses pembongkaran lantai.', 'icon' => 'badge'],
+            ['title' => 'Standar Higienitas Maksimal', 'description' => 'Teknisi profesional kami menjamin kebersihan area kerja. Bebas lumpur kotoran, bau, dan rapi setelah pengerjaan selesai.', 'icon' => 'clock'],
+            ['title' => 'Aman & Ramah Lingkungan', 'description' => '100% bebas dari bahan kimia asam korosif. Sangat aman bagi integritas pipa jangka panjang, keluarga, serta kelestarian air tanah.', 'icon' => 'shield'],
         ];
 
         return view('pages.tentang-kami', compact('seo', 'teamZones', 'advantages'));

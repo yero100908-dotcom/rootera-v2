@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\ServiceSectorController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\SeoManageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,4 +146,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/partners', [PartnerController::class, 'store'])->name('partners.store');
     Route::put('/partners/{partner}', [PartnerController::class, 'update'])->name('partners.update');
     Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
+
+    // =====================================================
+    // SEO Pages Metadata CRUD
+    // =====================================================
+    Route::get('/seo', [SeoManageController::class, 'index'])->name('seo.index');
+    Route::put('/seo/{id}', [SeoManageController::class, 'update'])->name('seo.update');
 });

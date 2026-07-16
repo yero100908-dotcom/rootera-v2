@@ -9,6 +9,12 @@
     <title>{{ $seo['title'] ?? 'ROOTERA – Jasa Pipa & Saluran Mampet Profesional' }}</title>
     <meta name="description" content="{{ $seo['description'] ?? 'ROOTERA solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.' }}">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
+    
+    @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
+        <meta name="robots" content="noindex, nofollow">
+    @else
+        <meta name="robots" content="index, follow">
+    @endif
 
     {{-- Open Graph --}}
     <meta property="og:type"        content="website">

@@ -41,7 +41,7 @@
 
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4">Tentang <span class="text-[#6ee7cc]">ROOTERA</span></h1>
-        <p class="text-white/80 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">Tim profesional yang berdedikasi untuk memberikan solusi pipa terbaik bagi rumah dan bisnis Anda.</p>
+        <p class="text-white/80 text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed">Menetapkan Standar Baru dalam Solusi Plumbing Modern & Sanitasi Higienis</p>
     </div>
 </div>
 
@@ -51,10 +51,10 @@
         <div class="w-full max-w-4xl mx-auto text-center flex flex-col items-center justify-center px-4 py-8">
             <span class="badge badge-green mb-4 inline-block">Profil Perusahaan</span>
             <h2 id="about-profile" class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight mb-4 text-center">
-                Solusi Pipa <span class="text-[#169F81]">Profesional</span> Indonesia
+                Solusi Pipa & Drainase <span class="text-[#169F81]">Modern</span> Tanpa Bongkar
             </h2>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 text-center max-w-3xl">ROOTERA adalah perusahaan jasa cleaning service pipa dan sanitasi terpercaya yang telah melayani ribuan pelanggan di seluruh Indonesia. Kami hadir dengan misi memberikan solusi cepat, aman, dan terjangkau untuk setiap masalah saluran dan pipa Anda.</p>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 text-center max-w-3xl">Dengan teknologi non-destruktif terkini dan tim teknisi bersertifikat, ROOTERA memastikan setiap pekerjaan diselesaikan dengan standar kualitas tertinggi — tanpa perlu membongkar dinding atau struktur bangunan.</p>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 text-center max-w-3xl">Didirikan dengan visi untuk merevolusi industri pemeliharaan pipa di Indonesia, <strong>ROOTERA</strong> hadir sebagai jawaban atas tantangan drainase modern. Kami memahami bahwa masalah saluran tersumbat bukan sekadar gangguan kecil, melainkan ancaman langsung terhadap kenyamanan tempat tinggal dan keberlangsungan operasional bisnis.</p>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 text-center max-w-3xl">Menggabungkan teknologi mutakhir dengan filosofi kerja yang ramah lingkungan, ROOTERA lahir sebagai evolusi layanan sanitasi profesional yang didesain khusus untuk memenuhi kebutuhan rumah tangga modern serta sektor industri yang menuntut presisi, kecepatan, dan higienitas tinggi.</p>
             
             <div class="flex flex-col sm:flex-row gap-4 w-full max-w-3xl mx-auto mt-2 mb-6 text-left justify-center">
                 <div class="bg-[#f0faf8] border-l-4 border-[#169F81] p-4 rounded-r-lg shadow-sm flex-1">
@@ -65,6 +65,16 @@
                     <strong class="text-[#0A2E78] block mb-1">🚀 Misi</strong>
                     <span class="text-xs sm:text-sm text-slate-600 leading-relaxed">Memberikan layanan saluran mampet yang cepat, aman, dan bergaransi menggunakan teknologi modern dan tim profesional bersertifikat.</span>
                 </div>
+            </div>
+
+            {{-- Heritage Block --}}
+            <div class="w-full max-w-3xl mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-6 text-left mt-8 mb-4">
+                <h3 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+                    <span class="text-[#169F81]">🛡️</span> Bagian dari J&J Group: Warisan Pengalaman Lebih dari Satu Dekade
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    ROOTERA tidak berdiri dari nol. Kami berdiri kokoh di atas fondasi <strong>J&J Group (Jawa & Jaya Rooter)</strong>—pionir layanan drainase nasional dengan rekam jejak lebih dari 10 tahun dalam menangani berbagai kasus pipa tersumbat di sektor rumah tangga hingga jaringan komersial dan korporat. Dari warisan pengalaman berharga ini, ROOTERA merumuskan Standar Operasional Prosedur (SOP) baru yang lebih segar, sistematis, dan didukung alat modern untuk memberikan jaminan layanan terbaik bagi Anda.
+                </p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl mx-auto mt-8 justify-center items-center">

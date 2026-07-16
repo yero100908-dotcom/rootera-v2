@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServiceCategory;
-use App\Models\Service;
+use App\Services\ServiceCategoryService;
 use App\Models\Technology;
 use App\Models\Faq;
 
 class ServiceController extends Controller
 {
+    /**
+     * @var ServiceCategoryService
+     */
+    protected $serviceCategoryService;
+
+    /**
+     * ServiceController constructor.
+     *
+     * @param ServiceCategoryService $serviceCategoryService
+     */
+    public function __construct(ServiceCategoryService $serviceCategoryService)
+    {
+        $this->serviceCategoryService = $serviceCategoryService;
+    }
+
     public function index()
     {
-        $serviceCategories = ServiceCategory::with('services')
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        // Fetch service categories with relations loaded and cached via Service class
+        $serviceCategories = $this->serviceCategoryService->getActiveServicesWithRelations();
 
         $seo = [
             'title'       => 'Layanan ROOTERA – Solusi Pipa Mampet & Instalasi Sanitary Profesional',

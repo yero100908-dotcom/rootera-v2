@@ -22,23 +22,23 @@
     @endforeach
 </div>
 
-<div style="background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden">
-    <table class="admin-table">
+<div class="admin-table-wrapper">
+    <table class="admin-table table-responsive-card">
         <thead><tr><th>Nama</th><th>Kontak</th><th>Layanan</th><th>Area</th><th>Status</th><th>Invoice</th><th>Tanggal</th><th>Aksi</th></tr></thead>
         <tbody>
         @forelse($contacts as $contact)
         <tr>
-            <td><strong>{{ $contact->name }}</strong></td>
-            <td>
+            <td data-label="Nama"><strong>{{ $contact->name }}</strong></td>
+            <td data-label="Kontak">
                 <div style="font-size:.85rem">{{ $contact->phone }}</div>
                 @if($contact->email)<div style="font-size:.78rem;color:#9ca3af">{{ $contact->email }}</div>@endif
             </td>
-            <td style="font-size:.85rem">{{ $contact->service_type ?? '-' }}</td>
-            <td style="font-size:.85rem">{{ $contact->area ?? '-' }}</td>
-            <td><span class="status-{{ $contact->status }}">{{ $contact->status_label }}</span></td>
-            <td style="font-size:.85rem">{{ $contact->invoice_amount ? 'Rp '.number_format($contact->invoice_amount,0,',','.') : '-' }}</td>
-            <td style="font-size:.82rem">{{ $contact->created_at->format('d/m/Y') }}</td>
-            <td>
+            <td data-label="Layanan" style="font-size:.85rem">{{ $contact->service_type ?? '-' }}</td>
+            <td data-label="Area" style="font-size:.85rem">{{ $contact->area ?? '-' }}</td>
+            <td data-label="Status"><span class="status-{{ $contact->status }}">{{ $contact->status_label }}</span></td>
+            <td data-label="Invoice" style="font-size:.85rem">{{ $contact->invoice_amount ? 'Rp '.number_format($contact->invoice_amount,0,',','.') : '-' }}</td>
+            <td data-label="Tanggal" style="font-size:.82rem">{{ $contact->created_at->format('d/m/Y') }}</td>
+            <td data-label="Aksi">
                 <div style="display:flex;gap:.4rem">
                     <a href="{{ route('admin.contacts.show',$contact) }}" class="btn-sm btn-view">Detail</a>
                     <form action="{{ route('admin.contacts.destroy',$contact) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">

@@ -8,14 +8,14 @@
 
 @section('admin-content')
 {{-- Stats Grid --}}
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:2rem">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
     @php
     $stats = [
-        ['label'=>'Total Pesanan','value'=>$totalContacts,'icon'=>'📋','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+        ['label'=>'Total Pesanan','value'=>$totalContacts,'icon'=>'📋','color'=>'#0F2A44','bg'=>'rgba(15,42,68,.08)'],
         ['label'=>'Pesanan Baru','value'=>$newContacts,'icon'=>'🆕','color'=>'#1E73D8','bg'=>'rgba(30,115,216,.08)'],
-        ['label'=>'Selesai','value'=>$completedOrders,'icon'=>'✅','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
-        ['label'=>'Total Pemasukan','value'=>'Rp '.number_format($totalRevenue,0,',','.'),'icon'=>'💰','color'=>'#169F81','bg'=>'rgba(22,159,129,.08)'],
-        ['label'=>'Artikel','value'=>$totalArticles,'icon'=>'📰','color'=>'#0A2E78','bg'=>'rgba(10,46,120,.08)'],
+        ['label'=>'Selesai','value'=>$completedOrders,'icon'=>'✅','color'=>'#1FAF5A','bg'=>'rgba(31,175,90,.08)'],
+        ['label'=>'Total Pemasukan','value'=>'Rp '.number_format($totalRevenue,0,',','.'),'icon'=>'💰','color'=>'#1FAF5A','bg'=>'rgba(31,175,90,.08)'],
+        ['label'=>'Artikel','value'=>$totalArticles,'icon'=>'📰','color'=>'#0F2A44','bg'=>'rgba(15,42,68,.08)'],
         ['label'=>'Kategori Layanan','value'=>$totalCategories,'icon'=>'🗂️','color'=>'#eab308','bg'=>'rgba(234,179,8,.1)'],
         ['label'=>'Area Layanan','value'=>$totalAreas,'icon'=>'📍','color'=>'#ef4444','bg'=>'rgba(239,68,68,.1)'],
         ['label'=>'Galeri','value'=>$totalGalleries,'icon'=>'🖼️','color'=>'#8b5cf6','bg'=>'rgba(139,92,246,.1)'],
@@ -26,46 +26,63 @@
     ];
     @endphp
     @foreach($stats as $s)
-    <div class="stat-card" style="background:#fff;border-radius:12px;padding:1.25rem;border:1px solid #e5e7eb;box-shadow:0 1px 2px rgba(0,0,0,0.05)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
-            <span style="font-size:.75rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">{{ $s['label'] }}</span>
-            <span style="width:36px;height:36px;background:{{ $s['bg'] }};border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem">{{ $s['icon'] }}</span>
+    <div class="stat-card bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition duration-300">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">{{ $s['label'] }}</span>
+            <span class="w-9 h-9 rounded-lg flex items-center justify-center text-lg" style="background:{{ $s['bg'] }}">{{ $s['icon'] }}</span>
         </div>
-        <div class="stat-num" style="color:{{ $s['color'] }};font-size:1.5rem;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">{{ $s['value'] }}</div>
+        <div class="stat-num text-2xl font-extrabold tracking-tight" style="color:{{ $s['color'] }}">{{ $s['value'] }}</div>
     </div>
     @endforeach
 </div>
 
 {{-- Charts --}}
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
-    <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
-        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78;margin-bottom:1.25rem">📊 Pesanan per Bulan</h3>
-        <canvas id="contactsChart" height="250"></canvas>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <h3 class="font-semibold text-base text-[#0F2A44] mb-4 flex items-center gap-2">
+            <span>📊</span> Pesanan per Bulan
+        </h3>
+        <div style="position: relative; width: 100%; height: 250px;">
+            <canvas id="contactsChart"></canvas>
+        </div>
     </div>
-    <div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
-        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78;margin-bottom:1.25rem">💰 Pemasukan per Bulan</h3>
-        <canvas id="revenueChart" height="250"></canvas>
+    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+        <h3 class="font-semibold text-base text-[#0F2A44] mb-4 flex items-center gap-2">
+            <span>💰</span> Pemasukan per Bulan
+        </h3>
+        <div style="position: relative; width: 100%; height: 250px;">
+            <canvas id="revenueChart"></canvas>
+        </div>
     </div>
 </div>
 
 {{-- Recent Contacts --}}
-<div style="background:#fff;border-radius:16px;padding:1.5rem;border:1px solid #e5e7eb">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
-        <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1rem;color:#0A2E78">📥 Pesanan Terbaru</h3>
-        <a href="{{ route('admin.contacts.index') }}" style="font-size:.85rem;color:#169F81;font-weight:600">Lihat Semua →</a>
+<div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+    <div class="flex justify-between items-center mb-5">
+        <h3 class="font-semibold text-base text-[#0F2A44]">📥 Pesanan Terbaru</h3>
+        <a href="{{ route('admin.contacts.index') }}" class="text-sm font-semibold text-[#1FAF5A] hover:text-[#178544] transition-colors">Lihat Semua →</a>
     </div>
     <div class="admin-table-wrapper">
-        <table class="admin-table">
-            <thead><tr><th>Nama</th><th>Telepon</th><th>Layanan</th><th>Area</th><th>Status</th><th>Tanggal</th></tr></thead>
+        <table class="admin-table table-responsive-card">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Telepon</th>
+                    <th>Layanan</th>
+                    <th>Area</th>
+                    <th>Status</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
             <tbody>
             @foreach($recentContacts as $c)
             <tr>
-                <td><strong>{{ $c->name }}</strong></td>
-                <td>{{ $c->phone }}</td>
-                <td>{{ $c->service_type ?? '-' }}</td>
-                <td>{{ $c->area ?? '-' }}</td>
-                <td><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
-                <td>{{ $c->created_at->format('d/m/Y') }}</td>
+                <td data-label="Nama"><strong>{{ $c->name }}</strong></td>
+                <td data-label="Telepon">{{ $c->phone }}</td>
+                <td data-label="Layanan">{{ $c->service_type ?? '-' }}</td>
+                <td data-label="Area">{{ $c->area ?? '-' }}</td>
+                <td data-label="Status"><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
+                <td data-label="Tanggal">{{ $c->created_at->format('d/m/Y') }}</td>
             </tr>
             @endforeach
             </tbody>
