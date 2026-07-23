@@ -21,6 +21,7 @@
             <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
             <li><a href="{{ route('layanan') }}" class="nav-link {{ request()->routeIs('layanan') ? 'active' : '' }}">Layanan</a></li>
             <li><a href="{{ route('tentang-kami') }}" class="nav-link {{ request()->routeIs('tentang-kami') ? 'active' : '' }}">Tentang Kami</a></li>
+            <li><a href="{{ route('galeri') }}" class="nav-link {{ request()->routeIs('galeri') ? 'active' : '' }}">Galeri</a></li>
             <li><a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog*') ? 'active' : '' }}">Pengetahuan</a></li>
             <li><a href="{{ route('area-layanan') }}" class="nav-link {{ request()->routeIs('area-layanan') ? 'active' : '' }}">Area Layanan</a></li>
         </ul>
@@ -43,6 +44,7 @@
             <li><a href="{{ route('home') }}" class="mobile-link {{ request()->routeIs('home') ? 'active' : '' }}">Beranda</a></li>
             <li><a href="{{ route('layanan') }}" class="mobile-link {{ request()->routeIs('layanan') ? 'active' : '' }}">Layanan</a></li>
             <li><a href="{{ route('tentang-kami') }}" class="mobile-link {{ request()->routeIs('tentang-kami') ? 'active' : '' }}">Tentang Kami</a></li>
+            <li><a href="{{ route('galeri') }}" class="mobile-link {{ request()->routeIs('galeri') ? 'active' : '' }}">Galeri</a></li>
             <li><a href="{{ route('blog') }}" class="mobile-link {{ request()->routeIs('blog*') ? 'active' : '' }}">Pengetahuan</a></li>
             <li><a href="{{ route('area-layanan') }}" class="mobile-link {{ request()->routeIs('area-layanan') ? 'active' : '' }}">Area Layanan</a></li>
             <li><a href="{{ route('kontak') }}" class="mobile-link mobile-cta">Hubungi Kami</a></li>

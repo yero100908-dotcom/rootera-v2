@@ -33,6 +33,7 @@ Route::get('/area-layanan', [AreaController::class, 'index'])->name('area-layana
 Route::get('/area-layanan/{slug}', [AreaController::class, 'show'])->name('area-layanan.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/galeri', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
 Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
 
