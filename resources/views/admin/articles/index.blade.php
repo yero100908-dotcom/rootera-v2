@@ -54,16 +54,11 @@
                         </div>
                     </td>
                     <td class="px-6 py-3 text-center">
-                        <form action="{{ route('admin.articles.toggle', $article) }}" method="POST" class="inline-block">
-                            @csrf @method('PATCH')
-                            <button type="submit" class="focus:outline-none transition-transform active:scale-95">
-                                @if($article->is_published)
-                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Diterbitkan</span>
-                                @else
-                                    <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Draft</span>
-                                @endif
-                            </button>
-                        </form>
+                        @if($article->status === 'published')
+                            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Diterbitkan</span>
+                        @else
+                            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">Draft</span>
+                        @endif
                     </td>
                     <td class="px-6 py-3">
                         <div class="text-sm text-slate-900">{{ $article->created_at->format('d M Y') }}</div>
