@@ -21,7 +21,7 @@
 
         <div class="contact-grid">
             {{-- Info Card --}}
-            <div class="contact-info-card">
+            <div class="contact-info-card">   
                 <h3>Informasi Kontak</h3>
                 <p>Kami siap membantu Anda menemukan solusi terbaik untuk masalah pipa dan saluran Anda.</p>
                 <div class="ci-item">
