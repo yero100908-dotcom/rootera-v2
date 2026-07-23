@@ -12,7 +12,7 @@
     @php
     $stats = [
         ['label'=>'Pesanan Baru','value'=>$newContacts ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>','bg'=>'#eff6ff','iconColor'=>'#2563eb'],
-        ['label'=>'Total Pemasukan','value'=>'Rp '.number_format($totalRevenue ?? 0,0,',','.'),'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>','bg'=>'#ecfdf5','iconColor'=>'#059669'],
+        ['label'=>'Total Artikel','value'=>$totalArticles ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10l6 6v10a2 2 0 0 1-2 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>','bg'=>'#f0fdfa','iconColor'=>'#0d9488'],
         ['label'=>'Total Pesanan','value'=>$totalContacts ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>','bg'=>'#f3f4f6','iconColor'=>'#475569'],
         ['label'=>'Pesanan Selesai','value'=>$completedOrders ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>','bg'=>'#ecfdf5','iconColor'=>'#059669'],
         ['label'=>'Area Layanan','value'=>$totalAreas ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>','bg'=>'#fef2f2','iconColor'=>'#dc2626'],
@@ -33,23 +33,14 @@
 </div>
 
 {{-- Charts --}}
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<div class="grid grid-cols-1 gap-6 mb-8">
     <div style="background:#ffffff;border-radius:1.25rem;padding:1.5rem;border:1px solid rgba(226,232,240,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <h3 class="font-semibold text-base mb-5 flex items-center gap-2" style="color:#0f172a;">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#64748b;"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> 
-            Pesanan per Bulan
+            Grafik Pesanan per Bulan
         </h3>
-        <div style="position: relative; width: 100%; height: 260px;">
+        <div style="position: relative; width: 100%; height: 300px;">
             <canvas id="contactsChart"></canvas>
-        </div>
-    </div>
-    <div style="background:#ffffff;border-radius:1.25rem;padding:1.5rem;border:1px solid rgba(226,232,240,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-        <h3 class="font-semibold text-base mb-5 flex items-center gap-2" style="color:#0f172a;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#64748b;"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> 
-            Pemasukan per Bulan
-        </h3>
-        <div style="position: relative; width: 100%; height: 260px;">
-            <canvas id="revenueChart"></canvas>
         </div>
     </div>
 </div>
@@ -74,6 +65,7 @@
                     <th>Area</th>
                     <th>Status</th>
                     <th>Tanggal</th>
+                    <th style="text-align: right;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +77,12 @@
                 <td data-label="Area">{{ $c->area ?? '-' }}</td>
                 <td data-label="Status"><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
                 <td data-label="Tanggal">{{ $c->created_at->format('d/m/Y') }}</td>
+                <td data-label="Aksi" style="text-align: right;">
+                    <a href="{{ route('admin.contacts.show', $c->id) }}" class="btn-sm btn-view">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Detail
+                    </a>
+                </td>
             </tr>
             @endforeach
             </tbody>
@@ -97,7 +95,6 @@
 <script>
 const labels = @json($chartLabels);
 const contactData = @json($contactData);
-const revenueData = @json($revenueData);
 
 new Chart(document.getElementById('contactsChart'), {
     type: 'bar',
@@ -121,54 +118,6 @@ new Chart(document.getElementById('contactsChart'), {
                 suggestedMax: 10,
                 grid: { color: '#f1f5f9', drawBorder: false },
                 ticks: { precision: 0, color: '#64748b' } 
-            }, 
-            x: { 
-                grid: { display: false },
-                ticks: { color: '#64748b' }
-            } 
-        } 
-    }
-});
-
-const ctx = document.getElementById('revenueChart').getContext('2d');
-const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-gradient.addColorStop(0, 'rgba(22,159,129,0.35)');
-gradient.addColorStop(1, 'rgba(22,159,129,0.0)');
-
-new Chart(document.getElementById('revenueChart'), {
-    type: 'line',
-    data: {
-        labels,
-        datasets: [{
-            label: 'Pemasukan (Rp)',
-            data: revenueData,
-            borderColor: '#169F81',
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#169F81',
-            borderWidth: 2,
-        }]
-    },
-    options: { 
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } }, 
-        scales: { 
-            y: { 
-                beginAtZero: true, 
-                suggestedMax: 1000000,
-                grid: { color: '#f1f5f9', drawBorder: false },
-                ticks: {
-                    precision: 0,
-                    color: '#64748b',
-                    callback: function(value) {
-                        if (value === 0) return 'Rp 0';
-                        if (value >= 1000000) return 'Rp ' + (value / 1000000) + 'jt';
-                        if (value >= 1000) return 'Rp ' + (value / 1000) + 'rb';
-                        return 'Rp ' + value;
-                    }
-                }
             }, 
             x: { 
                 grid: { display: false },

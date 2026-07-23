@@ -3,72 +3,65 @@
 @section('page-title','Kelola Galeri Foto')
 
 @section('admin-content')
-<style>
-    /* Responsive Adjustments */
-    .btn-header-container {
-        margin-bottom: 1.5rem; 
-        display: flex; 
-        justify-content: flex-end;
-    }
-    @media (max-width: 640px) {
-        .btn-header-container {
-            justify-content: stretch;
-        }
-        .btn-header-container button {
-            width: 100%;
-            justify-content: center;
-        }
-        .gallery-grid {
-            grid-template-columns: 1fr !important;
-            gap: 1.25rem !important;
-        }
-    }
-</style>
-<div class="btn-header-container">
-    <button onclick="openModal()" style="background:#2563eb; color:#fff; border:none; padding:0.75rem 1.5rem; border-radius:8px; font-weight:600; cursor:pointer; box-shadow:0 4px 10px rgba(37,99,235,0.2); display:flex; align-items:center; gap:0.5rem;">
-        <svg style="width:1.2rem;height:1.2rem" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-        Tambah Foto Gallery Baru
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+    <h2 class="text-xl font-bold text-slate-800">Manajemen Galeri</h2>
+    <button onclick="openModal()" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Tambah Foto Baru
     </button>
 </div>
 
 <div>
     @if($photos->isEmpty())
-    <div style="background:#fff;border-radius:16px;padding:4rem;text-align:center;color:#9ca3af;border:1px solid #e5e7eb">
-        <div style="font-size:3rem;margin-bottom:1rem">🖼️</div>
-        <p>Belum ada foto di galeri.</p>
+    <div class="bg-white rounded-2xl p-12 text-center border border-slate-200">
+        <div class="text-6xl mb-4">🖼️</div>
+        <p class="text-slate-500 font-medium">Belum ada foto di galeri.</p>
     </div>
     @else
-    <div class="gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.25rem">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach($photos as $photo)
-        <div style="background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;transition:all .2s;display:flex;flex-direction:column;" onmouseover="this.style.boxShadow='0 4px 20px rgba(10,46,120,.12)'" onmouseout="this.style.boxShadow='none'">
-            <div style="aspect-ratio:1;overflow:hidden;position:relative">
-                <img src="{{ Storage::url($photo->image) }}" alt="{{ $photo->title }}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                @if(!$photo->is_active)
-                <div style="position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.78rem;font-weight:600">NONAKTIF</div>
-                @endif
-            </div>
-            <div style="padding:1rem;display:flex;flex-direction:column;flex-grow:1;">
-                <p style="font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="{{ $photo->title }}">{{ $photo->title }}</p>
+        <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
+            <div class="aspect-video relative overflow-hidden bg-slate-100 flex items-center justify-center">
+                <img src="{{ Storage::url($photo->image) }}" alt="{{ $photo->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <svg class="w-12 h-12 text-slate-300 hidden absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                
                 @if($photo->category)
-                <div style="margin-bottom:0.75rem">
-                    <span style="font-size:.72rem;background:#eff6ff;color:#1d4ed8;padding:.2rem .6rem;border-radius:50px;font-weight:500;">{{ $photo->category }}</span>
+                <div class="absolute top-3 left-3">
+                    <span class="bg-slate-900/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">{{ $photo->category }}</span>
                 </div>
                 @endif
-                <div style="display:flex;gap:.5rem;margin-top:auto">
-                    <form action="{{ route('admin.gallery.toggle',$photo) }}" method="POST" style="flex:1;">
+                
+                @if(!$photo->is_active)
+                <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-[2px] flex items-center justify-center">
+                    <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">NONAKTIF</span>
+                </div>
+                @endif
+            </div>
+            <div class="p-4 flex flex-col flex-grow">
+                <p class="font-semibold text-slate-800 text-sm mb-4 line-clamp-2 leading-snug flex-grow" title="{{ $photo->title }}">{{ $photo->title }}</p>
+                <div class="flex items-center gap-2 mt-auto">
+                    <form action="{{ route('admin.gallery.toggle',$photo) }}" method="POST" class="flex-1">
                         @csrf @method('PATCH')
-                        <button type="submit" class="btn-sm {{ $photo->is_active ? 'btn-edit' : 'btn-view' }}" style="font-size:.72rem;width:100%;justify-content:center;">{{ $photo->is_active ? 'Sembunyikan' : 'Tampilkan' }}</button>
+                        <button type="submit" class="w-full py-2 px-3 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors {{ $photo->is_active ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}">
+                            @if($photo->is_active)
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg> Hide
+                            @else
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg> Show
+                            @endif
+                        </button>
                     </form>
-                    <form action="{{ route('admin.gallery.destroy',$photo) }}" method="POST" onsubmit="return confirm('Hapus foto ini?')" style="flex:1;">
+                    <form action="{{ route('admin.gallery.destroy',$photo) }}" method="POST" onsubmit="return confirm('Hapus foto ini dari galeri?')" class="flex-1">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn-sm btn-del" style="font-size:.72rem;width:100%;justify-content:center;">Hapus</button>
+                        <button type="submit" class="w-full py-2 px-3 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Hapus
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
         @endforeach
     </div>
-    <div style="margin-top:2rem;display:flex;justify-content:center;">{{ $photos->links() }}</div>
+    <div class="mt-8 flex justify-center">{{ $photos->links() }}</div>
     @endif
 </div>
 
