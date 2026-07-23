@@ -39,7 +39,7 @@
         $fallbackSchema = [
           "@context" => "https://schema.org",
           "@type" => ["Plumber", "HomeAndConstructionBusiness"],
-          "name" => "ROOTERA",
+          "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet",
           "description" => "Jasa cleaning service pipa, wastafel mampet, cuci toren, dan instalasi pipa baru profesional tanpa bongkar.",
           "url" => url('/'),
           "telephone" => "+6281385404000",
@@ -48,14 +48,16 @@
           "priceRange" => "Rp",
           "address" => [
             "@type" => "PostalAddress",
-            "addressLocality" => "Jakarta",
-            "addressRegion" => "DKI Jakarta",
+            "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
+            "addressLocality" => "Jakarta Timur",
+            "addressRegion" => "Daerah Khusus Ibukota Jakarta",
+            "postalCode" => "13770",
             "addressCountry" => "ID"
           ],
           "geo" => [
             "@type" => "GeoCoordinates",
-            "latitude" => "-6.2088",
-            "longitude" => "106.8456"
+            "latitude" => "-6.3275975",
+            "longitude" => "106.8627125"
           ],
           "openingHours" => "Mo-Su 00:00-23:59",
           "areaServed" => [

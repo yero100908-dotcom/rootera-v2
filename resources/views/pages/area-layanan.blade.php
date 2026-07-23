@@ -95,9 +95,9 @@
             <span class="badge badge-blue">Lokasi Kami</span>
             <h2 class="section-title" id="map-heading" style="margin-top:.75rem">Temukan <span>Kami di Peta</span></h2>
         </div>
-        <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(10,46,120,.12);height:400px">
+        <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(10,46,120,.12);height:400px;margin-bottom:2rem">
             <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253840.66025265827!2d106.68987808984375!3d-6.229728899999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x5371bf0fdad786a2!2sJakarta%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1720000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4124978809493!2d106.8627125!3d-6.3275975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTknMzkuMyJTIDEwNsKwNTEnNDU4Ijg3RSI!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                 width="100%"
                 height="400"
                 style="border:0"
@@ -108,6 +108,23 @@
                 aria-label="Peta area layanan ROOTERA"
             ></iframe>
         </div>
+        
+        {{-- Official Business Address Card --}}
+        <a href="https://www.google.com/maps/dir/?api=1&destination=-6.3275975,106.8627125" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block;max-width:700px;margin:0 auto;">
+            <div style="text-align:center;font-family:'Plus Jakarta Sans',sans-serif;background:#fff;padding:1.5rem 2rem;border-radius:16px;box-shadow:0 4px 20px rgba(10,46,120,.05);border:1px solid #edf2f7;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(10,46,120,.1)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(10,46,120,.05)';">
+                <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.5rem">
+                    <span style="font-size:1.25rem">📍</span>
+                    <strong style="font-size:1.1rem;color:#0A2E78">Rootera Plumbing - Jasa Saluran Pipa Mampet</strong>
+                </div>
+                <p style="font-size:0.95rem;line-height:1.6;color:#4b5563;margin:0 0 1rem 0">
+                    Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770
+                </p>
+                <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#169F81;color:#fff;padding:0.6rem 1.25rem;border-radius:30px;font-size:0.875rem;font-weight:700;transition:background 0.2s" onmouseover="event.stopPropagation();this.style.background='#117c64'" onmouseout="event.stopPropagation();this.style.background='#169F81'">
+                    <span>🚗 Petunjuk Arah (Maps)</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </div>
+        </a>
     </div>
 </section>
 
