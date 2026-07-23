@@ -7,86 +7,79 @@
 @endpush
 
 @section('admin-content')
-{{-- Stats Grid --}}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+{{-- CMS Stats Grid --}}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
     @php
     $stats = [
-        ['label'=>'Pesanan Baru','value'=>$newContacts ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>','bg'=>'#eff6ff','iconColor'=>'#2563eb'],
-        ['label'=>'Total Artikel','value'=>$totalArticles ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10l6 6v10a2 2 0 0 1-2 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>','bg'=>'#f0fdfa','iconColor'=>'#0d9488'],
-        ['label'=>'Total Pesanan','value'=>$totalContacts ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>','bg'=>'#f3f4f6','iconColor'=>'#475569'],
-        ['label'=>'Pesanan Selesai','value'=>$completedOrders ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>','bg'=>'#ecfdf5','iconColor'=>'#059669'],
-        ['label'=>'Area Layanan','value'=>$totalAreas ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>','bg'=>'#fef2f2','iconColor'=>'#dc2626'],
-        ['label'=>'Kategori Layanan','value'=>$totalCategories ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>','bg'=>'#fffbeb','iconColor'=>'#d97706'],
+        ['label'=>'Total Artikel','value'=>$totalArticles ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>','bg'=>'#eff6ff','iconColor'=>'#2563eb'],
+        ['label'=>'Galeri Foto','value'=>$totalGallery ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>','bg'=>'#fdf4ff','iconColor'=>'#c026d3'],
+        ['label'=>'Kategori Layanan','value'=>$totalCategories ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m2 10 9 4-9 4"/><path d="m21 10-9 4 9 4"/><path d="m11 2 9 4-9 4-9-4 9-4z"/><path d="m11 22 9-4"/></svg>','bg'=>'#f0fdfa','iconColor'=>'#0d9488'],
+        ['label'=>'Area Layanan','value'=>$totalAreas ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>','bg'=>'#fef2f2','iconColor'=>'#dc2626'],
+        ['label'=>'Sektor Layanan','value'=>$totalSectors ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>','bg'=>'#fffbeb','iconColor'=>'#d97706'],
+        ['label'=>'Mitra / Klien','value'=>$totalPartners ?? 0,'icon'=>'<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>','bg'=>'#f3f4f6','iconColor'=>'#475569'],
     ];
     @endphp
     @foreach($stats as $s)
-    <div class="stat-card" style="background:#ffffff;border-radius:1rem;padding:1.5rem;border:1px solid rgba(226,232,240,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+    <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
         <div class="flex items-center justify-between mb-3">
-            <span class="text-xs uppercase tracking-wider" style="color:#64748b;font-weight:700;">{{ $s['label'] }}</span>
+            <span class="text-xs uppercase tracking-wider text-slate-500 font-bold">{{ $s['label'] }}</span>
             <span class="w-12 h-12 rounded-xl flex items-center justify-center text-lg" style="background:{{ $s['bg'] }};color:{{ $s['iconColor'] }}">{!! $s['icon'] !!}</span>
         </div>
         <div class="flex items-end gap-3 mt-4">
-            <div class="stat-num tracking-tight" style="color:#1e293b;font-size:2rem;font-weight:800;line-height:1;">{{ $s['value'] }}</div>
+            <div class="text-slate-800 text-4xl font-bold tracking-tight">{{ $s['value'] }}</div>
         </div>
     </div>
     @endforeach
 </div>
 
 {{-- Charts --}}
-<div class="grid grid-cols-1 gap-6 mb-8">
-    <div style="background:#ffffff;border-radius:1.25rem;padding:1.5rem;border:1px solid rgba(226,232,240,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-        <h3 class="font-semibold text-base mb-5 flex items-center gap-2" style="color:#0f172a;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#64748b;"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> 
-            Grafik Pesanan per Bulan
-        </h3>
-        <div style="position: relative; width: 100%; height: 300px;">
-            <canvas id="contactsChart"></canvas>
-        </div>
+<div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm mb-8">
+    <h3 class="font-bold text-slate-900 text-lg mb-6 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-indigo-500"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> 
+        Tren Publikasi Artikel
+    </h3>
+    <div style="position: relative; width: 100%; height: 320px;">
+        <canvas id="articlesChart"></canvas>
     </div>
 </div>
 
-{{-- Recent Contacts --}}
-{{-- Recent Contacts --}}
-<div style="background:#ffffff;border-radius:1.25rem;padding:1.5rem;border:1px solid rgba(226,232,240,0.8);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+{{-- Quick Actions CMS --}}
+<div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm mb-8">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="font-semibold text-base flex items-center gap-2" style="color:#0f172a;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#64748b;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Pesanan Terbaru
+        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-emerald-500"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
+            Aksi Cepat Manajemen CMS
         </h3>
-        <a href="{{ route('admin.contacts.index') }}" class="text-sm font-semibold text-[#1FAF5A] hover:text-[#178544] transition-colors">Lihat Semua →</a>
     </div>
-    <div class="admin-table-wrapper">
-        <table class="admin-table table-responsive-card">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Telepon</th>
-                    <th>Layanan</th>
-                    <th>Area</th>
-                    <th>Status</th>
-                    <th>Tanggal</th>
-                    <th style="text-align: right;">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($recentContacts as $c)
-            <tr>
-                <td data-label="Nama"><strong>{{ $c->name }}</strong></td>
-                <td data-label="Telepon">{{ $c->phone }}</td>
-                <td data-label="Layanan">{{ $c->service_type ?? '-' }}</td>
-                <td data-label="Area">{{ $c->area ?? '-' }}</td>
-                <td data-label="Status"><span class="status-{{ $c->status }}">{{ $c->status_label }}</span></td>
-                <td data-label="Tanggal">{{ $c->created_at->format('d/m/Y') }}</td>
-                <td data-label="Aksi" style="text-align: right;">
-                    <a href="{{ route('admin.contacts.show', $c->id) }}" class="btn-sm btn-view">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-                        Detail
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="{{ route('admin.articles.create') }}" class="flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-indigo-50 border border-slate-100 hover:border-indigo-100 rounded-xl transition-all group text-center">
+            <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-indigo-600 mb-3 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+            <span class="font-semibold text-slate-800 text-sm">Buat Artikel Baru</span>
+        </a>
+        
+        <a href="{{ route('admin.gallery.index') }}" class="flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-emerald-50 border border-slate-100 hover:border-emerald-100 rounded-xl transition-all group text-center">
+            <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-emerald-600 mb-3 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+            <span class="font-semibold text-slate-800 text-sm">Tambah Foto Galeri</span>
+        </a>
+        
+        <a href="{{ route('admin.seo.index') }}" class="flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-100 rounded-xl transition-all group text-center">
+            <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-blue-600 mb-3 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </div>
+            <span class="font-semibold text-slate-800 text-sm">Kelola SEO Central</span>
+        </a>
+        
+        <a href="{{ route('home') }}" target="_blank" class="flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-slate-100 border border-slate-100 hover:border-slate-300 rounded-xl transition-all group text-center">
+            <div class="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center text-slate-600 mb-3 group-hover:scale-110 transition-transform">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </div>
+            <span class="font-semibold text-slate-800 text-sm">Pratinjau Website Utama</span>
+        </a>
     </div>
 </div>
 @endsection
@@ -94,37 +87,59 @@
 @push('scripts')
 <script>
 const labels = @json($chartLabels);
-const contactData = @json($contactData);
+const articleData = @json($articleData);
 
-new Chart(document.getElementById('contactsChart'), {
-    type: 'bar',
+new Chart(document.getElementById('articlesChart'), {
+    type: 'line',
     data: {
         labels,
         datasets: [{
-            label: 'Jumlah Pesanan',
-            data: contactData,
-            backgroundColor: 'rgba(37,99,235,0.8)',
-            borderRadius: 6,
-            barThickness: 24,
+            label: 'Publikasi Artikel',
+            data: articleData,
+            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+            borderColor: '#6366f1',
+            borderWidth: 2,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#6366f1',
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            fill: true,
+            tension: 0.3
         }]
     },
     options: { 
         responsive: true, 
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } }, 
+        plugins: { 
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#1e293b',
+                titleFont: { size: 13, family: 'Inter' },
+                bodyFont: { size: 13, family: 'Inter' },
+                padding: 12,
+                cornerRadius: 8,
+                displayColors: false
+            }
+        }, 
         scales: { 
             y: { 
                 beginAtZero: true, 
-                suggestedMax: 10,
+                suggestedMax: 5,
                 grid: { color: '#f1f5f9', drawBorder: false },
-                ticks: { precision: 0, color: '#64748b' } 
+                ticks: { precision: 0, color: '#64748b', font: { family: 'Inter' } } 
             }, 
             x: { 
                 grid: { display: false },
-                ticks: { color: '#64748b' }
+                ticks: { color: '#64748b', font: { family: 'Inter' } }
             } 
-        } 
+        },
+        interaction: {
+            intersect: false,
+            mode: 'index',
+        },
     }
 });
 </script>
 @endpush
+
