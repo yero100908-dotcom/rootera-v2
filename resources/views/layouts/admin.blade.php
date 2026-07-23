@@ -161,7 +161,6 @@
         }
 
         .admin-content {
-            padding: 2.25rem;
             flex: 1;
         }
 
@@ -221,7 +220,6 @@
                 padding: 0.75rem 1rem;
             }
             .admin-content {
-                padding: 1rem;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
@@ -564,7 +562,7 @@
             </div>
         </header>
 
-        <main class="admin-content">
+        <main class="admin-content p-4 sm:p-6 lg:p-8">
             @if(session('success'))
             <div class="alert alert-success alert-auto-dismiss" role="alert" style="margin-bottom:1.5rem">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>

@@ -22,37 +22,68 @@
     @endforeach
 </div>
 
-<div class="admin-table-wrapper">
-    <table class="admin-table table-responsive-card">
-        <thead><tr><th>Nama</th><th>Kontak</th><th>Layanan</th><th>Area</th><th>Status</th><th>Invoice</th><th>Tanggal</th><th>Aksi</th></tr></thead>
-        <tbody>
-        @forelse($contacts as $contact)
-        <tr>
-            <td data-label="Nama"><strong>{{ $contact->name }}</strong></td>
-            <td data-label="Kontak">
-                <div style="font-size:.85rem">{{ $contact->phone }}</div>
-                @if($contact->email)<div style="font-size:.78rem;color:#9ca3af">{{ $contact->email }}</div>@endif
-            </td>
-            <td data-label="Layanan" style="font-size:.85rem">{{ $contact->service_type ?? '-' }}</td>
-            <td data-label="Area" style="font-size:.85rem">{{ $contact->area ?? '-' }}</td>
-            <td data-label="Status"><span class="status-{{ $contact->status }}">{{ $contact->status_label }}</span></td>
-            <td data-label="Invoice" style="font-size:.85rem">{{ $contact->invoice_amount ? 'Rp '.number_format($contact->invoice_amount,0,',','.') : '-' }}</td>
-            <td data-label="Tanggal" style="font-size:.82rem">{{ $contact->created_at->format('d/m/Y') }}</td>
-            <td data-label="Aksi">
-                <div style="display:flex;gap:.4rem">
-                    <a href="{{ route('admin.contacts.show',$contact) }}" class="btn-sm btn-view">Detail</a>
-                    <form action="{{ route('admin.contacts.destroy',$contact) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn-sm btn-del">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        @empty
-        <tr><td colspan="8" style="text-align:center;padding:3rem;color:#9ca3af">Belum ada data kontak.</td></tr>
-        @endforelse
-        </tbody>
-    </table>
-    <div style="padding:1rem 1.25rem;border-top:1px solid #f3f4f6">{{ $contacts->appends(request()->query())->links() }}</div>
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50/80 border-b border-slate-200/60">
+                <tr>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Nama</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Kontak</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Layanan</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Area</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Status</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Invoice</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Tanggal</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+            @forelse($contacts as $contact)
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                    <td class="px-6 py-4">
+                        <strong class="text-slate-900 text-sm font-medium block">{{ $contact->name }}</strong>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-slate-900">{{ $contact->phone }}</div>
+                        @if($contact->email)<div class="text-xs text-slate-500">{{ $contact->email }}</div>@endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600">{{ $contact->service_type ?? '-' }}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600">{{ $contact->area ?? '-' }}</td>
+                    <td class="px-6 py-4">
+                        @if($contact->status === 'new')
+                            <span class="bg-blue-50 text-blue-700 border border-blue-200/60 text-xs font-medium px-2.5 py-1 rounded-full">Baru</span>
+                        @elseif($contact->status === 'in_progress')
+                            <span class="bg-amber-50 text-amber-700 border border-amber-200/60 text-xs font-medium px-2.5 py-1 rounded-full">Diproses</span>
+                        @elseif($contact->status === 'completed')
+                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-xs font-medium px-2.5 py-1 rounded-full">Selesai</span>
+                        @else
+                            <span class="bg-slate-50 text-slate-600 border border-slate-200/60 text-xs font-medium px-2.5 py-1 rounded-full">Batal</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600">{{ $contact->invoice_amount ? 'Rp '.number_format($contact->invoice_amount,0,',','.') : '-' }}</td>
+                    <td class="px-6 py-4 text-sm text-slate-600">{{ $contact->created_at->format('d/m/Y') }}</td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-3">
+                            <a href="{{ route('admin.contacts.show', $contact) }}" class="text-slate-500 hover:text-blue-600 font-medium text-sm transition-colors">Detail</a>
+                            <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-medium text-sm transition-colors">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8" class="px-6 py-12 text-center text-slate-400 text-sm">Belum ada data kontak.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+    @if($contacts->hasPages())
+    <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50">
+        {{ $contacts->appends(request()->query())->links() }}
+    </div>
+    @endif
 </div>
 @endsection

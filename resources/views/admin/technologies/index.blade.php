@@ -3,68 +3,73 @@
 @section('page-title', 'Kelola Teknologi & Alat')
 
 @section('admin-content')
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-    <p style="color:#6b7280;font-size:.9rem">Total: <strong>{{ $technologies->count() ?? 0 }}</strong> alat/teknologi</p>
-    <button onclick="document.getElementById('modal-add-tech').style.display='flex'" class="btn btn-primary" style="border-radius:10px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Tambah Alat
-    </button>
-</div>
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden mb-8">
+    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Teknologi & Alat</h2>
+            <p class="text-sm text-slate-500 mt-1">Total: <strong>{{ $technologies->count() ?? 0 }}</strong> alat/teknologi</p>
+        </div>
+        <button onclick="document.getElementById('modal-add-tech').style.display='flex'" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Tambah Alat
+        </button>
+    </div>
 
-@if(session('success'))
-<div style="background:rgba(22,159,129,.08);border:1px solid rgba(22,159,129,.2);color:#169F81;padding:1rem;border-radius:10px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600">
-    {{ session('success') }}
-</div>
-@endif
-
-<div style="background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden">
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Nama Alat</th>
-                <th>Urutan</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-        @forelse($technologies as $tech)
-        <tr>
-            <td>
-                @if($tech->image_url)
-                <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid #e5e7eb">
-                @else
-                <div style="width:40px;height:40px;background:#f3f4f6;border-radius:6px;border:1px solid #e5e7eb"></div>
-                @endif
-            </td>
-            <td>
-                <strong>{{ $tech->tool_name }}</strong>
-                <div style="font-size:.82rem;color:#6b7280;margin-top:4px">{{ Str::limit($tech->description, 40) }}</div>
-            </td>
-            <td>{{ $tech->sort_order }}</td>
-            <td>
-                <button onclick="toggleTech({{ $tech->id }}, this)" data-active="{{ $tech->is_active ? '1' : '0' }}" style="border:none;background:none;cursor:pointer;padding:0">
-                    <span class="{{ $tech->is_active ? 'status-completed' : 'status-cancelled' }}">
-                        {{ $tech->is_active ? 'Aktif' : 'Nonaktif' }}
-                    </span>
-                </button>
-            </td>
-            <td>
-                <div style="display:flex;gap:.4rem">
-                    <button type="button" onclick='openEditTech(@json($tech))' class="btn-sm btn-edit">Edit</button>
-                    <form action="{{ route('admin.technologies.destroy', $tech) }}" method="POST" onsubmit="return confirm('Hapus alat ini?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn-sm btn-del">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        @empty
-        <tr><td colspan="5" style="text-align:center;padding:2rem;color:#9ca3af">Belum ada alat/teknologi.</td></tr>
-        @endforelse
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50/80 border-b border-slate-200/60">
+                <tr>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Foto</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Nama Alat</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Urutan</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Status</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+            @forelse($technologies as $tech)
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                    <td class="px-6 py-4">
+                        @if($tech->image_url)
+                            <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" class="w-12 h-12 rounded-lg object-cover border border-slate-200/80">
+                        @else
+                            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 border border-slate-200/80">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </div>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
+                        <strong class="text-slate-900 text-sm font-medium block mb-0.5">{{ $tech->tool_name }}</strong>
+                        <div class="text-xs text-slate-500">{{ Str::limit($tech->description, 40) }}</div>
+                    </td>
+                    <td class="px-6 py-4 text-sm text-slate-600">{{ $tech->sort_order }}</td>
+                    <td class="px-6 py-4">
+                        <button onclick="toggleTech({{ $tech->id }}, this)" data-active="{{ $tech->is_active ? '1' : '0' }}" class="focus:outline-none transition-transform active:scale-95">
+                            @if($tech->is_active)
+                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-xs font-medium px-2.5 py-1 rounded-full block">Aktif</span>
+                            @else
+                                <span class="bg-slate-50 text-slate-600 border border-slate-200/60 text-xs font-medium px-2.5 py-1 rounded-full block">Nonaktif</span>
+                            @endif
+                        </button>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-3">
+                            <button type="button" onclick='openEditTech(@json($tech))' class="text-slate-500 hover:text-emerald-600 font-medium text-sm transition-colors">Edit</button>
+                            <form action="{{ route('admin.technologies.destroy', $tech) }}" method="POST" onsubmit="return confirm('Hapus alat ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-medium text-sm transition-colors">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center text-slate-400 text-sm">Belum ada alat/teknologi.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {{-- Modal Tambah Tech --}}

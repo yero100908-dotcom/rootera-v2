@@ -3,57 +3,62 @@
 @section('page-title', 'Kelola Mitra Kami')
 
 @section('admin-content')
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-    <p style="color:#6b7280;font-size:.9rem">Total: <strong>{{ $partners->count() ?? 0 }}</strong> mitra</p>
-    <button onclick="document.getElementById('modal-add-partner').style.display='flex'" class="btn btn-primary" style="border-radius:10px">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Tambah Mitra
-    </button>
-</div>
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden mb-8">
+    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-bold text-slate-900">Mitra Kami</h2>
+            <p class="text-sm text-slate-500 mt-1">Total: <strong>{{ $partners->count() ?? 0 }}</strong> mitra</p>
+        </div>
+        <button onclick="document.getElementById('modal-add-partner').style.display='flex'" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Tambah Mitra
+        </button>
+    </div>
 
-@if(session('success'))
-<div style="background:rgba(22,159,129,.08);border:1px solid rgba(22,159,129,.2);color:#169F81;padding:1rem;border-radius:10px;margin-bottom:1.5rem;font-size:.9rem;font-weight:600">
-    {{ session('success') }}
-</div>
-@endif
-
-<div style="background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden">
-    <table class="admin-table">
-        <thead>
-            <tr>
-                <th>Logo</th>
-                <th>Nama Mitra</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-        @forelse($partners as $partner)
-        <tr>
-            <td>
-                @if($partner->logo_url)
-                <img src="{{ $partner->logo_url }}" alt="{{ $partner->nama_mitra }}" style="height:40px;max-width:120px;object-fit:contain;border-radius:6px;border:1px solid #e5e7eb;background:#f9fafb;padding:4px">
-                @else
-                <div style="width:80px;height:40px;background:#f3f4f6;border-radius:6px;border:1px solid #e5e7eb"></div>
-                @endif
-            </td>
-            <td>
-                <strong>{{ $partner->nama_mitra }}</strong>
-            </td>
-            <td>
-                <div style="display:flex;gap:.4rem">
-                    <button type="button" onclick='openEditPartner(@json($partner))' class="btn-sm btn-edit">Edit</button>
-                    <form action="{{ route('admin.partners.destroy', $partner) }}" method="POST" onsubmit="return confirm('Hapus mitra ini?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn-sm btn-del">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        @empty
-        <tr><td colspan="3" style="text-align:center;padding:2rem;color:#9ca3af">Belum ada mitra.</td></tr>
-        @endforelse
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead class="bg-slate-50/80 border-b border-slate-200/60">
+                <tr>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Logo</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Nama Mitra</th>
+                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+            @forelse($partners as $partner)
+                <tr class="hover:bg-slate-50/60 transition-colors">
+                    <td class="px-6 py-4">
+                        @if($partner->logo_url)
+                            <div class="bg-white border border-slate-200/80 p-2 rounded-lg w-fit">
+                                <img src="{{ $partner->logo_url }}" alt="{{ $partner->nama_mitra }}" class="h-10 max-w-[120px] object-contain">
+                            </div>
+                        @else
+                            <div class="w-20 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 border border-slate-200/80">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            </div>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">
+                        <strong class="text-slate-900 text-sm font-medium">{{ $partner->nama_mitra }}</strong>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <div class="flex items-center justify-end gap-3">
+                            <button type="button" onclick='openEditPartner(@json($partner))' class="text-slate-500 hover:text-emerald-600 font-medium text-sm transition-colors">Edit</button>
+                            <form action="{{ route('admin.partners.destroy', $partner) }}" method="POST" onsubmit="return confirm('Hapus mitra ini?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-medium text-sm transition-colors">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="px-6 py-12 text-center text-slate-400 text-sm">Belum ada mitra.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {{-- Modal Tambah Partner --}}

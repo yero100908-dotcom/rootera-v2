@@ -33,38 +33,83 @@
         }
     }
 </style>
-<div class="btn-header-container">
-    <button onclick="openModal()" style="background:#2563eb; color:#fff; border:none; padding:0.75rem 1.5rem; border-radius:8px; font-weight:600; cursor:pointer; box-shadow:0 4px 10px rgba(37,99,235,0.2); display:flex; align-items:center; gap:0.5rem;">
-        <svg style="width:1.2rem;height:1.2rem" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-        Tambah Kategori Baru
-    </button>
-</div>
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="p-4 sm:px-6 sm:py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white">
+        <div class="flex items-center gap-3">
+            <div class="bg-emerald-50 p-2 rounded-lg text-emerald-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 10 9 4-9 4"/><path d="m21 10-9 4 9 4"/><path d="m11 2 9 4-9 4-9-4 9-4z"/><path d="m11 22 9-4"/></svg>
+            </div>
+            <div>
+                <h2 class="text-base font-semibold text-slate-900">Daftar Kategori Layanan</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Total <strong>{{ count($categories) }}</strong> kategori terdaftar</p>
+            </div>
+        </div>
+        <button onclick="openModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Tambah Kategori Baru
+        </button>
+    </div>
 
-<div class="admin-table-wrapper">
-    <table class="admin-table" style="width: 100%; min-width: 600px;">
-        <thead><tr><th>Nama Kategori</th><th>Slug</th><th>Layanan</th><th>Status</th><th>Aksi</th></tr></thead>
-        <tbody>
-        @forelse($categories as $cat)
-        <tr>
-            <td><strong>{{ $cat->name }}</strong><div style="font-size:.78rem;color:#9ca3af">{{ Str::limit($cat->description,50) }}</div></td>
-            <td style="font-size:.82rem;color:#6b7280">{{ $cat->slug }}</td>
-            <td>{{ $cat->services_count }}</td>
-            <td><span class="{{ $cat->is_active ? 'status-completed' : 'status-cancelled' }}">{{ $cat->is_active ? 'Aktif' : 'Nonaktif' }}</span></td>
-            <td>
-                <div style="display:flex;gap:.4rem">
-                    <button onclick="fillForm({{ $cat->id }}, '{{ addslashes($cat->name) }}', '{{ $cat->slug }}', '{{ addslashes($cat->description) }}', {{ $cat->sort_order }}, {{ $cat->is_active ? 1 : 0 }}, '{{ addslashes($cat->price_home) }}', '{{ addslashes($cat->price_corporate) }}', '{{ addslashes($cat->price_description) }}')" class="btn-sm btn-edit">Edit</button>
-                    <form action="{{ route('admin.service-categories.destroy',$cat) }}" method="POST" onsubmit="return confirm('Hapus kategori ini?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn-sm btn-del">Hapus</button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        @empty
-        <tr><td colspan="5" style="text-align:center;padding:2rem;color:#9ca3af">Belum ada kategori.</td></tr>
-        @endforelse
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse whitespace-nowrap">
+            <thead class="bg-slate-50 border-b border-slate-200">
+                <tr>
+                    <th class="text-xs font-semibold text-slate-600 uppercase tracking-wider px-6 py-3">Nama Kategori</th>
+                    <th class="text-xs font-semibold text-slate-600 uppercase tracking-wider px-6 py-3">Slug</th>
+                    <th class="text-xs font-semibold text-slate-600 uppercase tracking-wider px-6 py-3 text-center">Layanan</th>
+                    <th class="text-xs font-semibold text-slate-600 uppercase tracking-wider px-6 py-3 text-center">Status</th>
+                    <th class="text-xs font-semibold text-slate-600 uppercase tracking-wider px-6 py-3 text-right">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+            @forelse($categories as $category)
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-3 max-w-xs">
+                        <strong class="text-sm font-medium text-slate-900 block truncate">{{ $category->name }}</strong>
+                        <div class="text-xs text-slate-500 mt-0.5 truncate">{{ Str::limit($category->description, 50) }}</div>
+                    </td>
+                    <td class="px-6 py-3">
+                        <span class="text-xs text-slate-500 font-mono">{{ $category->slug }}</span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-blue-50 text-blue-600 text-xs font-semibold ring-1 ring-inset ring-blue-600/20">
+                            {{ $category->services_count ?? 0 }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-3 text-center">
+                        <button onclick="toggleCategory({{ $category->id }}, this)" class="focus:outline-none transition-transform active:scale-95">
+                            @if($category->is_active)
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Aktif</span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-slate-50 text-slate-700 ring-1 ring-inset ring-slate-600/20">Nonaktif</span>
+                            @endif
+                        </button>
+                    </td>
+                    <td class="px-6 py-3 text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <button type="button" onclick="fillForm({{ $category->id }}, '{{ addslashes($category->name) }}', '{{ $category->slug }}', '{{ addslashes($category->description) }}', {{ $category->sort_order }}, {{ $category->is_active ? 1 : 0 }}, '{{ addslashes($category->price_home) }}', '{{ addslashes($category->price_corporate) }}', '{{ addslashes($category->price_description) }}')" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-1.5 rounded transition-colors" title="Edit">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            </button>
+                            <form action="{{ route('admin.service-categories.destroy', $category) }}" method="POST" onsubmit="return confirm('Hapus kategori ini secara permanen?')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-rose-600 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 p-1.5 rounded transition-colors" title="Hapus">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center text-slate-500">
+                        <svg class="mx-auto h-12 w-12 text-slate-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        <p class="text-sm font-medium">Belum ada kategori layanan terdaftar.</p>
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Modal Pop-up -->
