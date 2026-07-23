@@ -29,10 +29,7 @@ class ServiceCategoryService
      */
     public function getActiveServices()
     {
-        // Cache active services for 60 minutes
-        return Cache::remember('active_service_categories', 3600, function () {
-            return $this->serviceRepo->getAllActive();
-        });
+        return $this->serviceRepo->getAllActive();
     }
 
     /**
@@ -42,10 +39,7 @@ class ServiceCategoryService
      */
     public function getActiveServicesWithRelations()
     {
-        // Cache active services with services relationship for 60 minutes
-        return Cache::remember('active_service_categories_with_relations', 3600, function () {
-            return $this->serviceRepo->getAllActiveWithServices();
-        });
+        return $this->serviceRepo->getAllActiveWithServices();
     }
 
     /**
@@ -56,9 +50,6 @@ class ServiceCategoryService
      */
     public function getServiceBySlug(string $slug)
     {
-        // Cache individual service query dynamically by slug
-        return Cache::remember("service_category_{$slug}", 3600, function () use ($slug) {
-            return $this->serviceRepo->findBySlug($slug);
-        });
+        return $this->serviceRepo->findBySlug($slug);
     }
 }
