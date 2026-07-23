@@ -111,7 +111,7 @@
                     {!! $icons[$i % 3] !!}
                 </div>
                 <div class="service-icon {{ $colors[$i % 3] }} relative z-10 transition-transform duration-300 group-hover:scale-110">{!! $icons[$i % 3] !!}</div>
-                <h3 class="relative z-10 group-hover:text-[#1E73D8] transition-colors">{{ $category->name }}</h3>
+                <h3 class="relative z-10 group-hover:text-[#1E73D8] transition-colors"><a href="{{ route('layanan.show', $category->slug) }}">{{ $category->name }}</a></h3>
                 <p class="relative z-10">{{ $category->description }}</p>
                 <div class="service-items relative z-10">
                     @foreach($category->services->take(4) as $service)
@@ -131,7 +131,7 @@
 {{-- Price Details Modal (Tailwind/Modern UI) --}}
 {{-- Price Details Modal (Tailwind/Modern UI) --}}
 {{-- Price Details Modal (Tailwind/Modern UI) --}}
-<div id="price-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0" style="background:rgba(15,23,42,0.6);backdrop-filter:blur(12px)">
+<div id="price-modal" class="fixed inset-0 z-[1100] hidden flex items-center justify-center p-4 sm:p-6 transition-all duration-300 opacity-0" style="background:rgba(15,23,42,0.6);backdrop-filter:blur(12px); z-index: 1100;">
     <div class="bg-white rounded-[24px] sm:rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.2)] w-full max-w-4xl transform scale-95 transition-all duration-300 relative overflow-hidden flex flex-col max-h-[90vh] overflow-y-auto" id="price-modal-content">
         
         {{-- Close Button --}}

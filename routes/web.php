@@ -27,8 +27,10 @@ use App\Http\Controllers\Admin\SeoManageController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
+Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/area-layanan', [AreaController::class, 'index'])->name('area-layanan');
+Route::get('/area-layanan/{slug}', [AreaController::class, 'show'])->name('area-layanan.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');

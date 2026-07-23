@@ -63,7 +63,9 @@
                         </div>
                     @endif
                     <div>
-                        <h3 itemprop="name" style="margin-bottom:.1rem;font-size:1.1rem">{{ $area->name }}</h3>
+                        <h3 itemprop="name" style="margin-bottom:.1rem;font-size:1.1rem">
+                            <a href="{{ route('area-layanan.show', $area->slug) }}" style="color:inherit;text-decoration:none;" class="hover:underline">{{ $area->name }}</a>
+                        </h3>
                         @if($area->province)
                         <span style="font-size:.82rem;color:#9ca3af">{{ $area->province }}</span>
                         @endif
@@ -72,9 +74,14 @@
                 @if($area->description)
                 <p itemprop="description">{{ $area->description }}</p>
                 @endif
-                <a href="https://wa.me/6281385404000?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="margin-top:1rem;font-size:.88rem" target="_blank" rel="noopener">
-                    Pesan di {{ $area->name }}
-                </a>
+                <div style="display:flex;gap:0.75rem;margin-top:1rem">
+                    <a href="https://wa.me/6281385404000?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="font-size:.85rem;flex:1;padding:.6rem 1rem;justify-content:center" target="_blank" rel="noopener">
+                        Pesan WA
+                    </a>
+                    <a href="{{ route('area-layanan.show', $area->slug) }}" class="btn btn-secondary" style="font-size:.85rem;flex:1;padding:.6rem 1rem;border:2px solid var(--blue);color:var(--blue);background:transparent;justify-content:center">
+                        Info Detail
+                    </a>
+                </div>
             </article>
             @endforeach
         </div>

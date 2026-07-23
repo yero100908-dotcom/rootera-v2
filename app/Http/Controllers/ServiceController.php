@@ -47,4 +47,21 @@ class ServiceController extends Controller
 
         return view('pages.layanan', compact('serviceCategories', 'tools', 'faqs', 'seo'));
     }
+
+    public function show(string $slug)
+    {
+        $category = \App\Models\ServiceCategory::where('slug', $slug)
+            ->where('is_active', true)
+            ->with('services')
+            ->firstOrFail();
+
+        $seo = [
+            'title'       => substr($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - ROOTERA", 0, 60),
+            'description' => substr($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 0, 150),
+            'canonical'   => url('/layanan/' . $category->slug),
+            'og_image'    => $category->image ? asset('storage/' . $category->image) : asset('images/og-layanan.jpg'),
+        ];
+
+        return view('pages.layanan-detail', compact('category', 'seo'));
+    }
 }

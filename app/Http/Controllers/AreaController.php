@@ -21,4 +21,20 @@ class AreaController extends Controller
 
         return view('pages.area-layanan', compact('areas', 'seo'));
     }
+
+    public function show(string $slug)
+    {
+        $area = ServiceArea::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $seo = [
+            'title'       => substr($area->meta_title ?? "Jasa Pipa Mampet {$area->name} Tanpa Bongkar - ROOTERA", 0, 60),
+            'description' => substr($area->meta_description ?? "Jasa pelancar saluran pipa mampet, kran air, cuci toren, dan instalasi sanitary di {$area->name} dan sekitarnya. Profesional, cepat, bergaransi.", 0, 150),
+            'canonical'   => url('/area-layanan/' . $area->slug),
+            'og_image'    => $area->image ? asset('storage/' . $area->image) : asset('images/og-area.jpg'),
+        ];
+
+        return view('pages.area-detail', compact('area', 'seo'));
+    }
 }
