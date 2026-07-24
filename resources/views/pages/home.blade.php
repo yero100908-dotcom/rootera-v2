@@ -147,6 +147,9 @@
 {{-- ===== MITRA KAMI ===== --}}
 @include('sections.home.partners', ['partners' => $partners])
 
+{{-- ===== GALERI HASIL KERJA NYATA ===== --}}
+@include('sections.home.gallery-preview')
+
 {{-- ===== ARTIKEL TERBARU ===== --}}
 @include('sections.home.latest-articles', ['latestArticles' => $latestArticles])
 
