@@ -10,8 +10,8 @@ class ContactController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Kontak ROOTERA – Hubungi Kami untuk Layanan Pipa Profesional',
-            'description' => 'Hubungi ROOTERA untuk konsultasi gratis dan pemesanan layanan pipa & saluran mampet. Tersedia via WhatsApp, email, dan formulir online.',
+            'title'       => 'Kontak Rooterin – Hubungi Kami untuk Layanan Pipa Profesional',
+            'description' => 'Hubungi Rooterin untuk konsultasi gratis dan pemesanan layanan pipa & saluran mampet. Tersedia via WhatsApp, email, dan formulir online.',
             'canonical'   => url('/kontak'),
             'og_image'    => asset('images/og-kontak.jpg'),
         ];
@@ -36,6 +36,6 @@ class ContactController extends Controller
 
         Contact::create($validated);
 
-        return redirect()->back()->with('success', 'Terima kasih! Pesan Anda telah kami terima. Tim ROOTERA akan segera menghubungi Anda.');
+        return redirect()->back()->with('success', 'Terima kasih! Pesan Anda telah kami terima. Tim Rooterin akan segera menghubungi Anda.');
     }
 }

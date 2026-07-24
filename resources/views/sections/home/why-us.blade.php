@@ -75,7 +75,7 @@
 
     <div class="container" style="position: relative; z-index: 10;">
         <div class="text-center" style="margin-bottom:3rem">
-            <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(8px)">Mengapa ROOTERA?</span>
+            <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(8px)">Mengapa Rooterin?</span>
             <h2 class="section-title" id="why-heading" style="margin-top:.75rem; color: #ffffff;">
                 Profesional, <span style="color: var(--green-light);">Cepat</span>, Bergaransi
             </h2>

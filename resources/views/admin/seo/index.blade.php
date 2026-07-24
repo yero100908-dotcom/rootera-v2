@@ -60,7 +60,7 @@
 
             <div class="form-group mb-5">
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Canonical URL (Optional)</label>
-                <input type="url" id="canonicalInput" name="canonical_url" placeholder="https://rootera.id/..." class="w-full rounded-lg border border-slate-300 p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1FAF5A] focus:border-[#1FAF5A]">
+                <input type="url" id="canonicalInput" name="canonical_url" placeholder="https://Rooterin.id/..." class="w-full rounded-lg border border-slate-300 p-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1FAF5A] focus:border-[#1FAF5A]">
             </div>
 
             <div class="flex items-center gap-6 mb-6">
@@ -87,12 +87,12 @@
             
             <div class="border border-slate-100 rounded-xl p-4 bg-slate-50">
                 <div class="text-xs text-[#202124] mb-1 truncate flex items-center gap-1">
-                    <span>https://rootera.id</span>
+                    <span>https://Rooterin.id</span>
                     <span class="text-slate-400">›</span>
                     <span class="text-slate-500" id="previewRouteName">home</span>
                 </div>
                 <h4 class="text-xl text-[#1a0dab] font-medium hover:underline cursor-pointer leading-snug mb-1" id="previewTitle">
-                    ROOTERA – Jasa Pipa &amp; Saluran Mampet
+                    Rooterin – Jasa Pipa &amp; Saluran Mampet
                 </h4>
                 <p class="text-sm text-[#4d5156] leading-relaxed break-words" id="previewDesc">
                     Silakan masukkan meta description untuk melihat tampilan simulasi cuplikan pencarian Google di sini secara langsung.
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
     metaDescInput.addEventListener('input', updateLivePreview);
 
     function updateLivePreview() {
-        const titleVal = metaTitleInput.value || 'ROOTERA – Jasa Pipa & Saluran Mampet';
+        const titleVal = metaTitleInput.value || 'Rooterin – Jasa Pipa & Saluran Mampet';
         const descVal = metaDescInput.value || 'Silakan masukkan meta description untuk melihat tampilan simulasi cuplikan pencarian Google di sini secara langsung.';
         
         // Live Preview Render

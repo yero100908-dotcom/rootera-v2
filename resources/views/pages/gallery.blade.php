@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Galeri & Portofolio')
-@section('meta_description', 'Lihat galeri dan portofolio pengerjaan saluran mampet, instalasi pipa, dan sanitasi dari tim profesional ROOTERA.')
+@section('meta_description', 'Lihat galeri dan portofolio pengerjaan saluran mampet, instalasi pipa, dan sanitasi dari tim profesional Rooterin.')
 
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
@@ -21,7 +21,7 @@
         color: #334155;
     }
     .gallery-filter-btn.active {
-        background: #169F81; /* ROOTERA Accent */
+        background: #169F81; /* Rooterin Accent */
         color: white;
         box-shadow: 0 4px 6px -1px rgba(22, 159, 129, 0.2);
     }
@@ -110,7 +110,7 @@
 
     <div class="container text-center" style="position:relative;z-index:2">
         <h1 style="color:#fff;margin-bottom:.75rem">Galeri & <span style="color:#6ee7cc">Portofolio</span></h1>
-        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:600px;margin:0 auto">Lihat langsung hasil pekerjaan profesional tim ROOTERA di lapangan. Dari instalasi pipa hingga penanganan saluran mampet berat.</p>
+        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:600px;margin:0 auto">Lihat langsung hasil pekerjaan profesional tim Rooterin di lapangan. Dari instalasi pipa hingga penanganan saluran mampet berat.</p>
     </div>
 </div>
 

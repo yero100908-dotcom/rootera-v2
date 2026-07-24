@@ -93,10 +93,8 @@
                     <label for="category" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Kategori Layanan</label>
                     <select id="category" name="category" style="width:100%;padding:0.75rem;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;outline:none;background:#fff;transition:border-color 0.2s;appearance:none;cursor:pointer;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
                         <option value="">— Pilih Kategori —</option>
-                        <option value="before">Before (Sebelum)</option>
-                        <option value="after">After (Sesudah)</option>
-                        <option value="team">Tim ROOTERA</option>
-                        <option value="tools">Alat & Peralatan</option>
+                        <option value="residential">Residential (Perumahan)</option>
+                        <option value="commercial">Commercial (Komersial)</option>
                     </select>
                 </div>
                 

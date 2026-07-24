@@ -5,7 +5,7 @@
             <h2 class="section-title" id="area-heading" style="margin-top:.75rem">
                 Melayani <span>Seluruh Kota</span>
             </h2>
-            <p class="section-sub">Tim profesional ROOTERA siap melayani berbagai kota besar di Indonesia.</p>
+            <p class="section-sub">Tim profesional Rooterin siap melayani berbagai kota besar di Indonesia.</p>
         </div>
         <div class="area-grid">
             @php

@@ -6,7 +6,7 @@
             <h2 class="section-title" id="articles-heading" style="margin-top:.75rem">
                 Pengetahuan <span>Terbaru</span>
             </h2>
-            <p class="section-sub">Panduan dan tips seputar perawatan pipa, saluran air, dan sanitasi rumah dari para ahli ROOTERA.</p>
+            <p class="section-sub">Panduan dan tips seputar perawatan pipa, saluran air, dan sanitasi rumah dari para ahli Rooterin.</p>
         </div>
         <div class="cards-grid">
             @foreach($latestArticles as $i => $article)

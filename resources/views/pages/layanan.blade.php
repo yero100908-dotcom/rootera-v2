@@ -40,7 +40,7 @@
     </svg>
 
     <div class="container text-center" style="position:relative;z-index:2">
-        <h1 id="page-title" style="color:#fff;margin-bottom:.75rem">Layanan <span style="color:#6ee7cc">ROOTERA</span></h1>
+        <h1 id="page-title" style="color:#fff;margin-bottom:.75rem">Layanan <span style="color:#6ee7cc">Rooterin</span></h1>
         <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Solusi lengkap untuk semua masalah pipa, saluran, dan sanitasi menggunakan peralatan modern tanpa merusak bangunan.</p>
     </div>
 </div>

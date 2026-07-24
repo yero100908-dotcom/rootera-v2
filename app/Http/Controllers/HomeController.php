@@ -9,6 +9,7 @@ use App\Models\Faq;
 use App\Models\Technology;
 use App\Models\ServiceSector;
 use App\Models\Partner;
+use App\Models\GalleryPhoto;
 
 class HomeController extends Controller
 {
@@ -42,9 +43,15 @@ class HomeController extends Controller
 
         $partners = Partner::all();
 
+        $galleryPhotos = GalleryPhoto::where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('created_at', 'desc')
+            ->take(8)
+            ->get();
+
         $seo = [
-            'title'       => 'ROOTERA – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
-            'description' => 'ROOTERA solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
+            'title'       => 'Rooterin – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
+            'description' => 'Rooterin solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
             'canonical'   => url('/'),
             'og_image'    => asset('images/og-home.jpg'),
         ];
@@ -57,6 +64,7 @@ class HomeController extends Controller
             'technologies',
             'serviceSectors',
             'partners',
+            'galleryPhotos',
             'seo'
         ));
     }

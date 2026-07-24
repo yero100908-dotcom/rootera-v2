@@ -31,8 +31,8 @@ class ViewServiceProvider extends ServiceProvider
             }
 
             $seo = [
-                'title'        => $seoModel['meta_title'] ?? 'ROOTERA – Jasa Pipa & Saluran Mampet Profesional',
-                'description'  => $seoModel['meta_description'] ?? 'ROOTERA solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.',
+                'title'        => $seoModel['meta_title'] ?? 'Rooterin – Jasa Pipa & Saluran Mampet Profesional',
+                'description'  => $seoModel['meta_description'] ?? 'Rooterin solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.',
                 'canonical'    => $seoModel['canonical_url'] ?? url()->current(),
                 'og_image'     => $seoModel && !empty($seoModel['og_image']) 
                                     ? asset('storage/' . $seoModel['og_image']) 

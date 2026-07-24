@@ -4,7 +4,7 @@
 <div style="background:linear-gradient(135deg,#0A2E78,#0d3a94);padding:5rem 0 4rem">
     <div class="container text-center">
         <h1 style="color:#fff;margin-bottom:.75rem">Hubungi <span style="color:#6ee7cc">Kami</span></h1>
-        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Ada pertanyaan atau butuh layanan segera? Tim ROOTERA siap membantu Anda 24 jam sehari.</p>
+        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Ada pertanyaan atau butuh layanan segera? Tim Rooterin siap membantu Anda 24 jam sehari.</p>
     </div>
 </div>
 
@@ -39,7 +39,7 @@
                     </div>
                     <div class="ci-text">
                         <strong>Email</strong>
-                        <a href="mailto:info@rootera.id">info@rootera.id</a>
+                        <a href="mailto:info@Rooterin.id">info@Rooterin.id</a>
                     </div>
                 </div>
                 <div class="ci-item">

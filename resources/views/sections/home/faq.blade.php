@@ -3,7 +3,7 @@
         <div class="text-center" style="margin-bottom:3rem">
             <span class="badge badge-blue">Tanya Jawab</span>
             <h2 class="section-title" id="faq-heading" style="margin-top:.75rem">Pertanyaan yang Sering <span>Diajukan</span></h2>
-            <p class="section-sub">Informasi cepat mengenai layanan, biaya, dan garansi dari ROOTERA.</p>
+            <p class="section-sub">Informasi cepat mengenai layanan, biaya, dan garansi dari Rooterin.</p>
         </div>
         
         <div class="faq-container" style="max-width:800px;margin:0 auto">
@@ -30,7 +30,7 @@
                 </button>
                 <div class="faq-answer">
                     <div class="faq-answer-inner">
-                        Saat ini, layanan ROOTERA mencakup wilayah Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi) dan beberapa kota besar lainnya. Tim teknisi kami tersebar di berbagai titik untuk memastikan respon yang cepat ke lokasi Anda. Hubungi kami via WhatsApp untuk memastikan jangkauan di area spesifik Anda.
+                        Saat ini, layanan Rooterin mencakup wilayah Jabodetabek (Jakarta, Bogor, Depok, Tangerang, Bekasi) dan beberapa kota besar lainnya. Tim teknisi kami tersebar di berbagai titik untuk memastikan respon yang cepat ke lokasi Anda. Hubungi kami via WhatsApp untuk memastikan jangkauan di area spesifik Anda.
                     </div>
                 </div>
             </div>

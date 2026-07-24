@@ -40,7 +40,7 @@
 
     <div class="container text-center" style="position:relative;z-index:2">
         <h1 style="color:#fff;margin-bottom:.75rem">Area <span style="color:#6ee7cc">Layanan</span></h1>
-        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Tim ROOTERA telah menjangkau berbagai kota besar di Indonesia untuk melayani kebutuhan pipa dan sanitasi Anda.</p>
+        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Tim Rooterin telah menjangkau berbagai kota besar di Indonesia untuk melayani kebutuhan pipa dan sanitasi Anda.</p>
     </div>
 </div>
 
@@ -75,7 +75,7 @@
                 <p itemprop="description">{{ $area->description }}</p>
                 @endif
                 <div style="display:flex;gap:0.75rem;margin-top:1rem">
-                    <a href="https://wa.me/6281385404000?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="font-size:.85rem;flex:1;padding:.6rem 1rem;justify-content:center" target="_blank" rel="noopener">
+                    <a href="https://wa.me/6281385404000?text=Halo%20Rooterin%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="font-size:.85rem;flex:1;padding:.6rem 1rem;justify-content:center" target="_blank" rel="noopener">
                         Pesan WA
                     </a>
                     <a href="{{ route('area-layanan.show', $area->slug) }}" class="btn btn-secondary" style="font-size:.85rem;flex:1;padding:.6rem 1rem;border:2px solid var(--blue);color:var(--blue);background:transparent;justify-content:center">
@@ -104,8 +104,8 @@
                 allowfullscreen=""
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
-                title="Lokasi layanan ROOTERA"
-                aria-label="Peta area layanan ROOTERA"
+                title="Lokasi layanan Rooterin"
+                aria-label="Peta area layanan Rooterin"
             ></iframe>
         </div>
         
@@ -114,7 +114,7 @@
             <div style="text-align:center;font-family:'Plus Jakarta Sans',sans-serif;background:#fff;padding:1.5rem 2rem;border-radius:16px;box-shadow:0 4px 20px rgba(10,46,120,.05);border:1px solid #edf2f7;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(10,46,120,.1)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(10,46,120,.05)';">
                 <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.5rem">
                     <span style="font-size:1.25rem">📍</span>
-                    <strong style="font-size:1.1rem;color:#0A2E78">Rootera Plumbing - Jasa Saluran Pipa Mampet</strong>
+                    <strong style="font-size:1.1rem;color:#0A2E78">Rooterin Plumbing - Jasa Saluran Pipa Mampet</strong>
                 </div>
                 <p style="font-size:0.95rem;line-height:1.6;color:#4b5563;margin:0 0 1rem 0">
                     Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770

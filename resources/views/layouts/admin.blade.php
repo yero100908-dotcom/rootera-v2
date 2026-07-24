@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin') – ROOTERA</title>
+    <title>@yield('title', 'Admin') – Rooterin</title>
     <meta name="robots" content="noindex,nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <meta name="csrf-token" content="{{ csrf_token() }}">

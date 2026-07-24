@@ -29,8 +29,8 @@ class ServiceController extends Controller
         $serviceCategories = $this->serviceCategoryService->getActiveServicesWithRelations();
 
         $seo = [
-            'title'       => 'Layanan ROOTERA – Solusi Pipa Mampet & Instalasi Sanitary Profesional',
-            'description' => 'Temukan semua layanan ROOTERA: pembersihan saluran mampet, cuci toren, dan instalasi pipa profesional menggunakan alat modern tanpa bongkar bangunan.',
+            'title'       => 'Layanan Rooterin – Solusi Pipa Mampet & Instalasi Sanitary Profesional',
+            'description' => 'Temukan semua layanan Rooterin: pembersihan saluran mampet, cuci toren, dan instalasi pipa profesional menggunakan alat modern tanpa bongkar bangunan.',
             'canonical'   => url('/layanan'),
             'og_image'    => asset('images/og-layanan.jpg'),
         ];
@@ -56,7 +56,7 @@ class ServiceController extends Controller
             ->firstOrFail();
 
         $seo = [
-            'title'       => substr($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - ROOTERA", 0, 60),
+            'title'       => substr($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rooterin", 0, 60),
             'description' => substr($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 0, 150),
             'canonical'   => url('/layanan/' . $category->slug),
             'og_image'    => $category->image ? asset('storage/' . $category->image) : asset('images/og-layanan.jpg'),

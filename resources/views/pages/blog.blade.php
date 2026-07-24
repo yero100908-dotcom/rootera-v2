@@ -40,7 +40,7 @@
 
     <div class="container text-center" style="position:relative;z-index:2">
         <h1 style="color:#fff;margin-bottom:.75rem">Blog & <span style="color:#6ee7cc">Pengetahuan</span></h1>
-        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Tips dan panduan seputar perawatan pipa, saluran air, dan sanitasi rumah dari ahli ROOTERA.</p>
+        <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:550px;margin:0 auto">Tips dan panduan seputar perawatan pipa, saluran air, dan sanitasi rumah dari ahli Rooterin.</p>
     </div>
 </div>
 

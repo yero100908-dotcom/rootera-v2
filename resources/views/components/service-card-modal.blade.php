@@ -157,7 +157,7 @@
 
                 {{-- CTA --}}
                 <div class="flex gap-3">
-                    <a href="https://wa.me/6281385404000?text=Halo+ROOTERA,+saya+ingin+konsultasi+layanan+__SERVICE__"
+                    <a href="https://wa.me/6281385404000?text=Halo+Rooterin,+saya+ingin+konsultasi+layanan+__SERVICE__"
                        id="modal-wa-link"
                        target="_blank" rel="noopener"
                        class="flex-1 bg-green-500 hover:bg-green-600 text-white text-center font-semibold py-3 rounded-xl
@@ -245,7 +245,7 @@ function openServiceModal(id) {
         document.getElementById('modal-price-residential').textContent = data.price_residential;
         document.getElementById('modal-price-commercial').textContent = data.price_commercial;
         document.getElementById('modal-wa-link').href =
-            `https://wa.me/6281385404000?text=Halo+ROOTERA,+saya+ingin+konsultasi+layanan+${encodeURIComponent(data.title)}`;
+            `https://wa.me/6281385404000?text=Halo+Rooterin,+saya+ingin+konsultasi+layanan+${encodeURIComponent(data.title)}`;
 
         // Switch loading -> content
         loading.classList.add('hidden');

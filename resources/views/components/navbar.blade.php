@@ -12,8 +12,8 @@
 <nav id="navbar" class="navbar" role="navigation" aria-label="Navigasi utama">
     <div class="nav-container">
         {{-- Logo --}}
-        <a href="{{ route('home') }}" class="nav-logo" aria-label="ROOTERA - Beranda">
-            <img src="{{ asset('images/dark mode-notag.png') }}" alt="ROOTERA Logo" class="nav-logo-img">
+        <a href="{{ route('home') }}" class="nav-logo" aria-label="Rooterin - Beranda">
+            <img src="{{ asset('images/dark mode-notag.png') }}" alt="Rooterin Logo" class="nav-logo-img">
         </a>
 
         {{-- Desktop Menu --}}

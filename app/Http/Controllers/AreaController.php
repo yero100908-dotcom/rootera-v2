@@ -13,8 +13,8 @@ class AreaController extends Controller
             ->get();
 
         $seo = [
-            'title'       => 'Area Layanan ROOTERA – Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung',
-            'description' => 'ROOTERA melayani berbagai kota di Indonesia. Temukan area layanan terdekat Anda dan hubungi tim kami untuk konsultasi gratis.',
+            'title'       => 'Area Layanan Rooterin – Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung',
+            'description' => 'Rooterin melayani berbagai kota di Indonesia. Temukan area layanan terdekat Anda dan hubungi tim kami untuk konsultasi gratis.',
             'canonical'   => url('/area-layanan'),
             'og_image'    => asset('images/og-area.jpg'),
         ];
@@ -29,7 +29,7 @@ class AreaController extends Controller
             ->firstOrFail();
 
         $seo = [
-            'title'       => substr($area->meta_title ?? "Jasa Pipa Mampet {$area->name} Tanpa Bongkar - ROOTERA", 0, 60),
+            'title'       => substr($area->meta_title ?? "Jasa Pipa Mampet {$area->name} Tanpa Bongkar - Rooterin", 0, 60),
             'description' => substr($area->meta_description ?? "Jasa pelancar saluran pipa mampet, kran air, cuci toren, dan instalasi sanitary di {$area->name} dan sekitarnya. Profesional, cepat, bergaransi.", 0, 150),
             'canonical'   => url('/area-layanan/' . $area->slug),
             'og_image'    => $area->image ? asset('storage/' . $area->image) : asset('images/og-area.jpg'),

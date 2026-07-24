@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Login Admin – ROOTERA</title>
+    <title>Login Admin – Rooterin</title>
     <meta name="robots" content="noindex,nofollow">
     
     <!-- Fonts -->
@@ -38,7 +38,7 @@
             <div class="flex flex-col items-center mb-8">
                 <!-- Logo Wrapper to handle transparent padding -->
                 <div class="relative w-full h-24 sm:h-28 flex items-center justify-center mb-2 sm:mb-4">
-                    <img src="{{ asset('images/Light Mode-Logo.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none" alt="ROOTERA Logo" onerror="this.onerror=null; this.src='{{ asset('images/dark mode-notag.png') }}';">
+                    <img src="{{ asset('images/Light Mode-Logo.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none" alt="Rooterin Logo" onerror="this.onerror=null; this.src='{{ asset('images/dark mode-notag.png') }}';">
                 </div>
                 
                 <!-- Title -->
@@ -69,7 +69,7 @@
                     <label for="email" class="block text-[12px] font-bold text-[#0A2E78] uppercase tracking-wide">
                         Alamat Email / Username
                     </label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="admin@rootera.id" required autofocus
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="admin@Rooterin.id" required autofocus
                         class="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#169F81] focus:ring-2 focus:ring-[#169F81]/20 outline-none transition-all text-slate-800 text-[14px] sm:text-[15px] placeholder:text-slate-400">
                 </div>
 

@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group">
                         <label for="author">Penulis</label>
-                        <input type="text" id="author" name="author" value="{{ old('author', $article->author ?? 'Tim ROOTERA') }}">
+                        <input type="text" id="author" name="author" value="{{ old('author', $article->author ?? 'Tim Rooterin') }}">
                     </div>
                     <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:.5rem">
                         {{ $mode === 'create' ? 'Simpan Artikel' : 'Perbarui Artikel' }}

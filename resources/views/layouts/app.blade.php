@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     {{-- Dynamic SEO Meta Tags --}}
-    <title>{{ $seo['title'] ?? 'ROOTERA – Jasa Pipa & Saluran Mampet Profesional' }}</title>
-    <meta name="description" content="{{ $seo['description'] ?? 'ROOTERA solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.' }}">
+    <title>{{ $seo['title'] ?? 'Rooterin – Jasa Pipa & Saluran Mampet Profesional' }}</title>
+    <meta name="description" content="{{ $seo['description'] ?? 'Rooterin solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.' }}">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
     
     @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
@@ -19,15 +19,15 @@
     {{-- Open Graph --}}
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
-    <meta property="og:title"       content="{{ $seo['title'] ?? 'ROOTERA' }}">
+    <meta property="og:title"       content="{{ $seo['title'] ?? 'Rooterin' }}">
     <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/og-default.jpg') }}">
-    <meta property="og:site_name"   content="ROOTERA">
+    <meta property="og:site_name"   content="Rooterin">
     <meta property="og:locale"      content="id_ID">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="{{ $seo['title'] ?? 'ROOTERA' }}">
+    <meta name="twitter:title"       content="{{ $seo['title'] ?? 'Rooterin' }}">
     <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
     <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/og-default.jpg') }}">
 
@@ -39,7 +39,7 @@
         $fallbackSchema = [
           "@context" => "https://schema.org",
           "@type" => ["Plumber", "HomeAndConstructionBusiness"],
-          "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet",
+          "name" => "Rooterin Plumbing - Jasa Saluran Pipa Mampet",
           "description" => "Jasa cleaning service pipa, wastafel mampet, cuci toren, dan instalasi pipa baru profesional tanpa bongkar.",
           "url" => url('/'),
           "telephone" => "+6281385404000",
@@ -70,9 +70,9 @@
             "Solo"
           ],
           "sameAs" => [
-            "https://www.instagram.com/rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
-            "https://www.facebook.com/rootera.id",
-            "https://www.tiktok.com/@rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h"
+            "https://www.instagram.com/Rooterin_plumbing?igsh=c2NkbXA1b3h6MTVy",
+            "https://www.facebook.com/Rooterin.id",
+            "https://www.tiktok.com/@Rooterin_plumbing?_r=1&_t=ZS-97nM89aiu5h"
           ]
         ];
         ?>

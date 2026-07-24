@@ -13,8 +13,8 @@ class BlogController extends Controller
             ->paginate(9);
 
         $seo = [
-            'title'       => 'Blog & Tips Pipa – ROOTERA | Panduan Saluran Air & Sanitasi',
-            'description' => 'Baca artikel dan tips terbaru dari ROOTERA seputar cara mengatasi pipa mampet, merawat saluran air, dan panduan sanitasi rumah untuk keluarga sehat.',
+            'title'       => 'Blog & Tips Pipa – Rooterin | Panduan Saluran Air & Sanitasi',
+            'description' => 'Baca artikel dan tips terbaru dari Rooterin seputar cara mengatasi pipa mampet, merawat saluran air, dan panduan sanitasi rumah untuk keluarga sehat.',
             'canonical'   => url('/blog'),
             'og_image'    => asset('images/og-blog.jpg'),
         ];
@@ -37,7 +37,7 @@ class BlogController extends Controller
             ->get();
 
         $seo = [
-            'title'       => ($article->meta_title ?? $article->title) . ' | ROOTERA',
+            'title'       => ($article->meta_title ?? $article->title) . ' | Rooterin',
             'description' => $article->meta_description ?? $article->excerpt,
             'canonical'   => $article->canonical_url ?? url('/blog/' . $article->slug),
             'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : asset('storage/' . $article->thumbnail),

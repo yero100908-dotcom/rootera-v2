@@ -5,7 +5,7 @@
 $areaSchema = [
   "@context" => "https://schema.org",
   "@type" => ["Plumber", "HomeAndConstructionBusiness"],
-  "name" => "ROOTERA Jasa Pipa Mampet " . $area->name,
+  "name" => "Rooterin Jasa Pipa Mampet " . $area->name,
   "description" => "Layanan profesional pelancar saluran air mampet, kran air tersumbat, cuci toren, dan instalasi pipa di wilayah " . $area->name . " dan sekitarnya.",
   "url" => url('/area-layanan/' . $area->slug),
   "telephone" => "+6281385404000",
@@ -31,7 +31,7 @@ $faqSchema = [
   "mainEntity" => [
     [
       "@type" => "Question",
-      "name" => "Apakah ROOTERA melayani area di luar pusat kota " . $area->name . "?",
+      "name" => "Apakah Rooterin melayani area di luar pusat kota " . $area->name . "?",
       "acceptedAnswer" => [
         "@type" => "Answer",
         "text" => "Ya. Layanan kami menjangkau seluruh kecamatan dan kelurahan di wilayah " . $area->name . ", serta area perumahan, perkantoran, ruko, restoran, dan kawasan industri di sekitarnya."
@@ -39,7 +39,7 @@ $faqSchema = [
     ],
     [
       "@type" => "Question",
-      "name" => "Bagaimana cara memesan jasa pelancar pipa ROOTERA di " . $area->name . "?",
+      "name" => "Bagaimana cara memesan jasa pelancar pipa Rooterin di " . $area->name . "?",
       "acceptedAnswer" => [
         "@type" => "Answer",
         "text" => "Anda cukup menghubungi tim support kami melalui tombol WhatsApp yang tersedia di situs ini, atau mengisi formulir kontak. Tim teknisi terdekat di area " . $area->name . " akan langsung dijadwalkan menuju ke lokasi Anda."
@@ -77,7 +77,7 @@ $faqSchema = [
     <div class="container text-center" style="position:relative;z-index:2">
         <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(8px); margin-bottom: 1rem; display: inline-block;">Layanan Wilayah</span>
         <h1 id="page-title" style="color:#fff;margin-bottom:.75rem; font-size: 2.2rem; font-weight: 800; line-height: 1.2;">
-            Jasa Pipa Mampet {{ $area->name }} — ROOTERA
+            Jasa Pipa Mampet {{ $area->name }} — Rooterin
         </h1>
         <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:650px;margin:0 auto">Hadir melayani pembersihan saluran air tersumbat dan pemeliharaan pipa profesional di wilayah {{ $area->name }} dan sekitarnya.</p>
     </div>
@@ -91,7 +91,7 @@ $faqSchema = [
             {{-- Direct Answer (GEO Optimization) --}}
             <div style="background: #f0fdf4; border-left: 5px solid #169F81; padding: 1.5rem; border-radius: 0 16px 16px 0; margin-bottom: 2.5rem; box-shadow: 0 4px 12px rgba(22,159,129,0.05)">
                 <p style="font-size: 1.1rem; line-height: 1.6; color: #0f172a; margin: 0; font-weight: 500;">
-                    <strong>Direct Answer:</strong> Jasa pelancar pipa mampet ROOTERA di {{ $area->name }} melayani area residensial (hunian rumah) dan industri secara cepat menggunakan teknologi rotary cable spiral dan hydro-jetting modern 100% bebas dari bahan kimia asam korosif, membersihkan kerak lemak hingga 98% bergaransi tanpa bongkar lantai keramik maupun beton pondasi bangunan Anda.
+                    <strong>Direct Answer:</strong> Jasa pelancar pipa mampet Rooterin di {{ $area->name }} melayani area residensial (hunian rumah) dan industri secara cepat menggunakan teknologi rotary cable spiral dan hydro-jetting modern 100% bebas dari bahan kimia asam korosif, membersihkan kerak lemak hingga 98% bergaransi tanpa bongkar lantai keramik maupun beton pondasi bangunan Anda.
                 </p>
             </div>
 
@@ -103,7 +103,7 @@ $faqSchema = [
                         Solusi Penanganan Saluran Air Tersumbat di Area {{ $area->name }}
                     </h2>
                     <p style="font-size: 1.05rem; color: #475569; line-height: 1.75; margin-bottom: 1.5rem;">
-                        {{ $area->description }} Kami memahami bahwa kontur tanah, kualitas air bersih, dan beban penggunaan saluran air di kota besar seperti {{ $area->name }} dapat menyebabkan endapan lumpur, pasir, hingga lemak rumah tangga yang mengeras dengan cepat di dalam pipa drainase. Untuk itu, tim ROOTERA hadir dengan layanan respons cepat 24 jam sehari demi menyelamatkan kenyamanan hunian Anda dari banjir air kotor atau wastafel meluap.
+                        {{ $area->description }} Kami memahami bahwa kontur tanah, kualitas air bersih, dan beban penggunaan saluran air di kota besar seperti {{ $area->name }} dapat menyebabkan endapan lumpur, pasir, hingga lemak rumah tangga yang mengeras dengan cepat di dalam pipa drainase. Untuk itu, tim Rooterin hadir dengan layanan respons cepat 24 jam sehari demi menyelamatkan kenyamanan hunian Anda dari banjir air kotor atau wastafel meluap.
                     </p>
 
                     <h3 style="font-size: 1.35rem; font-weight: 600; color: #0A2E78; margin-top: 2rem; margin-bottom: 1rem;">
@@ -144,7 +144,7 @@ $faqSchema = [
                             <thead>
                                 <tr style="background: #169F81; color: #ffffff;">
                                     <th style="padding: 1rem 1.5rem; font-weight: 600;">Aspek Operasional</th>
-                                    <th style="padding: 1rem 1.5rem; font-weight: 600;">Keterangan / Komitmen ROOTERA</th>
+                                    <th style="padding: 1rem 1.5rem; font-weight: 600;">Keterangan / Komitmen Rooterin</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -178,7 +178,7 @@ $faqSchema = [
                     <div style="display: flex; flex-col: column; gap: 1.5rem; max-w: 800px; margin: 0 auto;">
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
-                                <span>❓</span> Apakah ROOTERA melayani area di luar pusat kota {{ $area->name }}?
+                                <span>❓</span> Apakah Rooterin melayani area di luar pusat kota {{ $area->name }}?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
                                 Ya. Layanan kami menjangkau seluruh kecamatan dan kelurahan di wilayah {{ $area->name }}, serta area perumahan, perkantoran, ruko, restoran, dan kawasan industri di sekitarnya.
@@ -187,7 +187,7 @@ $faqSchema = [
                         
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
-                                <span>❓</span> Bagaimana cara memesan jasa pelancar pipa ROOTERA di {{ $area->name }}?
+                                <span>❓</span> Bagaimana cara memesan jasa pelancar pipa Rooterin di {{ $area->name }}?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
                                 Anda cukup menghubungi tim support kami melalui tombol WhatsApp yang tersedia di situs ini, atau mengisi formulir kontak. Tim teknisi terdekat di area {{ $area->name }} akan langsung dijadwalkan menuju ke lokasi Anda.
@@ -208,9 +208,9 @@ $faqSchema = [
                 {{-- Call To Action --}}
                 <div style="background: linear-gradient(135deg, #0A2E78 0%, #169F81 100%); border-radius: 24px; padding: 3rem; text-align: center; color: #ffffff; margin-top: 2rem;">
                     <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem;">Butuh Bantuan Teknisi di {{ $area->name }}?</h3>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; max-width: 600px; margin: 0 auto 2rem;">Segera hubungi tim ROOTERA untuk respon cepat darurat pipa mampet di rumah, ruko, restoran, atau kantor Anda.</p>
+                    <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; max-width: 600px; margin: 0 auto 2rem;">Segera hubungi tim Rooterin untuk respon cepat darurat pipa mampet di rumah, ruko, restoran, atau kantor Anda.</p>
                     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                        <a href="https://wa.me/6281385404000?text=Halo%20ROOTERA%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
+                        <a href="https://wa.me/6281385404000?text=Halo%20Rooterin%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
                             Hubungi via WhatsApp
                         </a>
                         <a href="{{ route('kontak') }}" class="btn btn-secondary" style="border: 2px solid #ffffff; color: #ffffff; background: transparent; font-size:1rem; padding: 0.85rem 2rem; font-weight: 700; border-radius: 50px; text-decoration: none;">

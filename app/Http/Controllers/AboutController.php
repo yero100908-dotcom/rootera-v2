@@ -9,8 +9,8 @@ class AboutController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Tentang Kami – ROOTERA | Tim Profesional Pipa & Sanitary',
-            'description' => 'Kenali ROOTERA lebih dalam. Kami adalah tim profesional berpengalaman dalam layanan pembersihan pipa, saluran mampet, dan instalasi sanitary di Indonesia.',
+            'title'       => 'Tentang Kami – Rooterin | Tim Profesional Pipa & Sanitary',
+            'description' => 'Kenali Rooterin lebih dalam. Kami adalah tim profesional berpengalaman dalam layanan pembersihan pipa, saluran mampet, dan instalasi sanitary di Indonesia.',
             'canonical'   => url('/tentang-kami'),
             'og_image'    => asset('images/og-about.jpg'),
         ];
