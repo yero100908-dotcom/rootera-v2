@@ -67,7 +67,7 @@
                             <a href="{{ route('admin.contacts.show', $contact) }}" class="text-slate-500 hover:text-blue-600 font-medium text-sm transition-colors">Detail</a>
                             <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" onsubmit="return confirm('Hapus data ini?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-medium text-sm transition-colors">Hapus</button>
+                                <button type="submit" class="text-slate-600 bg-slate-100 hover:bg-rose-100 hover:text-rose-700 font-medium text-sm transition-colors px-3 py-2 rounded-lg">Hapus</button>
                             </form>
                         </div>
                     </td>
