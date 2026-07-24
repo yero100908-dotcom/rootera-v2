@@ -79,11 +79,12 @@
 .logo-root,.logo-root-white{color:var(--blue)}
 .logo-era,.logo-era-green{color:var(--green)}
 .logo-root-white{color:#fff}
-.nav-menu{display:flex;align-items:center;gap:.25rem;margin-left:auto}
-.nav-link{padding:.5rem .85rem;border-radius:var(--radius-sm);font-size:.92rem;font-weight:500;color:var(--gray-600);transition:var(--transition);position:relative}
-.nav-link:hover,.nav-link.active{color:var(--blue);background:rgba(10,46,120,.06)}
-.nav-link.active::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:20px;height:2px;background:var(--green);border-radius:2px}
-.nav-cta{display:flex;align-items:center;gap:.4rem;padding:.55rem 1.25rem;background:var(--green);color:#fff;border-radius:50px;font-size:.9rem;font-weight:600;transition:var(--transition);white-space:nowrap;margin-left:.5rem}
+.nav-menu{display:flex;align-items:center;gap:1.5rem;margin-left:auto}
+.nav-link{padding:.5rem 0;font-size:.95rem;font-weight:500;color:#0F2A44;transition:var(--transition);position:relative}
+.nav-link:hover,.nav-link.active{color:#1FAF5A;background:transparent}
+.nav-link::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:#1FAF5A;transition:var(--transition);border-radius:2px}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:.4rem;padding:.55rem 1.25rem;background:var(--green);color:#fff;border-radius:50px;font-size:.9rem;font-weight:600;transition:var(--transition);white-space:nowrap;margin-left:2.5rem}
 .nav-cta:hover{background:var(--green-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(22,159,129,.3)}
 .nav-hamburger{display:none;flex-direction:column;gap:5px;padding:.4rem;margin-left:auto}
 .nav-hamburger span{display:block;width:24px;height:2px;background:var(--gray-800);border-radius:2px;transition:var(--transition)}
@@ -92,8 +93,8 @@
 .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 .mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-top:1px solid var(--gray-100);box-shadow:var(--shadow-md);padding:1rem 1.5rem 1.5rem}
 .mobile-menu.open{display:block}
-.mobile-link{display:block;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:500;color:var(--gray-700);transition:var(--transition)}
-.mobile-link:hover,.mobile-link.active{color:var(--blue);background:rgba(10,46,120,.06)}
+.mobile-link{display:block;padding:.75rem 1rem;border-radius:var(--radius-sm);font-weight:500;color:#0F2A44;transition:var(--transition)}
+.mobile-link:hover,.mobile-link.active{color:#1FAF5A;background:rgba(31,175,90,.08)}
 .mobile-cta{background:var(--green)!important;color:#fff!important;text-align:center;margin-top:.5rem}
 
 /* ---- HERO ---- */
