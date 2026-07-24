@@ -19,6 +19,8 @@ class ServiceSectorController extends Controller
     {
         $validated = $request->validate([
             'sector_name' => 'required|string|max:150',
+            'description' => 'nullable|string',
+            'icon'        => 'nullable|string|max:50',
             'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'sort_order'  => 'nullable|integer',
         ]);
@@ -38,6 +40,8 @@ class ServiceSectorController extends Controller
     {
         $validated = $request->validate([
             'sector_name' => 'required|string|max:150',
+            'description' => 'nullable|string',
+            'icon'        => 'nullable|string|max:50',
             'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'sort_order'  => 'nullable|integer',
             'is_active'   => 'nullable|boolean',

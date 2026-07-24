@@ -11,6 +11,8 @@ class ServiceSector extends Model
 
     protected $fillable = [
         'sector_name',
+        'description',
+        'icon',
         'image_path',
         'sort_order',
         'is_active',

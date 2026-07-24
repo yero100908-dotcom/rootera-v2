@@ -18,7 +18,7 @@
             {{ session('success') }}
         </div>
         @endif
-
+    
         <div class="contact-grid">
             {{-- Info Card --}}
             <div class="contact-info-card">   

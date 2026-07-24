@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ServiceSector;
+
 class AboutController extends Controller
 {
     public function index()
@@ -13,14 +15,7 @@ class AboutController extends Controller
             'og_image'    => asset('images/og-about.jpg'),
         ];
 
-        $teamZones = [
-            ['name' => 'Hunian Rumah',   'icon' => 'home',     'description' => 'Layanan untuk seluruh kebutuhan saluran dan pipa di rumah tinggal pribadi Anda.'],
-            ['name' => 'Apartemen',      'icon' => 'building', 'description' => 'Penanganan cepat dan efisien untuk unit apartemen dan gedung bertingkat.'],
-            ['name' => 'Ruko Bisnis',    'icon' => 'store',    'description' => 'Solusi tepat untuk ruko dan bangunan komersial tanpa mengganggu aktivitas bisnis.'],
-            ['name' => 'Gedung Kantor',  'icon' => 'office',   'description' => 'Pemeliharaan sistem pipa untuk gedung perkantoran skala kecil hingga besar.'],
-            ['name' => 'Area Industri',  'icon' => 'factory',  'description' => 'Penanganan saluran industri dengan kapasitas tinggi dan peralatan berat khusus.'],
-            ['name' => 'Resto & Cafe',   'icon' => 'cafe',     'description' => 'Pembersihan saluran lemak dapur restoran dan cafe secara menyeluruh dan higienis.'],
-        ];
+        $sectors = ServiceSector::where('is_active', true)->orderBy('sort_order', 'asc')->get();
 
         $advantages = [
             ['title' => 'Teknologi Tanpa Bongkar', 'description' => 'Menggunakan spiral cable modern dan Hydro-Jetting bertekanan tinggi untuk melancarkan saluran tumpat secara efektif tanpa proses pembongkaran lantai.', 'icon' => 'badge'],
@@ -28,6 +23,6 @@ class AboutController extends Controller
             ['title' => 'Aman & Ramah Lingkungan', 'description' => '100% bebas dari bahan kimia asam korosif. Sangat aman bagi integritas pipa jangka panjang, keluarga, serta kelestarian air tanah.', 'icon' => 'shield'],
         ];
 
-        return view('pages.tentang-kami', compact('seo', 'teamZones', 'advantages'));
+        return view('pages.tentang-kami', compact('seo', 'sectors', 'advantages'));
     }
 }

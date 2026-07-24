@@ -30,13 +30,19 @@
             @forelse($sectors as $sector)
                 <tr class="hover:bg-slate-50/60 transition-colors">
                     <td class="px-6 py-4">
-                        @if($sector->image_url)
-                            <img src="{{ $sector->image_url }}" alt="{{ $sector->sector_name }}" class="w-12 h-12 rounded-lg object-cover border border-slate-200/80">
-                        @else
-                            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 border border-slate-200/80">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                            </div>
-                        @endif
+                        @php
+                        $icons = [
+                            'home' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+                            'building' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>',
+                            'store' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><line x1="9" y1="22" x2="9" y2="12"/><line x1="15" y1="22" x2="15" y2="12"/><line x1="9" y1="12" x2="15" y2="12"/></svg>',
+                            'office' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+                            'factory' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+                            'cafe' => '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
+                        ];
+                        @endphp
+                        <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600 border border-emerald-100">
+                            {!! $icons[$sector->icon] ?? $icons['home'] !!}
+                        </div>
                     </td>
                     <td class="px-6 py-4">
                         <strong class="text-slate-900 text-sm font-medium">{{ $sector->sector_name }}</strong>
@@ -85,8 +91,19 @@
                 <input type="text" name="sector_name" required placeholder="Contoh: Hunian & Rumah Tinggal" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
             <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Sektor</label>
-                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Sektor</label>
+                <textarea name="description" rows="3" placeholder="Contoh: Penanganan cepat dan efisien untuk unit apartemen..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+            </div>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pilih Ikon Sektor</label>
+                <select name="icon" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
+                    <option value="home">Hunian Rumah (Home)</option>
+                    <option value="building">Apartemen (Building)</option>
+                    <option value="store">Ruko Bisnis (Store)</option>
+                    <option value="office">Gedung Kantor (Office)</option>
+                    <option value="factory">Area Industri (Factory)</option>
+                    <option value="cafe">Resto & Cafe (Cafe)</option>
+                </select>
             </div>
             <div style="margin-bottom:1.5rem">
                 <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan Tampil</label>
@@ -114,8 +131,19 @@
                 <input type="text" name="sector_name" id="edit-sector-name" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
             <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Sektor (Biarkan kosong jika tidak diganti)</label>
-                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Sektor</label>
+                <textarea name="description" id="edit-sector-description" rows="3" placeholder="Contoh: Penanganan cepat dan efisien untuk unit apartemen..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
+            </div>
+            <div style="margin-bottom:1rem">
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pilih Ikon Sektor</label>
+                <select name="icon" id="edit-sector-icon" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
+                    <option value="home">Hunian Rumah (Home)</option>
+                    <option value="building">Apartemen (Building)</option>
+                    <option value="store">Ruko Bisnis (Store)</option>
+                    <option value="office">Gedung Kantor (Office)</option>
+                    <option value="factory">Area Industri (Factory)</option>
+                    <option value="cafe">Resto & Cafe (Cafe)</option>
+                </select>
             </div>
             <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem">
                 <div>
@@ -140,6 +168,8 @@
 function openEditSector(sector) {
     document.getElementById('edit-sector-form').action = `/admin/service-sectors/${sector.id}`;
     document.getElementById('edit-sector-name').value = sector.sector_name;
+    document.getElementById('edit-sector-description').value = sector.description || '';
+    document.getElementById('edit-sector-icon').value = sector.icon || 'home';
     document.getElementById('edit-sort-order').value = sector.sort_order;
     document.getElementById('edit-is-active').checked = sector.is_active == 1;
     document.getElementById('modal-edit-sector').style.display='flex';
