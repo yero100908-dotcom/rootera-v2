@@ -44,10 +44,10 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end gap-3">
-                            <button type="button" onclick='openEditFaq(@json($faq))' class="text-slate-500 hover:text-emerald-600 font-medium text-sm transition-colors">Edit</button>
+                            <button type="button" onclick='openEditFaq(@json($faq))' class="text-slate-600 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-700 font-medium text-sm transition-colors px-3 py-2 rounded-lg">Edit</button>
                             <form action="{{ route('admin.faqs.destroy', $faq) }}" method="POST" onsubmit="return confirm('Hapus FAQ ini?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-medium text-sm transition-colors">Hapus</button>
+                                <button type="submit" class="text-slate-600 bg-slate-100 hover:bg-rose-100 hover:text-rose-700 font-medium text-sm transition-colors px-3 py-2 rounded-lg">Hapus</button>
                             </form>
                         </div>
                     </td>
@@ -63,20 +63,20 @@
 </div>
 
 {{-- Modal Tambah FAQ --}}
-<div id="modal-add-faq" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
-    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+<div id="modal-add-faq" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-auto overflow-hidden">
+        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
             <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Tambah FAQ</h2>
             <button type="button" onclick="document.getElementById('modal-add-faq').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form method="POST" action="{{ route('admin.faqs.store') }}" style="padding:1.5rem">
+        <form method="POST" action="{{ route('admin.faqs.store') }}" class="p-4 sm:p-6">
             @csrf
             <div style="margin-bottom:1rem">
                 <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pertanyaan <span style="color:#ef4444">*</span></label>
                 <input type="text" name="question" required placeholder="Berapa lama pengerjaan?" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
             <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span></label>
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span> <span class="text-xs text-slate-400 font-normal ml-1">(Gunakan &lt;b&gt;teks&lt;/b&gt; atau &lt;strong&gt;teks&lt;/strong&gt; untuk tulisan tebal)</span></label>
                 <textarea name="answer" required rows="4" placeholder="Tulis jawaban di sini..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
             <div style="margin-bottom:1.5rem">
@@ -84,28 +84,28 @@
                 <input type="number" name="sort_order" value="0" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
             <div style="display:flex;justify-content:flex-end;gap:.75rem">
-                <button type="button" onclick="document.getElementById('modal-add-faq').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
-                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Simpan</button>
+                <button type="button" onclick="document.getElementById('modal-add-faq').style.display='none'" class="px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-500 hover:bg-slate-50 text-sm font-medium transition-colors">Batal</button>
+                <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors">Simpan</button>
             </div>
         </form>
     </div>
 </div>
 
 {{-- Modal Edit FAQ --}}
-<div id="modal-edit-faq" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:50;display:none;align-items:center;justify-content:center;padding:1rem">
-    <div style="background:#fff;border-radius:16px;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);width:100%;max-width:500px;overflow:hidden">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid #e5e7eb">
+<div id="modal-edit-faq" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-auto overflow-hidden">
+        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
             <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Edit FAQ</h2>
             <button type="button" onclick="document.getElementById('modal-edit-faq').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
         </div>
-        <form id="edit-faq-form" method="POST" style="padding:1.5rem">
+        <form id="edit-faq-form" method="POST" class="p-4 sm:p-6">
             @csrf @method('PUT')
             <div style="margin-bottom:1rem">
                 <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Pertanyaan <span style="color:#ef4444">*</span></label>
                 <input type="text" name="question" id="edit-question" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
             </div>
             <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span></label>
+                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Jawaban <span style="color:#ef4444">*</span> <span class="text-xs text-slate-400 font-normal ml-1">(Gunakan &lt;b&gt;teks&lt;/b&gt; untuk tulisan tebal)</span></label>
                 <textarea name="answer" id="edit-answer" required rows="4" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
             </div>
             <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem">
@@ -119,8 +119,8 @@
                 </div>
             </div>
             <div style="display:flex;justify-content:flex-end;gap:.75rem">
-                <button type="button" onclick="document.getElementById('modal-edit-faq').style.display='none'" style="padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff;color:#6b7280;font-size:.9rem;font-weight:500;cursor:pointer">Batal</button>
-                <button type="submit" style="padding:.5rem 1rem;border:none;border-radius:8px;background:#169F81;color:#fff;font-size:.9rem;font-weight:500;cursor:pointer">Perbarui</button>
+                <button type="button" onclick="document.getElementById('modal-edit-faq').style.display='none'" class="px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-500 hover:bg-slate-50 text-sm font-medium transition-colors">Batal</button>
+                <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors">Perbarui</button>
             </div>
         </form>
     </div>

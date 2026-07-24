@@ -69,17 +69,17 @@
 </div>
 
 <!-- Modal Pop-up Gallery -->
-<div id="galleryModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; align-items:center; justify-content:center; padding:1rem; opacity:0; transition:opacity 0.3s ease;">
+<div id="galleryModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[9999] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
     <!-- Modal Content -->
-    <div style="background:#fff; width:100%; max-width:550px; border-radius:16px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); display:flex; flex-direction:column; max-height:90vh; transform:scale(0.95); transition:transform 0.3s ease;" id="modalContent">
+    <div id="modalContent" class="bg-white w-full max-w-lg rounded-2xl shadow-xl flex flex-col max-h-[90vh] transform scale-95 transition-transform duration-300">
         <!-- Modal Header -->
-        <div style="padding:1.5rem; border-bottom:1px solid #e5e7eb; display:flex; justify-content:space-between; align-items:center;">
-            <h3 id="modal-title" style="font-family:'Plus Jakarta Sans',sans-serif;color:#0A2E78;font-size:1.15rem;margin:0;font-weight:700;">Tambah Foto Gallery Baru</h3>
-            <button type="button" onclick="closeModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#9ca3af;display:flex;align-items:center;justify-content:center;line-height:1;width:32px;height:32px;border-radius:50%; transition:background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">&times;</button>
+        <div class="p-4 sm:p-6 border-b border-slate-200 flex justify-between items-center">
+            <h3 id="modal-title" class="text-xl font-bold text-slate-800 m-0">Tambah Foto Gallery Baru</h3>
+            <button type="button" onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">&times;</button>
         </div>
         
         <!-- Modal Body (Scrollable) -->
-        <div style="padding:1.5rem; overflow-y:auto; flex-grow:1;">
+        <div class="p-4 sm:p-6 overflow-y-auto flex-grow">
             <form id="gallery-form" action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div id="method-spoof"></div>
@@ -127,9 +127,9 @@
         </div>
         
         <!-- Modal Footer -->
-        <div style="padding:1.25rem 1.5rem; border-top:1px solid #e5e7eb; display:flex; justify-content:flex-end; gap:1rem; background:#f9fafb; border-bottom-left-radius:16px; border-bottom-right-radius:16px;">
-            <button type="button" onclick="closeModal()" style="padding:0.6rem 1.2rem; border-radius:8px; border:1px solid #d1d5db; background:#fff; color:#374151; font-weight:600; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#fff'">Batal</button>
-            <button type="submit" form="gallery-form" style="background:#2563eb; color:#fff; border:none; padding:0.6rem 1.5rem; border-radius:8px; font-weight:600; cursor:pointer; box-shadow:0 4px 6px -1px rgba(37, 99, 235, 0.2); transition:background 0.2s;" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='#2563eb'">Simpan</button>
+        <div class="p-4 sm:p-6 border-t border-slate-200 flex justify-end gap-3 bg-slate-50 rounded-b-2xl">
+            <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-600 hover:bg-slate-100 font-medium transition-colors">Batal</button>
+            <button type="submit" form="gallery-form" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-sm">Simpan</button>
         </div>
     </div>
 </div>
