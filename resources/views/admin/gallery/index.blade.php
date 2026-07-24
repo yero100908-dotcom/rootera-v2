@@ -39,8 +39,11 @@
             </div>
             <div class="p-4 flex flex-col flex-grow">
                 <p class="font-semibold text-slate-800 text-sm mb-4 line-clamp-2 leading-snug flex-grow" title="{{ $photo->title }}">{{ $photo->title }}</p>
-                <div class="flex items-center gap-2 mt-auto">
-                    <form action="{{ route('admin.gallery.toggle',$photo) }}" method="POST" class="flex-1">
+                <div class="flex flex-wrap items-center gap-2 mt-auto">
+                    <button type="button" onclick="openEditModal({{ $photo->id }}, '{{ addslashes($photo->title) }}', '{{ $photo->category }}', '{{ addslashes($photo->description) }}', {{ $photo->sort_order ?? 0 }})" class="flex-1 min-w-[30%] py-2 px-2 bg-amber-50 text-amber-600 hover:bg-amber-100 hover:text-amber-700 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg> Edit
+                    </button>
+                    <form action="{{ route('admin.gallery.toggle',$photo) }}" method="POST" class="flex-1 min-w-[30%]">
                         @csrf @method('PATCH')
                         <button type="submit" class="w-full py-2 px-3 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors {{ $photo->is_active ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-blue-50 text-blue-700 hover:bg-blue-100' }}">
                             @if($photo->is_active)
@@ -50,7 +53,7 @@
                             @endif
                         </button>
                     </form>
-                    <form action="{{ route('admin.gallery.destroy',$photo) }}" method="POST" onsubmit="return confirm('Hapus foto ini dari galeri?')" class="flex-1">
+                    <form action="{{ route('admin.gallery.destroy',$photo) }}" method="POST" onsubmit="return confirm('Hapus foto ini dari galeri?')" class="flex-1 min-w-[30%]">
                         @csrf @method('DELETE')
                         <button type="submit" class="w-full py-2 px-3 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg> Hapus
@@ -71,7 +74,7 @@
     <div style="background:#fff; width:100%; max-width:550px; border-radius:16px; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); display:flex; flex-direction:column; max-height:90vh; transform:scale(0.95); transition:transform 0.3s ease;" id="modalContent">
         <!-- Modal Header -->
         <div style="padding:1.5rem; border-bottom:1px solid #e5e7eb; display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;color:#0A2E78;font-size:1.15rem;margin:0;font-weight:700;">Tambah Foto Gallery Baru</h3>
+            <h3 id="modal-title" style="font-family:'Plus Jakarta Sans',sans-serif;color:#0A2E78;font-size:1.15rem;margin:0;font-weight:700;">Tambah Foto Gallery Baru</h3>
             <button type="button" onclick="closeModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#9ca3af;display:flex;align-items:center;justify-content:center;line-height:1;width:32px;height:32px;border-radius:50%; transition:background 0.2s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">&times;</button>
         </div>
         
@@ -79,6 +82,7 @@
         <div style="padding:1.5rem; overflow-y:auto; flex-grow:1;">
             <form id="gallery-form" action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <div id="method-spoof"></div>
                 
                 <div class="form-group" style="margin-bottom:1.25rem;">
                     <label for="title" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Judul Foto / Caption *</label>
@@ -97,7 +101,8 @@
                 </div>
                 
                 <div class="form-group" style="margin-bottom:1.25rem;">
-                    <label for="image" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Upload File Gambar *</label>
+                    <label for="image" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Upload File Gambar <span id="image-asterisk">*</span></label>
+                    <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem;" id="image-hint"></div>
                     
                     <!-- Area Drag and Drop Semu -->
                     <div style="border:2px dashed #d1d5db; border-radius:8px; padding:2rem; text-align:center; background:#f9fafb; transition:all 0.2s; cursor:pointer; position:relative;" onmouseover="this.style.borderColor='#2563eb'; this.style.background='#eff6ff'" onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#f9fafb'">
@@ -139,6 +144,12 @@ const modalContent = document.getElementById('modalContent');
 
 function openModal() {
     document.getElementById('gallery-form').reset();
+    document.getElementById('gallery-form').action = "{{ route('admin.gallery.store') }}";
+    document.getElementById('method-spoof').innerHTML = '';
+    document.getElementById('modal-title').textContent = 'Tambah Foto Gallery Baru';
+    document.getElementById('image').required = true;
+    document.getElementById('image-asterisk').style.display = 'inline';
+    document.getElementById('image-hint').textContent = '';
     document.getElementById('file-name').textContent = 'Mendukung format JPG, PNG, WEBP';
     
     // Show modal with animation
@@ -155,6 +166,28 @@ function closeModal() {
     setTimeout(() => {
         modal.style.display = 'none';
     }, 300);
+}
+
+function openEditModal(id, title, category, description, sort_order) {
+    document.getElementById('gallery-form').reset();
+    document.getElementById('gallery-form').action = `/admin/gallery/${id}`;
+    document.getElementById('method-spoof').innerHTML = '@method("PUT")';
+    document.getElementById('modal-title').textContent = 'Edit Foto Gallery';
+    
+    document.getElementById('title').value = title;
+    document.getElementById('category').value = category;
+    document.getElementById('description').value = description || '';
+    document.getElementById('sort_order').value = sort_order;
+    
+    document.getElementById('image').required = false;
+    document.getElementById('image-asterisk').style.display = 'none';
+    document.getElementById('image-hint').textContent = 'Biarkan kosong jika tidak ingin mengubah gambar.';
+    document.getElementById('file-name').textContent = 'Pilih gambar baru (opsional)';
+    
+    modal.style.display = 'flex';
+    void modal.offsetWidth;
+    modal.style.opacity = '1';
+    modalContent.style.transform = 'scale(1)';
 }
 
 // Close modal when clicking outside of it

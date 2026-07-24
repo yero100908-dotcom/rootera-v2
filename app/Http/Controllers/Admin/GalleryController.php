@@ -33,6 +33,27 @@ class GalleryController extends Controller
             ->with('success', 'Foto berhasil ditambahkan.');
     }
 
+    public function update(Request $request, GalleryPhoto $galleryPhoto)
+    {
+        $validated = $request->validate([
+            'title'       => 'required|string|max:150',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'description' => 'nullable|string|max:300',
+            'category'    => 'nullable|string|max:50',
+            'sort_order'  => 'nullable|integer',
+        ]);
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($galleryPhoto->image);
+            $validated['image'] = $request->file('image')->store('gallery', 'public');
+        }
+
+        $galleryPhoto->update($validated);
+
+        return redirect()->route('admin.gallery.index')
+            ->with('success', 'Data foto berhasil diperbarui.');
+    }
+
     public function destroy(GalleryPhoto $galleryPhoto)
     {
         Storage::disk('public')->delete($galleryPhoto->image);

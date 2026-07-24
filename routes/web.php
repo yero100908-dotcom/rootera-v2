@@ -106,6 +106,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Gallery
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
+    Route::put('/gallery/{galleryPhoto}', [GalleryController::class, 'update'])->name('gallery.update');
     Route::patch('/gallery/{galleryPhoto}/toggle', [GalleryController::class, 'toggleActive'])->name('gallery.toggle');
     Route::delete('/gallery/{galleryPhoto}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
