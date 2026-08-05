@@ -312,6 +312,11 @@
   .footer-container{grid-template-columns:1fr 1fr}
 }
 @media(max-width:768px){
+  .hero{min-height:auto;padding-top:0}
+  .hero-container{padding:4.5rem 1.5rem 3.5rem;gap:1.5rem}
+  .hero-title{font-size:2.2rem;margin-bottom:.85rem}
+  .hero-desc{margin-bottom:1.5rem;font-size:.95rem}
+  .hero-badge{margin-bottom:1rem;font-size:.8rem}
   .nav-menu{display:none}
   .nav-cta{display:flex; padding:.4rem .8rem; font-size:.8rem} /* Keep CTA visible but smaller */
   .nav-hamburger{display:flex; margin-left:auto}
@@ -321,7 +326,7 @@
   .footer-container{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .section{padding:3.5rem 0}
-  .whatsapp-float{bottom:5rem; right:1.5rem} /* Safe area from mobile footer */
+  .whatsapp-float{bottom:8.5rem; right:1.5rem} /* Adjusted to sit in the gap between hero buttons */
 }
 @media(max-width:480px){
   .hero-actions{flex-direction:column; width:100%}

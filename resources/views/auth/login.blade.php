@@ -38,7 +38,7 @@
             <div class="flex flex-col items-center mb-8">
                 <!-- Logo Wrapper to handle transparent padding -->
                 <div class="relative w-full h-24 sm:h-28 flex items-center justify-center mb-2 sm:mb-4">
-                    <img src="{{ asset('images/Light Mode-Logo.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none" alt="Rooterin Logo" onerror="this.onerror=null; this.src='{{ asset('images/dark mode-notag.png') }}';">
+                    <img src="{{ asset('images/logo-hijau.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none transform scale-125 sm:scale-150" alt="Rootera Logo">
                 </div>
                 
                 <!-- Title -->

@@ -1,6 +1,6 @@
 {{-- Floating WhatsApp Button - Muncul di semua halaman --}}
 <a
-    href="https://wa.me/6281385404000?text=Halo%20Rooterin%2C%20saya%20ingin%20konsultasi%20tentang%20layanan%20pipa%20mampet."
+    href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20ingin%20konsultasi%20tentang%20layanan%20pipa%20mampet."
     class="whatsapp-float"
     id="whatsapp-float"
     target="_blank"

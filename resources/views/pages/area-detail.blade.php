@@ -9,7 +9,7 @@ $areaSchema = [
   "description" => "Layanan profesional pelancar saluran air mampet, kran air tersumbat, cuci toren, dan instalasi pipa di wilayah " . $area->name . " dan sekitarnya.",
   "url" => url('/area-layanan/' . $area->slug),
   "telephone" => "+6281385404000",
-  "logo" => asset('images/dark mode-notag.png'),
+  "logo" => asset('images/logo-hijau.png'),
   "image" => $area->image ? asset('storage/' . $area->image) : asset('images/JnJ.jpeg'),
   "priceRange" => "Rp",
   "address" => [
@@ -210,7 +210,7 @@ $faqSchema = [
                     <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem;">Butuh Bantuan Teknisi di {{ $area->name }}?</h3>
                     <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; max-width: 600px; margin: 0 auto 2rem;">Segera hubungi tim Rooterin untuk respon cepat darurat pipa mampet di rumah, ruko, restoran, atau kantor Anda.</p>
                     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                        <a href="https://wa.me/6281385404000?text=Halo%20Rooterin%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
+                        <a href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20di%20area%20{{ urlencode($area->name) }}%20butuh%20layanan%20pipa%20mampet." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
                             Hubungi via WhatsApp
                         </a>
                         <a href="{{ route('kontak') }}" class="btn btn-secondary" style="border: 2px solid #ffffff; color: #ffffff; background: transparent; font-size:1rem; padding: 0.85rem 2rem; font-weight: 700; border-radius: 50px; text-decoration: none;">

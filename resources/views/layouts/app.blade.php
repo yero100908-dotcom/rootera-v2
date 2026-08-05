@@ -43,7 +43,7 @@
           "description" => "Jasa cleaning service pipa, wastafel mampet, cuci toren, dan instalasi pipa baru profesional tanpa bongkar.",
           "url" => url('/'),
           "telephone" => "+6281385404000",
-          "logo" => asset('images/dark mode-notag.png'),
+          "logo" => asset('images/logo-hijau.png'),
           "image" => asset('images/JnJ.jpeg'),
           "priceRange" => "Rp",
           "address" => [
@@ -87,7 +87,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon-cropped.png') }}">
 
     {{-- Styles --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])

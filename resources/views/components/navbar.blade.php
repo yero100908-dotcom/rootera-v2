@@ -1,11 +1,11 @@
 <style>
-    .nav-logo-img { height: 80px; width: auto; object-fit: contain; transform-origin: left center; transform: scale(1.8); }
+    .nav-logo-img { height: 80px; width: auto; object-fit: contain; transform-origin: left center; transform: scale(2.5); }
     @media (max-width: 768px) {
-        .nav-logo-img { transform: scale(1.4); } /* Scale down on mobile to prevent overlap */
+        .nav-logo-img { transform: scale(1.8); } /* Scale down on mobile to prevent overlap */
         .nav-cta { display: none !important; } /* Hide CTA completely on mobile to save space */
     }
     @media (max-width: 480px) {
-        .nav-logo-img { transform: scale(1.2); } /* Even smaller on tiny screens */
+        .nav-logo-img { transform: scale(1.5); } /* Even smaller on tiny screens */
     }
 </style>
 
@@ -13,7 +13,7 @@
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Rooterin - Beranda">
-            <img src="{{ asset('images/dark mode-notag.png') }}" alt="Rooterin Logo" class="nav-logo-img">
+            <img src="{{ asset('images/FINAL LOGO.png') }}" alt="Rootera Logo" class="nav-logo-img">
         </a>
 
         {{-- Desktop Menu --}}

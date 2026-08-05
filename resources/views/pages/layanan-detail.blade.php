@@ -12,7 +12,7 @@ $serviceSchema = [
     "name" => "Rooterin",
     "telephone" => "+6281385404000",
     "url" => url('/'),
-    "logo" => asset('images/dark mode-notag.png'),
+    "logo" => asset('images/logo-hijau.png'),
     "image" => asset('images/JnJ.jpeg')
   ],
   "areaServed" => [
@@ -231,7 +231,7 @@ $faqSchema = [
                     <h3 style="font-size: 1.75rem; font-weight: 800; color: #ffffff; margin-bottom: 0.75rem;">Atasi Saluran Mampet Sekarang Juga!</h3>
                     <p style="color: rgba(255,255,255,0.9); font-size: 1.05rem; max-width: 600px; margin: 0 auto 2rem;">Konsultasikan secara gratis masalah pipa Anda dan dapatkan jadwal penanganan dari tim teknisi bersertifikat kami.</p>
                     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                        <a href="https://wa.me/6281385404000?text=Halo%20Rooterin%2C%20saya%20butuh%20layanan%20jasa%20{{ urlencode($category->name) }}." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
+                        <a href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20butuh%20layanan%20jasa%20{{ urlencode($category->name) }}." class="btn btn-primary" style="background:#25D366; border-color:#25D366; font-size:1rem; padding: 0.85rem 2rem; color: #ffffff; font-weight: 700; border-radius: 50px; text-decoration: none;" target="_blank" rel="noopener">
                             Hubungi via WhatsApp
                         </a>
                         <a href="{{ route('kontak') }}" class="btn btn-secondary" style="border: 2px solid #ffffff; color: #ffffff; background: transparent; font-size:1rem; padding: 0.85rem 2rem; font-weight: 700; border-radius: 50px; text-decoration: none;">

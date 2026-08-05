@@ -10,7 +10,7 @@
   "author": {"@@type":"Person","name":"{{ $article->author }}"},
   "datePublished": "{{ $article->published_at?->toIso8601String() }}",
   "dateModified": "{{ $article->updated_at->toIso8601String() }}",
-  "publisher": {"@@type":"Organization","name":"Rooterin","logo":{"@@type":"ImageObject","url":"{{ asset('images/logo.png') }}"}},
+  "publisher": {"@@type":"Organization","name":"Rootera","logo":{"@@type":"ImageObject","url":"{{ asset('images/logo-hijau.png') }}"}},
   "mainEntityOfPage": {"@@type":"WebPage","@@id":"{{ url()->current() }}"}
 }
 </script>

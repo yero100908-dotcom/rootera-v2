@@ -11,7 +11,7 @@
             {{-- Brand --}}
             <div class="footer-brand">
                 <a href="{{ route('home') }}" class="footer-logo" aria-label="Rooterin Beranda">
-                    <img src="{{ asset('images/dark mode-notag.png') }}" alt="Rooterin Logo" style="height: 220px; width: auto; object-fit: contain;">
+                    <img src="{{ asset('images/logo final.png') }}" alt="Rootera Logo" style="height: 320px; width: auto; object-fit: contain; transform: scale(1.2); transform-origin: left center;">
                 </a>
                 <p class="footer-tagline">Solusi profesional untuk pipa dan saluran mampet. Cepat, tepat, bergaransi.</p>
                 {{-- Social Links --}}
