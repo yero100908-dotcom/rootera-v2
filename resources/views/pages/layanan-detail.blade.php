@@ -9,7 +9,7 @@ $serviceSchema = [
   "description" => $category->description,
   "provider" => [
     "@type" => "Plumber",
-    "name" => "Rooterin",
+    "name" => "Rootera",
     "telephone" => "+6281385404000",
     "url" => url('/'),
     "logo" => asset('images/logo-hijau.png'),
@@ -33,7 +33,7 @@ $faqSchema = [
   "mainEntity" => [
     [
       "@type" => "Question",
-      "name" => "Berapa lama proses pengerjaan pelancar pipa mampet Rooterin?",
+      "name" => "Berapa lama proses pengerjaan pelancar pipa mampet Rootera?",
       "acceptedAnswer" => [
         "@type" => "Answer",
         "text" => "Estimasi waktu pengerjaan pelancar pipa mampet berkisar antara 1 hingga 2 jam saja, tergantung tingkat kesulitan dan panjang saluran pipa. Berkat metode mekanis modern, masalah selesai dengan cepat tanpa harus membongkar struktur bangunan."
@@ -41,7 +41,7 @@ $faqSchema = [
     ],
     [
       "@type" => "Question",
-      "name" => "Apakah metode pembersihan Rooterin aman untuk pipa paralon PVC?",
+      "name" => "Apakah metode pembersihan Rootera aman untuk pipa paralon PVC?",
       "acceptedAnswer" => [
         "@type" => "Answer",
         "text" => "Sangat aman. Kami menggunakan teknologi spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari bahan kimia asam korosif. Metode ramah lingkungan ini menjaga integritas pipa paralon PVC Anda agar tidak bocor atau pecah."
@@ -49,7 +49,7 @@ $faqSchema = [
     ],
     [
       "@type" => "Question",
-      "name" => "Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rooterin?",
+      "name" => "Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?",
       "acceptedAnswer" => [
         "@type" => "Answer",
         "text" => "Biaya jasa pelancar pipa berkisar mulai dari Rp " . number_format($category->price_home, 0, ',', '.') . " untuk kategori residensial/hunian rumah tangga, dan Rp " . number_format($category->price_corporate, 0, ',', '.') . " untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi."
@@ -79,7 +79,7 @@ $faqSchema = [
     <div class="container text-center" style="position:relative;z-index:2">
         <span class="badge" style="background: rgba(255, 255, 255, 0.15); color: #fff; border: 1px solid rgba(255, 255, 255, 0.25); backdrop-filter: blur(8px); margin-bottom: 1rem; display: inline-block;">Layanan Detail</span>
         <h1 id="page-title" style="color:#fff;margin-bottom:.75rem; font-size: 2.2rem; font-weight: 800; line-height: 1.2;">
-            Jasa {{ $category->name }} Profesional — Rooterin
+            Jasa {{ $category->name }} Profesional — Rootera
         </h1>
         <p style="color:rgba(255,255,255,.8);font-size:1.05rem;max-width:650px;margin:0 auto">Solusi cerdas melancarkan saluran mampet menggunakan alat mekanis non-destruktif tanpa merusak struktur bangunan.</p>
     </div>
@@ -93,7 +93,7 @@ $faqSchema = [
             {{-- Direct Answer (GEO Optimization) --}}
             <div style="background: #f0fdf4; border-left: 5px solid #169F81; padding: 1.5rem; border-radius: 0 16px 16px 0; margin-bottom: 2.5rem; box-shadow: 0 4px 12px rgba(22,159,129,0.05)">
                 <p style="font-size: 1.1rem; line-height: 1.6; color: #0f172a; margin: 0; font-weight: 500;">
-                    <strong>Direct Answer:</strong> Jasa {{ $category->name }} dari Rooterin menawarkan solusi pembersihan pipa mampet tanpa bongkar menggunakan teknologi spiral cable mekanis dan hydro-jetting ramah lingkungan (100% bebas asam kimia korosif) yang dijamin membersihkan lemak serta kerak pipa hingga 98% bersih total bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
+                    <strong>Direct Answer:</strong> Jasa {{ $category->name }} dari Rootera menawarkan solusi pembersihan pipa mampet tanpa bongkar menggunakan teknologi spiral cable mekanis dan hydro-jetting ramah lingkungan (100% bebas asam kimia korosif) yang dijamin membersihkan lemak serta kerak pipa hingga 98% bersih total bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
                 </p>
             </div>
 
@@ -105,11 +105,11 @@ $faqSchema = [
                         Solusi Pembersihan Saluran Air & Pipa Mampet yang Efektif
                     </h2>
                     <p style="font-size: 1.05rem; color: #475569; line-height: 1.75; margin-bottom: 1.5rem;">
-                        Pipa air kotor dan saluran pembuangan yang tersumbat lemak sisa makanan, rambut, atau kotoran keras lainnya merupakan masalah pelik yang harus segera ditangani secara higienis. Rooterin mengedepankan filosofi <strong>Eco-Friendly Plumbing</strong> — membuang sumbatan secara mekanis tanpa menyiramkan cairan asam berbahaya yang berisiko membuat sambungan pipa PVC Anda meleyot, bocor, atau hancur di dalam semen lantai.
+                        Pipa air kotor dan saluran pembuangan yang tersumbat lemak sisa makanan, rambut, atau kotoran keras lainnya merupakan masalah pelik yang harus segera ditangani secara higienis. Rootera mengedepankan filosofi <strong>Eco-Friendly Plumbing</strong> — membuang sumbatan secara mekanis tanpa menyiramkan cairan asam berbahaya yang berisiko membuat sambungan pipa PVC Anda meleyot, bocor, atau hancur di dalam semen lantai.
                     </p>
 
                     <h3 style="font-size: 1.35rem; font-weight: 600; color: #0A2E78; margin-top: 2rem; margin-bottom: 1rem;">
-                        Mengapa Memilih Layanan {{ $category->name }} di Rooterin?
+                        Mengapa Memilih Layanan {{ $category->name }} di Rootera?
                     </h3>
                     
                     <ul style="list-style-type: none; padding-left: 0; margin-bottom: 2rem;">
@@ -199,7 +199,7 @@ $faqSchema = [
                     <div style="display: flex; flex-col: column; gap: 1.5rem; max-w: 800px; margin: 0 auto;">
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
-                                <span>❓</span> Berapa lama proses pengerjaan pelancar pipa mampet Rooterin?
+                                <span>❓</span> Berapa lama proses pengerjaan pelancar pipa mampet Rootera?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
                                 Estimasi waktu pengerjaan pelancar pipa mampet berkisar antara 1 hingga 2 jam saja, tergantung tingkat kesulitan dan panjang saluran pipa. Berkat metode mekanis modern, masalah selesai dengan cepat tanpa harus membongkar struktur bangunan.
@@ -208,7 +208,7 @@ $faqSchema = [
                         
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
-                                <span>❓</span> Apakah metode pembersihan Rooterin aman untuk pipa paralon PVC?
+                                <span>❓</span> Apakah metode pembersihan Rootera aman untuk pipa paralon PVC?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
                                 Sangat aman. Kami menggunakan teknologi spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari bahan kimia asam korosif. Metode ramah lingkungan ini menjaga integritas pipa paralon PVC Anda agar tidak bocor atau pecah.
@@ -217,7 +217,7 @@ $faqSchema = [
 
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
-                                <span>❓</span> Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rooterin?
+                                <span>❓</span> Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
                                 Biaya jasa pelancar pipa berkisar mulai dari Rp {{ number_format($category->price_home, 0, ',', '.') }} untuk kategori residensial/hunian rumah tangga, dan Rp {{ number_format($category->price_corporate, 0, ',', '.') }} untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi.

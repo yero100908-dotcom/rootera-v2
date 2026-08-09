@@ -24,7 +24,7 @@
             Saluran Mampet? Hubungi Kami <em style="font-style:normal;color:#6ee7cc">Sekarang!</em>
         </h2>
         <p style="color:rgba(255,255,255,.85);font-size:1.05rem;max-width:520px;margin:0 auto 2.5rem">
-            Tim Rooterin siap merespon dalam hitungan menit. Konsultasi pertama gratis!
+            Tim Rootera siap merespon dalam hitungan menit. Konsultasi pertama gratis!
         </p>
         <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
             <a href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20butuh%20konsultasi." class="btn btn-white" target="_blank" rel="noopener">

@@ -199,7 +199,7 @@
     <div class="container">
         <!-- Banner Showcase Card -->
         <div class="showcase-container">
-            <!-- Decorative Tech Network Lines / Jaringan Node dari Mengapa Rooterin -->
+            <!-- Decorative Tech Network Lines / Jaringan Node dari Mengapa Rootera -->
             <div class="showcase-bg-shape">
                 <!-- Left Tech Network Lines -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600" preserveAspectRatio="none" style="position: absolute; left: 0; top: 0; height: 100%; width: 350px; pointer-events: none; opacity: 0.22;">
@@ -295,7 +295,7 @@
                 <h2 class="showcase-title">Bukti Nyata <br><span>Cara Kami Bekerja</span></h2>
                 
                 <p class="showcase-desc">
-                    Melihat adalah percaya. Lihat langsung bagaimana tim profesional Rooterin menyelesaikan berbagai masalah saluran, dari residensial rumit hingga komersial berskala besar dengan alat canggih tanpa bongkar lantai.
+                    Melihat adalah percaya. Lihat langsung bagaimana tim profesional Rootera menyelesaikan berbagai masalah saluran, dari residensial rumit hingga komersial berskala besar dengan alat canggih tanpa bongkar lantai.
                 </p>
 
                 <!-- Interactive Filters -->

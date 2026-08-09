@@ -3,7 +3,7 @@
         <div class="text-center" style="margin-bottom:3rem">
             <span class="badge badge-blue">Tanya Jawab</span>
             <h2 class="section-title" id="faq-heading" style="margin-top:.75rem">Pertanyaan yang Sering <span>Diajukan</span></h2>
-            <p class="section-sub">Informasi cepat mengenai layanan, biaya, dan garansi dari Rooterin.</p>
+            <p class="section-sub">Informasi cepat mengenai layanan, biaya, dan garansi dari Rootera.</p>
         </div>
         
         <div class="faq-container" style="max-width:800px;margin:0 auto">

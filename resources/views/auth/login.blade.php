@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Login Admin – Rooterin</title>
+    <title>Login Admin – Rootera</title>
     <meta name="robots" content="noindex,nofollow">
     
     <!-- Fonts -->
@@ -69,7 +69,7 @@
                     <label for="email" class="block text-[12px] font-bold text-[#0A2E78] uppercase tracking-wide">
                         Alamat Email / Username
                     </label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="admin@Rooterin.id" required autofocus
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="admin@Rootera.id" required autofocus
                         class="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#169F81] focus:ring-2 focus:ring-[#169F81]/20 outline-none transition-all text-slate-800 text-[14px] sm:text-[15px] placeholder:text-slate-400">
                 </div>
 

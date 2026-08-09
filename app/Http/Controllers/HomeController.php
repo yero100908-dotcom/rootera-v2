@@ -50,8 +50,8 @@ class HomeController extends Controller
             ->get();
 
         $seo = [
-            'title'       => 'Rooterin – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
-            'description' => 'Rooterin solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
+            'title'       => 'Rootera – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
+            'description' => 'Rootera solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
             'canonical'   => url('/'),
             'og_image'    => asset('images/og-home.jpg'),
         ];
