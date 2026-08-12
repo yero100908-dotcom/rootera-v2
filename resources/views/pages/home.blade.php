@@ -94,7 +94,7 @@
         <div class="hero-visual" aria-hidden="true">
             <picture>
                 <source srcset="{{ asset('images/JnJ.webp') }}" type="image/webp">
-                <img src="{{ asset('images/JnJ.jpeg') }}" alt="Pengerjaan Rootera" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
+                <img src="{{ asset('images/JnJ.jpeg') }}" alt="Teknisi Rootera sedang memperbaiki saluran pipa mampet tanpa bongkar" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
             </picture>
             <div class="hero-floating hero-floating-1">
                 <div class="dot"></div>

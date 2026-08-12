@@ -268,7 +268,7 @@
                     
                     <!-- Caption Foto -->
                     <div class="showcase-info">
-                        <h4 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.3rem;">{{ $photo->title }}</h4>
+                        <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: 0.3rem;">{{ $photo->title }}</h3>
                         <span style="color: #1FAF5A; font-size: 0.85rem; text-transform: uppercase; font-weight: 800; letter-spacing: 0.08em;">
                             {{ $photo->category ?? 'Portofolio' }}
                         </span>
