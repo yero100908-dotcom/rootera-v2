@@ -38,9 +38,10 @@
         <?php
         $fallbackSchema = [
           "@context" => "https://schema.org",
-          "@type" => ["Plumber", "HomeAndConstructionBusiness"],
+          "@type" => ["Plumber", "LocalBusiness"],
           "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet",
           "description" => "Jasa cleaning service pipa, wastafel mampet, cuci toren, dan instalasi pipa baru profesional tanpa bongkar.",
+          "@id" => url('/') . "#organization",
           "url" => url('/'),
           "telephone" => "+6281385404000",
           "logo" => asset('images/logo-hijau.png'),
@@ -50,16 +51,26 @@
             "@type" => "PostalAddress",
             "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
             "addressLocality" => "Jakarta Timur",
-            "addressRegion" => "Daerah Khusus Ibukota Jakarta",
+            "addressRegion" => "DKI Jakarta",
             "postalCode" => "13770",
             "addressCountry" => "ID"
           ],
           "geo" => [
             "@type" => "GeoCoordinates",
-            "latitude" => "-6.3275975",
-            "longitude" => "106.8627125"
+            "latitude" => -6.3275975,
+            "longitude" => 106.8627125
           ],
-          "openingHours" => "Mo-Su 00:00-23:59",
+          "openingHoursSpecification" => [
+            "@type" => "OpeningHoursSpecification",
+            "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens" => "00:00",
+            "closes" => "23:59"
+          ],
+          "aggregateRating" => [
+            "@type" => "AggregateRating",
+            "ratingValue" => "4.9",
+            "reviewCount" => "2300"
+          ],
           "areaServed" => [
             "Jabodetabek",
             "Lampung",

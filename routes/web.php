@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\ServiceSectorController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\SeoManageController;
+use App\Http\Controllers\SitemapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ use App\Http\Controllers\Admin\SeoManageController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');

@@ -16,7 +16,7 @@ class BlogController extends Controller
             'title'       => 'Blog & Tips Pipa – Rootera | Panduan Saluran Air & Sanitasi',
             'description' => 'Baca artikel dan tips terbaru dari Rootera seputar cara mengatasi pipa mampet, merawat saluran air, dan panduan sanitasi rumah untuk keluarga sehat.',
             'canonical'   => url('/blog'),
-            'og_image'    => asset('images/og-blog.jpg'),
+            'og_image'    => asset('images/JnJ.jpeg'),
         ];
 
         return view('pages.blog', compact('articles', 'seo'));
@@ -40,7 +40,7 @@ class BlogController extends Controller
             'title'       => ($article->meta_title ?? $article->title) . ' | Rootera',
             'description' => $article->meta_description ?? $article->excerpt,
             'canonical'   => $article->canonical_url ?? url('/blog/' . $article->slug),
-            'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : asset('storage/' . $article->thumbnail),
+            'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : ($article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/JnJ.jpeg')),
         ];
 
         return view('pages.blog-detail', compact('article', 'relatedArticles', 'seo'));
