@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     {{-- Dynamic SEO Meta Tags --}}
-    <title>{{ $seo['title'] ?? 'Rootera – Jasa Pipa & Saluran Mampet Profesional' }}</title>
-    <meta name="description" content="{{ $seo['description'] ?? 'Rootera solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.' }}">
+    <title>{{ $seo['title'] ?? 'Rootera – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional' }}</title>
+    <meta name="description" content="{{ $seo['description'] ?? 'Rootera solusi terpercaya pipa dan wastafel mampet. Layanan profesional, cepat, tanpa bongkar, bergaransi.' }}">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
     
     @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
@@ -19,17 +19,17 @@
     {{-- Open Graph --}}
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
-    <meta property="og:title"       content="{{ $seo['title'] ?? 'Rootera' }}">
+    <meta property="og:title"       content="{{ $seo['title'] ?? 'Rootera Plumbing' }}">
     <meta property="og:description" content="{{ $seo['description'] ?? '' }}">
-    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/og-default.jpg') }}">
-    <meta property="og:site_name"   content="Rootera">
+    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/JnJ.jpeg') }}">
+    <meta property="og:site_name"   content="Rootera Plumbing">
     <meta property="og:locale"      content="id_ID">
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">
-    <meta name="twitter:title"       content="{{ $seo['title'] ?? 'Rootera' }}">
+    <meta name="twitter:title"       content="{{ $seo['title'] ?? 'Rootera Plumbing' }}">
     <meta name="twitter:description" content="{{ $seo['description'] ?? '' }}">
-    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/og-default.jpg') }}">
+    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/JnJ.jpeg') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
     @if (View::hasSection('schema-markup'))
@@ -72,13 +72,7 @@
             "reviewCount" => "2300"
           ],
           "areaServed" => [
-            "Jabodetabek",
-            "Lampung",
-            "Bandung",
-            "Yogyakarta",
-            "Semarang",
-            "Cirebon",
-            "Solo"
+            "Jabodetabek", "Lampung", "Bandung", "Yogyakarta", "Semarang", "Cirebon", "Solo"
           ],
           "sameAs" => [
             "https://www.instagram.com/Rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
@@ -95,7 +89,7 @@
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/favicon-cropped.png') }}">
@@ -104,19 +98,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body>
-    {{-- Navbar --}}
+<body class="bg-white text-slate-900 antialiased selection:bg-teal-500 selection:text-white">
+    {{-- Glassmorphism Navbar --}}
     @include('components.navbar')
 
     {{-- Main Content --}}
-    <main id="main-content">
+    <main id="main-content" class="min-h-screen pt-20">
         @yield('content')
     </main>
 
     {{-- Footer --}}
     @include('components.footer')
 
-    {{-- Floating WhatsApp Button --}}
+    {{-- Floating Actions (FAB & Mobile Sticky Bar) --}}
     @include('components.whatsapp-float')
 
     @stack('scripts')
