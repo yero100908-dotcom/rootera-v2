@@ -153,6 +153,9 @@
 {{-- ===== ARTIKEL TERBARU ===== --}}
 @include('sections.home.latest-articles', ['latestArticles' => $latestArticles])
 
+{{-- ===== TESTIMONIALS ===== --}}
+@include('sections.home.testimonials')
+
 {{-- ===== FAQ ===== --}}
 @include('sections.home.faq')
 

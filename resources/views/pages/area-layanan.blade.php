@@ -89,39 +89,53 @@
 </section>
 
 {{-- Maps Section --}}
-<section class="section bg-offwhite" aria-labelledby="map-heading">
-    <div class="container">
-        <div class="text-center" style="margin-bottom:2.5rem">
-            <span class="badge badge-blue">Lokasi Kami</span>
-            <h2 class="section-title" id="map-heading" style="margin-top:.75rem">Temukan <span>Kami di Peta</span></h2>
+<section class="w-full bg-[#f8fafc] border-t border-slate-100 py-16 sm:py-24" aria-labelledby="map-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#0A2E78] text-xs sm:text-sm font-semibold uppercase tracking-wider mb-3">
+                📍 Lokasi Kami
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#0A2E78] tracking-tight" id="map-heading">
+                Temukan <span class="text-[#169F81]">Kami di Peta</span>
+            </h2>
+            <p class="mt-3 text-slate-500 text-sm sm:text-base max-w-xl mx-auto">
+                Kunjungi kantor pusat kami atau hubungi tim sales kami untuk respon cepat perbaikan saluran pipa Anda.
+            </p>
         </div>
-        <div style="border-radius:20px;overflow:hidden;box-shadow:0 8px 32px rgba(10,46,120,.12);height:400px;margin-bottom:2rem">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4124978809493!2d106.8627125!3d-6.3275975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTknMzkuMyJTIDEwNsKwNTEnNDU4Ijg3RSI!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
-                width="100%"
-                height="400"
-                style="border:0"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Lokasi layanan Rootera"
-                aria-label="Peta area layanan Rootera"
-            ></iframe>
+
+        <!-- Embedded Map Card -->
+        <div class="bg-white rounded-3xl p-3 sm:p-4 shadow-xl border border-slate-200/60 max-w-5xl mx-auto mb-10 overflow-hidden">
+            <div class="rounded-2xl overflow-hidden aspect-[16/9] w-full h-64 sm:h-96 md:h-[450px] relative shadow-inner">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.4124978809493!2d106.8627125!3d-6.3275975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTknMzkuMyJTIDEwNsKwNTEnNDU4Ijg3RSI!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+                    width="100%"
+                    height="100%"
+                    style="border:0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Lokasi layanan Rootera"
+                    aria-label="Peta area layanan Rootera"
+                    class="absolute inset-0 w-full h-full"
+                ></iframe>
+            </div>
         </div>
         
         {{-- Official Business Address Card --}}
-        <a href="https://www.google.com/maps/dir/?api=1&destination=-6.3275975,106.8627125" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:block;max-width:700px;margin:0 auto;">
-            <div style="text-align:center;font-family:'Plus Jakarta Sans',sans-serif;background:#fff;padding:1.5rem 2rem;border-radius:16px;box-shadow:0 4px 20px rgba(10,46,120,.05);border:1px solid #edf2f7;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 30px rgba(10,46,120,.1)';" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 20px rgba(10,46,120,.05)';">
-                <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:0.5rem">
-                    <span style="font-size:1.25rem">📍</span>
-                    <strong style="font-size:1.1rem;color:#0A2E78">Rootera Plumbing - Jasa Saluran Pipa Mampet</strong>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=-6.3275975,106.8627125" target="_blank" rel="noopener noreferrer" class="block max-w-3xl mx-auto group no-underline">
+            <div class="text-center bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-slate-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg group-hover:border-emerald-500/20">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <span class="text-2xl text-[#169F81] group-hover:animate-bounce">📍</span>
+                    <strong class="text-lg sm:text-xl font-bold text-[#0A2E78] transition-colors group-hover:text-[#169F81]">Rootera Plumbing - Jasa Saluran Pipa Mampet</strong>
                 </div>
-                <p style="font-size:0.95rem;line-height:1.6;color:#4b5563;margin:0 0 1rem 0">
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-2xl mx-auto">
                     Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770
                 </p>
-                <div style="display:inline-flex;align-items:center;gap:0.5rem;background:#169F81;color:#fff;padding:0.6rem 1.25rem;border-radius:30px;font-size:0.875rem;font-weight:700;transition:background 0.2s" onmouseover="event.stopPropagation();this.style.background='#117c64'" onmouseout="event.stopPropagation();this.style.background='#169F81'">
+                <div class="inline-flex items-center gap-2 bg-[#169F81] text-white px-6 py-3 rounded-full text-sm font-bold shadow-md shadow-emerald-500/10 transition-colors hover:bg-[#117c64]">
                     <span>🚗 Petunjuk Arah (Maps)</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                 </div>
             </div>
         </a>
