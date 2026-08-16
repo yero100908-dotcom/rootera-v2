@@ -1,19 +1,39 @@
 @extends('layouts.app')
 
-@push('styles')
+@section('schema-markup')
+<?php
+$blogPostingSchema = [
+  "@context" => "https://schema.org",
+  "@type" => "BlogPosting",
+  "headline" => $article->title,
+  "description" => $article->excerpt,
+  "image" => $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/JnJ.jpeg'),
+  "author" => [
+    "@type" => "Person",
+    "name" => $article->author ?: "Tim Rootera"
+  ],
+  "datePublished" => $article->published_at?->toIso8601String(),
+  "dateModified" => $article->updated_at->toIso8601String(),
+  "publisher" => [
+    "@type" => "Organization",
+    "name" => "Rootera",
+    "logo" => [
+      "@type" => "ImageObject",
+      "url" => asset('images/logo-hijau.png')
+    ]
+  ],
+  "mainEntityOfPage" => [
+    "@type" => "WebPage",
+    "@id" => url()->current()
+  ]
+];
+?>
 <script type="application/ld+json">
-{
-  "@@context": "https://schema.org",
-  "@@type": "Article",
-  "headline": "{{ $article->title }}",
-  "description": "{{ $article->excerpt }}",
-  "author": {"@@type":"Person","name":"{{ $article->author }}"},
-  "datePublished": "{{ $article->published_at?->toIso8601String() }}",
-  "dateModified": "{{ $article->updated_at->toIso8601String() }}",
-  "publisher": {"@@type":"Organization","name":"Rootera","logo":{"@@type":"ImageObject","url":"{{ asset('images/logo-hijau.png') }}"}},
-  "mainEntityOfPage": {"@@type":"WebPage","@@id":"{{ url()->current() }}"}
-}
+{!! json_encode($blogPostingSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
+@endsection
+
+@push('styles')
 <style>
 /* Editorial Typography & Layout */
 .article-header { padding: 4rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; text-align: center; }

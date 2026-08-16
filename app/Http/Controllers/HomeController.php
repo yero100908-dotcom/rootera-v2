@@ -53,7 +53,7 @@ class HomeController extends Controller
             'title'       => 'Rootera – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
             'description' => 'Rootera solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
             'canonical'   => url('/'),
-            'og_image'    => asset('images/og-home.jpg'),
+            'og_image'    => asset('images/JnJ.jpeg'),
         ];
 
         return view('pages.home', compact(
