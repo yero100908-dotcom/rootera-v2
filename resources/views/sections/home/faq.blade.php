@@ -14,13 +14,13 @@
             @forelse($faqs ?? [] as $faq)
             <div class="faq-item" style="background: #ffffff; border-radius: 28px; border: 1px solid #f1f5f9; box-shadow: 0 4px 15px rgba(0,0,0,0.02); overflow: hidden; transition: box-shadow 0.3s ease;">
                 <button class="faq-question" aria-expanded="false" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem; background: transparent; border: none; cursor: pointer; text-align: left;">
-                    <span class="faq-text" style="font-size: 1.05rem; font-weight: 800; color: #1e293b; padding-right: 1rem;">{{ $faq->question }}</span>
+                    <span class="faq-text" style="font-size: 1.15rem; font-weight: 800; color: #0f172a; padding-right: 1rem;">{{ $faq->question }}</span>
                     <span class="faq-icon-wrapper" style="width: 32px; height: 32px; border-radius: 50%; background: #ffffff; display: flex; align-items: center; justify-content: center; border: 1px solid #e2e8f0; flex-shrink: 0; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
                         <svg class="faq-icon-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#169F81" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </span>
                 </button>
                 <div class="faq-answer-wrapper">
-                    <div class="faq-answer-inner" style="padding: 0 2rem 1.5rem; color: #475569; font-size: 1rem; line-height: 1.6;">
+                    <div class="faq-answer-inner" style="padding: 0 2rem 1.5rem; color: #334155; font-size: 1.05rem; font-weight: 500; line-height: 1.6;">
                         {!! $faq->answer !!}
                     </div>
                 </div>

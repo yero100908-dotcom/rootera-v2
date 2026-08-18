@@ -198,9 +198,6 @@ $homeFaqSchema = [
 {{-- ===== FAQ ===== --}}
 @include('sections.home.faq')
 
-{{-- ===== REVIEWS / TESTIMONIALS ===== --}}
-@include('components.reviews')
-
 {{-- ===== CTA BANNER ===== --}}
 @include('sections.home.cta-banner')
 
