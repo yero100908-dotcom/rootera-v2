@@ -1,4 +1,43 @@
 @extends('layouts.app')
+
+@section('schema-markup')
+<?php
+$homeFaqSchema = [
+  "@context" => "https://schema.org",
+  "@type" => "FAQPage",
+  "mainEntity" => [
+    [
+      "@type" => "Question",
+      "name" => "Berapa lama proses pengerjaan pelancar saluran mampet Rootera?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Estimasi waktu pengerjaan pelancar saluran mampet berkisar antara 1 hingga 2 jam saja menggunakan teknologi rotasi mekanis modern tanpa membongkar struktur bangunan."
+      ]
+    ],
+    [
+      "@type" => "Question",
+      "name" => "Apakah metode pembersihan Rootera aman untuk pipa PVC?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Sangat aman. Kami menggunakan spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari cairan asam korosif berbahaya."
+      ]
+    ],
+    [
+      "@type" => "Question",
+      "name" => "Apakah ada garansi untuk setiap pekerjaan?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
+      ]
+    ]
+  ]
+];
+?>
+<script type="application/ld+json">
+{!! json_encode($homeFaqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 
 {{-- ===== HERO ===== --}}
@@ -152,6 +191,9 @@
 
 {{-- ===== ARTIKEL TERBARU ===== --}}
 @include('sections.home.latest-articles', ['latestArticles' => $latestArticles])
+
+{{-- ===== TESTIMONIALS ===== --}}
+@include('sections.home.testimonials')
 
 {{-- ===== FAQ ===== --}}
 @include('sections.home.faq')

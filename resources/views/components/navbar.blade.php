@@ -13,7 +13,7 @@
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Rootera - Beranda">
-            <img src="{{ asset('images/FINAL LOGO.png') }}" alt="Logo Rootera Jasa Pipa Mampet" class="nav-logo-img">
+            <img src="{{ asset('images/logo-hijau.png') }}" alt="Logo Rootera Jasa Pipa Mampet" class="nav-logo-img" width="180" height="80" decoding="async">
         </a>
 
         {{-- Desktop Menu --}}
