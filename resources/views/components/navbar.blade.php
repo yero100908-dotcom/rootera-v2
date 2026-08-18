@@ -1,11 +1,11 @@
 <style>
-    .nav-logo-img { height: 80px; width: auto; object-fit: contain; transform-origin: left center; transform: scale(2.5); }
+    .nav-logo-img { height: 80px; width: auto; object-fit: contain; transform-origin: left center; transform: scale(3.2); }
     @media (max-width: 768px) {
-        .nav-logo-img { transform: scale(1.8); } /* Scale down on mobile to prevent overlap */
+        .nav-logo-img { transform: scale(2.2); } /* Scale down on mobile to prevent overlap */
         .nav-cta { display: none !important; } /* Hide CTA completely on mobile to save space */
     }
     @media (max-width: 480px) {
-        .nav-logo-img { transform: scale(1.5); } /* Even smaller on tiny screens */
+        .nav-logo-img { transform: scale(1.8); } /* Even smaller on tiny screens */
     }
 </style>
 
@@ -13,7 +13,7 @@
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Rootera - Beranda">
-            <img src="{{ asset('images/logo-hijau.png') }}" alt="Logo Rootera Jasa Pipa Mampet" class="nav-logo-img" width="180" height="80" decoding="async">
+            <img src="{{ asset('images/logo final.png') }}" alt="Logo Rootera Jasa Pipa Mampet" class="nav-logo-img" width="180" height="80" decoding="async">
         </a>
 
         {{-- Desktop Menu --}}

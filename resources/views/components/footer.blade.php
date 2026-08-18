@@ -9,8 +9,9 @@
     <div class="footer-body">
         <div class="footer-container">
             {{-- Brand --}}
-                <a href="{{ route('home') }}" class="footer-logo" aria-label="Rootera Beranda">
-                    <img src="{{ asset('images/logo-hijau.png') }}" alt="Rootera Logo" width="320" height="100" loading="lazy" style="height: 100px; width: auto; object-fit: contain;">
+            <div class="footer-brand">
+                <a href="{{ route('home') }}" class="footer-logo" aria-label="Rootera Beranda" style="display: block; margin-bottom: -20px;">
+                    <img src="{{ asset('images/logo final.png') }}" alt="Rootera Logo" loading="lazy" style="height: 220px; width: auto; max-width: 100%; object-fit: contain; transform-origin: left center; transform: scale(1.4); margin-left: -15px; margin-top: -15px;">
                 </a>
                 <p class="footer-tagline">Solusi profesional untuk pipa dan saluran mampet. Cepat, tepat, bergaransi.</p>
                 {{-- Social Links --}}

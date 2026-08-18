@@ -116,8 +116,8 @@ $homeFaqSchema = [
                 Layanan Terpercaya di Indonesia
             </div>
             <h1 class="hero-title">
-                Saluran Mampet?<br>
-                Kami <span class="highlight">Atasi Tuntas</span><br>
+                Jasa Saluran Pipa Mampet Profesional<br>
+                Rootera <span class="highlight">Atasi Tuntas</span><br>
                 Tanpa Bongkar!
             </h1>
             <p class="hero-desc">Rootera hadir dengan teknologi modern untuk membersihkan pipa dan saluran tersumbat secara profesional, cepat, dan bergaransi — tanpa merusak struktur bangunan Anda.</p>
@@ -133,7 +133,7 @@ $homeFaqSchema = [
         <div class="hero-visual" aria-hidden="true">
             <picture>
                 <source srcset="{{ asset('images/JnJ.webp') }}" type="image/webp">
-                <img src="{{ asset('images/JnJ.jpeg') }}" alt="Teknisi Rootera sedang memperbaiki saluran pipa mampet tanpa bongkar" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
+                <img src="{{ asset('images/JnJ.jpeg') }}" alt="Jasa saluran mampet Rootera Plumbing sedang memperbaiki pipa wastafel mampet tanpa bongkar di Jabodetabek" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
             </picture>
             <div class="hero-floating hero-floating-1">
                 <div class="dot"></div>
