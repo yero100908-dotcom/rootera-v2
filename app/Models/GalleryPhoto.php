@@ -10,7 +10,7 @@ class GalleryPhoto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'image', 'description', 'category', 'is_active', 'sort_order',
+        'title', 'image', 'youtube_url', 'youtube_id', 'description', 'category', 'is_active', 'sort_order',
     ];
 
     protected $casts = [
@@ -19,6 +19,9 @@ class GalleryPhoto extends Model
 
     public function getImageUrlAttribute(): string
     {
+        if ($this->youtube_id) {
+            return "https://img.youtube.com/vi/{$this->youtube_id}/maxresdefault.jpg";
+        }
         return $this->image ? asset('storage/' . $this->image) : asset('images/placeholder.jpg');
     }
 }

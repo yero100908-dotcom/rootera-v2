@@ -19,48 +19,68 @@ class GalleryController extends Controller
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:150',
-            'image'       => 'required|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'youtube_url' => 'required|string',
             'description' => 'nullable|string|max:300',
             'category'    => 'nullable|string|max:50',
             'sort_order'  => 'nullable|integer',
         ]);
 
-        $validated['image'] = $request->file('image')->store('gallery', 'public');
+        $youtube_id = $this->extractYoutubeId($request->youtube_url);
+        if (!$youtube_id) {
+            return back()->withErrors(['youtube_url' => 'Format URL YouTube tidak valid.'])->withInput();
+        }
+        $validated['youtube_id'] = $youtube_id;
+        $validated['image'] = '-'; // dummy data
 
         GalleryPhoto::create($validated);
 
         return redirect()->route('admin.gallery.index')
-            ->with('success', 'Foto berhasil ditambahkan.');
+            ->with('success', 'Data galeri berhasil ditambahkan.');
     }
 
     public function update(Request $request, GalleryPhoto $galleryPhoto)
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:150',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'youtube_url' => 'required|string',
             'description' => 'nullable|string|max:300',
             'category'    => 'nullable|string|max:50',
             'sort_order'  => 'nullable|integer',
         ]);
 
-        if ($request->hasFile('image')) {
-            Storage::disk('public')->delete($galleryPhoto->image);
-            $validated['image'] = $request->file('image')->store('gallery', 'public');
+        $youtube_id = $this->extractYoutubeId($request->youtube_url);
+        if (!$youtube_id) {
+            return back()->withErrors(['youtube_url' => 'Format URL YouTube tidak valid.'])->withInput();
         }
+        $validated['youtube_id'] = $youtube_id;
+        
+        // Remove image if there was any file previously
+        if ($galleryPhoto->image && $galleryPhoto->image !== '-') {
+            Storage::disk('public')->delete($galleryPhoto->image);
+        }
+        $validated['image'] = '-';
 
         $galleryPhoto->update($validated);
 
         return redirect()->route('admin.gallery.index')
-            ->with('success', 'Data foto berhasil diperbarui.');
+            ->with('success', 'Data galeri berhasil diperbarui.');
     }
 
     public function destroy(GalleryPhoto $galleryPhoto)
     {
-        Storage::disk('public')->delete($galleryPhoto->image);
+        if ($galleryPhoto->image && $galleryPhoto->image !== '-') {
+            Storage::disk('public')->delete($galleryPhoto->image);
+        }
         $galleryPhoto->delete();
 
         return redirect()->route('admin.gallery.index')
-            ->with('success', 'Foto berhasil dihapus.');
+            ->with('success', 'Data galeri berhasil dihapus.');
+    }
+
+    private function extractYoutubeId($url)
+    {
+        preg_match('/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/))([\w-]{11})/', $url, $match);
+        return $match[1] ?? null;
     }
 
     public function toggleActive(GalleryPhoto $galleryPhoto)

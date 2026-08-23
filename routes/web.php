@@ -158,4 +158,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // =====================================================
     Route::get('/seo', [SeoManageController::class, 'index'])->name('seo.index');
     Route::put('/seo/{id}', [SeoManageController::class, 'update'])->name('seo.update');
+    // =====================================================
+    // Settings CRUD
+    // =====================================================
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
 });

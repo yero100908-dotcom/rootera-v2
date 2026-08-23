@@ -22,8 +22,13 @@
         @foreach($photos as $photo)
         <div class="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group">
             <div class="aspect-video relative overflow-hidden bg-slate-100 flex items-center justify-center">
-                <img src="{{ Storage::url($photo->image) }}" alt="{{ $photo->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <svg class="w-12 h-12 text-slate-300 hidden absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                @if($photo->youtube_id)
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors">
+                    <svg class="w-12 h-12 text-white/90 shadow-lg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                @endif
                 @if($photo->category)
                 <div class="absolute top-3 left-3">
                     <span class="bg-slate-900/70 backdrop-blur-sm text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">{{ $photo->category }}</span>
@@ -39,7 +44,7 @@
             <div class="p-4 flex flex-col flex-grow">
                 <p class="font-semibold text-slate-800 text-sm mb-4 line-clamp-2 leading-snug flex-grow" title="{{ $photo->title }}">{{ $photo->title }}</p>
                 <div class="flex flex-wrap items-center gap-2 mt-auto">
-                    <button type="button" onclick="openEditModal({{ $photo->id }}, '{{ addslashes($photo->title) }}', '{{ $photo->category }}', '{{ addslashes($photo->description) }}', {{ $photo->sort_order ?? 0 }})" class="flex-1 min-w-[30%] py-2 px-2 bg-amber-50 text-amber-600 hover:bg-amber-100 hover:text-amber-700 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors">
+                    <button type="button" onclick="openEditModal({{ $photo->id }}, '{{ addslashes($photo->title) }}', '{{ $photo->category }}', '{{ addslashes($photo->description) }}', {{ $photo->sort_order ?? 0 }}, '{{ $photo->youtube_url ?? '' }}')" class="flex-1 min-w-[30%] py-2 px-2 bg-amber-50 text-amber-600 hover:bg-amber-100 hover:text-amber-700 rounded-md text-xs font-semibold flex justify-center items-center gap-1 transition-colors">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg> Edit
                     </button>
                     <form action="{{ route('admin.gallery.toggle',$photo) }}" method="POST" class="flex-1 min-w-[30%]">
@@ -73,7 +78,7 @@
     <div id="modalContent" class="bg-white w-full max-w-lg rounded-2xl shadow-xl flex flex-col max-h-[90vh] transform scale-95 transition-transform duration-300">
         <!-- Modal Header -->
         <div class="p-4 sm:p-6 border-b border-slate-200 flex justify-between items-center">
-            <h3 id="modal-title" class="text-xl font-bold text-slate-800 m-0">Tambah Foto Gallery Baru</h3>
+            <h3 id="modal-title" class="text-xl font-bold text-slate-800 m-0">Tambah Data Gallery Baru</h3>
             <button type="button" onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">&times;</button>
         </div>
         
@@ -84,35 +89,26 @@
                 <div id="method-spoof"></div>
                 
                 <div class="form-group" style="margin-bottom:1.25rem;">
-                    <label for="title" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Judul Foto / Caption *</label>
+                    <label for="title" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Judul Foto / Video *</label>
                     <input type="text" id="title" name="title" required placeholder="Contoh: Tim Sedang Bekerja" style="width:100%;padding:0.75rem;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                </div>
+
+                <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label for="youtube_url" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">URL YouTube *</label>
+                    <input type="url" id="youtube_url" name="youtube_url" required placeholder="https://www.youtube.com/watch?v=..." style="width:100%;padding:0.75rem;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
+                    <small style="color:var(--text-muted);font-size:0.75rem">Masukkan link YouTube. Thumbnail akan ditarik otomatis.</small>
                 </div>
 
                 <div class="form-group" style="margin-bottom:1.25rem;">
                     <label for="category" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Kategori Layanan</label>
                     <select id="category" name="category" style="width:100%;padding:0.75rem;border:1px solid #d1d5db;border-radius:8px;font-family:inherit;outline:none;background:#fff;transition:border-color 0.2s;appearance:none;cursor:pointer;" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#d1d5db'">
                         <option value="">— Pilih Kategori —</option>
-                        <option value="Residential">Residential</option>
-                        <option value="Commercial">Commercial</option>
-                        <option value="Tools">Tools</option>
-                        <option value="Team">Team</option>
+                        <option value="Proses">Proses</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Promosi">Promosi</option>
+                        <option value="Edukasi">Edukasi</option>
+                        <option value="Branding">Branding</option>
                     </select>
-                </div>
-                
-                <div class="form-group" style="margin-bottom:1.25rem;">
-                    <label for="image" style="display:block;margin-bottom:.5rem;font-weight:600;font-size:0.9rem;color:#374151;">Upload File Gambar <span id="image-asterisk">*</span></label>
-                    <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 0.5rem;" id="image-hint"></div>
-                    
-                    <!-- Area Drag and Drop Semu -->
-                    <div style="border:2px dashed #d1d5db; border-radius:8px; padding:2rem; text-align:center; background:#f9fafb; transition:all 0.2s; cursor:pointer; position:relative;" onmouseover="this.style.borderColor='#2563eb'; this.style.background='#eff6ff'" onmouseout="this.style.borderColor='#d1d5db'; this.style.background='#f9fafb'">
-                        <input type="file" id="image" name="image" accept="image/*" required style="position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer;" onchange="document.getElementById('file-name').textContent = this.files[0] ? this.files[0].name : 'Belum ada file dipilih'">
-                        
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; pointer-events:none;">
-                            <svg style="width:2.5rem;height:2.5rem;color:#9ca3af;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <span style="font-weight:600; color:#374151; font-size:0.95rem;">Drag & Drop atau Klik di sini</span>
-                            <span style="font-size:0.8rem; color:#6b7280;" id="file-name">Mendukung format JPG, PNG, WEBP</span>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="form-group" style="margin-bottom:1.25rem;">
@@ -140,16 +136,13 @@
 <script>
 const modal = document.getElementById('galleryModal');
 const modalContent = document.getElementById('modalContent');
+const urlInput = document.getElementById('youtube_url');
 
 function openModal() {
     document.getElementById('gallery-form').reset();
     document.getElementById('gallery-form').action = "{{ route('admin.gallery.store') }}";
     document.getElementById('method-spoof').innerHTML = '';
-    document.getElementById('modal-title').textContent = 'Tambah Foto Gallery Baru';
-    document.getElementById('image').required = true;
-    document.getElementById('image-asterisk').style.display = 'inline';
-    document.getElementById('image-hint').textContent = '';
-    document.getElementById('file-name').textContent = 'Mendukung format JPG, PNG, WEBP';
+    document.getElementById('modal-title').textContent = 'Tambah Data Gallery Baru';
     
     // Show modal with animation
     modal.style.display = 'flex';
@@ -167,21 +160,17 @@ function closeModal() {
     }, 300);
 }
 
-function openEditModal(id, title, category, description, sort_order) {
+function openEditModal(id, title, category, description, sort_order, youtube_url) {
     document.getElementById('gallery-form').reset();
     document.getElementById('gallery-form').action = `/admin/gallery/${id}`;
     document.getElementById('method-spoof').innerHTML = '@method("PUT")';
-    document.getElementById('modal-title').textContent = 'Edit Foto Gallery';
+    document.getElementById('modal-title').textContent = 'Edit Data Gallery';
     
     document.getElementById('title').value = title;
     document.getElementById('category').value = category;
+    document.getElementById('youtube_url').value = youtube_url || '';
     document.getElementById('description').value = description || '';
     document.getElementById('sort_order').value = sort_order;
-    
-    document.getElementById('image').required = false;
-    document.getElementById('image-asterisk').style.display = 'none';
-    document.getElementById('image-hint').textContent = 'Biarkan kosong jika tidak ingin mengubah gambar.';
-    document.getElementById('file-name').textContent = 'Pilih gambar baru (opsional)';
     
     modal.style.display = 'flex';
     void modal.offsetWidth;
