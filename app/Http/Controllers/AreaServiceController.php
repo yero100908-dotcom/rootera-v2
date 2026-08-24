@@ -38,7 +38,7 @@ class AreaServiceController extends Controller
         $seo = [
             'title'       => 'Jasa Saluran Pipa Mampet Terdekat di Seluruh Indonesia - 24 Jam Bergaransi | Rootera Plumbing',
             'description' => 'Direktori resmi wilayah operasional Rootera Plumbing (J&J Group). Layanan pelancaran pipa mampet tanpa bongkar di Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung.',
-            'canonical'   => route('area.index'),
+            'canonical'   => route('area-layanan'),
             'og_image'    => asset('images/JnJ.jpeg'),
         ];
 

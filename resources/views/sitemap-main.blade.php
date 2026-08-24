@@ -11,7 +11,7 @@
         <priority>0.95</priority>
     </url>
     <url>
-        <loc>{{ route('area.index') }}</loc>
+        <loc>{{ route('area-layanan') }}</loc>
         <changefreq>daily</changefreq>
         <priority>0.95</priority>
     </url>

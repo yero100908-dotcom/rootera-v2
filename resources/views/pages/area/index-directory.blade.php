@@ -18,7 +18,7 @@ $directorySchema = [
           "@type" => "ListItem",
           "position" => 2,
           "name" => "Jasa Saluran Mampet (Direktori Wilayah)",
-          "item" => route('area.index')
+          "item" => route('area-layanan')
         ]
       ]
     ],
@@ -26,7 +26,7 @@ $directorySchema = [
       "@type" => "CollectionPage",
       "name" => "Pusat Wilayah Operasional Jasa Saluran Pipa Mampet - Rootera Plumbing",
       "description" => "Direktori resmi wilayah operasional pelancaran pipa mampet di Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung.",
-      "url" => route('area.index'),
+      "url" => route('area-layanan'),
       "provider" => [
         "@type" => "Plumber",
         "name" => "Rootera Plumbing (J&J Group)",

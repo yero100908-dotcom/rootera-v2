@@ -40,7 +40,7 @@ Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
 
 // New High-Intent Keyword-Rich Routes & Problem Hub
-Route::get('/jasa-saluran-mampet', [AreaServiceController::class, 'indexDirectory'])->name('area.index');
+Route::get('/jasa-saluran-mampet', [AreaServiceController::class, 'indexDirectory'])->name('area-layanan');
 Route::get('/jasa-saluran-mampet/{citySlug}', [AreaServiceController::class, 'showCity'])->name('area.city');
 Route::get('/area-jasa-pipa-mampet/{regionSlug}', [AreaServiceController::class, 'showRegion'])->name('area.region');
 Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.city');

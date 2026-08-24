@@ -18,7 +18,7 @@ $regionSchema = [
           "@type" => "ListItem",
           "position" => 2,
           "name" => "Jasa Saluran Mampet",
-          "item" => route('area.index')
+          "item" => route('area-layanan')
         ],
         [
           "@type" => "ListItem",
