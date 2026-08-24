@@ -62,7 +62,7 @@
                 </h3>
                 <span class="text-xs text-slate-400">Gg. Mawar No.6B.1, Cijantung, Pasar Rebo, Jakarta Timur</span>
             </div>
-            <x-google-map-embed height="280" />
+            <x-google-map-embed />
         </div>
 
         {{-- Mega Link Directory (6-Column Grid Layout) --}}
