@@ -7,7 +7,7 @@ $blogPostingSchema = [
   "@type" => "BlogPosting",
   "headline" => $article->title,
   "description" => $article->excerpt,
-  "image" => $article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/JnJ.jpeg'),
+  "image" => $article->thumbnail_url,
   "author" => [
     "@type" => "Person",
     "name" => $article->author ?: "Tim Rootera"
@@ -208,11 +208,7 @@ $blogPostingSchema = [
                 <h3>Artikel Terkait</h3>
                 @foreach($relatedArticles as $rel)
                 <a href="{{ route('blog.show', $rel->slug) }}" class="sidebar-post">
-                    @if($rel->thumbnail)
-                        <img src="{{ Storage::url($rel->thumbnail) }}" alt="{{ $rel->title }}" class="sidebar-post-img">
-                    @else
-                        <div class="sidebar-post-img" style="background:#169F81; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.5rem;">📰</div>
-                    @endif
+                    <img src="{{ $rel->thumbnail_url }}" alt="{{ $rel->title }}" class="sidebar-post-img">
                     <div>
                         <div class="sidebar-post-title">{{ Str::limit($rel->title, 55) }}</div>
                         <div class="sidebar-post-date">{{ $rel->published_at?->translatedFormat('d M Y') }}</div>

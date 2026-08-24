@@ -12,11 +12,7 @@
             @foreach($latestArticles as $i => $article)
             <article class="blog-card fade-in" style="animation-delay:{{ $i * 0.1 }}s">
                 <div class="blog-card-img">
-                    @if($article->thumbnail)
-                        <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}" loading="lazy" width="400" height="225">
-                    @else
-                        <div style="background:linear-gradient(135deg,#0A2E78,#169F81);height:180px;display:flex;align-items:center;justify-content:center;font-size:3rem">📰</div>
-                    @endif
+                    <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}" loading="lazy" width="400" height="225" style="width:100%; height:180px; object-fit:cover;">
                 </div>
                 <div class="blog-card-body">
                     <div class="blog-card-date">
