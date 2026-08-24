@@ -122,11 +122,17 @@ $blogPostingSchema = [
     </div>
 </header>
 
-<!-- Featured Image -->
-@if($article->thumbnail)
+<!-- Featured Video or Image -->
+@if($article->youtube_video_id)
+<div class="article-hero-img">
+    <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-lg mb-6" style="width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; background:#000; box-shadow: 0 20px 40px rgba(0,0,0,.08);">
+        <iframe class="w-full h-full" style="width:100%; height:100%; border:0;" src="https://www.youtube-nocookie.com/embed/{{ $article->youtube_video_id }}" title="{{ $article->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+@elseif($article->thumbnail)
 <div class="article-hero-img">
     <figure>
-        <img src="{{ Storage::url($article->thumbnail) }}" alt="{{ $article->title }}">
+        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}">
     </figure>
     <figcaption>Ilustrasi: {{ $article->title }}</figcaption>
 </div>

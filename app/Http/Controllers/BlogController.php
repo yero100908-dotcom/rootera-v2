@@ -3,23 +3,70 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::published()
+        $filter = $request->query('filter', 'all');
+        $search = $request->query('search') ?: $request->query('q');
+        $tag = $request->query('tag');
+
+        // Featured Spotlight (top 1 video or top published article)
+        $featuredSpotlight = Article::published()
+            ->whereNotNull('youtube_video_id')
             ->orderBy('published_at', 'desc')
+            ->first();
+
+        if (!$featuredSpotlight) {
+            $featuredSpotlight = Article::published()
+                ->orderBy('published_at', 'desc')
+                ->first();
+        }
+
+        // Main Query
+        $query = Article::published();
+
+        if ($filter === 'article') {
+            $query->where(function($q) {
+                $q->whereNull('post_type')
+                  ->orWhere('post_type', 'article');
+            })->whereNull('youtube_video_id');
+        } elseif ($filter === 'video') {
+            $query->where(function($q) {
+                $q->where('post_type', 'video_guide')
+                  ->orWhereNotNull('youtube_video_id');
+            });
+        }
+
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('excerpt', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        if (!empty($tag)) {
+            $query->where(function($q) use ($tag) {
+                $q->where('title', 'like', "%{$tag}%")
+                  ->orWhere('excerpt', 'like', "%{$tag}%")
+                  ->orWhere('category', 'like', "%{$tag}%");
+            });
+        }
+
+        $articles = $query->orderBy('published_at', 'desc')
             ->paginate(9);
 
         $seo = [
-            'title'       => 'Blog & Tips Pipa – Rootera | Panduan Saluran Air & Sanitasi',
-            'description' => 'Baca artikel dan tips terbaru dari Rootera seputar cara mengatasi pipa mampet, merawat saluran air, dan panduan sanitasi rumah untuk keluarga sehat.',
+            'title'       => 'Blog & Knowledge Hub – Rootera | Panduan Pipa & Video Edukasi',
+            'description' => 'Pusat edukasi visual, artikel teknis, & panduan video pelancaran pipa mampet, hydro-jetting, & sanitasi rumah dari tim ahli Rootera Plumbing.',
             'canonical'   => url('/blog'),
             'og_image'    => asset('images/JnJ.jpeg'),
         ];
 
-        return view('pages.blog', compact('articles', 'seo'));
+        return view('pages.blog', compact('articles', 'featuredSpotlight', 'filter', 'search', 'tag', 'seo'));
     }
 
     public function show(string $slug)
@@ -52,10 +99,10 @@ class BlogController extends Controller
             ->get();
 
         $seo = [
-            'title'       => ($article->meta_title ?? $article->title) . ' | Rootera',
+            'title'       => ($article->meta_title ?? $article->clean_title) . ' | Rootera',
             'description' => $article->meta_description ?? $article->excerpt,
             'canonical'   => $article->canonical_url ?? url('/blog/' . $article->slug),
-            'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : ($article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/JnJ.jpeg')),
+            'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : ($article->thumbnail_url ?? asset('images/JnJ.jpeg')),
         ];
 
         return view('pages.blog-detail', compact('article', 'relatedArticles', 'cities', 'allCategories', 'projectShowcases', 'seo'));

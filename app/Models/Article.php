@@ -13,6 +13,7 @@ class Article extends Model
         'title', 'slug', 'excerpt', 'content', 'thumbnail',
         'author', 'status', 'published_at', 'meta_title',
         'meta_description', 'og_image', 'canonical_url', 'views',
+        'youtube_video_id', 'video_embed_url', 'post_type', 'category',
     ];
 
     protected $casts = [
@@ -28,7 +29,22 @@ class Article extends Model
 
     public function getThumbnailUrlAttribute(): string
     {
-        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : asset('images/blog-placeholder.jpg');
+        if ($this->thumbnail) {
+            if (\Illuminate\Support\Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
+                return $this->thumbnail;
+            }
+            return asset('storage/' . $this->thumbnail);
+        }
+        if ($this->youtube_video_id) {
+            return "https://i.ytimg.com/vi/{$this->youtube_video_id}/hqdefault.jpg";
+        }
+        return asset('images/JnJ.jpeg');
+    }
+
+    public function getCleanTitleAttribute(): string
+    {
+        $title = preg_replace('/#\S+/', '', $this->title ?? '');
+        return trim(preg_replace('/\s+/', ' ', $title));
     }
 
     public function incrementViews(): void
