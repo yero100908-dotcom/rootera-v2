@@ -50,8 +50,19 @@
                     <a href="https://tiktok.com/@rootera_plumbing" target="_blank" rel="noopener noreferrer" aria-label="TikTok Rootera" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 3 15.68a6.34 6.34 0 0 0 10.86 4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.13z"/></svg>
                     </a>
-                </div>
             </div>
+        </div>
+
+        {{-- Official Google Business Profile Map --}}
+        <div class="pb-8 mb-8 border-b border-slate-800/80">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <h3 class="text-white font-bold text-xs md:text-sm uppercase tracking-wider flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Lokasi Kantor Pusat Operasional (Verified Google Business Profile)
+                </h3>
+                <span class="text-xs text-slate-400">Gg. Mawar No.6B.1, Cijantung, Pasar Rebo, Jakarta Timur</span>
+            </div>
+            <x-google-map-embed height="280" />
         </div>
 
         {{-- Mega Link Directory (6-Column Grid Layout) --}}

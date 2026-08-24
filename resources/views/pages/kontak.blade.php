@@ -123,6 +123,15 @@
     </div>
 </section>
 
+{{-- Verified Google Business Profile Map Embed --}}
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h2 style="color:#0A2E78;font-weight:700;font-size:1.75rem;margin-bottom:0.5rem">Peta Lokasi Resmi (Google Business Profile)</h2>
+        <p style="color:#64748b;font-size:1rem;margin:0 auto;max-width:600px">Kunjungi atau dapatkan petunjuk arah navigasi langsung ke kantor pusat operasional Rootera Plumbing.</p>
+    </div>
+    <x-google-map-embed height="400" />
+</div>
+
 {{-- Google Neighborhood Discovery Map Component --}}
 <x-neighborhood-map />
 
