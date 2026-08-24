@@ -57,12 +57,14 @@ class Gallery extends Model
     public function getCategoryLabelAttribute(): string
     {
         return match($this->category) {
-            'residential'     => 'Residensial',
-            'commercial_b2b'  => 'Komersial & B2B',
-            'tools_equipment' => 'Alat & Hydro-Jetting',
-            'team_action'     => 'Tim & Lapangan',
-            'before_after'    => 'Before & After',
-            default           => ucfirst(str_replace('_', ' ', $this->category ?? 'Umum')),
+            'residential'      => 'Rumah Tinggal',
+            'commercial_resto' => 'Restoran & Kafe',
+            'commercial_b2b'   => 'Gedung & Pabrik',
+            'cctv_inspection'  => 'Inspeksi CCTV',
+            'tools_equipment'  => 'Alat & Hydro-Jetting',
+            'team_action'      => 'Tim & Lapangan',
+            'before_after'     => 'Before & After',
+            default            => ucfirst(str_replace('_', ' ', $this->category ?? 'Umum')),
         };
     }
 
@@ -89,7 +91,7 @@ class Gallery extends Model
             if (Str::startsWith($this->media_file_path, ['http://', 'https://'])) {
                 return $this->media_file_path;
             }
-            if (Str::startsWith($this->media_file_path, 'images/')) {
+            if (Str::startsWith($this->media_file_path, ['images/', 'videos/'])) {
                 return asset($this->media_file_path);
             }
             return asset('storage/' . $this->media_file_path);

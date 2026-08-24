@@ -17,7 +17,7 @@
                         <span class="text-emerald-400">Jangan Tunggu Kerusakan Struktur Lebih Parah!</span>
                     </h2>
                     <p class="text-sm sm:text-base text-blue-100/80 max-w-xl">
-                        Hubungi tim Rootera Plumbing sekarang. Teknisi profesional bersertifikat standby 24 jam nonstop dengan peralatan spiral rotary &amp; hydro-jetting modern.
+                        Hubungi tim Rootera Plumbing sekarang. Teknisi profesional bersertifikat standby 24 jam nonstop dengan Mesin Spiral Drain Cleaner Modern &amp; Kamera CCTV Inspeksi Digital.
                     </p>
                 </div>
 

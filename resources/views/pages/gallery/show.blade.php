@@ -45,7 +45,7 @@
         {{-- MEDIA DISPLAY --}}
         <div style="background: #0f172a; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; shadow: 0 20px 40px rgba(0,0,0,0.1); margin-bottom: 2.5rem;">
             @if($project->media_type === 'video' && $project->display_media)
-                <video controls autoplay style="width: 100%; max-height: 520px; object-fit: contain; background: #000;">
+                <video controls playsinline preload="metadata" autoplay style="width: 100%; max-height: 520px; object-fit: contain; background: #000;">
                     <source src="{{ $project->display_media }}" type="video/mp4">
                     Browser Anda tidak mendukung pemutaran video.
                 </video>

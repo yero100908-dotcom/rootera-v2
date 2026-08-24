@@ -35,7 +35,7 @@ class GalleryController extends Controller
 
         $galleries = $query->orderBy('sort_order', 'asc')
             ->orderBy('created_at', 'desc')
-            ->paginate(9);
+            ->paginate(12);
 
         // SEO metadata
         $seo = [

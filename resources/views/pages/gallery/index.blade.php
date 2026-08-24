@@ -81,19 +81,19 @@
                 ✨ Semua Dokumentasi
             </a>
             <a href="{{ route('galeri', ['category' => 'residential']) }}" class="filter-pill {{ $currentCat=='residential' ? 'active' : '' }}">
-                🏠 Residensial
+                🏠 Rumah Tinggal
+            </a>
+            <a href="{{ route('galeri', ['category' => 'commercial_resto']) }}" class="filter-pill {{ $currentCat=='commercial_resto' ? 'active' : '' }}">
+                🍽️ Restoran &amp; Kafe
             </a>
             <a href="{{ route('galeri', ['category' => 'commercial_b2b']) }}" class="filter-pill {{ $currentCat=='commercial_b2b' ? 'active' : '' }}">
-                🏢 Komersial &amp; B2B
+                🏢 Gedung &amp; Pabrik
+            </a>
+            <a href="{{ route('galeri', ['category' => 'cctv_inspection']) }}" class="filter-pill {{ $currentCat=='cctv_inspection' ? 'active' : '' }}">
+                📹 Inspeksi Kamera CCTV
             </a>
             <a href="{{ route('galeri', ['category' => 'before_after']) }}" class="filter-pill {{ $currentCat=='before_after' ? 'active' : '' }}">
                 ⚖️ Before &amp; After
-            </a>
-            <a href="{{ route('galeri', ['category' => 'tools_equipment']) }}" class="filter-pill {{ $currentCat=='tools_equipment' ? 'active' : '' }}">
-                🛠️ Alat &amp; Hydro-Jetting
-            </a>
-            <a href="{{ route('galeri', ['category' => 'team_action']) }}" class="filter-pill {{ $currentCat=='team_action' ? 'active' : '' }}">
-                👷 Tim &amp; Lapangan
             </a>
             <a href="{{ route('galeri', ['media_type' => 'video']) }}" class="filter-pill {{ $currentMedia=='video' ? 'active' : '' }}">
                 ▶️ Video Pengerjaan
@@ -387,11 +387,16 @@ function openMediaModal(type, url, title, beforeUrl) {
 
     if (type === 'video') {
         container.innerHTML = `
-            <video controls autoplay style="width:100%; max-height:70vh; object-fit:contain;">
+            <video id="galleryVideoPlayer" controls playsinline preload="metadata" autoplay style="width:100%; max-height:70vh; object-fit:contain; border-radius: 0 0 16px 16px;">
                 <source src="${url}" type="video/mp4">
                 Browser Anda tidak mendukung pemutaran video.
             </video>
         `;
+        const player = document.getElementById('galleryVideoPlayer');
+        if (player) {
+            player.load();
+            player.play().catch(err => console.log('Autoplay handled by browser:', err));
+        }
     } else if (beforeUrl && beforeUrl !== 'null' && beforeUrl !== '') {
         container.innerHTML = `
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; padding:1rem; width:100%;">
@@ -423,6 +428,11 @@ function closeMediaModal(e) {
 function forceCloseMediaModal() {
     const modal = document.getElementById('mediaModal');
     const container = document.getElementById('modalMediaContainer');
+    const player = document.getElementById('galleryVideoPlayer');
+    if (player) {
+        player.pause();
+        player.currentTime = 0;
+    }
     container.innerHTML = '';
     modal.style.display = 'none';
 }

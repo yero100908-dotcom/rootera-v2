@@ -260,6 +260,80 @@ $faqSchema = [
                 </div>
                 @endif
 
+                {{-- Service Specific Real Documentation Showcase --}}
+                @php
+                    $catSlug = strtolower($category->slug ?? '');
+                    $docItems = [];
+                    
+                    if (str_contains($catSlug, 'bio') || str_contains($catSlug, 'septic') || str_contains($catSlug, 'tank')) {
+                        $docItems = [
+                            ['title' => 'Pelancaran Saluran Bio Tank Bogor', 'img' => 'pelancaran-saluran-bio-tank-bogor-jabar.webp', 'desc' => 'Pembersihan penumpukan kerak dan sumbatan pipa outlet pembuangan bio tank di Bogor.'],
+                            ['title' => 'Pelancaran Bak Kontrol Perumahan', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pengurasan endapan lumpur dan pasir yang menyumbat saluran pembuangan utama bio tank.'],
+                            ['title' => 'Pembersihan Grease Trap & Drainase', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Penyedotan dan pengikatan sedimen padat pada sistem tangki peresapan.']
+                        ];
+                    } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
+                        $docItems = [
+                            ['title' => 'Pelancaran Kloset Pabrik Industri', 'img' => 'pelancaran-kloset-mampet-pabrik-industri.webp', 'desc' => 'Penanganan kloset toilet karyawan pabrik mampet total tanpa bongkar dengan mesin Ridgid.'],
+                            ['title' => 'Pelancaran Saluran Kloset Spiral Baja', 'img' => 'pelancar-saluran-kloset-toilet-mampet.webp', 'desc' => 'Teknisi menggunakan spiral baja fleksibel pendorong sumbatan leher angsa kloset.'],
+                            ['title' => 'Inspeksi CCTV Dalam Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Deteksi benda asing atau gumpalan keras di dalam pipa kloset dengan kamera CCTV.']
+                        ];
+                    } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
+                        $docItems = [
+                            ['title' => 'Floor Drain Resto EM Gelato Blok M', 'img' => 'pelancaran-floor-drain-em-gelato-blok-m.webp', 'desc' => 'Penanganan rontokan rambut & endapan sabun pada floor drain area kuliner Blok M.'],
+                            ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan internal pipa floor drain kantor Pertamina Sunter Jakarta Utara.'],
+                            ['title' => 'Pelancaran Floor Drain Rumah Tinggal', 'img' => 'pelancar-floor-drain-kamar-mandi-rumah.webp', 'desc' => 'Pembersihan pipa 2 inchi kamar mandi perumahan warga secara aman dan cepat.']
+                        ];
+                    } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'dapur') || str_contains($catSlug, 'cuci-piring')) {
+                        $docItems = [
+                            ['title' => 'Pelancaran Wastafel Mampet Rumah Warga', 'img' => 'pelancaran-wastafel-mampet-rumah-warga.webp', 'desc' => 'Pembersihan pipa afur wastafel cuci piring rumah tangga yang tersumbat minyak makanan.'],
+                            ['title' => 'Drainase Kitchen Soichiro Steakhouse', 'img' => 'pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp', 'desc' => 'Pengikatan lemak beku pada drainase kitchen resto Soichiro Steakhouse Jakarta.'],
+                            ['title' => 'Teknisi APD Penanganan Sink Pabrik Makanan', 'img' => 'teknisi-apd-lengkap-sink-pabrik-makanan.webp', 'desc' => 'Standar steril APD K3 penanganan sink mampet fasilitas industri makanan ternama.']
+                        ];
+                    } elseif (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'deteksi') || str_contains($catSlug, 'inspeksi')) {
+                        $docItems = [
+                            ['title' => 'Kondisi Pipa Resto Mall Tersumbat Lemak', 'img' => 'kondisi-pipa-lemak-resto-mall-tersumbat.webp', 'desc' => 'Visual internal pipa resto mall yang penuh dengan endapan lemak pekat membatu.'],
+                            ['title' => 'Inspeksi CCTV Saluran Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Kamera endoskopi memetakan retakan atau sumbatan pipa paralon bawah lantai.'],
+                            ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan titik bocor & sumbatan pipa saluran kantor Pertamina Sunter.']
+                        ];
+                    } elseif (str_contains($catSlug, 'talang') || str_contains($catSlug, 'gutter')) {
+                        $docItems = [
+                            ['title' => 'Before Pembersihan Talang Gutter', 'img' => 'before-pembersihan-talang-gutter.webp', 'desc' => 'Kondisi fisik talang air sebelum pembersihan total dari penumpukan lumpur hitam.'],
+                            ['title' => 'After Pembersihan Gutter Restoran Clean', 'img' => 'after-pembersihan-talang-gutter-rootera.webp', 'desc' => 'Hasil akhir talang air gutter bersih total bebas genangan air setelah diservis.'],
+                            ['title' => 'Pembersihan Talang Gutter Seporsi Mie Kari', 'img' => 'pelancaran-gutter-seporsi-mie-kari-jakarta.webp', 'desc' => 'Pembersihan serasah daun & minyak yang menyumbat talang gutter resto Mie Kari.']
+                        ];
+                    } else {
+                        $docItems = [
+                            ['title' => 'Pembersihan Lemak Bak Kontrol Resto', 'img' => 'pembersihan-lemak-bak-kontrol-resto.webp', 'desc' => 'Pengangkatan gumpalan lemak padat dari saluran bak kontrol pembuangan resto.'],
+                            ['title' => 'Pembersihan Grease Trap Restoran', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Pembersihan box jebakan lemak resto agar operasional tetap higienis.'],
+                            ['title' => 'Pelancaran Bak Kontrol Perumahan Warga', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pembersihan sisa lumpur & sampah pada bak kontrol drainase pembuangan perumahan.']
+                        ];
+                    }
+                @endphp
+
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 2rem;">
+                    <h3 style="font-size: 1.35rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                        📷 Dokumentasi Pekerjaan Real Layanan {{ $category->name }}
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #64748B; margin-bottom: 1.25rem;">Bukti aksi teknisi di lapangan menggunakan mesin modern &amp; kamera CCTV:</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+                        @foreach($docItems as $doc)
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                            <div style="position: relative; height: 160px; overflow: hidden; background: #0f172a;">
+                                <img src="{{ asset('images/dokumentasi/' . $doc['img']) }}" alt="{{ $doc['title'] }}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                                <span style="position: absolute; bottom: 0.5rem; left: 0.5rem; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; backdrop-filter: blur(4px);">
+                                    ✓ Real Documentation
+                                </span>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <h4 style="font-size: 0.95rem; font-weight: 800; color: #0A2E78; margin-bottom: 0.35rem;">{{ $doc['title'] }}</h4>
+                                <p style="font-size: 0.82rem; color: #64748b; margin: 0; line-height: 1.4;">{{ $doc['desc'] }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
                 {{-- Universal Smart Interlinking Block 4: Project Showcase Gallery --}}
                 @if(isset($projectShowcases) && $projectShowcases->isNotEmpty())
                 <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2rem;">

@@ -81,6 +81,179 @@
     </div>
 </section>
 
+<!-- B2B Enterprise Real Documentation & APD K3 Showcase -->
+<section style="padding: 5rem 1.5rem; background: #061434; color: #ffffff; position: relative;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 3.5rem;">
+            <span style="background: rgba(45, 212, 191, 0.15); border: 1px solid rgba(45, 212, 191, 0.3); color: #2dd4bf; font-weight: 800; text-transform: uppercase; font-size: 0.8rem; padding: 0.35rem 1rem; border-radius: 50px; display: inline-block; margin-bottom: 0.75rem;">
+                👷 BUKTI PENGERJAAN PROYEK SKALA BESAR &amp; K3
+            </span>
+            <h2 style="color: #ffffff; font-size: 2.2rem; font-weight: 800; margin-top: 0.4rem;">
+                Dokumentasi Proyek Komersial &amp; Instansi Vital
+            </h2>
+            <p style="color: rgba(255,255,255,0.8); font-size: 1rem; max-width: 750px; margin: 0.5rem auto 0;">
+                Aksi nyata tim teknisi profesional Rootera Plumbing berstandar APD K3 lengkap di fasilitas pabrik makanan, stasiun kereta api, kantor BUMN, hingga restoran ternama.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.75rem;">
+            {{-- B2B CARD 1: SUSHI TEI --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a; cursor: pointer;" onclick="openHomeMediaModal('video', '{{ asset('videos/dokumentasi/video-pelancaran-gutter-lemak-sushi-tei.mp4') }}', 'Pelancaran Saluran Gutter Lemak Restoran Sushi Tei')">
+                    <img src="{{ asset('images/dokumentasi/thumb-video-pelancaran-gutter-lemak-sushi-tei.webp') }}" alt="Pelancaran Gutter Restoran Sushi Tei" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 52px; height: 52px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(220,38,38,0.7);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #dc2626; color: #fff; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        ▶ Video Real
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Restoran Sushi Tei
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Pelancaran Gutter Lemak Restoran Sushi Tei
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Video pengerjaan melancarkan pembekuan minyak &amp; lemak pada gutter pembuangan dapur utama outlet Restoran Sushi Tei secara tuntas.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Mesin Spiral Rotary Ridgid
+                    </div>
+                </div>
+            </div>
+
+            {{-- B2B CARD 2: STASIUN TUGU YOGYAKARTA --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a; cursor: pointer;" onclick="openHomeMediaModal('video', '{{ asset('videos/dokumentasi/video-pelancaran-saluran-stasiun-tugu-yogyakarta.mp4') }}', 'Pelancaran Saluran Stasiun Tugu Yogyakarta')">
+                    <img src="{{ asset('images/dokumentasi/thumb-video-pelancaran-saluran-stasiun-tugu-yogyakarta.webp') }}" alt="Stasiun Tugu Yogyakarta Rootera Plumbing" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 52px; height: 52px; border-radius: 50%; background: #dc2626; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(220,38,38,0.7);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="margin-left: 2px;"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #2563eb; color: #fff; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        🏛️ Fasilitas Publik
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Stasiun Tugu Yogyakarta
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Pelancaran Drainase Stasiun Tugu Yogyakarta
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Video pengerjaan cepat tanggap darurat melancarkan saluran mampet peron penumpang Stasiun Tugu Yogyakarta.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Mesin Ridgid Heavy Duty Industrial
+                    </div>
+                </div>
+            </div>
+
+            {{-- B2B CARD 3: MALL BANJARMASIN (EKSPANSI LUAR KOTA) --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a;">
+                    <img src="{{ asset('images/dokumentasi/pelancaran-saluran-mampet-mall-banjarmasin-1.webp') }}" alt="Proyek Pelancaran Saluran Mall Banjarmasin" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #eab308; color: #000; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        ✈️ Ekspansi Nasional
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Mall Banjarmasin, Kalsel
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Proyek Drainase Mall Banjarmasin
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Bukti jangkauan ekspansi tim teknisi spesialis Rootera Plumbing menangani proyek komersial skala besar pusat perbelanjaan di Banjarmasin.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Ridgid Rotary &amp; Cable Auger Heavy
+                    </div>
+                </div>
+            </div>
+
+            {{-- B2B CARD 4: PABRIK MAKANAN APD --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a;">
+                    <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" alt="Teknisi APD K3 Lengkap Rootera Penanganan Sink Pabrik Makanan" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #10b981; color: #fff; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        ✅ Standar APD K3 Steril
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Pabrik Makanan Industri
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Penanganan Saluran Sink Pabrik Makanan
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Penggunaan APD steril lengkap memenuhi standar food-safety &amp; GMP saat melancarkan sink dapur produksi pabrik.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Spiral Steel Rotary Cable &amp; APD Steril
+                    </div>
+                </div>
+            </div>
+
+            {{-- B2B CARD 5: KLOSET PABRIK INDUSTRI JABAR --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a;">
+                    <img src="{{ asset('images/dokumentasi/pelancaran-kloset-mampet-pabrik-industri.webp') }}" alt="Pelancaran Kloset Pabrik Industri" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #8b5cf6; color: #fff; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        🏭 Industri &amp; Fabrikasi
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Pabrik Jawa Barat
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Pelancaran Kloset Toilet Pabrik Jabar
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Penanganan kloset toilet mess karyawan pabrik industri yang tersumbat parah tanpa merusak sanitari porcelain.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Mesin Ridgid Spiral K-50
+                    </div>
+                </div>
+            </div>
+
+            {{-- B2B CARD 6: PERTAMINA SUNTER --}}
+            <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); display: flex; flex-direction: column;">
+                <div style="position: relative; height: 220px; overflow: hidden; background: #0f172a;">
+                    <img src="{{ asset('images/dokumentasi/pelancar-saluran-pertamina-sunter-jakarta.webp') }}" alt="Pengerjaan Saluran Floor Drain Pertamina Sunter Jakarta" style="width:100%; height:100%; object-fit:cover;" loading="lazy">
+                    <span style="position: absolute; top: 0.75rem; left: 0.75rem; background: #eab308; color: #000; font-weight: 800; font-size: 0.72rem; padding: 0.25rem 0.65rem; border-radius: 6px; text-transform: uppercase;">
+                        🏢 Gedung Kantor BUMN
+                    </span>
+                    <span style="position: absolute; bottom: 0.75rem; left: 0.75rem; background: rgba(0,0,0,0.75); color: #fff; font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 6px;">
+                        📍 Pertamina Sunter, Jakarta
+                    </span>
+                </div>
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: #fff; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        Pekerjaan Floor Drain Gedung Pertamina Sunter
+                    </h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 0.88rem; line-height: 1.6; margin-bottom: 1rem;">
+                        Inspeksi kamera CCTV &amp; pelancaran pipa floor drain di kompleks kantor Pertamina Sunter tanpa bising.
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.85rem; border-top: 1px solid rgba(255,255,255,0.1); color: #2dd4bf; font-size: 0.82rem; font-weight: 700;">
+                        🛠️ Peralatan: Kamera CCTV Pipa HD &amp; Ridgid Rotary
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Corporate B2B Advantages Section -->
 <section style="padding: 5rem 1.5rem; background: #ffffff; border-top: 1px solid #E2E8F0;">
     <div style="max-width: 1200px; margin: 0 auto;">

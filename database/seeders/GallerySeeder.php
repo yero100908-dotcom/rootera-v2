@@ -13,199 +13,91 @@ class GallerySeeder extends Seeder
      */
     public function run(): void
     {
-        $items = [
-            [
-                'title'               => 'Pelancaran Pipa Wastafel Dapur Restoran Cilandak',
-                'slug'                => 'pelancaran-pipa-wastafel-restoran-cilandak',
-                'category'            => 'commercial_b2b',
-                'media_type'          => 'video',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => null,
-                'external_media_url'  => 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-                'before_image_path'   => null,
-                'location_tag'        => 'Jakarta Selatan',
-                'related_service_url' => '/sektor-plumbing/restoran-cafe',
-                'description'         => 'Pembersihan endapan kerak lemak membandel pada kitchen sink resto menggunakan kombinasi mesin spiral rotary K-50 dan cairan eco-cleaner.',
-                'is_featured'         => true,
-                'is_active'           => true,
-                'sort_order'          => 1,
-            ],
-            [
-                'title'               => 'Pembersihan Hydro-Jetting Pipa Industri MM2100 Cikarang',
-                'slug'                => 'pembersihan-hydro-jetting-pipa-industri-mm2100-cikarang',
-                'category'            => 'tools_equipment',
-                'media_type'          => 'video',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => null,
-                'external_media_url'  => 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-                'before_image_path'   => null,
-                'location_tag'        => 'Cikarang, Bekasi',
-                'related_service_url' => '/sektor-plumbing/pabrik-industri',
-                'description'         => 'Flushing pipa limbah industri bertekanan 300 Bar untuk menghilangkan lumpur & pasir mengendap di pipa 10 inchi kawasan industri.',
-                'is_featured'         => true,
-                'is_active'           => true,
-                'sort_order'          => 2,
-            ],
-            [
-                'title'               => 'Restorasi Saluran Floor Drain Kamar Mandi Rumah Menteng',
-                'slug'                => 'restorasi-saluran-floor-drain-kamar-mandi-menteng',
-                'category'            => 'before_after',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80',
-                'location_tag'        => 'Jakarta Pusat',
-                'related_service_url' => '/layanan/kamar-mandi-mampet',
-                'description'         => 'Penanganan banjir air kamar mandi akibat tumpukan rambut dan sisa sabun yang membeku di dalam elbow pipa.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 3,
-            ],
-            [
-                'title'               => 'Unclogging Kloset Tersumbat Tanpa Bongkar di Cluster BSD',
-                'slug'                => 'unclogging-kloset-tersumbat-tanpa-bongkar-cluster-bsd',
-                'category'            => 'residential',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1564540574859-0dfb63985953?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1564540574859-0dfb63985953?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => null,
-                'location_tag'        => 'Tangerang Selatan',
-                'related_service_url' => '/layanan/wc-toilet-mampet',
-                'description'         => 'Proses pengerjaan kloset duduk meluap menggunakan mesin pendorong udara nirkabel & fleksibel auger tanpa merusak keramik.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 4,
-            ],
-            [
-                'title'               => 'Inspeksi Kamera CCTV Pipa Riser Apartemen Mediterania',
-                'slug'                => 'inspeksi-kamera-cctv-pipa-riser-apartemen-mediterania',
-                'category'            => 'commercial_b2b',
-                'media_type'          => 'video',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => null,
-                'external_media_url'  => 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-                'before_image_path'   => null,
-                'location_tag'        => 'Jakarta Barat',
-                'related_service_url' => '/sektor-plumbing/hotel-apartemen',
-                'description'         => 'Audit kondisi pipa vertikal gedung menggunakan CCTV crawler 30 meter untuk mendeteksi retakan dan titik sumbatan pasir.',
-                'is_featured'         => true,
-                'is_active'           => true,
-                'sort_order'          => 5,
-            ],
-            [
-                'title'               => 'Pembersihan Bak Kontrol & Got Pembuangan Utama Perumahan Sentul',
-                'slug'                => 'pembersihan-bak-kontrol-got-pembuangan-sentul',
-                'category'            => 'residential',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => null,
-                'location_tag'        => 'Bogor',
-                'related_service_url' => '/layanan/got-saluran-pembuangan',
-                'description'         => 'Pengurasan endapan lumpur hitam & sampah organik dari got utama luar perumahan agar air mengalir lancar saat hujan deras.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 6,
-            ],
-            [
-                'title'               => 'Pengoperasian Mesin Rooter Ridgid Heavy Duty oleh Teknisi Rootera',
-                'slug'                => 'pengoperasian-mesin-rooter-ridgid-heavy-duty',
-                'category'            => 'team_action',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => null,
-                'location_tag'        => 'Depok',
-                'related_service_url' => '/tentang-kami',
-                'description'         => 'Tim teknisi profesional Rootera Plumbing siap sedia 24 jam lengkap dengan peralatan keselamatan kerja standar K3.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 7,
-            ],
-            [
-                'title'               => 'Komparasi Saluran Pipa Dapur Sebelum & Sesudah Hydro-Jetting',
-                'slug'                => 'komparasi-saluran-pipa-dapur-sebelum-sesudah-hydro-jetting',
-                'category'            => 'before_after',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80',
-                'location_tag'        => 'Bandung',
-                'related_service_url' => '/jasa-saluran-mampet/bandung',
-                'description'         => 'Hasil akhir pipa paralon PVC 4 inchi bersih 100% dari kerak lemak padat seperti pipa baru pasca jetting.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 8,
-            ],
-            [
-                'title'               => 'Preventive Maintenance Drainage System Mall Kelapa Gading',
-                'slug'                => 'preventive-maintenance-drainage-system-mall-kelapa-gading',
-                'category'            => 'commercial_b2b',
-                'media_type'          => 'video',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1519567241046-7f570eee3ce6?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => null,
-                'external_media_url'  => 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyflights.mp4',
-                'before_image_path'   => null,
-                'location_tag'        => 'Jakarta Utara',
-                'related_service_url' => '/sektor-plumbing/mall-shopping-center',
-                'description'         => 'Pengerjaan berkala malam hari pada jaringan pipa pembuangan food court untuk mencegah operasional tenant terganggu.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 9,
-            ],
-            [
-                'title'               => 'Pembersihan Pipa Rooftop Talang Hujan Rumah Sakit Semarang',
-                'slug'                => 'pembersihan-pipa-rooftop-talang-hujan-rumah-sakit-semarang',
-                'category'            => 'tools_equipment',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => null,
-                'location_tag'        => 'Semarang',
-                'related_service_url' => '/jasa-saluran-mampet/semarang',
-                'description'         => 'Pengeluaran sampah daun kering & lumut tebal yang meluapkan air hujan ke langit-langit gedung medis.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 10,
-            ],
-            [
-                'title'               => 'Penanganan Darurat Pipa Bocor & Tersumbat Hotel Malioboro',
-                'slug'                => 'penanganan-darurat-pipa-bocor-tersumbat-hotel-malioboro',
-                'category'            => 'commercial_b2b',
-                'media_type'          => 'image',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
-                'before_image_path'   => null,
-                'location_tag'        => 'Yogyakarta',
-                'related_service_url' => '/jasa-saluran-mampet/yogyakarta',
-                'description'         => 'Respon cepat tim Rootera Yogyakarta mengatasi pipa mampet di 5 kamar tamu hotel dalam waktu kurang dari 90 menit.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 11,
-            ],
-            [
-                'title'               => 'Pembersihan Pipa Saluran Buang Rumah Makan Surabaya',
-                'slug'                => 'pembersihan-pipa-saluran-buang-rumah-makan-surabaya',
-                'category'            => 'residential',
-                'media_type'          => 'video',
-                'thumbnail_path'      => 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80',
-                'media_file_path'     => null,
-                'external_media_url'  => 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-                'before_image_path'   => null,
-                'location_tag'        => 'Surabaya',
-                'related_service_url' => '/jasa-saluran-mampet/surabaya',
-                'description'         => 'Proses pembersihan pipa limbah lemak dapur resto bebek Surabaya dengan garansi resmi 30 hari tanpa bongkar lantai.',
-                'is_featured'         => false,
-                'is_active'           => true,
-                'sort_order'          => 12,
-            ],
-        ];
+        $jsonPath = resource_path('data/portfolio.json');
 
-        foreach ($items as $item) {
+        if (!file_exists($jsonPath)) {
+            $this->command->error("File portfolio.json not found at: {$jsonPath}");
+            return;
+        }
+
+        $items = json_decode(file_get_contents($jsonPath), true);
+
+        if (!$items) {
+            $this->command->error("Failed to parse portfolio.json");
+            return;
+        }
+
+        // Purge legacy dummy items to ensure 100% genuine real field documentation
+        Gallery::query()->delete();
+
+        foreach ($items as $index => $item) {
+            $mediaType = $item['mediaType'] ?? ($item['fileType'] ?? 'image');
+            $fileName = $item['fileName'];
+            
+            if ($mediaType === 'video' || Str::endsWith($fileName, '.mp4')) {
+                // If it's the initial video, check where it exists or default to videos/dokumentasi/
+                if (file_exists(public_path('videos/dokumentasi/' . $fileName))) {
+                    $mediaPath = 'videos/dokumentasi/' . $fileName;
+                } elseif (file_exists(public_path('images/dokumentasi/' . $fileName))) {
+                    $mediaPath = 'images/dokumentasi/' . $fileName;
+                } else {
+                    $mediaPath = 'videos/dokumentasi/' . $fileName;
+                }
+                
+                if (!empty($item['thumbnail'])) {
+                    $thumbnailPath = 'images/dokumentasi/' . $item['thumbnail'];
+                } else {
+                    $thumbnailPath = 'images/dokumentasi/inspeksi-cctv-saluran-kloset-mampet.webp';
+                }
+            } else {
+                $mediaPath = 'images/dokumentasi/' . $fileName;
+                $thumbnailPath = !empty($item['thumbnail']) ? 'images/dokumentasi/' . $item['thumbnail'] : $mediaPath;
+            }
+
+            // Before image path
+            $beforePath = null;
+            if (!empty($item['beforeFileName'])) {
+                $beforePath = 'images/dokumentasi/' . $item['beforeFileName'];
+            }
+
+            // Related service URL mapping
+            $serviceUrl = match($item['serviceType'] ?? '') {
+                'Kitchen Sink & Drainase' => '/layanan',
+                'Floor Drain' => '/layanan',
+                'Saluran Kloset / Toilet' => '/layanan',
+                'Talang Air / Gutter' => '/layanan',
+                'Bak Kontrol & Grease Trap' => '/layanan',
+                'Inspeksi Kamera CCTV' => '/layanan',
+                default => '/layanan',
+            };
+
+            if (in_array('b2b_landing', $item['placement'] ?? [])) {
+                $serviceUrl = '/layanan-b2b-komersial';
+            }
+
+            $isFeatured = in_array('home_featured', $item['placement'] ?? []) || in_array('home_hero', $item['placement'] ?? []);
+
             Gallery::updateOrCreate(
-                ['slug' => $item['slug']],
-                $item
+                ['slug' => Str::slug($item['title'])],
+                [
+                    'title'               => $item['title'],
+                    'slug'                => Str::slug($item['title']),
+                    'category'            => $item['category'],
+                    'media_type'          => $mediaType,
+                    'thumbnail_path'      => $thumbnailPath,
+                    'media_file_path'     => $mediaPath,
+                    'external_media_url'  => null,
+                    'before_image_path'   => $beforePath,
+                    'location_tag'        => $item['location'] ?? 'Jabodetabek',
+                    'related_service_url' => $serviceUrl,
+                    'description'         => $item['description'] ?? $item['altText'],
+                    'is_featured'         => $isFeatured,
+                    'is_active'           => true,
+                    'sort_order'          => $index + 1,
+                ]
             );
         }
+
+        $this->command->info('GallerySeeder: successfully seeded ' . count($items) . ' real documentation items.');
     }
 }

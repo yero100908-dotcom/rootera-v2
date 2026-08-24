@@ -10,7 +10,7 @@
     .marquee-track {
         display: flex;
         width: max-content;
-        animation: marquee-scroll-left 40s linear infinite;
+        animation: marquee-scroll-left 45s linear infinite;
         will-change: transform;
     }
     .marquee-track:hover {
@@ -25,32 +25,41 @@
         <!-- Header -->
         <div class="text-center mb-12">
             <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-500/10 text-[#10b981] border border-emerald-500/20 text-xs font-semibold uppercase tracking-wider mb-4">
-                ⭐ ULASAN CUSTOMERS
+                ⭐ ULASAN REAL CUSTOMERS GOOGLE MAPS
             </span>
             <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Apa Kata Pelanggan Kami?
+                Apa Kata Pelanggan Asli Kami?
             </h2>
+            <p class="mt-3 text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                Testimoni riil pelanggan Rootera Plumbing yang terverifikasi langsung dari lokasi Google Maps.
+            </p>
         </div>
 
         <!-- Map & Rating Container -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 max-w-7xl mx-auto">
             
-            <!-- Left: Google Maps Iframe -->
-            <div class="bg-slate-200 rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/20 border border-slate-100/10 min-h-[300px] lg:min-h-[100%] h-full">
+            <!-- Left: Google Maps Interactive Embed -->
+            <div class="bg-slate-900 rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/20 border border-slate-700/50 min-h-[320px] lg:min-h-[100%] h-full relative">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.733575990234!2d106.86013757529841!3d-6.327597493662243!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed002bb5dce5%3A0x633fc2e245a44cd6!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sen!2sid!4v1714578508492!5m2!1sen!2sid" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.5128341974773!2d106.8627791!3d-6.3275261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed006e00b8b5%3A0xde36fb02cfc2b7a5!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sid!2sid!4v1787587462755!5m2!1sid!2sid" 
                     width="100%" 
                     height="100%" 
-                    style="border:0; min-height: 100%; display: block;" 
+                    style="border:0; min-height: 320px; display: block;" 
                     allowfullscreen="" 
                     loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    class="w-full h-full rounded-3xl">
                 </iframe>
+                <div class="absolute bottom-3 left-3 z-10">
+                    <a href="https://maps.app.goo.gl/6uri6rGLiSyaeLaM6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 backdrop-blur-md text-white text-xs font-bold shadow-lg hover:bg-emerald-600 transition-colors">
+                        📍 Buka Peta Google Maps →
+                    </a>
+                </div>
             </div>
 
             <!-- Right: Rating Overview Card (Light Theme) -->
             <div class="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-900/20 flex flex-col justify-center h-full">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 w-full h-full">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-12 w-full h-full">
                     <!-- Left: score summary -->
                     <div class="w-full md:w-1/2 text-center md:text-left flex flex-col items-center md:items-start justify-center gap-2">
                         <div class="flex items-center gap-2 justify-center md:justify-start">
@@ -60,10 +69,10 @@
                         <div class="flex gap-1 text-amber-400 text-2xl font-bold my-1">
                             ★ ★ ★ ★ ★
                         </div>
-                        <p class="text-base font-semibold text-slate-600">Berdasarkan 120+ Ulasan Google Maps</p>
+                        <p class="text-base font-semibold text-slate-600">Ulasan Asli Google Maps Terverifikasi</p>
                         <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10b981]/10 text-[#10b981] text-xs font-bold mt-2">
                             <svg class="w-4.5 h-4.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            Ulasan Terverifikasi Google
+                            Rootera Plumbing Google Business
                         </span>
                     </div>
 
@@ -100,74 +109,127 @@
             <div class="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#0d1b2a] to-transparent z-10" aria-hidden="true"></div>
 
             @php
-            $reviews = [
+            $realReviews = [
                 [
-                    'name' => 'Budi Santoso',
-                    'initial' => 'B',
-                    'bg' => 'bg-gradient-to-br from-blue-500 to-indigo-600',
-                    'text' => 'Sangat puas dengan layanan Rootera! Pipa wastafel mampet bertahun-tahun langsung lancar dalam 30 menit. Teknisi ramah, profesional, dan peralatan sangat canggih tanpa membongkar keramik lantai sama sekali. Harga sangat transparan dan bergaransi.',
-                    'date' => '2 hari yang lalu'
+                    'name' => 'Agoy Satya',
+                    'initial' => 'A',
+                    'bg' => 'bg-[#5c3826]',
+                    'text' => 'Luar biasa, mantap betul pelayanannya. Penanganan saluran pembuangan dan talang di Haka Dimsum Blok M sangat profesional. Mas-mas teknisinya ramah, komunikatif, dan alat yang dipakai lengkap banget. Dapur dan area sekitar langsung bersih lancar kembali. Terima kasih banyak, sukses terus buat usahanya! 👍',
+                    'date' => '2 minggu lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => 'Harga terjangkau',
+                    'service' => 'Saluran pembuangan & talang (Haka Dimsum Blok M)'
                 ],
                 [
-                    'name' => 'Siti Aminah',
-                    'initial' => 'S',
-                    'bg' => 'bg-gradient-to-br from-emerald-500 to-teal-600',
-                    'text' => 'Pekerjaannya rapi dan bersih. Pipa air kotor mampet di rumah bisa diatasi dengan hydro jetting modern. Air mengalir lancar kembali. Terima kasih banyak tim Rootera atas pelayanannya yang super cepat dan responsif!',
-                    'date' => '1 minggu yang lalu'
+                    'name' => 'Prayoga Kelana',
+                    'initial' => 'P',
+                    'bg' => 'bg-[#4267B2]',
+                    'text' => 'pengerjaan nya cepat bersih dan profesional, teknisi nya ramah, respon cepat terimakasih rootera plumbing',
+                    'date' => 'seminggu lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => null,
+                    'service' => null
                 ],
                 [
-                    'name' => 'Rian Hidayat',
+                    'name' => 'NUR SIDIK',
+                    'initial' => 'N',
+                    'bg' => 'bg-[#558B2F]',
+                    'text' => 'Saluran Wastafel Sudah Saya Lancar, terimakasih rootera plumbing',
+                    'date' => '5 hari lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => 'Harga bagus (Rp 400–600 rb)',
+                    'service' => 'Pelancaran Saluran Wastafel'
+                ],
+                [
+                    'name' => 'Agim Firdaus20_',
+                    'initial' => 'A',
+                    'bg' => 'bg-[#C0392B]',
+                    'text' => 'Terimakasih rootera plumbing atas pekerjaan saluran kloset di lampung, saluran sudah lancar, Teknisi ramah dan pengerjaan cepat',
+                    'date' => '3 hari lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => 'Harga bagus (Rp 400–600 rb)',
+                    'service' => 'Reparasi toilet / Kloset'
+                ],
+                [
+                    'name' => 'Radit',
                     'initial' => 'R',
-                    'bg' => 'bg-gradient-to-br from-amber-500 to-orange-600',
-                    'text' => 'Toren air saya kotor sekali dan kran mampet tersumbat lumut. Panggil teknisi Rootera datang tepat waktu, toren langsung cling dibersihkan luar dalam dan kran lancar jaya lagi. Garansinya beneran bisa diklaim.',
-                    'date' => '3 minggu yang lalu'
+                    'bg' => 'bg-[#00796B]',
+                    'text' => 'Harga bersahabat, cepat, dan bergaransi, hasil maksimal, trm ksh J&J',
+                    'date' => 'seminggu lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => null,
+                    'service' => null
                 ],
                 [
-                    'name' => 'Dewi Lestari',
-                    'initial' => 'D',
-                    'bg' => 'bg-gradient-to-br from-purple-500 to-pink-600',
-                    'text' => 'Response time luar biasa cepat. Hubungi pagi, siang teknisi sudah datang dengan alat spiral elektrik modern. Saluran kamar mandi yang mampet selesai kurang dari 1 jam. Bersih, tertib, dan harga sangat terjangkau.',
-                    'date' => '1 bulan yang lalu'
+                    'name' => 'Ummi Rhmatill',
+                    'initial' => 'U',
+                    'bg' => 'bg-[#D81B60]',
+                    'text' => 'Tempat Strategis,pelayanan cepat',
+                    'date' => '3 minggu lalu',
+                    'badge' => 'BARU',
+                    'priceRating' => null,
+                    'service' => null
                 ]
             ];
-            // Repeated arrays to construct smooth loop
-            $doubleReviews = array_merge($reviews, $reviews, $reviews, $reviews);
+            // Repeated arrays to construct smooth continuous loop
+            $doubleReviews = array_merge($realReviews, $realReviews, $realReviews);
             @endphp
 
             <!-- Marquee Track -->
             <div class="marquee-track gap-6 py-4">
                 @foreach($doubleReviews as $review)
-                <div class="w-[310px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200/80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:border-[#10b981]/30 hover:-translate-y-1 h-auto min-h-[260px]">
+                <div class="w-[320px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 sm:p-7 shadow-md border border-slate-200/80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:border-[#10b981]/40 hover:-translate-y-1 h-auto min-h-[290px]">
                     <div>
                         <!-- Card Header -->
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm {{ $review['bg'] }}">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm {{ $review['bg'] }}">
                                     {{ $review['initial'] }}
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-slate-900 text-base tracking-wide">{{ $review['name'] }}</h4>
-                                    <div class="flex text-amber-400 text-sm mt-0.5">
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-slate-900 text-base tracking-wide">{{ $review['name'] }}</h4>
+                                        @if(!empty($review['badge']))
+                                        <span class="bg-red-500 text-white text-[0.65rem] font-extrabold px-1.5 py-0.5 rounded uppercase">
+                                            {{ $review['badge'] }}
+                                        </span>
+                                        @endif
+                                    </div>
+                                    <div class="flex items-center gap-1.5 text-amber-400 text-sm mt-0.5">
                                         ★ ★ ★ ★ ★
+                                        <span class="text-xs text-slate-400 font-normal ml-1">• {{ $review['date'] }}</span>
                                     </div>
                                 </div>
                             </div>
                             <!-- Google Icon (Aligned Top Right) -->
-                            <div class="text-slate-300 flex-shrink-0">
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <div class="text-slate-400 flex-shrink-0">
+                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                                     <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.25.61 4.47 1.625l2.427-2.427C17.43 1.705 15.02 1 12.24 1 6.58 1 2 5.58 2 11.24s4.58 10.24 10.24 10.24c5.9 0 9.81-4.14 9.81-10 0-.67-.06-1.32-.18-1.9H12.24z"/>
                                 </svg>
                             </div>
                         </div>
+                        
                         <!-- Review Text -->
-                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+                        <p class="text-slate-700 text-sm leading-relaxed mb-4 font-medium">
                             "{{ $review['text'] }}"
                         </p>
                     </div>
-                    <!-- Card Footer -->
-                    <div class="text-xs text-slate-400 font-medium mt-auto">
-                        {{ $review['date'] }}
+
+                    <!-- Footer Tags (Service & Price Details) -->
+                    @if(!empty($review['priceRating']) || !empty($review['service']))
+                    <div class="pt-3 border-t border-slate-100 mt-auto flex flex-wrap gap-1.5">
+                        @if(!empty($review['priceRating']))
+                        <span class="bg-emerald-50 text-emerald-700 text-[0.72rem] font-bold px-2.5 py-1 rounded-md border border-emerald-200/60">
+                            🏷️ {{ $review['priceRating'] }}
+                        </span>
+                        @endif
+                        @if(!empty($review['service']))
+                        <span class="bg-blue-50 text-blue-700 text-[0.72rem] font-bold px-2.5 py-1 rounded-md border border-blue-200/60">
+                            🔧 {{ $review['service'] }}
+                        </span>
+                        @endif
                     </div>
+                    @endif
                 </div>
                 @endforeach
             </div>
@@ -175,8 +237,8 @@
 
         <!-- Tombol Lihat Lebih Banyak (CTA) -->
         <div class="text-center mt-4">
-            <a href="https://www.google.com/maps/place/Rootera+Plumbing+-+Jasa+Saluran+Pipa+Mampet/@-6.3275975,106.8627125,17z/data=!4m8!3m7!1s0x0:0x0!8m2!3d-6.3275975!4d106.8627125!9m1!1b1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[#10b981] hover:bg-emerald-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/15 transform hover:-translate-y-0.5 cursor-pointer">
-                <span>Lihat Lebih Banyak di Google</span>
+            <a href="https://maps.app.goo.gl/6uri6rGLiSyaeLaM6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3.5 bg-[#10b981] hover:bg-emerald-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/20 transform hover:-translate-y-0.5 cursor-pointer text-sm sm:text-base">
+                <span>Lihat Lebih Banyak di Google Maps</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>
