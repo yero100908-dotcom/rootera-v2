@@ -59,15 +59,12 @@ Route::get('/solusi-properti/{propertyTypeSlug}', [App\Http\Controllers\Property
 Route::get('/solusi-properti/{propertyTypeSlug}/{citySlug}', [App\Http\Controllers\PropertyTypeController::class, 'showCity'])->name('property.city');
 
 // Legacy URL 301 Permanent Redirects for SEO Backlinks & Indexing
-Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area-layanan');
-Route::get('/area-layanan/{citySlug}', function($citySlug) {
-    return redirect()->route('area.city', ['citySlug' => $citySlug], 301);
-})->name('area-layanan.show');
+Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area.legacy.index');
+Route::redirect('/area-layanan/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301)->name('area.legacy.city');
 Route::redirect('/layanan/{categorySlug}/{citySlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}', 301);
 Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', 301);
 
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
-Route::get('/area-layanan', [AreaController::class, 'index'])->name('area-layanan');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
 Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::class, 'category'])->name('faq.category');
 Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');
