@@ -27,7 +27,7 @@ $homeFaqSchema = [
       "name" => "Apakah ada garansi untuk setiap pekerjaan?",
       "acceptedAnswer" => [
         "@type" => "Answer",
-        "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
+        "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi 30 hari. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
       ]
     ]
   ]
@@ -40,165 +40,142 @@ $homeFaqSchema = [
 
 @section('content')
 
-{{-- ===== HERO ===== --}}
-<section class="hero" aria-label="Hero section">
-    <div class="hero-bg-shape" aria-hidden="true">
-        <!-- Geometric Pipe Flow Pattern -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none; opacity:0.18;">
-            <defs>
-                <linearGradient id="hero-pipe-grad-1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#6ee7cc" />
-                    <stop offset="100%" stop-color="#3b82f6" />
-                </linearGradient>
-                <linearGradient id="hero-pipe-grad-2" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#3b82f6" />
-                    <stop offset="100%" stop-color="#169F81" />
-                </linearGradient>
-            </defs>
+{{-- ========================================================================= --}}
+{{-- 1. ULTRA MODERN HIGH-IMPACT HERO SECTION --}}
+{{-- ========================================================================= --}}
+<section style="background: linear-gradient(135deg, #061434 0%, #0b2b64 100%); color: #ffffff; padding: 6.5rem 0 4.5rem; position: relative; overflow: hidden;" class="pt-28 lg:pt-32 pb-16" aria-label="Hero Section">
+    
+    {{-- Dynamic Ambient Light Orbs --}}
+    <div style="position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(circle, rgba(45, 212, 191, 0.18) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
+    <div style="position: absolute; bottom: 0; right: 0; width: 500px; height: 500px; background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
+
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            <!-- Left Piping System -->
-            <g stroke="url(#hero-pipe-grad-1)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Primary pipe -->
-                <path d="M-20,120 H180 V320 H340" stroke-width="4" />
-                <path d="M-20,120 H180 V320 H340" stroke-width="8" stroke-opacity="0.15" />
-                
-                <!-- Secondary branches -->
-                <path d="M100,120 V220 H260 V400 H140" stroke-width="2" class="pipe-flow-dash" />
-                <path d="M180,260 H60 V440 H200" stroke-width="1.5" />
-                
-                <!-- Thin detailed flowing lines -->
-                <path d="M-20,150 H140 V290 H300 V480 H180" stroke-width="1" stroke-opacity="0.5" class="pipe-flow-dash-reverse" />
-            </g>
-            
-            <!-- Left Connection Nodes -->
-            <g fill="#6ee7cc">
-                <circle cx="180" cy="120" r="5" />
-                <circle cx="180" cy="320" r="5" />
-                <circle cx="100" cy="120" r="4" />
-                <circle cx="260" cy="220" r="4" />
-                <circle cx="260" cy="400" r="4" />
-                <circle cx="60" cy="260" r="4" />
-                <!-- Pressure indicators (pulse circle) -->
-                <circle cx="340" cy="320" r="6" fill="#3b82f6" />
-                <circle cx="340" cy="320" r="14" stroke="#3b82f6" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 340px 320px;" />
-            </g>
-            
-            <!-- Right Piping System (behind visual card) -->
-            <g stroke="url(#hero-pipe-grad-2)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                <!-- Primary pipe -->
-                <path d="M1460,180 H1240 V360 H1080 V500" stroke-width="4.5" />
-                <path d="M1460,180 H1240 V360 H1080 V500" stroke-width="9" stroke-opacity="0.15" />
-                
-                <!-- Secondary branches -->
-                <path d="M1350,180 V280 H1180 V420 H1300" stroke-width="2" class="pipe-flow-dash" />
-                <path d="M1240,300 H1380 V460 H1200" stroke-width="1.5" />
-                <path d="M1460,220 H1290 V330 H1120 V480 H1050" stroke-width="1" stroke-opacity="0.5" class="pipe-flow-dash-reverse" />
-            </g>
-            
-            <!-- Right Connection Nodes -->
-            <g fill="#3b82f6">
-                <circle cx="1240" cy="180" r="5" fill="#169F81" />
-                <circle cx="1240" cy="360" r="5" fill="#169F81" />
-                <circle cx="1350" cy="180" r="4" />
-                <circle cx="1180" cy="280" r="4" />
-                <circle cx="1180" cy="420" r="4" />
-                <circle cx="1380" cy="300" r="4" fill="#169F81" />
-                <!-- Pressure indicators -->
-                <circle cx="1080" cy="500" r="6" fill="#169F81" />
-                <circle cx="1080" cy="500" r="14" stroke="#169F81" stroke-width="1.5" fill="none" class="pipe-pulse-node" style="transform-origin: 1080px 500px;" />
-            </g>
-        </svg>
-    </div>
-    <div class="hero-container">
-        <div class="hero-content">
-            <div class="hero-badge fade-in">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                Layanan Terpercaya di Indonesia
+            {{-- HERO LEFT: TEXT & CTA --}}
+            <div class="lg:col-span-7">
+                {{-- Glowing Capsule Badge --}}
+                <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.45rem 1.1rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 700; color: #2dd4bf; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
+                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #2dd4bf; box-shadow: 0 0 12px #2dd4bf;" class="animate-pulse"></span>
+                    ✨ JASA SALURAN PIPA &amp; HYDRO-JETTING NO. 1 DI INDONESIA
+                </div>
+
+                {{-- Dual-tone Headline --}}
+                <h1 style="font-size: clamp(2.2rem, 4.8vw, 3.4rem); font-weight: 800; line-height: 1.18; margin-bottom: 1.25rem; color: #ffffff; letter-spacing: -0.02em;">
+                    Atasi Pipa Mampet Total<br>
+                    <span style="background: linear-gradient(90deg, #2dd4bf, #6ee7cc, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tanpa Bongkar &amp; Tanpa Rusak Keramik</span>
+                </h1>
+
+                {{-- Subheadline --}}
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: 1.1rem; line-height: 1.65; margin-bottom: 2rem; max-width: 620px;">
+                    Solusi pelancaran saluran air tersumbat menggunakan kombinasi <strong>Mesin Spiral Rotary K-50</strong> &amp; <strong>Hydro-Jetting 300 Bar</strong>. Respon cepat kurang dari 30 menit dengan garansi resmi 30 hari!
+                </p>
+
+                {{-- CTA Action Buttons --}}
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya membutuhkan layanan darurat saluran mampet.') }}" target="_blank" rel="noopener noreferrer" style="background: #25D366; color: #ffffff; text-decoration: none; padding: 0.95rem 1.85rem; border-radius: 14px; font-weight: 800; font-size: 0.98rem; display: inline-flex; align-items: center; gap: 0.6rem; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); transition: all 0.25 ease;" class="hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 24 24" class="animate-bounce"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                        WhatsApp Darurat 24 Jam
+                    </a>
+                    <a href="{{ route('layanan') }}" style="background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff; text-decoration: none; padding: 0.95rem 1.75rem; border-radius: 14px; font-weight: 700; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem; backdrop-filter: blur(10px); transition: all 0.2s ease;" class="hover:bg-white/20">
+                        Lihat Estimasi Biaya &amp; Layanan →
+                    </a>
+                </div>
             </div>
-            <h1 class="hero-title">
-                Jasa Saluran Pipa Mampet Profesional<br>
-                Rootera <span class="highlight">Atasi Tuntas</span><br>
-                Tanpa Bongkar!
-            </h1>
-            <p class="hero-desc">Rootera hadir dengan teknologi modern untuk membersihkan pipa dan saluran tersumbat secara profesional, cepat, dan bergaransi — tanpa merusak struktur bangunan Anda.</p>
-            <div class="hero-actions">
-                <a href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20butuh%20bantuan%20saluran%20mampet." class="btn btn-primary" target="_blank" rel="noopener">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-                    Chat WhatsApp
-                </a>
-                <a href="{{ route('layanan') }}" class="btn btn-white">Lihat Layanan dan Info Harga</a>
+
+            {{-- HERO RIGHT: FLOATING VISUAL CARD & TRUST BADGES --}}
+            <div class="lg:col-span-5 relative">
+                <div style="position: relative; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.18); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); background: #0f172a;">
+                    <picture>
+                        <source srcset="{{ asset('images/JnJ.webp') }}" type="image/webp">
+                        <img src="{{ asset('images/JnJ.jpeg') }}" alt="Tim Teknisi Rootera Plumbing Sedang Memperbaiki Saluran Mampet" style="width: 100%; height: 380px; object-fit: cover; display: block;" />
+                    </picture>
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,20,52,0.8) 0%, transparent 60%);"></div>
+                </div>
+
+                {{-- Floating Badge 1 --}}
+                <div style="position: absolute; top: -1rem; right: -1rem; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); padding: 0.75rem 1.1rem; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 0.6rem; z-index: 3;" class="hidden sm:flex">
+                    <span style="font-size: 1.25rem;">⭐</span>
+                    <div>
+                        <div style="font-weight: 800; font-size: 0.9rem; color: #fff;">5.0 / 5.0 Rating</div>
+                        <div style="font-size: 0.72rem; color: #94a3b8;">500+ Ulasan Puas Google</div>
+                    </div>
+                </div>
+
+                {{-- Floating Badge 2 --}}
+                <div style="position: absolute; bottom: -1.25rem; left: -1rem; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(45, 212, 191, 0.4); padding: 0.75rem 1.1rem; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 0.6rem; z-index: 3;" class="hidden sm:flex">
+                    <span style="font-size: 1.25rem;">⏱️</span>
+                    <div>
+                        <div style="font-weight: 800; font-size: 0.9rem; color: #2dd4bf;">Respon &lt; 30 Menit</div>
+                        <div style="font-size: 0.72rem; color: #94a3b8;">Teknisi Standby Jabodetabek</div>
+                    </div>
+                </div>
             </div>
-            
+
         </div>
-        <div class="hero-visual" aria-hidden="true">
-            <picture>
-                <source srcset="{{ asset('images/JnJ.webp') }}" type="image/webp">
-                <img src="{{ asset('images/JnJ.jpeg') }}" alt="Jasa saluran mampet Rootera Plumbing sedang memperbaiki pipa wastafel mampet tanpa bongkar di Jabodetabek" style="width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); object-fit: cover; display: block; border: 4px solid rgba(255,255,255,0.1);" />
-            </picture>
-            <div class="hero-floating hero-floating-1">
-                <div class="dot"></div>
-                <span>Respon Cepat 24 Jam</span>
+
+        {{-- LIVE COUNTER METRIC BAR --}}
+        <div style="margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.12);" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 16px;">
+                <div style="font-size: 2.2rem; font-weight: 800; color: #6ee7cc; line-height: 1;">15.000+</div>
+                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 0.4rem; font-weight: 600;">Saluran Mampet Selesai Ditolong</div>
             </div>
-            <div class="hero-floating hero-floating-2">
-                <div class="dot"></div>
-                <span>⭐ 4.9/5 Rating Pelanggan</span>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 16px;">
+                <div style="font-size: 2.2rem; font-weight: 800; color: #fbbf24; line-height: 1;">30 Hari</div>
+                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 0.4rem; font-weight: 600;">Garansi Resmi Bebas Sumbatan Ulang</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 1.25rem; border-radius: 16px;">
+                <div style="font-size: 2.2rem; font-weight: 800; color: #38bdf8; line-height: 1;">100% Bebas Kimia</div>
+                <div style="font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-top: 0.4rem; font-weight: 600;">Metode Ramah Lingkungan &amp; Aman Pipa</div>
             </div>
         </div>
 
-        <div class="hero-stats">
-            <div class="stat-item">
-                <div class="stat-num" data-counter data-target="2300" data-suffix="+">2300+</div>
-                <div class="stat-label">Proyek Selesai</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num" data-counter data-target="6" data-suffix=" Kota">6 Kota</div>
-                <div class="stat-label">Area Jangkauan</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-num" data-counter data-target="100" data-suffix="%">100%</div>
-                <div class="stat-label">Bergaransi</div>
-            </div>
-        </div>
-    </div>
-    <div class="hero-wave" aria-hidden="true" style="height:100px;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
-            <!-- Layer 4 (Backmost - 15% Opacity) -->
-            <path d="M0,60 C320,120 720,10 1080,100 C1260,140 1360,90 1440,60 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.15"></path>
-            <!-- Layer 3 (Behind Middle - 25% Opacity) -->
-            <path d="M0,80 C360,10 720,110 1080,30 C1260,20 1360,70 1440,80 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.25"></path>
-            <!-- Layer 2 (Middle - 40% Opacity) -->
-            <path d="M0,50 C240,90 480,20 840,90 C1100,130 1280,50 1440,70 L1440,120 L0,120 Z" fill="#ffffff" opacity="0.40"></path>
-            <!-- Layer 1 (Front - Full Opacity) -->
-            <path d="M0,90 C360,130 720,40 1080,110 C1260,130 1360,100 1440,90 L1440,120 L0,120 Z" fill="#f8fafc"></path>
-        </svg>
     </div>
 </section>
 
-{{-- ===== LAYANAN ===== --}}
+{{-- ========================================================================= --}}
+{{-- 2. INTERACTIVE SERVICE MATRIX (LAYANAN SOLUTIF) --}}
+{{-- ========================================================================= --}}
 @include('sections.home.services', ['serviceCategories' => $serviceCategories])
 
-{{-- ===== MENGAPA Rootera ===== --}}
+{{-- ========================================================================= --}}
+{{-- 3. KEUNGGULAN TEKNOLOGI & PROTOKOL PENGERJAAN (WHY US) --}}
+{{-- ========================================================================= --}}
 @include('sections.home.why-us')
 
-{{-- ===== AREA LAYANAN ===== --}}
-@include('sections.home.areas', ['serviceAreas' => $serviceAreas])
+{{-- ========================================================================= --}}
+{{-- 4. AREA JANGKAUAN LAYANAN (COVERAGE HUBS) --}}
+{{-- ========================================================================= --}}
+@include('sections.home.areas', ['serviceAreas' => $serviceAreas, 'cities' => $cities ?? null])
 
-{{-- ===== MITRA KAMI ===== --}}
+{{-- ========================================================================= --}}
+{{-- 5. CLIENT & B2B PARTNER MARQUEE (ENTERPRISE TRUST) --}}
+{{-- ========================================================================= --}}
 @include('sections.home.partners', ['partners' => $partners])
 
-{{-- ===== GALERI HASIL KERJA NYATA ===== --}}
-@include('sections.home.gallery-preview', ['galleryPhotos' => $galleryPhotos])
+{{-- ========================================================================= --}}
+{{-- 6. VIDEO & BUKTI PENGERJAAN RIIL (INTERACTIVE SHOWCASE) --}}
+{{-- ========================================================================= --}}
+@include('sections.home.gallery-preview', ['hybridGalleries' => $hybridGalleries ?? null, 'galleryPhotos' => $galleryPhotos])
 
-{{-- ===== ARTIKEL TERBARU ===== --}}
+{{-- ========================================================================= --}}
+{{-- 7. ARTIKEL & E-LEARNING TERBARU --}}
+{{-- ========================================================================= --}}
 @include('sections.home.latest-articles', ['latestArticles' => $latestArticles])
 
-{{-- ===== TESTIMONIALS ===== --}}
+{{-- ========================================================================= --}}
+{{-- 8. LIVE GOOGLE REVIEWS & SOCIAL PROOF --}}
+{{-- ========================================================================= --}}
 @include('sections.home.testimonials')
 
-{{-- ===== FAQ ===== --}}
-@include('sections.home.faq')
+{{-- ========================================================================= --}}
+{{-- 9. FAQ ACCORDION --}}
+{{-- ========================================================================= --}}
+@include('sections.home.faq', ['faqs' => $faqs])
 
-{{-- ===== CTA BANNER ===== --}}
+{{-- ========================================================================= --}}
+{{-- 10. FLOATING EMERGENCY CALL BANNER --}}
+{{-- ========================================================================= --}}
 @include('sections.home.cta-banner')
 
 @endsection

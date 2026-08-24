@@ -10,6 +10,8 @@ use App\Models\Technology;
 use App\Models\ServiceSector;
 use App\Models\Partner;
 use App\Models\GalleryPhoto;
+use App\Models\Gallery;
+use App\Models\City;
 
 class HomeController extends Controller
 {
@@ -24,6 +26,10 @@ class HomeController extends Controller
             ->take(6)
             ->get();
 
+        $cities = City::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
         $latestArticles = Article::published()
             ->orderBy('published_at', 'desc')
             ->take(3)
@@ -32,11 +38,11 @@ class HomeController extends Controller
         $faqs = Faq::where('is_active', true)
             ->where('is_featured_home', true)
             ->orderBy('sort_order')
-            ->take(3)
+            ->take(4)
             ->get();
 
         if ($faqs->isEmpty()) {
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(3)->get();
+            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(4)->get();
         }
 
         $technologies = Technology::where('is_active', true)
@@ -49,6 +55,12 @@ class HomeController extends Controller
 
         $partners = Partner::all();
 
+        $hybridGalleries = Gallery::where('is_active', true)
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
+
         $galleryPhotos = GalleryPhoto::where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('created_at', 'desc')
@@ -56,8 +68,8 @@ class HomeController extends Controller
             ->get();
 
         $seo = [
-            'title'       => 'Rootera – Jasa Cleaning Service Pipa & Wastafel Mampet Profesional',
-            'description' => 'Rootera solusi terpercaya untuk saluran pipa dan wastafel mampet. Layanan profesional, cepat, dan bergaransi. Melayani Jabodetabek, Cirebon, Semarang, Yogyakarta, Lampung.',
+            'title'       => 'Rootera Plumbing – Jasa Pelancar Pipa Mampet & Hydro-Jetting No. 1 Indonesia',
+            'description' => 'Solusi tuntas pelancaran pipa mampet, wastafel, kloset, got & hydro-jetting modern 300 Bar tanpa bongkar keramik. Teknisi certified 24 jam nonstop garansi 30 hari.',
             'canonical'   => url('/'),
             'og_image'    => asset('images/JnJ.jpeg'),
         ];
@@ -65,11 +77,13 @@ class HomeController extends Controller
         return view('pages.home', compact(
             'serviceCategories',
             'serviceAreas',
+            'cities',
             'latestArticles',
             'faqs',
             'technologies',
             'serviceSectors',
             'partners',
+            'hybridGalleries',
             'galleryPhotos',
             'seo'
         ));

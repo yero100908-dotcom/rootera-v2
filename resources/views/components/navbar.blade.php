@@ -9,7 +9,7 @@
     }
 </style>
 
-<nav id="navbar" class="navbar" role="navigation" aria-label="Navigasi utama">
+<nav id="navbar" class="navbar relative z-[9999]" role="navigation" aria-label="Navigasi utama">
     <div class="nav-container">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Rootera - Beranda">
