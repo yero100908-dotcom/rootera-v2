@@ -70,7 +70,9 @@ Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::
 Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
-Route::get('/galeri', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
+Route::get('/galeri-dokumentasi', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
+Route::get('/galeri-dokumentasi/{slug}', [App\Http\Controllers\GalleryController::class, 'show'])->name('galeri.show');
+Route::redirect('/galeri', '/galeri-dokumentasi', 301);
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
 Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
 
@@ -140,12 +142,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('/service-areas/{serviceArea}', [ServiceAreaController::class, 'update'])->name('service-areas.update');
     Route::delete('/service-areas/{serviceArea}', [ServiceAreaController::class, 'destroy'])->name('service-areas.destroy');
 
-    // Gallery
+    // Gallery CRUD
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
     Route::post('/gallery', [GalleryController::class, 'store'])->name('gallery.store');
-    Route::put('/gallery/{galleryPhoto}', [GalleryController::class, 'update'])->name('gallery.update');
-    Route::patch('/gallery/{galleryPhoto}/toggle', [GalleryController::class, 'toggleActive'])->name('gallery.toggle');
-    Route::delete('/gallery/{galleryPhoto}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    Route::put('/gallery/{gallery}', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::patch('/gallery/{gallery}/toggle', [GalleryController::class, 'toggleActive'])->name('gallery.toggle');
+    Route::patch('/gallery/{gallery}/featured', [GalleryController::class, 'toggleFeatured'])->name('gallery.featured');
+    Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
 
     // Contacts / Orders
     Route::get('/contacts', [ContactManageController::class, 'index'])->name('contacts.index');
