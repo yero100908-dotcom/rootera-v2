@@ -2,6 +2,14 @@
 
 @section('schema-markup')
 <?php
+$formattedPriceHome = is_numeric($category->price_home) 
+    ? 'Rp ' . number_format((float) $category->price_home, 0, ',', '.') 
+    : ($category->price_home ?: 'Hubungi CS');
+
+$formattedPriceCorporate = is_numeric($category->price_corporate) 
+    ? 'Rp ' . number_format((float) $category->price_corporate, 0, ',', '.') 
+    : ($category->price_corporate ?: 'Hubungi CS');
+
 $serviceSchema = [
   "@context" => "https://schema.org",
   "@type" => "Service",
@@ -21,7 +29,7 @@ $serviceSchema = [
   "offers" => [
     "@type" => "AggregateOffer",
     "priceCurrency" => "IDR",
-    "lowPrice" => $category->price_home,
+    "lowPrice" => $formattedPriceHome,
     "priceRange" => "Rp",
     "description" => $category->price_description
   ]
@@ -52,7 +60,7 @@ $faqSchema = [
       "name" => "Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?",
       "acceptedAnswer" => [
         "@type" => "Answer",
-        "text" => "Biaya jasa pelancar pipa berkisar mulai dari Rp " . number_format($category->price_home, 0, ',', '.') . " untuk kategori residensial/hunian rumah tangga, dan Rp " . number_format($category->price_corporate, 0, ',', '.') . " untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi."
+        "text" => "Biaya jasa pelancar pipa berkisar mulai dari " . $formattedPriceHome . " untuk kategori residensial/hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi."
       ]
     ]
   ]
@@ -138,12 +146,16 @@ $faqSchema = [
                         Sub-Layanan {{ $category->name }}
                     </h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem;">
-                        @foreach($category->services as $service)
+                        @forelse($category->services as $service)
                         <div style="background: #ffffff; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 6px rgba(0,0,0,0.02)">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem;">{{ $service->name }}</h4>
                             <p style="font-size: 0.9rem; color: #64748b; line-height: 1.5; margin: 0;">{{ $service->short_description }}</p>
                         </div>
-                        @endforeach
+                        @empty
+                        <div style="background: #ffffff; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.25rem; text-align: center; color: #64748b;">
+                            Seluruh variasi penanganan {{ $category->name }} dikerjakan langsung oleh teknisi bersertifikat Rootera (J&J Group).
+                        </div>
+                        @endforelse
                     </div>
                 </div>
 
@@ -166,8 +178,8 @@ $faqSchema = [
                             <tbody>
                                 <tr style="border-bottom: 1px solid #e2e8f0;">
                                     <td style="padding: 1rem 1.5rem; font-weight: 600; color: #1e293b;">Tarif Mulai Dari</td>
-                                    <td style="padding: 1rem 1.5rem; color: #169F81; font-weight: 700;">Rp {{ number_format($category->price_home, 0, ',', '.') }}</td>
-                                    <td style="padding: 1rem 1.5rem; color: #1E73D8; font-weight: 700;">Rp {{ number_format($category->price_corporate, 0, ',', '.') }}</td>
+                                    <td style="padding: 1rem 1.5rem; color: #169F81; font-weight: 700;">{{ $formattedPriceHome }}</td>
+                                    <td style="padding: 1rem 1.5rem; color: #1E73D8; font-weight: 700;">{{ $formattedPriceCorporate }}</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
                                     <td style="padding: 1rem 1.5rem; font-weight: 600; color: #1e293b;">Metode Kerja</td>
@@ -190,13 +202,95 @@ $faqSchema = [
                     <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 0.75rem; font-style: italic;">*{{ $category->price_description }}</p>
                 </div>
 
+                {{-- Universal Smart Interlinking Block 1: Local Area Hub Grid --}}
+                @if(isset($cities) && $cities->isNotEmpty())
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2rem;">
+                    <h3 style="font-size: 1.35rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                        📍 Panggil Teknisi Jasa {{ $category->name }} Terdekat di Kota Anda
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #64748B; margin-bottom: 1.25rem;">Layanan panggilan darurat 24 jam stanby terdekat di kota-kota operasional berikut:</p>
+
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                        @foreach($cities as $c)
+                            <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $c->slug) }}" style="background: #ffffff; border: 1px solid #CBD5E1; color: #0A2E78; padding: 0.45rem 1rem; border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none;">
+                                📍 {{ $category->name }} {{ $c->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- Universal Smart Interlinking Block 2: Cross-Service Links --}}
+                @if(isset($allCategories) && $allCategories->isNotEmpty())
+                <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2rem;">
+                    <h3 style="font-size: 1.35rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                        🔧 Layanan Pipa & Sanitasi Terkait Lainnya
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #64748B; margin-bottom: 1.25rem;">Solusi komprehensif pelancaran saluran air untuk hunian dan tempat usaha:</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
+                        @foreach($allCategories as $otherCat)
+                            <a href="{{ route('layanan.show', $otherCat->slug) }}" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1rem; text-decoration: none; color: #0A2E78; font-weight: 700; font-size: 0.92rem; display: block;">
+                                🛠️ {{ $otherCat->name }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- Universal Smart Interlinking Block 3: Related Technical Articles --}}
+                @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
+                <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2rem;">
+                    <h3 style="font-size: 1.35rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                        📰 Pusat Edukasi & Artikel Perawatan Pipa
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #64748B; margin-bottom: 1.25rem;">Panduan teknis dan tips solusi saluran tersumbat dari tim ahli Rootera:</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+                        @foreach($relatedArticles as $art)
+                            <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.25rem;">
+                                <h4 style="font-size: 1rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                                    <a href="{{ route('blog.show', $art->slug) }}" style="color: inherit; text-decoration: none;">{{ $art->title }}</a>
+                                </h4>
+                                <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 0.75rem;">{{ Str::limit($art->excerpt, 90) }}</p>
+                                <a href="{{ route('blog.show', $art->slug) }}" style="color: #169F81; font-weight: 700; font-size: 0.85rem; text-decoration: none;">Baca Selengkapnya →</a>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                {{-- Universal Smart Interlinking Block 4: Project Showcase Gallery --}}
+                @if(isset($projectShowcases) && $projectShowcases->isNotEmpty())
+                <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2rem;">
+                    <h3 style="font-size: 1.35rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem;">
+                        📸 Dokumentasi Pengerjaan Proyek Nyata
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #64748B; margin-bottom: 1.25rem;">Bukti hasil pengerjaan tim teknisi profesional di lapangan:</p>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem;">
+                        @foreach($projectShowcases->take(3) as $proj)
+                            <div style="background: #F8FAFC; border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0;">
+                                <div style="height: 140px; background: #0A2E78; overflow: hidden;">
+                                    <img src="{{ $proj->after_image_url }}" alt="{{ $proj->image_alt }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div style="padding: 1rem;">
+                                    <h4 style="font-size: 0.95rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.3rem;">{{ $proj->title }}</h4>
+                                    <span style="font-size: 0.8rem; color: #169F81; font-weight: 600;">✓ {{ $proj->client_type }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
                 {{-- FAQ Section (Natural Questions) --}}
                 <div style="border-top: 1px solid #e2e8f0; padding-top: 3rem;">
                     <h3 style="font-size: 1.5rem; font-weight: 700; color: #0A2E78; margin-bottom: 1.5rem; text-align: center;">
                         Pertanyaan Umum (FAQ) Layanan
                     </h3>
                     
-                    <div style="display: flex; flex-col: column; gap: 1.5rem; max-w: 800px; margin: 0 auto;">
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
                         <div style="background: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; padding: 1.5rem;">
                             <h4 style="font-size: 1.05rem; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; display: flex; gap: 0.5rem;">
                                 <span>❓</span> Berapa lama proses pengerjaan pelancar pipa mampet Rootera?
@@ -220,7 +314,7 @@ $faqSchema = [
                                 <span>❓</span> Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?
                             </h4>
                             <p style="font-size: 0.95rem; color: #475569; line-height: 1.6; margin: 0; padding-left: 1.5rem;">
-                                Biaya jasa pelancar pipa berkisar mulai dari Rp {{ number_format($category->price_home, 0, ',', '.') }} untuk kategori residensial/hunian rumah tangga, dan Rp {{ number_format($category->price_corporate, 0, ',', '.') }} untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi.
+                                Biaya jasa pelancar pipa berkisar mulai dari {{ $formattedPriceHome }} untuk kategori residensial/hunian rumah tangga, dan {{ $formattedPriceCorporate }} untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi.
                             </p>
                         </div>
                     </div>

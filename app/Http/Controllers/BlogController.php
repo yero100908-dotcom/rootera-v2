@@ -36,6 +36,21 @@ class BlogController extends Controller
             ->take(3)
             ->get();
 
+        $cities = \App\Models\City::where('is_active', true)
+            ->with('province')
+            ->orderBy('sort_order')
+            ->take(12)
+            ->get();
+
+        $allCategories = \App\Models\ServiceCategory::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        $projectShowcases = \App\Models\ProjectGallery::where('is_active', true)
+            ->with(['district', 'city'])
+            ->take(3)
+            ->get();
+
         $seo = [
             'title'       => ($article->meta_title ?? $article->title) . ' | Rootera',
             'description' => $article->meta_description ?? $article->excerpt,
@@ -43,6 +58,6 @@ class BlogController extends Controller
             'og_image'    => $article->og_image ? asset('storage/' . $article->og_image) : ($article->thumbnail ? asset('storage/' . $article->thumbnail) : asset('images/JnJ.jpeg')),
         ];
 
-        return view('pages.blog-detail', compact('article', 'relatedArticles', 'seo'));
+        return view('pages.blog-detail', compact('article', 'relatedArticles', 'cities', 'allCategories', 'projectShowcases', 'seo'));
     }
 }

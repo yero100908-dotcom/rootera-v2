@@ -150,6 +150,31 @@ $blogPostingSchema = [
                 </a>
             </div>
 
+            <!-- Contextual B2B Callout Card for Corporate Estate Managers -->
+            <div style="background: linear-gradient(135deg, #0A2E78, #060B14); border-radius: 12px; padding: 1.75rem; margin: 2rem 0; color: #ffffff;">
+                <span style="background: rgba(31, 175, 90, 0.2); color: #a3f0c2; border: 1px solid rgba(31, 175, 90, 0.4); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Untuk Pengelola Gedung & Bisnis</span>
+                <h4 style="color: #ffffff; font-size: 1.25rem; font-weight: 800; margin: 0.6rem 0 0.4rem;">Pipa Tempat Usaha Anda Bermasalah?</h4>
+                <p style="font-size: 0.92rem; color: rgba(255,255,255,0.8); margin-bottom: 1.25rem;">Rootera Plumbing (J&J Group) menyediakan layanan Kontrak Maintenance Perawatan Pipa Berkala untuk Restoran, Hotel, Apartemen, Mall, dan Pabrik dengan SLA Fast Response & Faktur Pajak Resmi.</p>
+                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera B2B Sales (J&J Group), saya ingin konsultasi perawatan pipa bisnis setelah membaca artikel: ' . $article->title) }}" target="_blank" class="btn" style="background: #1FAF5A; color: #ffffff; font-weight: 700; font-size: 0.9rem; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    📞 Konsultasi B2B (J&J Group)
+                </a>
+            </div>
+
+            <!-- Hub & Spoke Interactive Service Area Navigator Grid -->
+            @if(isset($cities) && $cities->isNotEmpty())
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.75rem; margin: 2.5rem 0;">
+                <h4 style="color: #0A2E78; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">📍 Navigator Layanan Pipa Terdekat di Kota Anda</h4>
+                <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 1.25rem;">Pilih kota Anda untuk memesan teknisi Rootera Plumbing stanby terdekat:</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                    @foreach($cities as $c)
+                        <a href="{{ url('/jasa-saluran-mampet/' . $c->slug) }}" style="background: #ffffff; border: 1px solid #CBD5E1; color: #0A2E78; padding: 0.45rem 1rem; border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none;">
+                            📍 Jasa Pipa {{ $c->name }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             <!-- Social Share (Moved to bottom) -->
             <div style="text-align:center;">
                 <div class="article-share-text">Bagikan Artikel Ini</div>

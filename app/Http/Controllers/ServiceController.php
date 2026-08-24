@@ -53,16 +53,56 @@ class ServiceController extends Controller
     {
         $category = \App\Models\ServiceCategory::where('slug', $slug)
             ->where('is_active', true)
-            ->with('services')
+            ->with(['services' => function ($q) {
+                $q->where('is_active', true)->orderBy('sort_order');
+            }])
             ->firstOrFail();
 
+        $allCategories = \App\Models\ServiceCategory::where('is_active', true)
+            ->where('id', '!=', $category->id)
+            ->orderBy('sort_order')
+            ->get();
+
+        $cities = \App\Models\City::where('is_active', true)
+            ->with('province')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->take(12)
+            ->get();
+
+        $relatedArticles = \App\Models\Article::published()
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        $projectShowcases = \App\Models\ProjectGallery::where('is_active', true)
+            ->with(['district', 'city'])
+            ->take(6)
+            ->get();
+
+        $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+        $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+        $canonical = url('/layanan/' . $category->slug);
+        $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.jpeg');
+
         $seo = [
-            'title'       => Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, ''),
-            'description' => Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, ''),
-            'canonical'   => url('/layanan/' . $category->slug),
-            'og_image'    => $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.jpeg'),
+            'title'       => $title,
+            'description' => $description,
+            'canonical'   => $canonical,
+            'og_image'    => $ogImage,
         ];
 
-        return view('pages.layanan-detail', compact('category', 'seo'));
+        return view('pages.layanan-detail', compact(
+            'category',
+            'allCategories',
+            'cities',
+            'relatedArticles',
+            'projectShowcases',
+            'title',
+            'description',
+            'canonical',
+            'ogImage',
+            'seo'
+        ));
     }
 }

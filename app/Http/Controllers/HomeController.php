@@ -30,8 +30,14 @@ class HomeController extends Controller
             ->get();
 
         $faqs = Faq::where('is_active', true)
+            ->where('is_featured_home', true)
             ->orderBy('sort_order')
+            ->take(3)
             ->get();
+
+        if ($faqs->isEmpty()) {
+            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(3)->get();
+        }
 
         $technologies = Technology::where('is_active', true)
             ->orderBy('sort_order')

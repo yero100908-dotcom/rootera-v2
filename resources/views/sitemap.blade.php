@@ -52,7 +52,7 @@
     {{-- Service Areas --}}
     @foreach ($areas as $area)
     <url>
-        <loc>{{ route('area-layanan.show', $area->slug) }}</loc>
+        <loc>{{ url('/jasa-saluran-mampet/' . $area->slug) }}</loc>
         @if($area->updated_at)
         <lastmod>{{ $area->updated_at->tz('UTC')->toAtomString() }}</lastmod>
         @endif

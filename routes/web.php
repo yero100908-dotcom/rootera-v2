@@ -7,6 +7,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\AreaServiceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ArticleController;
@@ -19,7 +20,10 @@ use App\Http\Controllers\Admin\TechnologyController;
 use App\Http\Controllers\Admin\ServiceSectorController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\SeoManageController;
+use App\Http\Controllers\Admin\ProjectGalleryController;
+use App\Http\Controllers\Admin\CityManageController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\ProgrammaticSeoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +32,45 @@ use App\Http\Controllers\SitemapController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap-main.xml', [SitemapController::class, 'main'])->name('sitemap.main');
+Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
+Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
+
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
+
+// New High-Intent Keyword-Rich Routes & Problem Hub
+Route::get('/jasa-saluran-mampet', [AreaServiceController::class, 'indexDirectory'])->name('area.index');
+Route::get('/jasa-saluran-mampet/{citySlug}', [AreaServiceController::class, 'showCity'])->name('area.city');
+Route::get('/area-jasa-pipa-mampet/{regionSlug}', [AreaServiceController::class, 'showRegion'])->name('area.region');
+Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.city');
+Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.district');
+Route::get('/solusi/{problemSlug}/{citySlug?}', [App\Http\Controllers\ProblemHubController::class, 'show'])->name('solusi.problem');
+
+// Master B2B Commercial & Sector Programmatic Routes
+Route::get('/layanan-b2b-komersial', [App\Http\Controllers\CommercialSectorController::class, 'index'])->name('b2b.index');
+Route::get('/sektor-plumbing/{sectorSlug}', [App\Http\Controllers\CommercialSectorController::class, 'showSector'])->name('b2b.sector');
+Route::get('/sektor-plumbing/{sectorSlug}/{citySlug}', [App\Http\Controllers\CommercialSectorController::class, 'showSectorCity'])->name('b2b.sector.city');
+Route::get('/kontrak-maintenance-saluran/{sectorSlug}', [App\Http\Controllers\CommercialSectorController::class, 'maintenanceContract'])->name('b2b.contract');
+
+// Public Property Category Direct-to-Consumer Routes
+Route::get('/kategori-properti', [App\Http\Controllers\PropertyTypeController::class, 'index'])->name('property.index');
+Route::get('/solusi-properti/{propertyTypeSlug}', [App\Http\Controllers\PropertyTypeController::class, 'show'])->name('property.show');
+Route::get('/solusi-properti/{propertyTypeSlug}/{citySlug}', [App\Http\Controllers\PropertyTypeController::class, 'showCity'])->name('property.city');
+
+// Legacy URL 301 Permanent Redirects for SEO Backlinks & Indexing
+Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area-layanan');
+Route::get('/area-layanan/{citySlug}', function($citySlug) {
+    return redirect()->route('area.city', ['citySlug' => $citySlug], 301);
+})->name('area-layanan.show');
+Route::redirect('/layanan/{categorySlug}/{citySlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}', 301);
+Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', 301);
+
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/area-layanan', [AreaController::class, 'index'])->name('area-layanan');
-Route::get('/area-layanan/{slug}', [AreaController::class, 'show'])->name('area-layanan.show');
+Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
+Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::class, 'category'])->name('faq.category');
+Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/galeri', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
@@ -163,5 +201,24 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // =====================================================
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+    // =====================================================
+    // Project Galleries (Portofolio Proyek) CRUD
+    // =====================================================
+    Route::get('/project-galleries', [ProjectGalleryController::class, 'index'])->name('project-galleries.index');
+    Route::post('/project-galleries', [ProjectGalleryController::class, 'store'])->name('project-galleries.store');
+    Route::put('/project-galleries/{projectGallery}', [ProjectGalleryController::class, 'update'])->name('project-galleries.update');
+    Route::patch('/project-galleries/{projectGallery}/toggle', [ProjectGalleryController::class, 'toggleActive'])->name('project-galleries.toggle');
+    Route::delete('/project-galleries/{projectGallery}', [ProjectGalleryController::class, 'destroy'])->name('project-galleries.destroy');
+
+    // =====================================================
+    // Cities & Districts Management CRUD
+    // =====================================================
+    Route::get('/cities', [CityManageController::class, 'index'])->name('cities.index');
+    Route::post('/cities', [CityManageController::class, 'store'])->name('cities.store');
+    Route::put('/cities/{city}', [CityManageController::class, 'update'])->name('cities.update');
+    Route::delete('/cities/{city}', [CityManageController::class, 'destroy'])->name('cities.destroy');
+    Route::post('/cities/{city}/districts', [CityManageController::class, 'storeDistrict'])->name('cities.districts.store');
+    Route::delete('/districts/{district}', [CityManageController::class, 'destroyDistrict'])->name('districts.destroy');
 
 });

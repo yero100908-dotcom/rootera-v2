@@ -21,8 +21,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Bind SEO data globally to frontend templates
+        // Bind SEO data globally to frontend templates, prioritizing controller-passed $seo array
         View::composer(['layouts.app', 'layouts.admin'], function ($view) {
+            $data = $view->getData();
+            $customSeo = $data['seo'] ?? [];
+
             $seoModel = null;
             try {
                 $seoModel = app(SeoService::class)->getMetadataForCurrentRoute();
@@ -31,13 +34,13 @@ class ViewServiceProvider extends ServiceProvider
             }
 
             $seo = [
-                'title'        => $seoModel['meta_title'] ?? 'Rootera – Jasa Pipa & Saluran Mampet Profesional',
-                'description'  => $seoModel['meta_description'] ?? 'Rootera solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.',
-                'canonical'    => $seoModel['canonical_url'] ?? url()->current(),
-                'og_image'     => $seoModel && !empty($seoModel['og_image']) 
+                'title'        => $customSeo['title'] ?? $seoModel['meta_title'] ?? 'Rootera – Jasa Pipa & Saluran Mampet Profesional',
+                'description'  => $customSeo['description'] ?? $seoModel['meta_description'] ?? 'Rootera solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.',
+                'canonical'    => $customSeo['canonical'] ?? $seoModel['canonical_url'] ?? url()->current(),
+                'og_image'     => $customSeo['og_image'] ?? ($seoModel && !empty($seoModel['og_image']) 
                                     ? asset('storage/' . $seoModel['og_image']) 
-                                    : asset('images/og-default.jpg'),
-                'is_indexable' => $seoModel['is_indexable'] ?? true,
+                                    : asset('images/logo final.png')),
+                'is_indexable' => $customSeo['is_indexable'] ?? $seoModel['is_indexable'] ?? true,
             ];
 
             $view->with('seo', $seo);
