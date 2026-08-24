@@ -122,6 +122,10 @@
         </div>
     </div>
 </section>
+
+{{-- Google Neighborhood Discovery Map Component --}}
+<x-neighborhood-map />
+
 @endsection
 @push('styles')
 <style>.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
