@@ -5,7 +5,15 @@
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.services') }}</loc>
+        <loc>{{ route('sitemap.sectors') }}</loc>
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>{{ route('sitemap.cities') }}</loc>
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>{{ route('sitemap.districts') }}</loc>
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>

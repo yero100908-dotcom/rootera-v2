@@ -33,6 +33,9 @@ use App\Http\Controllers\ProgrammaticSeoController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/sitemap-main.xml', [SitemapController::class, 'main'])->name('sitemap.main');
+Route::get('/sitemap-sectors.xml', [SitemapController::class, 'sectors'])->name('sitemap.sectors');
+Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('sitemap.cities');
+Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
 

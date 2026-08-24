@@ -34,7 +34,7 @@ class CommercialSectorController extends Controller
             'title'       => 'Layanan B2B & Kontrak Maintenance Pipa Komersial - Rootera (J&J Group)',
             'description' => 'Spesialis pemeliharaan pipa komersial, grease trap restoran, riser apartemen, limbah industri pabrik, & instansi bergaransi resmi PT/CV J&J Group dengan SLA 24 jam.',
             'canonical'   => url('/layanan-b2b-komersial'),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => asset('images/JnJ.webp'),
         ];
 
         return view('pages.b2b.index', compact('sectors', 'allCategories', 'showcases', 'seo'));

@@ -7,19 +7,20 @@ $blogPostingSchema = [
   "@type" => "BlogPosting",
   "headline" => $article->title,
   "description" => $article->excerpt,
-  "image" => $article->thumbnail_url,
+  "image" => $article->thumbnail_url ?: asset('images/logo-final.webp'),
   "author" => [
     "@type" => "Person",
-    "name" => $article->author ?: "Tim Rootera"
+    "name" => $article->author ?: "Tim Ahli Rootera Plumbing"
   ],
-  "datePublished" => $article->published_at?->toIso8601String(),
+  "datePublished" => $article->published_at?->toIso8601String() ?: now()->toIso8601String(),
   "dateModified" => $article->updated_at->toIso8601String(),
   "publisher" => [
     "@type" => "Organization",
-    "name" => "Rootera",
+    "name" => "Rootera Plumbing",
+    "url" => url('/'),
     "logo" => [
       "@type" => "ImageObject",
-      "url" => asset('images/logo-hijau.png')
+      "url" => asset('images/logo-final.webp')
     ]
   ],
   "mainEntityOfPage" => [
@@ -27,6 +28,9 @@ $blogPostingSchema = [
     "@id" => url()->current()
   ]
 ];
+
+$wordCount = str_word_count(strip_tags($article->content));
+$readTimeMinutes = max(2, ceil($wordCount / 180));
 ?>
 <script type="application/ld+json">
 {!! json_encode($blogPostingSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
@@ -36,144 +40,146 @@ $blogPostingSchema = [
 @push('styles')
 <style>
 /* Editorial Typography & Layout */
-.article-header { padding: 4rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; text-align: center; }
-.article-category { display: inline-block; background: rgba(22,159,129,.1); color: var(--green); font-weight: 700; font-size: 0.85rem; padding: 0.3rem 1rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
-.article-title { color: var(--blue); font-size: clamp(1.5rem, 5vw, 2.75rem); font-weight: 800; line-height: 1.3; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
-.article-meta { display: flex; align-items: center; justify-content: center; gap: 1.5rem; color: var(--gray-600); font-size: 0.95rem; flex-wrap: wrap; }
+.article-header { padding: 3rem 1.5rem 2rem; max-width: 900px; margin: 0 auto; text-align: center; }
+.article-category { display: inline-block; background: rgba(16,185,129,.1); color: #10B981; border: 1px solid rgba(16,185,129,.3); font-weight: 700; font-size: 0.82rem; padding: 0.3rem 1rem; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; }
+.article-title { color: #0B2545; font-size: clamp(1.6rem, 4.5vw, 2.75rem); font-weight: 800; line-height: 1.25; margin-bottom: 1.25rem; letter-spacing: -0.02em; font-family: 'Plus Jakarta Sans', sans-serif; }
+.article-meta { display: flex; align-items: center; justify-content: center; gap: 1.5rem; color: #64748B; font-size: 0.9rem; flex-wrap: wrap; }
 .article-meta-item { display: flex; align-items: center; gap: 0.4rem; }
 
 .article-hero-img { max-width: 1000px; margin: 0 auto 2.5rem; padding: 0 1.5rem; }
 .article-hero-img figure { position: relative; margin: 0; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.08); }
-.article-hero-img img { width: 100%; height: auto; display: block; object-fit: cover; max-height: 600px; }
-.article-hero-img figcaption { text-align: center; font-size: 0.85rem; color: var(--gray-400); margin-top: 0.75rem; font-style: italic; }
+.article-hero-img img { width: 100%; height: auto; display: block; object-fit: cover; max-height: 550px; }
+.article-hero-img figcaption { text-align: center; font-size: 0.85rem; color: #94A3B8; margin-top: 0.75rem; font-style: italic; }
 
-.article-layout { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 300px; gap: 4rem; align-items: start; }
+.article-layout { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 320px; gap: 3.5rem; align-items: start; }
 
-.article-body-content { font-size: 18px; line-height: 1.8; color: #374151; }
+.article-body-content { font-size: 1.05rem; line-height: 1.8; color: #334155; }
 .article-body-content p { margin-bottom: 1.5rem; }
-.article-body-content h2 { color: var(--blue); font-size: 1.8rem; margin: 3rem 0 1rem; font-weight: 800; }
-.article-body-content h3 { color: var(--blue); font-size: 1.4rem; margin: 2rem 0 1rem; font-weight: 700; }
+.article-body-content h2 { color: #0B2545; font-size: 1.65rem; margin: 2.5rem 0 1rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; scroll-margin-top: 100px; }
+.article-body-content h3 { color: #0B2545; font-size: 1.3rem; margin: 2rem 0 0.85rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; scroll-margin-top: 100px; }
 .article-body-content ul, .article-body-content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
 .article-body-content li { margin-bottom: 0.5rem; }
-.article-body-content img { border-radius: 12px; margin: 2rem 0; width: 100%; height: auto; box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+.article-body-content img { border-radius: 16px; margin: 2rem 0; width: 100%; height: auto; box-shadow: 0 4px 20px rgba(0,0,0,.05); }
+
+/* Table of Contents Container */
+.toc-container { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 16px; padding: 1.5rem; margin-bottom: 2.5rem; }
+.toc-title { font-size: 1rem; font-weight: 800; color: #0B2545; font-family: 'Plus Jakarta Sans', sans-serif; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+.toc-list { list-style: none; padding: 0; margin: 0; space-y: 0.5rem; }
+.toc-list a { color: #475569; font-size: 0.9rem; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+.toc-list a:hover { color: #10B981; }
 
 /* Pull Quote Styling */
-.article-body-content blockquote { margin: 2.5rem 0; padding: 1.5rem 2rem; background: rgba(22,159,129,.05); border-left: 6px solid var(--green); border-radius: 0 12px 12px 0; font-size: 1.25rem; font-style: italic; color: var(--blue); line-height: 1.6; font-weight: 500; }
+.article-body-content blockquote { margin: 2.5rem 0; padding: 1.5rem 2rem; background: rgba(16,185,129,.05); border-left: 5px solid #10B981; border-radius: 0 16px 16px 0; font-size: 1.15rem; font-style: italic; color: #0B2545; line-height: 1.6; font-weight: 600; }
 
-.article-cta-box { background: linear-gradient(135deg, var(--blue), #0d3a94); border-radius: 20px; padding: 2.5rem; color: #fff; text-align: center; margin-top: 3rem; margin-bottom: 3rem; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(10,46,120,.2); }
-.article-cta-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(22,159,129,.2) 0%, transparent 60%); pointer-events: none; }
-.article-cta-box h3 { color: #fff; font-size: 1.6rem; margin-bottom: 1rem; font-family: 'Plus Jakarta Sans', sans-serif; position: relative; z-index: 1; }
-.article-cta-box p { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+.article-cta-box { background: linear-gradient(135deg, #0B2545, #134074); border-radius: 24px; padding: 2.5rem 2rem; color: #fff; text-align: center; margin-top: 3rem; margin-bottom: 3rem; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(11,37,69,.2); }
+.article-cta-box h3 { color: #fff; font-size: 1.5rem; margin-bottom: 0.75rem; font-family: 'Plus Jakarta Sans', sans-serif; position: relative; z-index: 1; font-weight: 800; }
+.article-cta-box p { color: rgba(255,255,255,.85); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
 
-.article-share { display: flex; flex-direction: row; justify-content: center; gap: 1.25rem; margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid var(--gray-200); padding-top: 2.5rem; }
-.article-share-text { width: 100%; text-align: center; color: var(--gray-500); font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.share-btn { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; transition: transform 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
-.share-btn:hover { transform: translateY(-3px); }
-.share-wa { background: #25D366; }
-.share-fb { background: #1877F2; }
-.share-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.share-tt { background: #000000; }
-
-.sidebar-related h3 { font-size: 1.2rem; color: var(--blue); font-family: 'Plus Jakarta Sans', sans-serif; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--gray-100); }
-.sidebar-post { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center; }
-.sidebar-post-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
-.sidebar-post-title { font-size: 0.95rem; font-weight: 700; color: var(--gray-800); line-height: 1.4; transition: color 0.2s; }
-.sidebar-post-title:hover { color: var(--green); }
-.sidebar-post-date { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.3rem; }
+/* Floating Sticky Sidebar CTA */
+.sidebar-sticky { position: sticky; top: 100px; space-y: 2rem; }
+.sidebar-cta-card { background: linear-gradient(135deg, #061434, #0A2E78); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 1.75rem; color: #ffffff; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
 @media(max-width: 1024px) {
     .article-layout { grid-template-columns: 1fr; }
-    .article-sidebar { display: none; } /* Hide sidebar on tablet */
-}
-@media(max-width: 768px) {
-    /* Responsive Spacing & Layout */
-    .article-header { padding: 3rem 1rem 1.5rem; }
-    .article-hero-img { padding: 0 1rem; margin-bottom: 1.5rem; }
-    .article-layout { gap: 1.5rem; padding: 0 1rem; }
-    
-    /* Responsive Typography */
-    .article-meta { font-size: 0.85rem; color: var(--gray-500); font-weight: 400; gap: 1rem; }
-    .article-body-content { font-size: 16px; }
-    .article-body-content h2 { font-size: 1.4rem; margin: 2rem 0 1rem; }
-    .article-body-content h3 { font-size: 1.2rem; margin: 1.5rem 0 0.8rem; }
-    .article-body-content blockquote { font-size: 1.1rem; padding: 1rem 1.2rem; margin: 1.5rem 0; }
-    
-    /* Responsive Share Buttons */
-    .article-share { padding-top: 2rem; }
+    .article-sidebar { display: none; }
 }
 </style>
 @endpush
 
 @section('content')
 
-<!-- Header -->
+{{-- Header & Breadcrumbs --}}
 <header class="article-header">
-    <span class="article-category">Blog & Pengetahuan</span>
+    <nav class="flex items-center justify-center gap-2 text-xs text-slate-500 mb-4" aria-label="Breadcrumb">
+        <a href="{{ url('/') }}" class="hover:text-emerald-600 transition">Beranda</a>
+        <span>›</span>
+        <a href="{{ route('blog') }}" class="hover:text-emerald-600 transition">Pengetahuan</a>
+        <span>›</span>
+        <span class="text-slate-900 font-semibold">{{ Str::limit($article->title, 35) }}</span>
+    </nav>
+
+    <span class="article-category">{{ $article->category ?? 'Edukasi Plumbing' }}</span>
     <h1 class="article-title">{{ $article->title }}</h1>
+    
     <div class="article-meta">
         <div class="article-meta-item">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            {{ $article->author ?: 'Tim Rootera' }}
+            <span>✍️</span> {{ $article->author ?: 'Tim Ahli Rootera' }}
         </div>
         <div class="article-meta-item">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            {{ $article->published_at?->translatedFormat('d F Y') }}
+            <span>📅</span> {{ $article->published_at?->translatedFormat('d F Y') ?: now()->translatedFormat('d F Y') }}
+        </div>
+        <div class="article-meta-item">
+            <span>⏱️</span> Estimasi Baca {{ $readTimeMinutes }} Menit
         </div>
     </div>
 </header>
 
-<!-- Featured Video or Image -->
+{{-- Featured Video or Image --}}
 @if($article->youtube_video_id)
 <div class="article-hero-img">
-    <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-lg mb-6" style="width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; background:#000; box-shadow: 0 20px 40px rgba(0,0,0,.08);">
-        <iframe class="w-full h-full" style="width:100%; height:100%; border:0;" src="https://www.youtube-nocookie.com/embed/{{ $article->youtube_video_id }}" title="{{ $article->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div style="width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; background:#000; box-shadow: 0 20px 40px rgba(0,0,0,.08);">
+        <iframe style="width:100%; height:100%; border:0;" src="https://www.youtube-nocookie.com/embed/{{ $article->youtube_video_id }}" title="{{ $article->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 </div>
-@elseif($article->thumbnail)
+@elseif($article->thumbnail_url)
 <div class="article-hero-img">
     <figure>
-        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}">
+        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}" width="1000" height="550" loading="eager" decoding="async">
     </figure>
-    <figcaption>Ilustrasi: {{ $article->title }}</figcaption>
 </div>
 @endif
 
-<!-- Main Content Layout -->
-<section style="padding-bottom: 5rem;">
+{{-- Main Article Content Layout --}}
+<section class="pb-20">
     <div class="article-layout">
         
-        <!-- Article Content -->
+        {{-- Article Content Column --}}
         <article class="article-body-content">
-            {!! $article->content !!}
+            
+            {{-- Dynamic Table of Contents (TOC) --}}
+            <div id="tableOfContents" class="toc-container hidden">
+                <div class="toc-title">
+                    <span>📑</span> Daftar Isi Artikel
+                </div>
+                <ol id="tocList" class="toc-list space-y-1 text-sm list-decimal pl-5"></ol>
+            </div>
 
-            <!-- CTA Banner -->
+            {{-- Main Article HTML Content --}}
+            <div id="articleBody">
+                {!! $article->content !!}
+            </div>
+
+            {{-- High Conversion WhatsApp CTA Box --}}
             <div class="article-cta-box">
-                <h3>Masalah pipa Anda belum tuntas?</h3>
-                <p>Jangan biarkan saluran mampet mengganggu kenyamanan Anda. Panggil Rootera sekarang untuk solusi profesional menggunakan mesin spiral modern tanpa bongkar paksa.</p>
-                <a href="https://wa.me/6281385404000" target="_blank" class="btn btn-primary" style="display:inline-flex; z-index:2; position:relative;">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-                    Hubungi via WhatsApp
+                <h3>Masalah Saluran Pipa Anda Belum Tuntas?</h3>
+                <p>Jangan biarkan air meluap dan merusak properti Anda. Panggil teknisi Rootera Plumbing sekarang untuk penanganan cepat tanpa bongkar bergaransi 30 hari.</p>
+                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya ingin konsultasi panggil teknisi pipa mampet setelah membaca: ' . $article->title) }}" target="_blank" class="inline-flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white font-extrabold px-6 py-3.5 rounded-full transition-all shadow-lg text-sm text-decoration-none">
+                    <span>📱 Konsultasi WhatsApp 24 Jam (Fast Response)</span>
                 </a>
             </div>
 
-            <!-- Contextual B2B Callout Card for Corporate Estate Managers -->
-            <div style="background: linear-gradient(135deg, #0A2E78, #060B14); border-radius: 12px; padding: 1.75rem; margin: 2rem 0; color: #ffffff;">
-                <span style="background: rgba(31, 175, 90, 0.2); color: #a3f0c2; border: 1px solid rgba(31, 175, 90, 0.4); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Untuk Pengelola Gedung & Bisnis</span>
-                <h4 style="color: #ffffff; font-size: 1.25rem; font-weight: 800; margin: 0.6rem 0 0.4rem;">Pipa Tempat Usaha Anda Bermasalah?</h4>
-                <p style="font-size: 0.92rem; color: rgba(255,255,255,0.8); margin-bottom: 1.25rem;">Rootera Plumbing (J&J Group) menyediakan layanan Kontrak Maintenance Perawatan Pipa Berkala untuk Restoran, Hotel, Apartemen, Mall, dan Pabrik dengan SLA Fast Response & Faktur Pajak Resmi.</p>
-                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera B2B Sales (J&J Group), saya ingin konsultasi perawatan pipa bisnis setelah membaca artikel: ' . $article->title) }}" target="_blank" class="btn" style="background: #1FAF5A; color: #ffffff; font-weight: 700; font-size: 0.9rem; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                    📞 Konsultasi B2B (J&J Group)
+            {{-- Contextual B2B Corporate Retainer Callout --}}
+            <div class="bg-gradient-to-br from-[#0B2545] to-[#134074] rounded-3xl p-6 sm:p-8 text-white my-8 shadow-lg border border-white/10">
+                <span class="inline-block bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
+                    Layanan Komersial &amp; Industri B2B (J&amp;J Group)
+                </span>
+                <h4 class="text-xl font-bold font-['Plus_Jakarta_Sans',sans-serif] text-white mb-2">Pipa Tempat Usaha Anda Bermasalah?</h4>
+                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                    Rootera Plumbing (J&amp;J Group) menyediakan layanan Kontrak Maintenance Perawatan Pipa Berkala untuk Restoran, Hotel, Apartemen, Mall, &amp; Pabrik dengan SLA Response Cepat &amp; Faktur Pajak PPN.
+                </p>
+                <a href="{{ route('b2b.contract', 'restoran-cafe') }}" class="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs py-3 px-5 rounded-xl transition text-decoration-none">
+                    <span>📄 Pengajuan Kontrak Maintenance B2B &rarr;</span>
                 </a>
             </div>
 
-            <!-- Hub & Spoke Interactive Service Area Navigator Grid -->
+            {{-- Dynamic Spoke Links to City Hubs --}}
             @if(isset($cities) && $cities->isNotEmpty())
-            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1.75rem; margin: 2.5rem 0;">
-                <h4 style="color: #0A2E78; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">📍 Navigator Layanan Pipa Terdekat di Kota Anda</h4>
-                <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 1.25rem;">Pilih kota Anda untuk memesan teknisi Rootera Plumbing stanby terdekat:</p>
-                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 my-8">
+                <h4 class="text-base font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mb-1">📍 Navigator Layanan Pipa Mampet Terdekat</h4>
+                <p class="text-xs text-slate-500 mb-4">Pilih kota operasional terdekat untuk reservasi kedatangan armada teknisi Rootera:</p>
+                <div class="flex flex-wrap gap-2">
                     @foreach($cities as $c)
-                        <a href="{{ url('/jasa-saluran-mampet/' . $c->slug) }}" style="background: #ffffff; border: 1px solid #CBD5E1; color: #0A2E78; padding: 0.45rem 1rem; border-radius: 50px; font-size: 0.88rem; font-weight: 600; text-decoration: none;">
+                        <a href="{{ url('/jasa-saluran-mampet/' . $c->slug) }}" class="bg-white border border-slate-300 text-slate-700 hover:border-emerald-500 hover:text-emerald-600 px-3 py-1.5 rounded-full text-xs font-semibold transition text-decoration-none shadow-2xs">
                             📍 Jasa Pipa {{ $c->name }}
                         </a>
                     @endforeach
@@ -181,45 +187,83 @@ $blogPostingSchema = [
             </div>
             @endif
 
-            <!-- Social Share (Moved to bottom) -->
-            <div style="text-align:center;">
-                <div class="article-share-text">Bagikan Artikel Ini</div>
-                <div class="article-share">
-                    <a href="https://wa.me/?text={{ urlencode($article->title . ' - ' . url()->current()) }}" target="_blank" class="share-btn share-wa" aria-label="Share ke WhatsApp">
-                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-                    </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="share-btn share-fb" aria-label="Share ke Facebook">
-                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
-                    </a>
-                    <a href="https://www.instagram.com/Rootera_plumbing?igsh=c2NkbXA1b3h6MTVy" target="_blank" class="share-btn share-ig" aria-label="Instagram Rootera">
-                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                    </a>
-                    <a href="https://www.tiktok.com/@Rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h" target="_blank" class="share-btn share-tt" aria-label="TikTok Rootera">
-                        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.84 4.84 0 0 1-1.01-.07z"/></svg>
-                    </a>
-                </div>
-            </div>
         </article>
 
-        <!-- Right Sidebar (Related Posts) -->
+        {{-- Floating Sticky Sidebar --}}
         <aside class="article-sidebar">
-            @if($relatedArticles->isNotEmpty())
-            <div class="sidebar-related">
-                <h3>Artikel Terkait</h3>
-                @foreach($relatedArticles as $rel)
-                <a href="{{ route('blog.show', $rel->slug) }}" class="sidebar-post">
-                    <img src="{{ $rel->thumbnail_url }}" alt="{{ $rel->title }}" class="sidebar-post-img">
-                    <div>
-                        <div class="sidebar-post-title">{{ Str::limit($rel->title, 55) }}</div>
-                        <div class="sidebar-post-date">{{ $rel->published_at?->translatedFormat('d M Y') }}</div>
+            <div class="sidebar-sticky">
+                
+                {{-- Sticky WhatsApp Emergency Callout --}}
+                <div class="sidebar-cta-card">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl mx-auto mb-3 border border-emerald-500/40">
+                        ⚡
                     </div>
-                </a>
-                @endforeach
+                    <h3 class="text-lg font-bold text-white font-['Plus_Jakarta_Sans',sans-serif] mb-2">Butuh Bantuan Darurat?</h3>
+                    <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                        Teknisi Rootera standby 24 jam dengan estimasi tiba 30-45 menit. Pengerjaan 100% tanpa bongkar pipa &amp; bergaransi 30 hari.
+                    </p>
+                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya mau panggil teknisi pipa mampet sekarang.') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white text-xs font-extrabold py-3 px-4 rounded-xl transition text-decoration-none">
+                        <span>📱 Panggil Teknisi WA 24Jam</span>
+                    </a>
+                </div>
+
+                {{-- Related Articles List --}}
+                @if($relatedArticles->isNotEmpty())
+                <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+                    <h3 class="text-base font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mb-4 pb-2 border-b border-slate-100">
+                        Rekomendasi Panduan Artikel
+                    </h3>
+                    <div class="space-y-4">
+                        @foreach($relatedArticles as $rel)
+                        <a href="{{ route('blog.show', $rel->slug) }}" class="flex items-center gap-3 group text-decoration-none">
+                            <img src="{{ $rel->thumbnail_url ?: asset('images/logo-final.webp') }}" alt="{{ $rel->title }}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-100">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-900 group-hover:text-emerald-600 transition leading-snug line-clamp-2">{{ $rel->title }}</h4>
+                                <span class="text-[10px] text-slate-400 mt-1 block">{{ $rel->published_at?->translatedFormat('d M Y') }}</span>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
             </div>
-            @endif
         </aside>
 
     </div>
 </section>
 
+@push('scripts')
+<script>
+// Auto Generate Table of Contents (TOC) from H2 & H3 headings
+document.addEventListener("DOMContentLoaded", function() {
+    const articleBody = document.getElementById('articleBody');
+    const tocContainer = document.getElementById('tableOfContents');
+    const tocList = document.getElementById('tocList');
+    
+    if (!articleBody || !tocList) return;
+
+    const headings = articleBody.querySelectorAll('h2, h3');
+    if (headings.length < 2) return;
+
+    headings.forEach((heading, index) => {
+        const id = 'heading-' + index;
+        heading.setAttribute('id', id);
+
+        const li = document.createElement('li');
+        li.className = heading.tagName.toLowerCase() === 'h3' ? 'ml-4 list-disc text-slate-500' : 'font-bold text-slate-800';
+
+        const link = document.createElement('a');
+        link.setAttribute('href', '#' + id);
+        link.textContent = heading.textContent;
+        link.className = 'hover:text-emerald-600 transition';
+
+        li.appendChild(link);
+        tocList.appendChild(li);
+    });
+
+    tocContainer.classList.remove('hidden');
+});
+</script>
+@endpush
 @endsection

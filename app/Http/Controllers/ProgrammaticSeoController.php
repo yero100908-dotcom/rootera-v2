@@ -68,7 +68,25 @@ class ProgrammaticSeoController extends Controller
 
         $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
         $locationShort = $district ? $district->name : $city->name;
-        $estimatedArrival = $district ? $district->estimated_arrival : $city->estimated_arrival;
+        $estimatedArrival = $district ? ($district->estimated_arrival ?? "30–45 Menit") : ($city->estimated_arrival ?? "30–45 Menit");
+        $dispatchHub = $district ? "Pos Hub Armada Kecamatan {$district->name}" : "Pos Hub Armada Utama {$city->name}";
+        $travelTime = $estimatedArrival;
+        $nearbyLandmarks = $siblingDistricts->pluck('name')->filter()->take(6)->values()->toArray();
+
+        $localFaqs = [
+            [
+                'question' => "Berapa lama estimasi waktu kedatangan teknisi Rootera di area {$locationShort}?",
+                'answer' => "Teknisi terdekat kami disiagakan di {$dispatchHub} dengan estimasi waktu tempuh rata-rata {$travelTime} setelah jadwal pemesanan dikonfirmasi tim WhatsApp 24 jam."
+            ],
+            [
+                'question' => "Apakah pengerjaan pipa mampet di wilayah {$locationShort} membutuhkan pembongkaran lantai?",
+                'answer' => "Tidak ada pembongkaran. Kami menggunakan teknologi spiral rotary cable & Hydro Jetting tekanan tinggi yang melancarkan saluran mampet 100% tanpa merusak keramik atau dinding di {$locationShort}."
+            ],
+            [
+                'question' => "Apakah pengerjaan jasa {$category->name} di {$locationShort} dilengkapi garansi?",
+                'answer' => "Ya, seluruh penanganan pelancaran saluran pipa air di area {$locationShort} dilengkapi garansi resmi 30 hari pasca pengerjaan demi jaminan tuntas."
+            ]
+        ];
 
         // Generate Dynamic Transactional SEO Metadata
         $title = $district
@@ -76,14 +94,14 @@ class ProgrammaticSeoController extends Controller
             : "Jasa Saluran Pipa Mampet {$city->full_name} - Respon Cepat 30 Menit Bergaransi | Rootera";
 
         $description = $district
-            ? "Tukang saluran air tersumbat & jasa {$category->name} di {$district->name}, {$city->name}. Respon cepat ({$estimatedArrival}), pengerjaan mekanis rotasi spiral tanpa bongkar pipa & bergaransi 30 hari. Hubungi WhatsApp 24 Jam!"
-            : "Spesialis jasa {$category->name} terpercaya di {$city->full_name}. Pengerjaan cepat ({$estimatedArrival}), profesional tanpa bongkar paksa, dan bergaransi resmi PT/CV J&J Group. Hubungi WhatsApp 24 Jam!";
+            ? "Tukang saluran air tersumbat & jasa {$category->name} di {$district->name}, {$city->name}. Respon cepat ({$travelTime}), pengerjaan mekanis rotasi spiral tanpa bongkar pipa & bergaransi 30 hari. Hubungi WhatsApp 24 Jam!"
+            : "Spesialis jasa {$category->name} terpercaya di {$city->full_name}. Pengerjaan cepat ({$travelTime}), profesional tanpa bongkar paksa, dan bergaransi resmi PT/CV J&J Group. Hubungi WhatsApp 24 Jam!";
 
         $canonical = $district
             ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}")
             : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
 
-        $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.jpeg');
+        $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.webp');
 
         $seo = [
             'title'       => $title,
@@ -105,6 +123,10 @@ class ProgrammaticSeoController extends Controller
             'locationName',
             'locationShort',
             'estimatedArrival',
+            'dispatchHub',
+            'travelTime',
+            'nearbyLandmarks',
+            'localFaqs',
             'title',
             'description',
             'canonical',

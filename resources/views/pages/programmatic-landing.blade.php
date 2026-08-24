@@ -110,6 +110,20 @@ $breadcrumbSchema = [
 
 // 3. FAQPage Schema
 $faqItems = [];
+
+if (isset($localFaqs) && is_array($localFaqs)) {
+  foreach ($localFaqs as $lfaq) {
+    $faqItems[] = [
+      "@type" => "Question",
+      "name" => $lfaq['question'],
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => $lfaq['answer']
+      ]
+    ];
+  }
+}
+
 foreach ($faqs as $faq) {
   $faqItems[] = [
     "@type" => "Question",
@@ -320,6 +334,29 @@ $faqSchema = [
                 Panggil Teknisi Sekarang (24 Jam)
             </a>
         </div>
+
+        {{-- Dynamic Local Context Dispatch Box --}}
+        @if(isset($dispatchHub))
+        <div style="margin-top: 2.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 16px; padding: 1.25rem 1.5rem; backdrop-filter: blur(10px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; max-width: 900px;">
+            <div style="display: flex; align-items: center; gap: 0.85rem; text-align: left;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.5); display: flex; align-items: center; justify-content: center; font-size: 1.35rem; color: #10B981; shrink-0;">
+                    📍
+                </div>
+                <div>
+                    <div style="font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #10B981;">Pos Hub Siaga Terdekat</div>
+                    <div style="font-size: 0.95rem; font-weight: 800; color: #ffffff;">{{ $dispatchHub }}</div>
+                </div>
+            </div>
+            @if(!empty($nearbyLandmarks))
+            <div style="text-align: left; font-size: 0.82rem; color: rgba(255,255,255,0.85);">
+                <span style="font-weight: 700; color: #38BDF8;">Cakupan Sekitar:</span>
+                @foreach($nearbyLandmarks as $lm)
+                    <span style="background: rgba(255,255,255,0.15); padding: 0.15rem 0.55rem; border-radius: 6px; margin-left: 0.2rem; display: inline-block; margin-top: 0.2rem;">{{ $lm }}</span>
+                @endforeach
+            </div>
+            @endif
+        </div>
+        @endif
     </div>
 </section>
 
@@ -570,6 +607,20 @@ $faqSchema = [
         </div>
 
         <div>
+            @if(isset($localFaqs) && is_array($localFaqs))
+                @foreach($localFaqs as $lfaq)
+                    <div class="faq-accordion-item" style="border-left: 4px solid #169F81;">
+                        <div class="faq-accordion-header" style="color: #169F81;">
+                            <span>{{ $lfaq['question'] }}</span>
+                            <span style="color: #169F81; font-size: 1.2rem;">+</span>
+                        </div>
+                        <div class="faq-accordion-body">
+                            {{ $lfaq['answer'] }}
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+
             @foreach($faqs as $faq)
                 <div class="faq-accordion-item">
                     <div class="faq-accordion-header">

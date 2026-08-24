@@ -38,7 +38,52 @@ class SitemapController extends Controller
     }
 
     /**
-     * Programmatic Local SEO Services & Cities/Districts sitemap (/sitemap-services.xml)
+     * B2B Commercial Sectors sitemap (/sitemap-sectors.xml)
+     */
+    public function sectors(): Response
+    {
+        $content = Cache::remember('sitemap_sectors_xml', 3600, function () {
+            $sectors = \App\Models\ServiceSector::where('is_active', true)->get();
+            $cities = City::where('is_active', true)->get();
+            return view('sitemap-sectors', compact('sectors', 'cities'))->render();
+        });
+
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    }
+
+    /**
+     * City Hubs & Property Types sitemap (/sitemap-cities.xml)
+     */
+    public function cities(): Response
+    {
+        $content = Cache::remember('sitemap_cities_xml', 3600, function () {
+            $cities = City::where('is_active', true)->get();
+            $propertyTypes = \App\Models\PropertyType::where('is_active', true)->get();
+            return view('sitemap-cities', compact('cities', 'propertyTypes'))->render();
+        });
+
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    }
+
+    /**
+     * Programmatic Category x City x District sitemap (/sitemap-districts.xml)
+     */
+    public function districts(): Response
+    {
+        $content = Cache::remember('sitemap_districts_xml', 3600, function () {
+            $categories = ServiceCategory::where('is_active', true)->get();
+            $cities = City::where('is_active', true)->with(['districts' => function ($q) {
+                $q->where('is_active', true);
+            }])->get();
+
+            return view('sitemap-districts', compact('categories', 'cities'))->render();
+        });
+
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    }
+
+    /**
+     * Programmatic Local SEO Services & Cities/Districts sitemap (/sitemap-services.xml - legacy fallback)
      */
     public function services(): Response
     {

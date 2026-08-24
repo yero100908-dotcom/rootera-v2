@@ -41,7 +41,7 @@
         <meta property="og:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
     <meta property="og:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel & wc tersumbat bergaransi di Jabodetabek.' }}">
-    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/logo final.png') }}">
+    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/logo-final.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
     <meta property="og:locale"      content="id_ID">
 
@@ -53,7 +53,7 @@
         <meta name="twitter:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
     <meta name="twitter:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel & wc tersumbat bergaransi di Jabodetabek.' }}">
-    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/logo final.png') }}">
+    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/logo-final.webp') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
     @if (View::hasSection('schema-markup'))
@@ -71,8 +71,8 @@
               "@id" => url('/') . "#organization",
               "url" => url('/'),
               "telephone" => "+6281385404000",
-              "logo" => asset('images/logo final.png'),
-              "image" => asset('images/JnJ.jpeg'),
+              "logo" => asset('images/logo-final.webp'),
+              "image" => asset('images/JnJ.webp'),
               "priceRange" => "$$",
               "parentOrganization" => [
                 "@type" => "Organization",

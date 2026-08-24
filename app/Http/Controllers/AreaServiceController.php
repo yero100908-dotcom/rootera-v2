@@ -39,7 +39,7 @@ class AreaServiceController extends Controller
             'title'       => 'Jasa Saluran Pipa Mampet Terdekat di Seluruh Indonesia - 24 Jam Bergaransi | Rootera Plumbing',
             'description' => 'Direktori resmi wilayah operasional Rootera Plumbing (J&J Group). Layanan pelancaran pipa mampet tanpa bongkar di Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung.',
             'canonical'   => route('area-layanan'),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => asset('images/JnJ.webp'),
         ];
 
         return view('pages.area.index-directory', compact('provinces', 'services', 'propertyTypes', 'seo'));
@@ -86,7 +86,7 @@ class AreaServiceController extends Controller
             'title'       => "Jasa Saluran Pipa Mampet {$city->full_name} 24 Jam Bergaransi | Rootera (J&J Group)",
             'description' => "Solusi jasa perbaikan pipa mampet, wastafel tersumbat, kran air, & toilet di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) oleh Rootera Plumbing.",
             'canonical'   => url("/jasa-saluran-mampet/{$city->slug}"),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => asset('images/JnJ.webp'),
         ];
 
         return view('pages.area-city', compact(
@@ -120,7 +120,7 @@ class AreaServiceController extends Controller
             'title'       => "Jasa Pipa Mampet Wilayah {$province->name} - 24 Jam | Rootera Plumbing",
             'description' => "Layanan panggil teknisi pipa mampet profesional untuk seluruh kota & kabupaten di provinsi {$province->name}. Pengerjaan tanpa bongkar & bergaransi.",
             'canonical'   => url("/area-jasa-pipa-mampet/{$province->slug}"),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => asset('images/JnJ.webp'),
         ];
 
         return view('pages.area-region', compact('province', 'allCategories', 'seo'));
