@@ -7,6 +7,8 @@ use App\Models\City;
 use App\Models\District;
 use App\Models\Faq;
 use App\Models\Technology;
+use App\Models\ProjectGallery;
+use App\Models\Article;
 use App\Services\SpintaxService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -66,13 +68,17 @@ class ProgrammaticSeoController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            // Project Showcase Portfolio
-            $projectShowcases = \App\Models\ProjectGallery::where('is_active', true)
+            $projectShowcases = ProjectGallery::where('is_active', true)
                 ->where(function ($q) use ($city) {
                     $q->where('city_id', $city->id)->orWhereNull('city_id');
                 })
                 ->with(['district', 'city'])
                 ->take(6)
+                ->get();
+
+            $relatedArticles = \App\Models\Article::published()
+                ->latest('published_at')
+                ->take(3)
                 ->get();
 
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
@@ -137,6 +143,7 @@ class ProgrammaticSeoController extends Controller
                 'siblingCities',
                 'allCategories',
                 'projectShowcases',
+                'relatedArticles',
                 'faqs',
                 'technologies',
                 'locationName',

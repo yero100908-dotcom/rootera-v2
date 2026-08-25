@@ -524,70 +524,23 @@ $faqSchema = [
     </div>
 </section>
 
-<!-- Portfolio Project Showcase (Social Proof & Image SEO) -->
-@if(isset($projectShowcases) && $projectShowcases->isNotEmpty())
-<section style="background: #F3F4F6; padding: 4rem 1.5rem; border-top: 1px solid #E5E7EB;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 2.5rem;">
-            <span style="color: #169F81; font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Dokumentasi Pengerjaan Nyata</span>
-            <h2 style="color: #0A2E78; font-size: 2rem; font-weight: 800; margin-top: 0.4rem;">Portofolio Proyek Rootera di {{ $locationShort }}</h2>
-        </div>
+<!-- Interactive Media Documentation Showcase (Before-After Photos & Video Reels) -->
+@include('components.media-documentation', [
+    'projectShowcases' => $projectShowcases ?? null,
+    'relatedArticles' => $relatedArticles ?? collect(),
+    'locationName' => $locationName,
+    'locationShort' => $locationShort
+])
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
-            @foreach($projectShowcases as $proj)
-            <div style="background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
-                <div style="position: relative; height: 200px; background: #0A2E78; overflow: hidden;">
-                    <img src="{{ $proj->after_image_url }}" alt="{{ $proj->image_alt }}" style="width: 100%; height: 100%; object-fit: cover;">
-                    <span style="position: absolute; top: 12px; right: 12px; background: #169F81; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: 50px; text-transform: uppercase;">
-                        {{ $proj->client_type }}
-                    </span>
-                </div>
-                <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.1rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.5rem; line-height: 1.4;">{{ $proj->title }}</h3>
-                    <p style="font-size: 0.88rem; color: #6B7280; line-height: 1.5; margin-bottom: 1rem;">{{ $proj->description }}</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F3F4F6; padding-top: 0.75rem; font-size: 0.82rem; color: #9CA3AF;">
-                        <span>⏱️ Durasi: {{ $proj->completion_time }}</span>
-                        <span style="color: #169F81; font-weight: 600;">✓ Selesai Bergaransi</span>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Spoke Internal Linking Section 1: Districts in the same City -->
-@if($siblingDistricts->isNotEmpty())
-<section class="spoke-section">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <h3 style="color: #0A2E78; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Jangkauan Kecamatan Jasa {{ $category->name }} di {{ $city->name }}</h3>
-        <p style="color: #6B7280; font-size: 0.95rem;">Teknisi kami siap melayani seluruh kelurahan dan kecamatan di {{ $city->name }}:</p>
-
-        <div class="spoke-grid">
-            @foreach($siblingDistricts as $sibDistrict)
-                <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $city->slug . '/' . $sibDistrict->slug) }}" class="spoke-link">
-                    📍 {{ $category->name }} {{ $sibDistrict->name }}
-                </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Spoke Internal Linking Section 2: Other Services in the same Location -->
-<section style="padding: 4rem 1.5rem; max-width: 1200px; margin: 0 auto;">
-    <h3 style="color: #0A2E78; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">Layanan Plumbing Lainnya di {{ $locationShort }}</h3>
-    <p style="color: #6B7280; font-size: 0.95rem; margin-bottom: 1.5rem;">Solusi lengkap sanitasi dan perbaikan saluran air dari Rootera:</p>
-
-    <div class="spoke-grid">
-        @foreach($allCategories as $otherCategory)
-            <a href="{{ url('/layanan-pipa-mampet/' . $otherCategory->slug . '/' . $city->slug . ($district ? '/' . $district->slug : '')) }}" class="spoke-link">
-                🔧 {{ $otherCategory->name }} {{ $locationShort }}
-            </a>
-        @endforeach
-    </div>
-</section>
+<!-- Smart Interlinking Hub (Service Matrix, District Mesh with ETA, & B2B Cross-Link) -->
+@include('components.smart-interlinking', [
+    'category' => $category,
+    'city' => $city,
+    'district' => $district,
+    'siblingDistricts' => $siblingDistricts ?? collect(),
+    'allCategories' => $allCategories ?? collect(),
+    'locationShort' => $locationShort
+])
 
 <!-- Hub Kawasan Jabodetabek Terpopuler -->
 <section style="background: #ffffff; padding: 4rem 1.5rem; border-top: 1px solid #E5E7EB;">
