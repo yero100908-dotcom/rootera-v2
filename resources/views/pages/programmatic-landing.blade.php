@@ -323,9 +323,9 @@ $faqSchema = [
             Estimasi Tiba Teknisi: <strong>{{ $estimatedArrival }}</strong> di {{ $locationShort }}
         </div>
 
-        <h1 class="prog-title">Jasa {{ $category->name }} di {{ $locationName }}</h1>
+        <h1 class="prog-title">{!! $heroHeadline ?? "Jasa {$category->name} di {$locationName}" !!}</h1>
         <p class="prog-subtitle">
-            Solusi profesional terpercaya untuk masalah pipa mampet, wastafel tersumbat, kran air, dan saluran mampet di area <strong>{{ $locationName }}</strong>. Berpengalaman, dikerjakan tanpa bongkar pipa paksa, dan bergaransi resmi tuntas 100%.
+            {!! $heroSubtitle ?? "Solusi profesional terpercaya untuk masalah pipa mampet, wastafel tersumbat, kran air, dan saluran mampet di area <strong>{$locationName}</strong>. Berpengalaman, dikerjakan tanpa bongkar pipa paksa, dan bergaransi resmi tuntas 100%." !!}
         </p>
 
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
@@ -365,32 +365,42 @@ $faqSchema = [
     <div style="text-align: center; margin-bottom: 3rem;">
         <span style="color: #169F81; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.9rem;">Keunggulan Layanan Rootera</span>
         <h2 style="color: #0A2E78; font-size: 2.2rem; font-weight: 800; margin-top: 0.5rem;">Mengapa Pilihan Utama di {{ $locationShort }}?</h2>
+        @if(isset($areaTechnicalIntro))
+            <p style="color: #4B5563; max-width: 800px; margin: 0.75rem auto 0; font-size: 1.05rem; line-height: 1.6;">{!! $areaTechnicalIntro !!}</p>
+        @endif
     </div>
 
     <div class="prog-features">
-        <div class="prog-feature-card">
-            <div class="prog-feature-icon">🛠️</div>
-            <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Tanpa Bongkar Pipa</h3>
-            <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Menggunakan mesin rigid spiral modern yang fleksibel membersihkan kerak & lemak tanpa merusak lantai/keramik.</p>
-        </div>
-
-        <div class="prog-feature-card">
-            <div class="prog-feature-icon">⚡</div>
-            <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Respons Cepat {{ $estimatedArrival }}</h3>
-            <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Teknisi stanby terdekat di wilayah {{ $locationName }} siap meluncur langsung begitu pesan diterima.</p>
-        </div>
-
-        <div class="prog-feature-card">
-            <div class="prog-feature-icon">🛡️</div>
-            <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Garansi Pekerjaan</h3>
-            <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Jaminan garansi tuntas untuk memastikan masalah saluran tidak mampet kembali dalam jangka pendek.</p>
-        </div>
-
-        <div class="prog-feature-card">
-            <div class="prog-feature-icon">🏷️</div>
-            <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Biaya Transparan</h3>
-            <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Harga jujur di awal tanpa biaya tersembunyi. Pembayaran dilakukan setelah pekerjaan terbukti lancar kembali.</p>
-        </div>
+        @if(isset($valueProps) && is_array($valueProps))
+            @foreach($valueProps as $vp)
+                <div class="prog-feature-card">
+                    <div class="prog-feature-icon">{{ $vp['icon'] ?? '🛠️' }}</div>
+                    <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">{{ $vp['title'] }}</h3>
+                    <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">{{ $vp['desc'] }}</p>
+                </div>
+            @endforeach
+        @else
+            <div class="prog-feature-card">
+                <div class="prog-feature-icon">🛠️</div>
+                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Tanpa Bongkar Pipa</h3>
+                <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Menggunakan mesin rigid spiral modern yang fleksibel membersihkan kerak & lemak tanpa merusak lantai/keramik.</p>
+            </div>
+            <div class="prog-feature-card">
+                <div class="prog-feature-icon">⚡</div>
+                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Respons Cepat {{ $estimatedArrival }}</h3>
+                <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Teknisi stanby terdekat di wilayah {{ $locationName }} siap meluncur langsung begitu pesan diterima.</p>
+            </div>
+            <div class="prog-feature-card">
+                <div class="prog-feature-icon">🛡️</div>
+                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Garansi Pekerjaan</h3>
+                <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Jaminan garansi tuntas untuk memastikan masalah saluran tidak mampet kembali dalam jangka pendek.</p>
+            </div>
+            <div class="prog-feature-card">
+                <div class="prog-feature-icon">🏷️</div>
+                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Biaya Transparan</h3>
+                <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Harga jujur di awal tanpa biaya tersembunyi. Pembayaran dilakukan setelah pekerjaan terbukti lancar kembali.</p>
+            </div>
+        @endif
     </div>
 </section>
 

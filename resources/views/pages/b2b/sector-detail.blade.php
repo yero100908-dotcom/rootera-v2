@@ -2,12 +2,18 @@
 
 @section('schema-markup')
 <?php
+$sectorSlug = (isset($sector) && is_object($sector) && isset($sector->slug)) ? $sector->slug : '';
+$sectorName = (isset($sector) && is_object($sector) && isset($sector->sector_name)) ? $sector->sector_name : 'Komersial';
+$sectorDesc = (isset($sector) && is_object($sector) && isset($sector->short_description)) ? $sector->short_description : '';
+$sectorCityName = (isset($city) && is_object($city)) ? (" di " . ($city->full_name ?? $city->name)) : "";
+$sectorCanonical = url("/sektor-plumbing/{$sectorSlug}" . (isset($city) && is_object($city) && isset($city->slug) ? "/{$city->slug}" : ""));
+
 $sectorSchema = [
   "@context" => "https://schema.org",
   "@type" => "Service",
   "serviceType" => "Commercial Plumbing & Drain Maintenance",
-  "name" => "Rootera B2B Plumbing " . $sector->sector_name . (isset($city) ? " di " . $city->full_name : ""),
-  "description" => $sector->short_description,
+  "name" => "Rootera B2B Plumbing " . $sectorName . $sectorCityName,
+  "description" => $sectorDesc,
   "provider" => [
     "@type" => "Plumber",
     "name" => "Rootera Plumbing (Divisi Plumbing Resmi J&J Group)",
@@ -15,9 +21,9 @@ $sectorSchema = [
     "telephone" => "+6281385404000",
     "logo" => asset('images/logo final.png'),
   ],
-  "areaServed" => isset($city) ? [
+  "areaServed" => (isset($city) && is_object($city)) ? [
     "@type" => "City",
-    "name" => $city->name
+    "name" => $city->name ?? ''
   ] : [
     "@type" => "Country",
     "name" => "Indonesia"
@@ -33,12 +39,51 @@ $sectorSchema = [
             "name" => $sol
           ]
         ];
-    }, $sector->solutions_offered ?? [$sector->sector_name])
+    }, (isset($sector) && is_object($sector) && !empty($sector->solutions_offered)) ? $sector->solutions_offered : [$sectorName])
   ]
+];
+
+$sectorBreadcrumbItems = [
+  [
+    "@type" => "ListItem",
+    "position" => 1,
+    "name" => "Beranda",
+    "item" => url('/')
+  ],
+  [
+    "@type" => "ListItem",
+    "position" => 2,
+    "name" => "Layanan B2B Komersial",
+    "item" => route('b2b.index')
+  ],
+  [
+    "@type" => "ListItem",
+    "position" => 3,
+    "name" => "Sektor " . $sector->sector_name,
+    "item" => url("/sektor-plumbing/{$sector->slug}")
+  ]
+];
+
+if (isset($city)) {
+  $sectorBreadcrumbItems[] = [
+    "@type" => "ListItem",
+    "position" => 4,
+    "name" => $city->name,
+    "item" => $sectorCanonical
+  ];
+}
+
+$sectorBreadcrumbs = [
+  "@context" => "https://schema.org",
+  "@type" => "BreadcrumbList",
+  "itemListElement" => $sectorBreadcrumbItems
 ];
 ?>
 <script type="application/ld+json">
 {!! json_encode($sectorSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode($sectorBreadcrumbs, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 

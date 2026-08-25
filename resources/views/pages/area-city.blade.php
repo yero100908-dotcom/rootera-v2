@@ -1,5 +1,89 @@
 @extends('layouts.app')
 
+@section('schema-markup')
+<?php
+$citySlug = (isset($city) && is_object($city) && isset($city->slug)) ? $city->slug : '';
+$cityName = (isset($city) && is_object($city)) ? ($city->full_name ?? $city->name ?? 'Kota') : 'Kota';
+$cityCanonical = url("/jasa-saluran-mampet/{$citySlug}");
+$cityPhone = (isset($city) && is_object($city) && !empty($city->whatsapp_number)) ? $city->whatsapp_number : "6281385404000";
+$cityProvName = (isset($city) && is_object($city) && isset($city->province) && is_object($city->province)) ? ($city->province->name ?? "Indonesia") : "Indonesia";
+
+$cityBusinessSchema = [
+  "@context" => "https://schema.org",
+  "@type" => ["LocalBusiness", "Plumber", "HomeAndConstructionBusiness"],
+  "name" => "Rootera Plumbing - " . $cityName,
+  "alternateName" => ["Rootera " . $cityName, "Jasa Pipa Mampet " . $cityName],
+  "description" => $seo['description'] ?? "Jasa pelancar saluran pipa mampet di {$cityName} 24 jam bergaransi resmi.",
+  "@id" => $cityCanonical . "#organization",
+  "url" => $cityCanonical,
+  "telephone" => "+" . $cityPhone,
+  "logo" => asset('images/logo-final.webp'),
+  "image" => $seo['og_image'] ?? asset('images/JnJ.webp'),
+  "priceRange" => "$$",
+  "parentOrganization" => [
+    "@type" => "Organization",
+    "name" => "J&J GROUP",
+    "url" => url('/')
+  ],
+  "address" => [
+    "@type" => "PostalAddress",
+    "addressLocality" => (isset($city) && is_object($city)) ? ($city->name ?? $cityName) : $cityName,
+    "addressRegion" => $cityProvName,
+    "addressCountry" => "ID"
+  ],
+  "areaServed" => [
+    "@type" => "City",
+    "name" => $cityName
+  ],
+  "openingHoursSpecification" => [
+    "@type" => "OpeningHoursSpecification",
+    "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "opens" => "00:00",
+    "closes" => "23:59"
+  ]
+];
+
+if (!empty($city->latitude) && !empty($city->longitude)) {
+  $cityBusinessSchema["geo"] = [
+    "@type" => "GeoCoordinates",
+    "latitude" => (float) $city->latitude,
+    "longitude" => (float) $city->longitude
+  ];
+}
+
+$cityBreadcrumbs = [
+  "@context" => "https://schema.org",
+  "@type" => "BreadcrumbList",
+  "itemListElement" => [
+    [
+      "@type" => "ListItem",
+      "position" => 1,
+      "name" => "Beranda",
+      "item" => url('/')
+    ],
+    [
+      "@type" => "ListItem",
+      "position" => 2,
+      "name" => "Area Layanan",
+      "item" => route('area-layanan')
+    ],
+    [
+      "@type" => "ListItem",
+      "position" => 3,
+      "name" => $cityName,
+      "item" => $cityCanonical
+    ]
+  ]
+];
+?>
+<script type="application/ld+json">
+{!! json_encode($cityBusinessSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode($cityBreadcrumbs, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 <!-- Hero Section -->
 <section style="background: linear-gradient(135deg, #0A2E78 0%, #060B14 100%); color: #ffffff; padding: 4.5rem 1.5rem; border-bottom: 4px solid #1FAF5A;">

@@ -1,6 +1,26 @@
-{{-- Floating WhatsApp Button - Muncul di semua halaman --}}
+{{-- Floating WhatsApp Button - Dynamic Page Context Aware --}}
+<?php
+$waPhone = isset($city) && !empty($city->whatsapp_number) ? preg_replace('/[^0-9]/', '', $city->whatsapp_number) : "6281385404000";
+
+if (isset($district) && isset($category)) {
+    $waText = "Halo Rootera Plumbing, saya butuh order jasa {$category->name} di area Kecamatan {$district->name}, {$city->name}. Mohon info ketersediaan teknisi.";
+} elseif (isset($category) && isset($city)) {
+    $cityName = $city->full_name ?? $city->name;
+    $waText = "Halo Rootera Plumbing, saya butuh order jasa {$category->name} di area {$cityName}. Mohon info ketersediaan teknisi.";
+} elseif (isset($sector)) {
+    $sectorCityName = isset($city) ? " di " . ($city->full_name ?? $city->name) : "";
+    $waText = "Halo Rootera B2B Sales, kami ingin konsultasi kontrak maintenance plumbing sektor {$sector->sector_name}{$sectorCityName}. Mohon info penawaran.";
+} elseif (isset($city)) {
+    $cityName = $city->full_name ?? $city->name;
+    $waText = "Halo Rootera Plumbing, saya ingin order pelancar pipa mampet untuk area {$cityName}. Mohon info jadwal teknisi.";
+} else {
+    $waText = "Halo Rootera Plumbing, saya ingin konsultasi tentang layanan pipa mampet 24 Jam.";
+}
+
+$waLink = "https://wa.me/{$waPhone}?text=" . urlencode($waText);
+?>
 <a
-    href="https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20ingin%20konsultasi%20tentang%20layanan%20pipa%20mampet."
+    href="{{ $waLink }}"
     class="whatsapp-float"
     id="whatsapp-float"
     target="_blank"
