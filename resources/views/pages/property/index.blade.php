@@ -20,50 +20,73 @@
     </div>
 </section>
 
-<!-- 8 Property Categories Public Grid -->
+<!-- 8 Property Categories Public Grid (MediaService WebP Integration) -->
+<?php
+  $mediaService = app(\App\Services\MediaService::class);
+?>
 <section style="padding: 5rem 1.5rem; background: #F8FAFC;">
     <div style="max-width: 1200px; margin: 0 auto;">
         <div style="text-align: center; margin-bottom: 3.5rem;">
-            <span style="color: #169F81; font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Pilih Kategori Bangunan</span>
+            <span style="color: #169F81; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">🏢 Kategori Bangunan</span>
             <h2 style="color: #0A2E78; font-size: 2.2rem; font-weight: 800; margin-top: 0.3rem;">Solusi Pipa Tersumbat Spesifik Properti Anda</h2>
+            <p style="color: #64748B; font-size: 0.95rem; max-width: 700px; margin: 0.4rem auto 0;">Setiap jenis properti ditangani dengan peralatan standar industri yang disesuaikan.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.75rem;">
-            @foreach($properties as $prop)
-            <div style="background: #ffffff; border-radius: 20px; border: 1px solid #E2E8F0; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;" class="hover:border-[#169F81] hover:shadow-xl">
+            @foreach($properties as $pIdx => $prop)
+            <?php
+                $propWebpImg = $mediaService->getPropertyImage($prop->slug, $pIdx);
+            ?>
+            <div style="background: #ffffff; border-radius: 20px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease;" class="hover:border-emerald-500 hover:shadow-xl group">
                 <div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
-                        <span style="font-size: 2.8rem;">{{ $prop->icon }}</span>
-                        <div style="text-align: right;">
-                            <span style="background: #F0FDF4; color: #169F81; font-size: 0.78rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 50px; display: inline-block; margin-bottom: 0.25rem;">
+                    <!-- Visual WebP Property Image Header -->
+                    <div style="position: relative; height: 180px; background: #0B192C; overflow: hidden;">
+                        <img src="{{ $propWebpImg }}" alt="Jasa Saluran Pipa Mampet {{ $prop->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                        
+                        <span style="position: absolute; top: 12px; right: 12px; background: rgba(11, 25, 44, 0.85); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4); font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 50px; backdrop-filter: blur(4px);">
+                            ⏱️ Respon 30-90 Menit
+                        </span>
+
+                        <span style="position: absolute; bottom: 12px; left: 14px; font-size: 1.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));">
+                            {{ $prop->icon }}
+                        </span>
+                    </div>
+
+                    <div style="padding: 1.5rem 1.5rem 1rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                            <span style="background: #F0FDF4; color: #169F81; font-size: 0.78rem; font-weight: 800; padding: 0.25rem 0.7rem; border-radius: 50px;">
                                 {{ $prop->estimated_time ?? '1-2 Jam Selesai' }}
                             </span>
-                            <div style="color: #0A2E78; font-weight: 800; font-size: 0.9rem;">Mulai {{ $prop->price_starting_from }}</div>
+                            <div style="color: #0A2E78; font-weight: 800; font-size: 0.92rem;">
+                                Mulai {{ $prop->price_starting_from }}
+                            </div>
                         </div>
-                    </div>
 
-                    <h3 style="color: #0A2E78; font-size: 1.35rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.3;">
-                        <a href="{{ route('property.show', $prop->slug) }}" style="color: inherit; text-decoration: none;">{{ $prop->name }}</a>
-                    </h3>
-                    <p style="color: #64748B; font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.25rem;">
-                        {{ $prop->hero_headline }}
-                    </p>
+                        <h3 style="color: #0A2E78; font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.3;" class="group-hover:text-emerald-600 transition">
+                            <a href="{{ route('property.show', $prop->slug) }}" style="color: inherit; text-decoration: none;">{{ $prop->name }}</a>
+                        </h3>
+                        <p style="color: #64748B; font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+                            {{ $prop->hero_headline }}
+                        </p>
 
-                    @if(!empty($prop->common_issues))
-                    <div style="background: #F8FAFC; border-radius: 12px; padding: 0.9rem; margin-bottom: 1.5rem; border: 1px solid #F1F5F9;">
-                        <div style="font-size: 0.78rem; font-weight: 700; color: #475569; margin-bottom: 0.4rem;">Paling Sering Terjadi:</div>
-                        <ul style="padding-left: 1.1rem; margin: 0; font-size: 0.85rem; color: #334155; line-height: 1.5;">
-                            @foreach(array_slice($prop->common_issues, 0, 2) as $issue)
-                                <li>{{ $issue }}</li>
-                            @endforeach
-                        </ul>
+                        @if(!empty($prop->common_issues))
+                        <div style="background: #F8FAFC; border-radius: 12px; padding: 0.9rem; margin-bottom: 1.25rem; border: 1px solid #F1F5F9;">
+                            <div style="font-size: 0.78rem; font-weight: 700; color: #475569; margin-bottom: 0.4rem;">Paling Sering Terjadi:</div>
+                            <ul style="padding-left: 1.1rem; margin: 0; font-size: 0.85rem; color: #334155; line-height: 1.5;">
+                                @foreach(array_slice($prop->common_issues, 0, 2) as $issue)
+                                    <li>{{ $issue }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
                     </div>
-                    @endif
                 </div>
 
-                <a href="{{ route('property.show', $prop->slug) }}" style="text-align: center; background: #0A2E78; color: #ffffff; font-weight: 700; font-size: 0.92rem; padding: 0.85rem 1rem; border-radius: 12px; text-decoration: none; display: block;" class="hover:bg-[#169F81] transition duration-200">
-                    Lihat Solusi {{ $prop->name }} →
-                </a>
+                <div style="padding: 0 1.5rem 1.5rem;">
+                    <a href="{{ route('property.show', $prop->slug) }}" style="text-align: center; background: #0A2E78; color: #ffffff; font-weight: 700; font-size: 0.92rem; padding: 0.85rem 1rem; border-radius: 12px; text-decoration: none; display: block;" class="hover:bg-[#169F81] transition duration-200">
+                        Lihat Solusi {{ $prop->name }} →
+                    </a>
+                </div>
             </div>
             @endforeach
         </div>

@@ -85,28 +85,46 @@ $cityBreadcrumbs = [
 @endsection
 
 @section('content')
-<!-- Hero Section -->
+<!-- Hero Section with Regional Media Service WebP Integration -->
+<?php
+  $mediaService = app(\App\Services\MediaService::class);
+  $provinceSlug = $city->province->slug ?? 'dki-jakarta';
+  $regionalHeroImg = $mediaService->getRegionalImage($provinceSlug, $city->slug, 0);
+?>
 <section style="background: linear-gradient(135deg, #0A2E78 0%, #060B14 100%); color: #ffffff; padding: 4.5rem 1.5rem; border-bottom: 4px solid #1FAF5A;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(31, 175, 90, 0.2); border: 1px solid rgba(31, 175, 90, 0.4); color: #a3f0c2; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem;">
-            <span>📍 Pusat Layanan Area {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</span>
-            <span>•</span>
-            <span>⏱️ Response {{ $city->estimated_arrival ?? '25-40 Menit' }}</span>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem;">
+        
+        <div style="flex: 1 1 550px;">
+            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(31, 175, 90, 0.2); border: 1px solid rgba(31, 175, 90, 0.4); color: #a3f0c2; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem;">
+                <span>📍 Pusat Layanan Area {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</span>
+                <span>•</span>
+                <span>⏱️ Response {{ $city->estimated_arrival ?? '25-40 Menit' }}</span>
+            </div>
+
+            <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; color: #ffffff;">
+                Jasa Saluran Pipa Mampet {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}
+            </h1>
+            <p style="font-size: 1.1rem; color: rgba(255,255,255,0.85); max-width: 800px; margin-bottom: 2rem; line-height: 1.6;">
+                Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>{{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.
+            </p>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . ($city->full_name ?? 'Wilayah Terkait') . '. Bisa panggil teknisi?') }}" target="_blank" class="btn" style="background: #1FAF5A; color: #ffffff; font-weight: 700; font-size: 1.05rem; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                    Panggil Teknisi {{ $city->name ?? 'Wilayah Terkait' }} (24 Jam)
+                </a>
+            </div>
         </div>
 
-        <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; color: #ffffff;">
-            Jasa Saluran Pipa Mampet {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}
-        </h1>
-        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.85); max-width: 800px; margin-bottom: 2rem; line-height: 1.6;">
-            Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>{{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.
-        </p>
-
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . ($city->full_name ?? 'Wilayah Terkait') . '. Bisa panggil teknisi?') }}" target="_blank" class="btn" style="background: #1FAF5A; color: #ffffff; font-weight: 700; font-size: 1.05rem; padding: 0.9rem 2rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-                Panggil Teknisi {{ $city->name ?? 'Wilayah Terkait' }} (24 Jam)
-            </a>
+        <div style="flex: 1 1 350px; max-width: 450px;">
+            <div style="position: relative; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
+                <img src="{{ $regionalHeroImg }}" alt="Pos Respon Armada Jasa Pipa Mampet Rootera di {{ $city->full_name ?? 'Kota Terkait' }}" style="width: 100%; height: 280px; object-fit: cover;" loading="lazy" decoding="async">
+                <div style="position: absolute; bottom: 0; inset-x: 0; background: linear-gradient(to top, rgba(6,11,20,0.9) 0%, transparent 100%); padding: 1.25rem; font-size: 0.85rem; font-weight: 700; color: #ffffff;">
+                    📍 Pos Respon Armada {{ $city->full_name ?? $city->name }}
+                </div>
+            </div>
         </div>
+
     </div>
 </section>
 
@@ -134,45 +152,41 @@ $cityBreadcrumbs = [
 </section>
 @endif
 
-<!-- Property Client Categories Showcase Grid -->
+<!-- Property Client Categories Showcase Grid (MediaService WebP Integration) -->
+<?php
+  $propertyVisuals = $mediaService->getPropertyImages();
+  $cityNameClean = $city->name ?? 'Wilayah Terkait';
+?>
 <section style="background: #F9FAFB; padding: 4.5rem 1.5rem; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB;">
     <div style="max-width: 1200px; margin: 0 auto;">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <span style="color: #169F81; font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Spesialisasi Sektor</span>
-            <h2 style="color: #0A2E78; font-size: 2.2rem; font-weight: 800; margin-top: 0.4rem;">Kategori Properti yang Kami Layani di {{ $city->name ?? 'Wilayah Terkait' }}</h2>
+            <span style="color: #169F81; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">🏢 Spesialisasi Tipe Properti</span>
+            <h2 style="color: #0A2E78; font-size: clamp(1.8rem, 3.5vw, 2.2rem); font-weight: 800; margin-top: 0.4rem;">Solusi Jenis Bangunan &amp; Properti di {{ $cityNameClean }}</h2>
+            <p style="color: #64748B; font-size: 0.95rem; max-width: 720px; margin: 0.4rem auto 0;">Armada teknisi Rootera siap meluncur dengan peralatan khusus disesuaikan dengan jenis properti tempat usaha &amp; hunian Anda.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🏡</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Rumah Tinggal &amp; Hunian</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Wastafel dapur, floor drain kamar mandi, kloset toilet, talang air, kran patah, &amp; cuci toren tanpa membongkar keramik.</p>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🍽️</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Cafe, Restoran &amp; Cloud Kitchen</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Penanganan kerak lemak tebal (grease trap clog), pengerjaan steril &amp; cepat tanpa mengganggu jam buka usaha.</p>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🏭</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Kawasan Pabrik &amp; Industri</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Pipa saluran limbah cair diameter besar, sistem hydro-jetting tekanan tinggi, dilengkapi Faktur Pajak PPN resmi.</p>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🏨</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Hotel, Apartemen &amp; Kos</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Maintenance pipa riser vertikal bertingkat, penanganan tanpa getaran/kebisingan ekstrem yang mengganggu tamu.</p>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🏬</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Mall &amp; Pusat Perbelanjaan</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Drainase toilet umum pengunjung, food court drain system, &amp; pembersihan malam hari (Night Shift Scheduling).</p>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E5E7EB; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🏢</div>
-                <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Perkantoran &amp; Kawasan Ruko</h3>
-                <p style="color: #6B7280; font-size: 0.92rem; line-height: 1.6;">Layanan kontrak perawatan berkala (Preventive Maintenance), SLA respon cepat teknisi, &amp; laporan invoice legal PT/CV.</p>
-            </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            @foreach($propertyVisuals as $pKey => $pVisual)
+            <a href="{{ route('property.show', $pVisual['slug']) }}" style="background: #ffffff; border-radius: 20px; border: 1px solid #E5E7EB; overflow: hidden; text-decoration: none; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: all 0.25s ease;" class="hover:-translate-y-1.5 hover:border-emerald-500 hover:shadow-xl group">
+                <div style="position: relative; height: 170px; background: #0B192C; overflow: hidden;">
+                    <img src="{{ $pVisual['url'] }}" alt="Jasa Saluran Pipa Mampet {{ $pVisual['name'] }} di {{ $cityNameClean }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                    <span style="position: absolute; top: 10px; right: 10px; background: rgba(11, 25, 44, 0.85); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4); font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 50px; backdrop-filter: blur(4px);">
+                        ⏱️ {{ $pVisual['badge'] }}
+                    </span>
+                    <span style="position: absolute; bottom: 10px; left: 12px; font-size: 1.5rem;">
+                        {{ $pVisual['icon'] }}
+                    </span>
+                </div>
+                <div style="padding: 1.25rem;">
+                    <h3 style="color: #0A2E78; font-size: 1.1rem; font-weight: 800; margin: 0 0 0.4rem; line-height: 1.3;" class="group-hover:text-emerald-600 transition">
+                        {{ $pVisual['name'] }}
+                    </h3>
+                    <p style="color: #64748B; font-size: 0.84rem; line-height: 1.5; margin: 0;">
+                        Layanan pelancaran pipa tersumbat profesional di {{ $cityNameClean }} tanpa bongkar keramik.
+                    </p>
+                </div>
+            </a>
+            @endforeach
         </div>
     </div>
 </section>

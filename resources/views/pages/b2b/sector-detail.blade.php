@@ -153,23 +153,52 @@ $sectorBreadcrumbs = [
 </section>
 
 <!-- Technical Methods & Equipment Showcase -->
+<?php
+  $mediaService = app(\App\Services\MediaService::class);
+  $toolkitImages = $mediaService->getToolkitImages();
+  $sectorLoc = isset($city) ? $city->name : 'Indonesia';
+?>
 <section style="padding: 4.5rem 1.5rem; background: #F8FAFC; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
     <div style="max-width: 1200px; margin: 0 auto;">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <span style="color: #169F81; font-weight: 700; text-transform: uppercase; font-size: 0.85rem;">Teknologi Modern</span>
-            <h2 style="color: #0A2E78; font-size: 2.2rem; font-weight: 800; margin-top: 0.4rem;">Metode Pengerjaan Rekomendasi di Sektor {{ $sector->sector_name }}</h2>
+            <span style="color: #169F81; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">🛠️ Peralatan Industri B2B</span>
+            <h2 style="color: #0A2E78; font-size: clamp(1.8rem, 3.5vw, 2.2rem); font-weight: 800; margin-top: 0.4rem;">Peralatan Rekomendasi di Sektor {{ $sector->sector_name }}</h2>
+            <p style="color: #64748B; font-size: 0.95rem; max-width: 700px; margin: 0.4rem auto 0;">Penanganan profesional bebas korosi kimia demi kelancaran operasional tempat usaha Anda di {{ $sectorLoc }}.</p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-            @if(!empty($sector->recommended_methods))
-                @foreach($sector->recommended_methods as $method)
-                <div style="background: #ffffff; border-radius: 16px; padding: 1.75rem; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-                    <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🌀</div>
-                    <h3 style="color: #0A2E78; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">{{ $method }}</h3>
-                    <p style="color: #64748B; font-size: 0.92rem; line-height: 1.5;">Rekomendasi metode paling efisien untuk melancarkan blokade tanpa merusak konstruksi lantai maupun pipa PVC/besi.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem;">
+            <!-- Industrial Card 1: Heavy Duty Hydro-Jetting -->
+            <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="height: 190px; background: #0B192C; overflow: hidden;">
+                    <img src="{{ $toolkitImages['hydro_jetting']['url'] }}" alt="{{ $toolkitImages['hydro_jetting']['alt'] }} Sektor {{ $sector->sector_name }} {{ $sectorLoc }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 </div>
-                @endforeach
-            @endif
+                <div style="padding: 1.5rem;">
+                    <h3 style="color: #0A2E78; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.4rem;">High-Pressure Hydro Jetting 250 Bar</h3>
+                    <p style="color: #64748B; font-size: 0.88rem; line-height: 1.5;">Pengikisan gumpalan minyak beku &amp; kerak limbah cair di pipa utama restoran, hotel, &amp; pabrik.</p>
+                </div>
+            </div>
+
+            <!-- Industrial Card 2: Heavy Duty Ridgid Rooter -->
+            <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="height: 190px; background: #0B192C; overflow: hidden;">
+                    <img src="{{ $toolkitImages['heavy_duty']['url'] }}" alt="{{ $toolkitImages['heavy_duty']['alt'] }} Sektor {{ $sector->sector_name }} {{ $sectorLoc }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                </div>
+                <div style="padding: 1.5rem;">
+                    <h3 style="color: #0A2E78; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.4rem;">Mesin Rooter Commercial Heavy-Duty</h3>
+                    <p style="color: #64748B; font-size: 0.88rem; line-height: 1.5;">Penembus sumbatan keras, kain, &amp; sampah di jaringan drainase gedung bertingkat &amp; ruko.</p>
+                </div>
+            </div>
+
+            <!-- Industrial Card 3: CCTV Pipe Endoscopy -->
+            <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="height: 190px; background: #0B192C; overflow: hidden;">
+                    <img src="{{ $toolkitImages['cctv_camera']['url'] }}" alt="{{ $toolkitImages['cctv_camera']['alt'] }} Sektor {{ $sector->sector_name }} {{ $sectorLoc }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                </div>
+                <div style="padding: 1.5rem;">
+                    <h3 style="color: #0A2E78; font-size: 1.15rem; font-weight: 800; margin-bottom: 0.4rem;">Inspeksi Kamera CCTV Pipa Industri</h3>
+                    <p style="color: #64748B; font-size: 0.88rem; line-height: 1.5;">Investigasi visual kondisi dalam pipa riser vertikal &amp; jaringan drainase sebelum perawatan.</p>
+                </div>
+            </div>
         </div>
     </div>
 </section>

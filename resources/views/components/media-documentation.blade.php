@@ -12,6 +12,8 @@
 <?php
 $locName = $locationName ?? $locationShort ?? 'Jabodetabek';
 $locShort = $locationShort ?? 'Wilayah Terkait';
+$mediaService = app(\App\Services\MediaService::class);
+$toolkitImages = $mediaService->getToolkitImages();
 
 // Curated Fallback Showcases for Before-After Photos
 $fallbackShowcases = [
@@ -19,7 +21,7 @@ $fallbackShowcases = [
         'title' => 'Pelancaran Pipa Wastafel Restoran & Kitchen Dapur',
         'category' => 'Wastafel & Sink',
         'before_img' => asset('images/was-mampet.jpg'),
-        'after_img' => asset('images/JnJ.webp'),
+        'after_img' => $toolkitImages['hydro_jetting']['url'],
         'issue' => 'Gumpalan Lemak Keras & Kerak Beku 5 Meter',
         'tool' => 'High-Pressure Hydro Jet 250 Bar & Ridgid K-50',
         'time' => '35 Menit - Tanpa Bongkar Lantai',
@@ -29,7 +31,7 @@ $fallbackShowcases = [
         'title' => 'Pembersihan Floor Drain Kamar Mandi & Kerak Sabun',
         'category' => 'Kamar Mandi',
         'before_img' => asset('images/wc-mampet.jpg'),
-        'after_img' => asset('images/JnJ.webp'),
+        'after_img' => $toolkitImages['ridgid_k50']['url'],
         'issue' => 'Rontokan Rambut, Kerak Sabun & Endapan Kapur',
         'tool' => 'Mesin Spiral Flexible Rotary Cables Ridgid',
         'time' => '25 Menit - Bergaransi Tuntas 100%',
@@ -39,7 +41,7 @@ $fallbackShowcases = [
         'title' => 'Evakuasi Kloset WC Meluap & Inspeksi Pipa CCTV',
         'category' => 'WC / Kloset',
         'before_img' => asset('images/wastafel-mampet.jpg'),
-        'after_img' => asset('images/JnJ.webp'),
+        'after_img' => $toolkitImages['cctv_camera']['url'],
         'issue' => 'Sumbatan Benda Asing & Leher Angsa Meluap',
         'tool' => 'Kamera Inspeksi CCTV & Heavy Duty Spiral',
         'time' => '40 Menit - Steril Bebas Bau',
@@ -57,7 +59,7 @@ $fallbackArticles = [
         'title' => 'Cara Mengatasi Wastafel Mampet Akibat Lemak Membeku',
         'slug' => 'cara-mengatasi-bak-cuci-piring-mampet-akibat-lemak-membeku',
         'category' => 'Wastafel & Sink',
-        'thumbnail' => asset('images/was-mampet.jpg'),
+        'thumbnail' => $toolkitImages['hydro_jetting']['url'],
         'duration' => '0:45 Sec',
         'youtube_id' => '5O63iR_8NIs'
     ],
@@ -65,7 +67,7 @@ $fallbackArticles = [
         'title' => 'Solusi Saluran Pembuangan Kamar Mandi Mampet Tanpa Bongkar',
         'slug' => 'solusi-saluran-pembuangan-kamar-mandi-mampet-tanpa-bongkar-lantai',
         'category' => 'Floor Drain',
-        'thumbnail' => asset('images/wc-mampet.jpg'),
+        'thumbnail' => $toolkitImages['ridgid_k50']['url'],
         'duration' => '1:12 Min',
         'youtube_id' => '5O63iR_8NIs'
     ],
@@ -73,7 +75,7 @@ $fallbackArticles = [
         'title' => 'Manfaat Inspection Camera (CCTV Pipe) untuk Deteksi Kebocoran Pipa',
         'slug' => 'manfaat-inspection-camera-cctv-pipe-untuk-deteksi-kebocoran-pipa',
         'category' => 'Inspeksi CCTV',
-        'thumbnail' => asset('images/JnJ.webp'),
+        'thumbnail' => $toolkitImages['cctv_camera']['url'],
         'duration' => '0:55 Sec',
         'youtube_id' => '5O63iR_8NIs'
     ]
@@ -84,7 +86,45 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
     : $fallbackArticles;
 ?>
 
-<!-- Section 1: Interactive Before-After Photo Showcase -->
+<!-- Section 1: Operational Toolkit Showcase Grid (High Trust Equipment) -->
+<section style="background: #ffffff; padding: 4rem 1.5rem; border-top: 1px solid #E2E8F0;" id="teknologi-alat">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <span style="color: #10B981; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">
+                🛠️ Standar Teknologi &amp; Peralatan Canggih
+            </span>
+            <h2 style="color: #0B192C; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; margin-top: 0.4rem;">
+                Peralatan Modern Teknisi Rootera di {{ $locShort }}
+            </h2>
+            <p style="color: #64748B; max-width: 720px; margin: 0.5rem auto 0; font-size: 1rem; line-height: 1.6;">
+                Seluruh armada penanganan pipa tersumbat di {{ $locName }} dibekali peralatan standar industri tanpa bongkar ubin/keramik.
+            </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+            @foreach($toolkitImages as $key => $tool)
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.3s ease;" class="hover:-translate-y-1.5 hover:border-emerald-400">
+                <div style="height: 180px; background: #0B192C; overflow: hidden; position: relative;">
+                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                    <span style="position: absolute; top: 10px; right: 10px; background: rgba(16, 185, 129, 0.9); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 50px; text-transform: uppercase;">
+                        ✓ Alat Resmi
+                    </span>
+                </div>
+                <div style="padding: 1.25rem;">
+                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #0B192C; margin-bottom: 0.35rem;">
+                        {{ $tool['title'] }}
+                    </h3>
+                    <p style="color: #64748B; font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        {{ $tool['desc'] }}
+                    </p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: Interactive Before-After Photo Showcase -->
 <section style="background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%); padding: 4.5rem 1.5rem; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;" id="dokumentasi-lapangan">
     <div style="max-width: 1200px; margin: 0 auto;">
         
@@ -112,7 +152,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
                 $time = is_object($item) ? ($item->completion_time ?? '30-45 Menit') : $item['time'];
                 $clientType = is_object($item) ? ($item->client_type ?? 'Proyek Terverifikasi') : $item['client_type'];
                 $beforeImg = is_object($item) ? ($item->before_image_url ?? asset('images/was-mampet.jpg')) : $item['before_img'];
-                $afterImg = is_object($item) ? ($item->after_image_url ?? asset('images/JnJ.webp')) : $item['after_img'];
+                $afterImg = is_object($item) ? ($item->after_image_url ?? $toolkitImages['ridgid_k50']['url']) : $item['after_img'];
             ?>
             <div style="background: #ffffff; border-radius: 20px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 10px 30px rgba(11, 25, 44, 0.05); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;" class="hover:-translate-y-1.5 hover:shadow-2xl hover:border-emerald-400/40 group">
                 
@@ -121,7 +161,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
                     
                     <!-- Before Section -->
                     <div style="position: relative; width: 50%; height: 100%; border-right: 2px solid #ffffff; overflow: hidden;">
-                        <img src="{{ $beforeImg }}" alt="Sebelum Pengerjaan Rootera di {{ $locShort }}" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85);" loading="lazy" decoding="async">
+                        <img src="{{ $beforeImg }}" alt="Sebelum Pengerjaan Jasa Pipa Mampet Rootera di {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85);" loading="lazy" decoding="async">
                         <span style="position: absolute; top: 10px; left: 10px; background: rgba(225, 29, 72, 0.95); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; backdrop-filter: blur(4px);">
                             ⚠️ SEBELUM
                         </span>
@@ -129,7 +169,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
 
                     <!-- After Section -->
                     <div style="position: relative; width: 50%; height: 100%; overflow: hidden;">
-                        <img src="{{ $afterImg }}" alt="Hasil Pengerjaan Rootera di {{ $locShort }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                        <img src="{{ $afterImg }}" alt="Hasil Pengerjaan Berhasil Pipa Lancar di {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                         <span style="position: absolute; top: 10px; right: 10px; background: rgba(16, 185, 129, 0.95); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; backdrop-filter: blur(4px);">
                             ✓ SESUDAH (100% LANCAR)
                         </span>
@@ -178,7 +218,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
     </div>
 </section>
 
-<!-- Section 2: Video Reels & Knowledge Guide Showcase (Interactive Blog Card Integration) -->
+<!-- Section 3: Video Reels & Knowledge Guide Showcase -->
 <section style="background: #0B192C; color: #ffffff; padding: 4.5rem 1.5rem; position: relative; overflow: hidden;" id="video-dokumentasi">
     <div style="position: absolute; top: -100px; right: -100px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(11, 25, 44, 0) 70%); pointer-events: none;"></div>
     
@@ -204,7 +244,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
             </div>
         </div>
 
-        <!-- Interactive Video Cards Grid (Linked to Blog Detail Articles) -->
+        <!-- Interactive Video Cards Grid -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem;">
             @foreach($articlesToDisplay as $artIdx => $art)
             <?php
@@ -213,11 +253,10 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
                 $artCategory = is_object($art) ? ($art->category ?? 'Edukasi Plumbing') : ($art['category'] ?? 'Edukasi Plumbing');
                 $artUrl = route('blog.show', $artSlug);
                 
-                // Secure Thumbnail Resolver with Fallbacks
                 if (is_object($art)) {
-                    $artThumb = $art->thumbnail_url ?: asset('images/JnJ.webp');
+                    $artThumb = $art->thumbnail_url ?: $toolkitImages['ridgid_k50']['url'];
                 } else {
-                    $artThumb = $art['thumbnail'] ?? asset('images/JnJ.webp');
+                    $artThumb = $art['thumbnail'] ?? $toolkitImages['ridgid_k50']['url'];
                 }
 
                 $badgeColors = ['#10B981', '#38BDF8', '#F59E0B'];
@@ -225,15 +264,12 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
             ?>
             <a href="{{ $artUrl }}" style="display: block; text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); transition: all 0.3s ease;" class="hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-2xl group">
                 <div style="position: relative; height: 240px; background: #1E3E62; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <!-- Zooming Thumbnail Cover Image -->
-                    <img src="{{ $artThumb }}" alt="{{ $artTitle }}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                    <img src="{{ $artThumb }}" alt="{{ $artTitle }} - Rootera {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
                     
-                    <!-- Play Button Overlay with Hover Scale -->
                     <div style="position: absolute; width: 60px; height: 60px; border-radius: 50%; background: #10B981; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); transition: transform 0.3s ease;" class="group-hover:scale-110">
                         <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </div>
 
-                    <!-- Category Badge -->
                     <span style="position: absolute; top: 12px; right: 12px; background: {{ $badgeColor }}; color: #ffffff; font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase;">
                         {{ $artCategory }}
                     </span>
@@ -255,7 +291,6 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
             @endforeach
         </div>
 
-        <!-- 2. PENAMBAHAN TOMBOL CTA ARTIKEL / VIDEO LENGKAP -->
         <div style="text-align: center; margin-top: 3.5rem;">
             <a href="{{ route('blog') }}" class="btn" style="display: inline-flex; align-items: center; gap: 0.6rem; border: 1.5px solid rgba(16, 185, 129, 0.6); color: #34D399; background: rgba(16, 185, 129, 0.08); padding: 0.9rem 2.2rem; border-radius: 50px; font-weight: 800; font-size: 0.98rem; text-decoration: none; backdrop-filter: blur(8px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.3s ease;" class="hover:bg-emerald-500 hover:text-white hover:border-emerald-500 hover:scale-105">
                 <span>Lihat Semua Video &amp; Panduan Pengetahuan Lengkap →</span>
