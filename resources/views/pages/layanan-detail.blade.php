@@ -20,7 +20,7 @@ $serviceSchema = [
     "name" => "Rootera",
     "telephone" => "+6281385404000",
     "url" => url('/'),
-    "logo" => asset('images/logo-hijau.png'),
+    "logo" => asset('images/brand/logo-hijau-rooteraplumbing-jasa-saluran-pipa-mampet.png'),
     "image" => asset('images/JnJ.jpeg')
   ],
   "areaServed" => [

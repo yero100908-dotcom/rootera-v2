@@ -13,7 +13,7 @@ $propertySchema = [
     "name" => "Rootera Plumbing",
     "url" => url('/'),
     "telephone" => "+6281385404000",
-    "logo" => asset('images/logo final.png'),
+    "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   ],
   "areaServed" => isset($city) ? [
     "@type" => "City",

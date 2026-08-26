@@ -44,7 +44,7 @@ class FaqController extends Controller
             'title'       => 'Pusat Bantuan & FAQ Saluran Mampet | Rootera Plumbing',
             'description' => 'Jawaban lengkap seputar estimasi biaya pelancaran pipa tersumbat, teknologi alat spiral & hydro-jetting, garansi 30 hari, dan layanan darurat 24 jam.',
             'canonical'   => route('faq.index'),
-            'og_image'    => asset('images/logo final.png'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.faq.index', compact('categories', 'featuredFaqs', 'searchResults', 'searchQuery', 'seo'));
@@ -73,7 +73,7 @@ class FaqController extends Controller
             'title'       => "FAQ {$category->name} | Rootera Plumbing",
             'description' => $category->description,
             'canonical'   => route('faq.category', $category->slug),
-            'og_image'    => asset('images/logo final.png'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.faq.category', compact('category', 'allCategories', 'seo'));
@@ -99,7 +99,7 @@ class FaqController extends Controller
             'title'       => "{$faq->question} | FAQ Rootera Plumbing",
             'description' => \Illuminate\Support\Str::limit(strip_tags($faq->answer), 155),
             'canonical'   => route('faq.show', $faq->slug),
-            'og_image'    => asset('images/logo final.png'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.faq.show', compact('faq', 'relatedFaqs', 'seo'));

@@ -13,7 +13,7 @@
             {{-- Brand Info & Badges --}}
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 <a href="{{ route('home') }}" aria-label="Rootera Beranda" class="flex-shrink-0">
-                    <img src="{{ asset('images/logo-final.webp') }}" alt="Rootera Plumbing Logo" loading="lazy" decoding="async" width="180" height="75" style="height: 75px; width: auto; object-fit: contain;">
+                    <img src="{{ asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}" alt="Rootera Plumbing Logo" loading="lazy" decoding="async" width="180" height="75" style="height: 75px; width: auto; object-fit: contain;">
                 </a>
                 <div>
                     <div class="flex items-center gap-2 mb-2 flex-wrap">

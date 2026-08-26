@@ -16,7 +16,7 @@ $serviceSchema = [
     ],
     "telephone" => "+6281385404000",
     "url" => url('/'),
-    "logo" => asset('images/logo final.png')
+    "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
   ],
   "areaServed" => $city ? $city->name : "Jabodetabek & Indonesia",
   "offers" => [

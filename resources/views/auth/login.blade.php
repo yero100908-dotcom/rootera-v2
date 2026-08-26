@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.ico') }}">
 
     @vite(['resources/css/app.css'])
 
@@ -38,7 +38,7 @@
             <div class="flex flex-col items-center mb-8">
                 <!-- Logo Wrapper to handle transparent padding -->
                 <div class="relative w-full h-24 sm:h-28 flex items-center justify-center mb-2 sm:mb-4">
-                    <img src="{{ asset('images/logo-hijau.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none transform scale-125 sm:scale-150" alt="Rootera Logo">
+                    <img src="{{ asset('images/brand/logo-hijau-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}" class="absolute h-48 sm:h-56 w-auto object-contain drop-shadow-sm pointer-events-none transform scale-125 sm:scale-150" alt="Rootera Logo">
                 </div>
                 
                 <!-- Title -->
