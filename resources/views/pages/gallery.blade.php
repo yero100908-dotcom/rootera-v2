@@ -45,7 +45,7 @@
     }
 @endphp
 
-<section class="relative pt-32 lg:pt-40 pb-16 bg-white overflow-hidden">
+<section class="relative pb-16 bg-white overflow-hidden" style="padding-top: 80px;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-12 items-center">
@@ -138,7 +138,7 @@
             </div>
 
             {{-- Gallery Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mt-8 mb-14" id="gallery-grid">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mt-12 mb-24" id="gallery-grid">
                 @foreach($photos as $photo)
                 @if($featuredVideo && $photo->id === $featuredVideo->id) @continue @endif
                 
@@ -177,7 +177,7 @@
             </div>
             
             <!-- Load More -->
-            <div class="mt-14 mb-20 text-center">
+            <div class="mt-20 mb-28 text-center">
                 <button class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-teal-600 text-teal-600 font-medium hover:bg-teal-600 hover:text-white transition-all shadow-sm hover:shadow-md">
                     Eksplorasi Lebih Banyak
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>

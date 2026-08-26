@@ -115,7 +115,16 @@
                 
                 @forelse($galleryPhotos as $index => $photo)
                 <div class="showcase-slide" data-category="{{ strtolower($photo->category ?? 'residential') }}" data-index="{{ $index }}">
-                    <img src="{{ Storage::url($photo->image) }}" alt="{{ $photo->title }}" onerror="this.src='{{ asset('images/JnJ.jpeg') }}'">
+                    <img src="{{ $photo->image_url }}" alt="{{ $photo->title }}" onerror="this.src='{{ asset('images/JnJ.jpeg') }}'">
+                    
+                    @if($photo->youtube_id)
+                    <!-- Play Icon Overay for Video Thumbnail -->
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10 pb-10">
+                        <div class="w-14 h-14 rounded-full bg-teal-500/80 text-white flex items-center justify-center shadow-lg shadow-teal-500/30 backdrop-blur-sm">
+                            <svg viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 ml-1"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    @endif
                     
                     <!-- Caption Foto -->
                     <div class="showcase-info">

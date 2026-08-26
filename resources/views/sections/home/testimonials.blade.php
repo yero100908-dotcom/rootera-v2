@@ -1,11 +1,7 @@
 <style>
     @keyframes marquee-scroll-left {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-50%);
-        }
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
     }
     .marquee-track {
         display: flex;
@@ -16,9 +12,16 @@
     .marquee-track:hover {
         animation-play-state: paused;
     }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 </style>
 
-<section id="ulasan-pelanggan" class="w-full relative py-16 sm:py-24 overflow-hidden scroll-margin-top-[100px]" style="background-color: #0d1b2a; background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(10, 46, 120, 0.2) 0%, transparent 50%), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;">
+<section id="ulasan-pelanggan" class="w-full relative py-16 sm:py-24 overflow-hidden scroll-margin-top-[100px]" style="background-color: #0f172a; background-image: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.06) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(10, 46, 120, 0.2) 0%, transparent 50%), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px); background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;">
     
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -35,151 +38,229 @@
         <!-- Map & Rating Container -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 max-w-7xl mx-auto">
             
-            <!-- Left: Google Maps Iframe -->
-            <div class="bg-slate-200 rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/20 border border-slate-100/10 min-h-[300px] lg:min-h-[100%] h-full">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.733575990234!2d106.86013757529841!3d-6.327597493662243!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed002bb5dce5%3A0x633fc2e245a44cd6!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sen!2sid!4v1714578508492!5m2!1sen!2sid" 
-                    width="100%" 
-                    height="100%" 
-                    style="border:0; min-height: 100%; display: block;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <!-- 1. BAGIAN PETA (KIRI) -->
+            <div class="relative bg-slate-800 rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/20 border border-slate-700 min-h-[300px] lg:min-h-[100%] h-full group">
+                <!-- Iframe murni tanpa library React -->
+                <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=Rootera+Plumbing+Jakarta&t=&z=14&ie=UTF8&iwloc=&output=embed" style="border-radius: 12px; min-height: 250px; display: block;"></iframe>
+                
+                <!-- Tombol Buka di Google Maps Absolute Positioning -->
+                <div class="absolute bottom-4 left-4 right-4 flex justify-center pointer-events-none">
+                    <a href="https://maps.app.goo.gl/4kAgQHxg6XXvnV3Z7" target="_blank" rel="noopener noreferrer" class="pointer-events-auto flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 text-sm font-bold rounded-full shadow-lg hover:scale-105 transition-transform duration-300">
+                        <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Buka di Google Maps
+                    </a>
+                </div>
             </div>
 
-            <!-- Right: Rating Overview Card (Light Theme) -->
-            <div class="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-xl shadow-emerald-900/20 flex flex-col justify-center h-full">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 w-full h-full">
-                    <!-- Left: score summary -->
+            <!-- 2. BAGIAN RATING (KANAN) -->
+            <div class="bg-slate-800 border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-center h-full text-white relative overflow-hidden">
+                <!-- Loader Overlay (Client Component State: isLoading) -->
+                <div id="rating-loader" class="absolute inset-0 bg-slate-800 z-10 flex flex-col items-center justify-center">
+                    <svg class="animate-spin w-8 h-8 text-emerald-500 mb-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </div>
+                
+                <!-- Client Component State: data -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-8 w-full h-full opacity-0 transition-opacity duration-500" id="rating-content">
                     <div class="w-full md:w-1/2 text-center md:text-left flex flex-col items-center md:items-start justify-center gap-2">
                         <div class="flex items-center gap-2 justify-center md:justify-start">
-                            <span class="text-5xl font-black text-slate-900">5.0</span>
+                            <span class="text-5xl font-black text-white" id="dynamic-rating-score">5.0</span>
                             <span class="text-lg font-bold text-slate-400">/ 5.0</span>
                         </div>
-                        <div class="flex gap-1 text-amber-400 text-2xl font-bold my-1">
+                        <div class="flex gap-1 text-amber-400 text-2xl font-bold my-1" id="dynamic-rating-stars">
                             ★ ★ ★ ★ ★
                         </div>
-                        <p class="text-base font-semibold text-slate-600">Berdasarkan 120+ Ulasan Google Maps</p>
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10b981]/10 text-[#10b981] text-xs font-bold mt-2">
-                            <svg class="w-4.5 h-4.5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <p class="text-sm font-semibold text-slate-400" id="dynamic-rating-total">Berdasarkan Ulasan Google Maps</p>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold mt-2 border border-emerald-500/30">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
                             Ulasan Terverifikasi Google
                         </span>
                     </div>
 
-                    <!-- Right: rating progress breakdown -->
-                    <div class="w-full md:w-1/2 flex flex-col justify-center gap-3">
-                        @php
-                        $ratingBreakdown = [
-                            5 => 120,
-                            4 => 0,
-                            3 => 0,
-                            2 => 0,
-                            1 => 0,
-                        ];
-                        @endphp
-                        @foreach($ratingBreakdown as $star => $count)
-                        <div class="flex items-center gap-3 text-sm">
-                            <span class="w-3 text-slate-700 font-bold">{{ $star }}</span>
-                            <span class="text-amber-400">★</span>
-                            <div class="flex-1 h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                                <div class="h-full bg-amber-400 rounded-full transition-all duration-500" style="width: {{ $star === 5 ? 100 : 0 }}%"></div>
-                            </div>
-                            <span class="w-8 text-right text-slate-500 font-medium">{{ $count }}</span>
-                        </div>
-                        @endforeach
+                    <div class="w-full md:w-1/2 flex flex-col justify-center gap-3 w-full" id="rating-breakdown-container">
+                        <!-- Rating Breakdown Bars Injected by JS -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Marquee Carousel Section -->
+        <!-- 2. BAGIAN ULASAN (BAWAH) - Marquee Carousel -->
         <div class="relative w-full overflow-hidden mb-12">
-            <!-- Fade Gradient Masks -->
-            <div class="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#0d1b2a] to-transparent z-10" aria-hidden="true"></div>
-            <div class="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#0d1b2a] to-transparent z-10" aria-hidden="true"></div>
+            <!-- Fade Gradient Masks for Dark Theme -->
+            <div class="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#0f172a] to-transparent z-10" aria-hidden="true"></div>
+            <div class="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#0f172a] to-transparent z-10" aria-hidden="true"></div>
 
-            @php
-            $reviews = [
-                [
-                    'name' => 'Budi Santoso',
-                    'initial' => 'B',
-                    'bg' => 'bg-gradient-to-br from-blue-500 to-indigo-600',
-                    'text' => 'Sangat puas dengan layanan Rootera! Pipa wastafel mampet bertahun-tahun langsung lancar dalam 30 menit. Teknisi ramah, profesional, dan peralatan sangat canggih tanpa membongkar keramik lantai sama sekali. Harga sangat transparan dan bergaransi.',
-                    'date' => '2 hari yang lalu'
-                ],
-                [
-                    'name' => 'Siti Aminah',
-                    'initial' => 'S',
-                    'bg' => 'bg-gradient-to-br from-emerald-500 to-teal-600',
-                    'text' => 'Pekerjaannya rapi dan bersih. Pipa air kotor mampet di rumah bisa diatasi dengan hydro jetting modern. Air mengalir lancar kembali. Terima kasih banyak tim Rootera atas pelayanannya yang super cepat dan responsif!',
-                    'date' => '1 minggu yang lalu'
-                ],
-                [
-                    'name' => 'Rian Hidayat',
-                    'initial' => 'R',
-                    'bg' => 'bg-gradient-to-br from-amber-500 to-orange-600',
-                    'text' => 'Toren air saya kotor sekali dan kran mampet tersumbat lumut. Panggil teknisi Rootera datang tepat waktu, toren langsung cling dibersihkan luar dalam dan kran lancar jaya lagi. Garansinya beneran bisa diklaim.',
-                    'date' => '3 minggu yang lalu'
-                ],
-                [
-                    'name' => 'Dewi Lestari',
-                    'initial' => 'D',
-                    'bg' => 'bg-gradient-to-br from-purple-500 to-pink-600',
-                    'text' => 'Response time luar biasa cepat. Hubungi pagi, siang teknisi sudah datang dengan alat spiral elektrik modern. Saluran kamar mandi yang mampet selesai kurang dari 1 jam. Bersih, tertib, dan harga sangat terjangkau.',
-                    'date' => '1 bulan yang lalu'
-                ]
-            ];
-            // Repeated arrays to construct smooth loop
-            $doubleReviews = array_merge($reviews, $reviews, $reviews, $reviews);
-            @endphp
-
-            <!-- Marquee Track -->
-            <div class="marquee-track gap-6 py-4">
-                @foreach($doubleReviews as $review)
-                <div class="w-[310px] sm:w-[380px] shrink-0 bg-white rounded-2xl p-6 sm:p-8 shadow-md border border-slate-200/80 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:border-[#10b981]/30 hover:-translate-y-1 h-auto min-h-[260px]">
-                    <div>
-                        <!-- Card Header -->
-                        <div class="flex items-center justify-between mb-5">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm {{ $review['bg'] }}">
-                                    {{ $review['initial'] }}
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-slate-900 text-base tracking-wide">{{ $review['name'] }}</h4>
-                                    <div class="flex text-amber-400 text-sm mt-0.5">
-                                        ★ ★ ★ ★ ★
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Google Icon (Aligned Top Right) -->
-                            <div class="text-slate-300 flex-shrink-0">
-                                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                    <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.25.61 4.47 1.625l2.427-2.427C17.43 1.705 15.02 1 12.24 1 6.58 1 2 5.58 2 11.24s4.58 10.24 10.24 10.24c5.9 0 9.81-4.14 9.81-10 0-.67-.06-1.32-.18-1.9H12.24z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <!-- Review Text -->
-                        <p class="text-slate-700 text-sm sm:text-base leading-relaxed mb-6 font-medium">
-                            "{{ $review['text'] }}"
-                        </p>
-                    </div>
-                    <!-- Card Footer -->
-                    <div class="text-xs text-slate-400 font-medium mt-auto">
-                        {{ $review['date'] }}
-                    </div>
+            <!-- Loader for Reviews (Client Component State: isLoading) -->
+            <div id="reviews-loader" class="flex justify-center py-10 w-full absolute z-20 transition-opacity duration-300">
+                <div class="animate-pulse flex gap-6 w-max overflow-hidden px-10">
+                    <div class="w-[310px] h-[260px] bg-slate-800 rounded-2xl"></div>
+                    <div class="w-[310px] h-[260px] bg-slate-800 rounded-2xl"></div>
+                    <div class="w-[310px] h-[260px] bg-slate-800 rounded-2xl"></div>
                 </div>
-                @endforeach
+            </div>
+
+            <!-- Marquee Track (Client Component State: data) -->
+            <div class="marquee-track gap-6 py-4 opacity-0 transition-opacity duration-500" id="reviews-marquee-track">
+                <!-- Javascript will inject real/fallback review cards here -->
             </div>
         </div>
 
-        <!-- Tombol Lihat Lebih Banyak (CTA) -->
+        <!-- 3. STRUKTUR & DESAIN TAMBAHAN (Call To Action) -->
         <div class="text-center mt-4">
-            <a href="https://www.google.com/maps/place/Rootera+Plumbing+-+Jasa+Saluran+Pipa+Mampet/@-6.3275975,106.8627125,17z/data=!4m8!3m7!1s0x0:0x0!8m2!3d-6.3275975!4d106.8627125!9m1!1b1" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[#10b981] hover:bg-emerald-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/15 transform hover:-translate-y-0.5 cursor-pointer">
-                <span>Lihat Lebih Banyak di Google</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <a href="https://maps.app.goo.gl/4kAgQHxg6XXvnV3Z7" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/25 transform hover:-translate-y-0.5 cursor-pointer">
+                <span>Lihat Seluruh Ulasan Kami di Google</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
         </div>
 
     </div>
 </section>
+
+<!-- Frontend Client Component Logic (Fetch & State Management) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    function renderRatingCard(stats) {
+        document.getElementById('dynamic-rating-score').textContent = stats.rating ? stats.rating.toFixed(1) : '5.0';
+        
+        let starsHtml = '';
+        const fullStars = Math.floor(stats.rating || 5);
+        for(let i=0; i<5; i++) {
+            starsHtml += i < fullStars ? '★ ' : '☆ ';
+        }
+        document.getElementById('dynamic-rating-stars').textContent = starsHtml.trim();
+
+        let breakdownHtml = '';
+        // If breakdown is not provided natively by API, create a proportional bar UI
+        let bd = {
+            5: Math.floor((stats.user_ratings_total || 11) * 0.95),
+            4: Math.floor((stats.user_ratings_total || 11) * 0.05),
+            3: 0, 2: 0, 1: 0
+        };
+
+        for(let i=5; i>=1; i--) {
+            let count = bd[i];
+            let total = stats.user_ratings_total || 11;
+            let percentage = total > 0 ? (count / total) * 100 : 0;
+            breakdownHtml += `
+            <div class="flex items-center gap-3 text-sm ${percentage === 0 ? 'opacity-50' : ''}">
+                <span class="w-2 text-slate-400 font-bold">${i}</span>
+                <span class="text-amber-400 text-xs">★</span>
+                <div class="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div class="h-full bg-amber-400 rounded-full transition-all duration-1000" style="width: ${percentage}%"></div>
+                </div>
+            </div>`;
+        }
+        document.getElementById('rating-breakdown-container').innerHTML = breakdownHtml;
+
+        document.getElementById('rating-loader').style.display = 'none';
+        document.getElementById('rating-content').classList.remove('opacity-0');
+    }
+
+    function generateAvatarGradient(name) {
+        const colors = [
+            'from-blue-500 to-indigo-600',
+            'from-emerald-500 to-teal-600',
+            'from-amber-500 to-orange-600',
+            'from-purple-500 to-pink-600',
+            'from-rose-500 to-red-600'
+        ];
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        return colors[Math.abs(hash) % colors.length];
+    }
+
+    function renderReviews(reviews) {
+        if (!reviews || reviews.length === 0) return;
+
+        let doubleReviews = [...reviews, ...reviews, ...reviews, ...reviews];
+        let trackHtml = '';
+
+        doubleReviews.forEach(review => {
+            const initial = review.author_name ? review.author_name.charAt(0).toUpperCase() : 'U';
+            
+            // Map original Google API fields to UI Design Component
+            const avatarHtml = review.profile_photo_url 
+                ? `<img src="${review.profile_photo_url}" alt="${review.author_name}" class="w-12 h-12 rounded-full shadow-sm object-cover" />`
+                : `<div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm bg-gradient-to-br ${generateAvatarGradient(review.author_name || 'User')}">${initial}</div>`;
+                
+            let text = review.text || '';
+            if (text.length > 200) text = text.substring(0, 197) + '...';
+
+            trackHtml += `
+            <div class="w-[310px] sm:w-[380px] shrink-0 bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-md border border-slate-700 flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:border-emerald-500/30 hover:-translate-y-1 h-auto min-h-[260px]">
+                <div>
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-4">
+                            ${avatarHtml}
+                            <div>
+                                <h4 class="font-bold text-white text-base tracking-wide">${review.author_name}</h4>
+                                <div class="flex text-amber-400 text-xs mt-1">
+                                    ${'★'.repeat(review.rating || 5)}${'☆'.repeat(5 - (review.rating || 5))}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-slate-400 flex-shrink-0">
+                            <!-- Real Google G Icon -->
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                                <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.25.61 4.47 1.625l2.427-2.427C17.43 1.705 15.02 1 12.24 1 6.58 1 2 5.58 2 11.24s4.58 10.24 10.24 10.24c5.9 0 9.81-4.14 9.81-10 0-.67-.06-1.32-.18-1.9H12.24z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6 font-medium">
+                        "${text}"
+                    </p>
+                </div>
+                <div class="text-xs text-slate-500 font-medium mt-auto">
+                    ${review.relative_time_description || 'Baru saja'}
+                </div>
+            </div>`;
+        });
+
+        document.getElementById('reviews-marquee-track').innerHTML = trackHtml;
+        document.getElementById('reviews-loader').classList.add('opacity-0');
+        setTimeout(() => {
+            document.getElementById('reviews-loader').style.display = 'none';
+            document.getElementById('reviews-marquee-track').classList.remove('opacity-0');
+        }, 300);
+    }
+
+    // Client Component Fetch Logic (Try/Catch implemented natively via fetch promise chain)
+    fetch('/api/google-reviews')
+        .then(response => {
+            if (!response.ok) throw new Error('Server responded with an error status');
+            return response.json();
+        })
+        .then(res => {
+            // Check if there is data (either live data or backend fallback data)
+            if (res.success && res.data) {
+                if (res.fallback) {
+                    console.warn("Google API Key or Place ID missing/invalid. Currently rendering Graceful Fallback data.");
+                }
+                const data = res.data;
+                const stats = {
+                    rating: data.rating || 5.0,
+                    user_ratings_total: data.user_ratings_total || 11
+                };
+                renderRatingCard(stats);
+                
+                if (data.reviews && data.reviews.length > 0) {
+                    renderReviews(data.reviews);
+                }
+            } else {
+                throw new Error("No data structure returned from API");
+            }
+        })
+        .catch(err => {
+            // HIDDEN ERROR HANDLING: Render the exact fallback if frontend fetch crashes completely
+            console.error('Client-side Fetch Error (API might be down):', err);
+            
+            // Client-side Graceful Fallback rendering
+            renderRatingCard({ rating: 5.0, user_ratings_total: 11 });
+            renderReviews([
+                { author_name: "Agim Firdaus20_", rating: 5, text: "Terimakasih rootera plumbing atas pekerjaan saluran kloset di lampung, saluran sudah lancar, Teknisi ramah dan pengerjaan cepat", relative_time_description: 'Baru saja' },
+                { author_name: "NUR SIDIK", rating: 5, text: "Saluran Wastafel Sudah Saya Lancar, terimakasih rootera plumbing", relative_time_description: 'Baru saja' },
+                { author_name: "Radit", rating: 5, text: "Harga bersahabat, cepat, dan bergaransi, hasil maksimal, trm ksh J&J", relative_time_description: 'Baru saja' }
+            ]);
+        });
+});
+</script>

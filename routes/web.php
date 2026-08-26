@@ -38,6 +38,7 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/galeri', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
 Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
+Route::get('/api/google-reviews', [\App\Http\Controllers\GoogleReviewController::class, 'getReviews'])->name('api.google-reviews');
 
 /*
 |--------------------------------------------------------------------------
