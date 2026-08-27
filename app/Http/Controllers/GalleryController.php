@@ -16,6 +16,17 @@ class GalleryController extends Controller
         $category = $request->query('category');
         $mediaType = $request->query('media_type');
 
+        // Category counts for pill badges
+        $counts = [
+            'all' => Gallery::where('is_active', true)->count(),
+            'residential' => Gallery::where('is_active', true)->where('category', 'residential')->count(),
+            'commercial_resto' => Gallery::where('is_active', true)->where('category', 'commercial_resto')->count(),
+            'commercial_b2b' => Gallery::where('is_active', true)->where('category', 'commercial_b2b')->count(),
+            'cctv_inspection' => Gallery::where('is_active', true)->where('category', 'cctv_inspection')->count(),
+            'before_after' => Gallery::where('is_active', true)->where('category', 'before_after')->count(),
+            'video' => Gallery::where('is_active', true)->where('media_type', 'video')->count(),
+        ];
+
         // Featured project for Hero Showcase
         $featuredProject = Gallery::where('is_active', true)
             ->where('is_featured', true)
@@ -37,6 +48,16 @@ class GalleryController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(12);
 
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'html' => view('pages.gallery.partials.gallery_grid', compact('galleries'))->render(),
+                'hasMore' => $galleries->hasMorePages(),
+                'currentPage' => $galleries->currentPage(),
+                'nextPageUrl' => $galleries->nextPageUrl(),
+                'total' => $galleries->total(),
+            ]);
+        }
+
         // SEO metadata
         $seo = [
             'title' => 'Galeri & Dokumentasi Pekerjaan Pipa Mampet Real',
@@ -45,7 +66,7 @@ class GalleryController extends Controller
             'is_indexable' => true,
         ];
 
-        return view('pages.gallery.index', compact('galleries', 'featuredProject', 'category', 'mediaType', 'seo'));
+        return view('pages.gallery.index', compact('galleries', 'featuredProject', 'category', 'mediaType', 'counts', 'seo'));
     }
 
     /**
@@ -63,9 +84,12 @@ class GalleryController extends Controller
             ->take(3)
             ->get();
 
+        $seoTitle = $project->title . ($project->location_tag ? ' di ' . $project->location_tag : '') . ' | Dokumentasi Rootera';
+        $seoDesc = Str::limit(($project->description ? $project->description . ' — ' : '') . 'Studi kasus pengerjaan pelancaran pipa mampet ' . $project->title . ' di ' . ($project->location_tag ?? 'Jabodetabek') . ' oleh teknisi profesional Rootera Plumbing tanpa bongkar & garansi 30 hari.', 160);
+
         $seo = [
-            'title' => $project->title . ' | Dokumentasi Rootera Plumbing',
-            'description' => Str::limit($project->description ?? 'Studi kasus dokumentasi pengerjaan pelancaran pipa mampet ' . $project->title . ' oleh tim teknisi profesional Rootera Plumbing.', 160),
+            'title' => $seoTitle,
+            'description' => $seoDesc,
             'canonical' => route('galeri.show', $project->slug),
             'og_image' => $project->display_thumbnail,
             'is_indexable' => true,

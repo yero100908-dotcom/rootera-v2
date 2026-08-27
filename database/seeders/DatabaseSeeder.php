@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             GeoDatabaseSeeder::class,
             KeywordDirectorySeeder::class,
             ProjectGallerySeeder::class,
+            GallerySeeder::class,
             BlogSeeder::class,
             FaqSeeder::class,
         ]);
