@@ -219,6 +219,56 @@ class AboutController extends Controller
 
         return view('pages.tentang-kami', compact('seo', 'sectors', 'advantages', 'teamMembers', 'isTeamUpdating', 'documentationGallery', 'sopSteps', 'technologies'));
     }
+
+    public function profil()
+    {
+        $seo = [
+            'title'       => 'Profil Perusahaan & Komitmen K3 - Rootera Plumbing',
+            'description' => 'Profil resmi Rootera Plumbing (J&J Group), legalitas perusahaan, komitmen keselamatan kerja K3, serta visi misi layanan plumbing profesional.',
+            'canonical'   => url('/tentang-kami/profil'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.about.profil', compact('seo'));
+    }
+
+    public function peralatanTeknologi()
+    {
+        $seo = [
+            'title'       => 'Standar Peralatan & Teknologi Modern - Rootera Plumbing',
+            'description' => 'Teknologi pelancaran pipa mampet tanpa bongkar Rootera: Mesin Spiral Rotary Ridgid, Kamera CCTV Inspeksi HD, dan Hydro Jetting 300 Bar.',
+            'canonical'   => url('/tentang-kami/peralatan-teknologi'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.about.peralatan-teknologi', compact('seo'));
+    }
+
+    public function portofolioKlien()
+    {
+        $seo = [
+            'title'       => 'Klien & Portofolio B2B Komersial - Rootera Plumbing',
+            'description' => 'Portofolio pengerjaan pelancaran pipa restoran, mall, gedung perkantoran, hotel, dan kawasan industri oleh Rootera Plumbing.',
+            'canonical'   => url('/tentang-kami/portofolio-klien'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        $projects = \App\Models\Gallery::where('is_active', true)->latest()->take(9)->get();
+
+        return view('pages.about.portofolio-klien', compact('seo', 'projects'));
+    }
+
+    public function garansiLayanan()
+    {
+        $seo = [
+            'title'       => 'Jaminan & Kebijakan Garansi Pengerjaan 30 Hari - Rootera Plumbing',
+            'description' => 'Garansi tuntas 30 hari resmi Rootera Plumbing. Ketentuan jaminan pengerjaan pelancaran pipa tanpa biaya tambahan jika terjadi sumbatan ulang.',
+            'canonical'   => url('/tentang-kami/garansi-layanan'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.about.garansi-layanan', compact('seo'));
+    }
 }
 
 

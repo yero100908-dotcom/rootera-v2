@@ -68,6 +68,11 @@ Route::redirect('/layanan/{categorySlug}/{citySlug}', '/layanan-pipa-mampet/{cat
 Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', 301);
 
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
+Route::get('/tentang-kami/profil', [AboutController::class, 'profil'])->name('tentang-kami.profil');
+Route::get('/tentang-kami/peralatan-teknologi', [AboutController::class, 'peralatanTeknologi'])->name('tentang-kami.peralatan-teknologi');
+Route::get('/tentang-kami/portofolio-klien', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.portofolio-klien');
+Route::get('/tentang-kami/garansi-layanan', [AboutController::class, 'garansiLayanan'])->name('tentang-kami.garansi-layanan');
+Route::redirect('/tentang-kami/faq', '/faq', 301)->name('tentang-kami.faq');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
 Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::class, 'category'])->name('faq.category');
 Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');

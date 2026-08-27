@@ -60,7 +60,31 @@ class AreaServiceController extends Controller
                 ->with(['province', 'districts' => function ($q) {
                     $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
                 }])
-                ->firstOrFail();
+                ->first();
+
+            if (!$city) {
+                $aliasMap = [
+                    'tangerang-kota'   => 'tangerang',
+                    'kab-tangerang'    => 'kabupaten-tangerang',
+                    'cikarang'         => 'kabupaten-bekasi',
+                    'karawang'         => 'kabupaten-karawang',
+                    'sleman'           => 'kabupaten-sleman',
+                    'sidoarjo'         => 'kabupaten-sidoarjo',
+                    'gresik'           => 'surabaya',
+                    'metro'            => 'bandar-lampung',
+                    'lampung-selatan'  => 'bandar-lampung',
+                ];
+
+                if (isset($aliasMap[$citySlug])) {
+                    $targetSlug = $aliasMap[$citySlug];
+                    $city = City::where('slug', $targetSlug)->where('is_active', true)->first();
+                }
+            }
+
+            if (!$city) {
+                $city = City::where('slug', 'like', "%{$citySlug}%")->where('is_active', true)->first()
+                     ?? City::where('is_active', true)->firstOrFail();
+            }
 
             $siblingCities = City::where('province_id', $city->province_id)
                 ->where('id', '!=', $city->id)
