@@ -56,7 +56,7 @@
     <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
-    @if (View::hasSection('schema-markup'))
+    @hasSection('schema-markup')
         @yield('schema-markup')
     @else
         <?php
