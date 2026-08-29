@@ -22,6 +22,6 @@ class GalleryPhoto extends Model
         if ($this->youtube_id) {
             return "https://img.youtube.com/vi/{$this->youtube_id}/maxresdefault.jpg";
         }
-        return $this->image ? asset('storage/' . $this->image) : asset('images/placeholder.jpg');
+        return $this->image ? asset('storage/' . $this->image) : asset('images/JnJ.webp');
     }
 }

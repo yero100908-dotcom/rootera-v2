@@ -41,7 +41,7 @@
                 <div>
                     <!-- Visual WebP Property Image Header -->
                     <div style="position: relative; height: 180px; background: #0B192C; overflow: hidden;">
-                        <img src="{{ $propWebpImg }}" alt="Jasa Saluran Pipa Mampet {{ $prop->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                        <img src="{{ $propWebpImg }}" alt="Jasa Saluran Pipa Mampet {{ $prop->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async" width="600" height="350">
                         
                         <span style="position: absolute; top: 12px; right: 12px; background: rgba(11, 25, 44, 0.85); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.4); font-size: 0.75rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 50px; backdrop-filter: blur(4px);">
                             ⏱️ Respon 30-90 Menit

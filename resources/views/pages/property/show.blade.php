@@ -99,7 +99,7 @@ $propertySchema = [
         <!-- Hero Visual Property Image Card -->
         <div style="flex: 1 1 360px; max-width: 460px;">
             <div style="position: relative; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
-                <img src="{{ $activePropImg }}" alt="Jasa Saluran Pipa Mampet {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 300px; object-fit: cover;" loading="lazy" decoding="async">
+                <img src="{{ $activePropImg }}" alt="Jasa Saluran Pipa Mampet {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 300px; object-fit: cover;" loading="lazy" decoding="async" width="800" height="500">
                 <div style="position: absolute; bottom: 0; inset-x: 0; background: linear-gradient(to top, rgba(6,18,59,0.9) 0%, transparent 100%); padding: 1.25rem; font-size: 0.9rem; font-weight: 800; color: #ffffff;">
                     📍 Spesialisasi Penanganan Pipa {{ $property->name }}
                 </div>
@@ -157,7 +157,7 @@ $propertySchema = [
             <!-- Tool Card 1: Ridgid Rooter / Hydro Jetting depending on scale -->
             <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                 <div style="height: 180px; background: #0B192C; overflow: hidden;">
-                    <img src="{{ $toolkitImages['ridgid_k50']['url'] }}" alt="Mesin Rooter Ridgid K-50 Penanganan {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                    <img src="{{ $toolkitImages['ridgid_k50']['url'] }}" alt="Mesin Rooter Ridgid K-50 Penanganan {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" width="400" height="250">
                 </div>
                 <div style="padding: 1.35rem;">
                     <h3 style="color: #0A2E78; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem;">Mesin Spiral Rotary Ridgid K-50</h3>
@@ -168,7 +168,7 @@ $propertySchema = [
             <!-- Tool Card 2: Pipe CCTV Endoscopy -->
             <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                 <div style="height: 180px; background: #0B192C; overflow: hidden;">
-                    <img src="{{ $toolkitImages['cctv_camera']['url'] }}" alt="Inspeksi Kamera CCTV Pipa {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                    <img src="{{ $toolkitImages['cctv_camera']['url'] }}" alt="Inspeksi Kamera CCTV Pipa {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" width="400" height="250">
                 </div>
                 <div style="padding: 1.35rem;">
                     <h3 style="color: #0A2E78; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem;">Kamera Endoskop CCTV Pipa</h3>
@@ -179,7 +179,7 @@ $propertySchema = [
             <!-- Tool Card 3: High Pressure Hydro Jetting -->
             <div style="background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
                 <div style="height: 180px; background: #0B192C; overflow: hidden;">
-                    <img src="{{ $toolkitImages['hydro_jetting']['url'] }}" alt="Hydro-Jetting High Pressure {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                    <img src="{{ $toolkitImages['hydro_jetting']['url'] }}" alt="Hydro-Jetting High Pressure {{ $property->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" width="400" height="250">
                 </div>
                 <div style="padding: 1.35rem;">
                     <h3 style="color: #0A2E78; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.35rem;">High-Pressure Hydro Jetting 250 Bar</h3>
@@ -253,7 +253,7 @@ $propertySchema = [
             ?>
                 <a href="{{ route('property.show', $otherProp->slug) }}" style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 18px; overflow: hidden; color: #0A2E78; font-weight: 700; text-decoration: none; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: all 0.25s ease;" class="hover:-translate-y-1 hover:border-[#169F81] hover:shadow-lg group">
                     <div style="position: relative; height: 140px; background: #0B192C; overflow: hidden;">
-                        <img src="{{ $otherPropImg }}" alt="Jasa Saluran Pipa Mampet {{ $otherProp->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                        <img src="{{ $otherPropImg }}" alt="Jasa Saluran Pipa Mampet {{ $otherProp->name }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async" width="500" height="300">
                         <span style="position: absolute; top: 8px; right: 8px; background: rgba(11, 25, 44, 0.85); color: #34D399; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.55rem; border-radius: 50px; backdrop-filter: blur(4px);">
                             ⏱️ Respon 30-90 Mnt
                         </span>

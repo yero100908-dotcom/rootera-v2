@@ -1,5 +1,61 @@
 @extends('layouts.app')
 
+@php
+    $galleryVideoSchemas = [];
+    if (isset($featuredProject) && $featuredProject && $featuredProject->media_type === 'video' && $featuredProject->display_media) {
+        $galleryVideoSchemas[] = [
+            '@context' => 'https://schema.org',
+            '@type' => 'VideoObject',
+            'name' => $featuredProject->title,
+            'description' => $featuredProject->description ?? $featuredProject->title,
+            'thumbnailUrl' => [$featuredProject->display_thumbnail],
+            'contentUrl' => $featuredProject->display_media,
+            'embedUrl' => route('galeri.show', $featuredProject->slug),
+            'uploadDate' => $featuredProject->created_at ? $featuredProject->created_at->toIso8601String() : '2026-08-25T08:00:00+07:00',
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Rootera Plumbing',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
+                ]
+            ]
+        ];
+    }
+    if (isset($galleries)) {
+        foreach ($galleries as $item) {
+            if ($item->media_type === 'video' && $item->display_media) {
+                $galleryVideoSchemas[] = [
+                    '@context' => 'https://schema.org',
+                    '@type' => 'VideoObject',
+                    'name' => $item->title,
+                    'description' => $item->description ?? $item->title,
+                    'thumbnailUrl' => [$item->display_thumbnail],
+                    'contentUrl' => $item->display_media,
+                    'embedUrl' => route('galeri.show', $item->slug),
+                    'uploadDate' => $item->created_at ? $item->created_at->toIso8601String() : '2026-08-25T08:00:00+07:00',
+                    'publisher' => [
+                        '@type' => 'Organization',
+                        'name' => 'Rootera Plumbing',
+                        'logo' => [
+                            '@type' => 'ImageObject',
+                            'url' => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
+                        ]
+                    ]
+                ];
+            }
+        }
+    }
+@endphp
+
+@push('head')
+@foreach($galleryVideoSchemas as $vSchema)
+<script type="application/ld+json">
+{!! json_encode($vSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endforeach
+@endpush
+
 @section('content')
 {{-- HERO & FEATURED SHOWCASE SECTION --}}
 <div class="relative overflow-hidden bg-gradient-to-br from-[#061434] via-[#081d48] to-[#0b2b64] text-white py-10 sm:py-16">

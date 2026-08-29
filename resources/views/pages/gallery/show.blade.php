@@ -70,6 +70,28 @@
             'mainEntity' => $mainEntity,
         ];
     }
+
+    $videoSchema = [];
+    if ($project->media_type === 'video' && $project->display_media) {
+        $videoSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'VideoObject',
+            'name' => $project->title,
+            'description' => $project->problem_statement ?? $project->title,
+            'thumbnailUrl' => [$project->display_thumbnail],
+            'contentUrl' => $project->display_media,
+            'embedUrl' => route('galeri.show', $project->slug),
+            'uploadDate' => $project->created_at ? $project->created_at->toIso8601String() : '2026-08-25T08:00:00+07:00',
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => 'Rootera Plumbing',
+                'logo' => [
+                    '@type' => 'ImageObject',
+                    'url' => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
+                ]
+            ]
+        ];
+    }
 @endphp
 
 @push('head')
@@ -84,6 +106,12 @@
 @if(!empty($faqSchema))
 <script type="application/ld+json">
 {!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endif
+
+@if(!empty($videoSchema))
+<script type="application/ld+json">
+{!! json_encode($videoSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
 @endif
 @endpush

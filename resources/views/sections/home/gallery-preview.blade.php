@@ -37,11 +37,11 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(239, 68, 68, 0.4);">
-                            <img src="{{ asset('images/dokumentasi/before-pembersihan-talang-gutter.webp') }}" alt="Before Talang Gutter Mampet Total" style="width:100%; height:180px; object-fit:cover;" loading="lazy">
+                            <img src="{{ asset('images/dokumentasi/before-pembersihan-talang-gutter.webp') }}" alt="Before Talang Gutter Mampet Total" style="width:100%; height:180px; object-fit:cover;" loading="lazy" decoding="async" width="400" height="250">
                             <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #dc2626; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px;">SEBELUM (Mampet)</span>
                         </div>
                         <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.4);">
-                            <img src="{{ asset('images/dokumentasi/after-pembersihan-talang-gutter-rootera.webp') }}" alt="After Pembersihan Gutter Rootera" style="width:100%; height:180px; object-fit:cover;" loading="lazy">
+                            <img src="{{ asset('images/dokumentasi/after-pembersihan-talang-gutter-rootera.webp') }}" alt="After Pembersihan Gutter Rootera" style="width:100%; height:180px; object-fit:cover;" loading="lazy" decoding="async" width="400" height="250">
                             <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #10b981; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px;">SESUDAH (Bersih)</span>
                         </div>
                     </div>
@@ -58,11 +58,11 @@
                     </div>
                     <div class="grid grid-cols-2 gap-3">
                         <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(239, 68, 68, 0.4);">
-                            <img src="{{ asset('images/dokumentasi/penanganan-bak-kontrol-lemak-sampah-resto.webp') }}" alt="Bak Kontrol Tersumbat Lemak Parah" style="width:100%; height:180px; object-fit:cover;" loading="lazy">
+                            <img src="{{ asset('images/dokumentasi/penanganan-bak-kontrol-lemak-sampah-resto.webp') }}" alt="Bak Kontrol Tersumbat Lemak Parah" style="width:100%; height:180px; object-fit:cover;" loading="lazy" decoding="async" width="400" height="250">
                             <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #dc2626; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px;">SEBELUM (Lemak Beku)</span>
                         </div>
                         <div style="position: relative; border-radius: 12px; overflow: hidden; border: 1px solid rgba(16, 185, 129, 0.4);">
-                            <img src="{{ asset('images/dokumentasi/pembersihan-lemak-bak-kontrol-resto.webp') }}" alt="After Pembersihan Lemak Bak Kontrol" style="width:100%; height:180px; object-fit:cover;" loading="lazy">
+                            <img src="{{ asset('images/dokumentasi/pembersihan-lemak-bak-kontrol-resto.webp') }}" alt="After Pembersihan Lemak Bak Kontrol" style="width:100%; height:180px; object-fit:cover;" loading="lazy" decoding="async" width="400" height="250">
                             <span style="position: absolute; top: 0.5rem; left: 0.5rem; background: #10b981; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.5rem; border-radius: 4px;">SESUDAH (Plong Tuntas)</span>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                 
                 {{-- MEDIA THUMBNAIL CONTAINER --}}
                 <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #0f172a; overflow: hidden; cursor: pointer;" onclick="openHomeMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}')">
-                    <img src="{{ $item->display_thumbnail }}" alt="{{ $item->title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy">
+                    <img src="{{ $item->display_thumbnail }}" alt="Dokumentasi Pengerjaan Pipa {{ $item->title }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async" width="600" height="338">
                     
                     {{-- Badges --}}
                     <div style="position: absolute; top: 0.75rem; left: 0.75rem; display: flex; gap: 0.4rem; z-index: 2;">

@@ -25,6 +25,6 @@ class Technology extends Model
     {
         return $this->image_path
             ? asset('storage/' . $this->image_path)
-            : asset('images/placeholder.jpg');
+            : asset('images/JnJ.webp');
     }
 }

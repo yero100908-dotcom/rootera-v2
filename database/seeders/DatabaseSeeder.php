@@ -41,12 +41,12 @@ class DatabaseSeeder extends Seeder
 
         // 3. Gallery Photos
         $photos = [
-            ['title' => 'Pembersihan Saluran Kamar Mandi', 'image' => 'gallery/work-1.jpg', 'category' => 'after', 'sort_order' => 1],
-            ['title' => 'Alat Profesional Hydrojet',       'image' => 'gallery/tools-1.jpg', 'category' => 'tools',  'sort_order' => 2],
-            ['title' => 'Tim Teknisi ROOTERA',             'image' => 'gallery/team-1.jpg',  'category' => 'team',   'sort_order' => 3],
-            ['title' => 'Cuci Toren Bersih',               'image' => 'gallery/work-2.jpg',  'category' => 'after',  'sort_order' => 4],
-            ['title' => 'Instalasi Pipa Modern',            'image' => 'gallery/work-3.jpg',  'category' => 'after',  'sort_order' => 5],
-            ['title' => 'Penanganan Pipa Tersumbat',        'image' => 'gallery/work-4.jpg',  'category' => 'before', 'sort_order' => 6],
+            ['title' => 'Pembersihan Saluran Kamar Mandi', 'image' => 'images/dokumentasi/pelancar-floor-drain-kamar-mandi-rumah.webp', 'category' => 'after', 'sort_order' => 1],
+            ['title' => 'Alat Profesional Hydrojet',       'image' => 'images/dokumentasi/mesin-drain-cleaner-pelancar-pipa.webp', 'category' => 'tools',  'sort_order' => 2],
+            ['title' => 'Tim Teknisi ROOTERA',             'image' => 'images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp',  'category' => 'team',   'sort_order' => 3],
+            ['title' => 'Pelancaran Wastafel Rumah',       'image' => 'images/dokumentasi/pelancaran-wastafel-mampet-rumah-warga.webp',  'category' => 'after',  'sort_order' => 4],
+            ['title' => 'Pembersihan Grease Trap Resto',   'image' => 'images/dokumentasi/pembersihan-grease-trap-restoran.webp',  'category' => 'after',  'sort_order' => 5],
+            ['title' => 'Penanganan Pipa Tersumbat',        'image' => 'images/dokumentasi/kondisi-pipa-lemak-resto-mall-tersumbat.webp',  'category' => 'before', 'sort_order' => 6],
         ];
 
         foreach ($photos as $photo) {

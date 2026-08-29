@@ -66,7 +66,7 @@
             <div class="tool-card fade-in" style="animation-delay:{{ $i * 0.1 }}s">
                 <div class="tool-icon">
                     @if($tool->image_path)
-                        <img src="{{ $tool->image_url }}" alt="{{ $tool->tool_name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+                        <img src="{{ $tool->image_url }}" alt="{{ $tool->tool_name ?? 'Peralatan Pelancaran Pipa Mampet Rootera' }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" loading="lazy" decoding="async" width="400" height="300">
                     @else
                         {!! $toolIcons[$i % 4] !!}
                     @endif

@@ -42,7 +42,7 @@ class Service extends Model
     public function getImageUrlAttribute(): string
     {
         $path = $this->image_path ?? $this->image;
-        return $path ? asset('storage/' . $path) : asset('images/placeholder.jpg');
+        return $path ? asset('storage/' . $path) : asset('images/JnJ.webp');
     }
 
     public function getPriceResidentialFormattedAttribute(): string

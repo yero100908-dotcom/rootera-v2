@@ -13,7 +13,7 @@ class ContactController extends Controller
             'title'       => 'Kontak Rootera – Hubungi Kami untuk Layanan Pipa Profesional',
             'description' => 'Hubungi Rootera untuk konsultasi gratis dan pemesanan layanan pipa & saluran mampet. Tersedia via WhatsApp, email, dan formulir online.',
             'canonical'   => url('/kontak'),
-            'og_image'    => asset('images/og-kontak.jpg'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.kontak', compact('seo'));

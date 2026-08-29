@@ -18,6 +18,6 @@ class Partner extends Model
     {
         return $this->logo
             ? asset('storage/' . $this->logo)
-            : asset('images/placeholder.jpg');
+            : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp');
     }
 }

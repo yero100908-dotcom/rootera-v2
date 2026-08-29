@@ -346,7 +346,7 @@ $faqSchema = [
                         @foreach($projectShowcases->take(3) as $proj)
                             <div style="background: #F8FAFC; border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0;">
                                 <div style="height: 140px; background: #0A2E78; overflow: hidden;">
-                                    <img src="{{ $proj->after_image_url }}" alt="{{ $proj->image_alt }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <img src="{{ $proj->after_image_url }}" alt="{{ $proj->image_alt ?? ('Dokumentasi Pengerjaan Pipa ' . $proj->title) }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" width="500" height="300">
                                 </div>
                                 <div style="padding: 1rem;">
                                     <h4 style="font-size: 0.95rem; font-weight: 700; color: #0A2E78; margin-bottom: 0.3rem;">{{ $proj->title }}</h4>

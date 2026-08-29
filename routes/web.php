@@ -38,6 +38,7 @@ Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('s
 Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
+Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
 
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');

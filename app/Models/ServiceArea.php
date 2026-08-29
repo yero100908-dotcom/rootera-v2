@@ -21,6 +21,6 @@ class ServiceArea extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('images/area-placeholder.jpg');
+        return $this->image ? asset('storage/' . $this->image) : asset('images/JnJ.webp');
     }
 }
