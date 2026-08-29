@@ -71,8 +71,6 @@ class AreaServiceController extends Controller
                     'sleman'           => 'kabupaten-sleman',
                     'sidoarjo'         => 'kabupaten-sidoarjo',
                     'gresik'           => 'surabaya',
-                    'metro'            => 'bandar-lampung',
-                    'lampung-selatan'  => 'bandar-lampung',
                 ];
 
                 if (isset($aliasMap[$citySlug])) {
