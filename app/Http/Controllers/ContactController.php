@@ -10,13 +10,16 @@ class ContactController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Kontak Rootera – Hubungi Kami untuk Layanan Pipa Profesional',
-            'description' => 'Hubungi Rootera untuk konsultasi gratis dan pemesanan layanan pipa & saluran mampet. Tersedia via WhatsApp, email, dan formulir online.',
+            'title'       => 'Hubungi Rootera Plumbing | Layanan Pelancar Pipa Mampet 24 Jam & Emergency Call',
+            'description' => 'Pusat bantuan Rootera Plumbing: Layanan darurat pelancaran pipa mampet 24 jam nonstop. Hubungi via WhatsApp atau form resmi untuk respon teknisi tercepat.',
             'canonical'   => url('/kontak'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
-        return view('pages.kontak', compact('seo'));
+        $serviceCategories = \App\Models\ServiceCategory::where('is_active', true)->orderBy('sort_order')->get();
+        $cities = \App\Models\City::where('is_active', true)->orderBy('name')->get();
+
+        return view('pages.kontak', compact('seo', 'serviceCategories', 'cities'));
     }
 
     public function store(Request $request)
