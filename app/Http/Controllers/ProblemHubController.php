@@ -61,7 +61,9 @@ class ProblemHubController extends Controller
                 ],
             ];
 
-            $problemInfo = $problems[$problemSlug] ?? [
+            $isPredefinedProblem = isset($problems[$problemSlug]);
+
+            $problemInfo = $isPredefinedProblem ? $problems[$problemSlug] : [
                 'name' => Str::title(str_replace('-', ' ', $problemSlug)),
                 'category_slug' => 'pipa-mampet',
                 'description' => 'Solusi pelancaran pipa mampet profesional 24 jam tanpa merusak struktur bangunan.',
@@ -103,15 +105,23 @@ class ProblemHubController extends Controller
                 ->get();
 
             $cityName = $city ? $city->full_name : 'Jabodetabek, Bandung, Semarang & Indonesia';
-            $title = "Jasa Pelancaran {$problemInfo['name']} Terdekat di {$cityName} - Rootera";
-            $metaDescription = "Solusi {$problemInfo['name']} di {$cityName}. Garansi tuntas 100% tanpa bongkar ubin oleh teknisi bersertifikat Rootera (J&J Group). Hubungi 24 Jam!";
+
+            // Clean up name by removing repetitive prefixes ("Jasa", "Pelancar", etc.)
+            $cleanName = preg_replace('/^(jasa|pelancar|tukang|service)\s+/i', '', $problemInfo['name']);
+            if ($city && Str::endsWith(strtolower($cleanName), strtolower($city->name))) {
+                $cleanName = trim(substr($cleanName, 0, -strlen($city->name)));
+            }
+
+            $title = "Solusi " . (str_starts_with(strtolower($cleanName), 'jasa') ? $cleanName : "Jasa " . $cleanName) . " Terdekat di {$cityName} - Rootera";
+            $metaDescription = "Solusi {$cleanName} di {$cityName}. Garansi tuntas 100% tanpa bongkar ubin oleh teknisi bersertifikat Rootera (J&J Group). Hubungi 24 Jam!";
             $canonical = url('/solusi/' . $problemSlug . ($citySlug ? '/' . $citySlug : ''));
 
             $seo = [
-                'title'       => $title,
-                'description' => $metaDescription,
-                'canonical'   => $canonical,
-                'og_image'    => asset('images/JnJ.jpeg'),
+                'title'        => $title,
+                'description'  => $metaDescription,
+                'canonical'    => $canonical,
+                'og_image'     => asset('images/JnJ.webp'),
+                'is_indexable' => $isPredefinedProblem, // Safe fallback: auto-generated dynamic tag URLs use noindex
             ];
 
             return view('pages.problem-hub', compact(

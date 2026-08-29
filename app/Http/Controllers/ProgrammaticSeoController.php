@@ -115,9 +115,13 @@ class ProgrammaticSeoController extends Controller
                 ? "Tukang saluran air tersumbat & jasa {$category->name} di {$district->name}, {$city->name}. Respon cepat ({$travelTime}), pengerjaan mekanis rotasi spiral tanpa bongkar pipa & bergaransi 30 hari. Hubungi WhatsApp 24 Jam!"
                 : "Spesialis jasa {$category->name} terpercaya di {$city->full_name}. Pengerjaan cepat ({$travelTime}), profesional tanpa bongkar paksa, dan bergaransi resmi PT/CV J&J Group. Hubungi WhatsApp 24 Jam!";
 
-            $canonical = $district
-                ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}")
-                : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
+            if (!$district && $category->slug === 'pipa-mampet') {
+                $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+            } else {
+                $canonical = $district
+                    ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}")
+                    : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
+            }
 
             $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.webp');
 

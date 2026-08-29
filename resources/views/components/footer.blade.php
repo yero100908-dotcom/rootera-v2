@@ -150,7 +150,7 @@
                     <li><a href="{{ url('/jasa-saluran-mampet/bandung') }}" class="hover:text-white transition duration-150 inline-block">Cabang Bandung &amp; Cimahi</a></li>
                     <li><a href="{{ url('/jasa-saluran-mampet/cirebon') }}" class="hover:text-white transition duration-150 inline-block">Cabang Cirebon &amp; Majalengka</a></li>
                     <li><a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="hover:text-white transition duration-150 inline-block">Cabang Semarang &amp; Kendal</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/solo') }}" class="hover:text-white transition duration-150 inline-block">Cabang Solo / Surakarta Raya</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/surakarta') }}" class="hover:text-white transition duration-150 inline-block">Cabang Solo / Surakarta Raya</a></li>
                     <li><a href="{{ url('/jasa-saluran-mampet/yogyakarta') }}" class="hover:text-white transition duration-150 inline-block">Cabang D.I. Yogyakarta &amp; Sleman</a></li>
                     <li><a href="{{ url('/jasa-saluran-mampet/surabaya') }}" class="hover:text-white transition duration-150 inline-block">Cabang Surabaya &amp; Sidoarjo</a></li>
                     <li><a href="{{ url('/jasa-saluran-mampet/serang') }}" class="hover:text-white transition duration-150 inline-block">Cabang Serang &amp; Cilegon</a></li>

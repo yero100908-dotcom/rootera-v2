@@ -66,6 +66,7 @@ Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area.legacy
 Route::redirect('/area-layanan/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301)->name('area.legacy.city');
 Route::redirect('/layanan/{categorySlug}/{citySlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}', 301);
 Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', 301);
+Route::redirect('/jasa-saluran-mampet/solo', '/jasa-saluran-mampet/surakarta', 301);
 
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');

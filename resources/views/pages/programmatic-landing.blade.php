@@ -3,47 +3,30 @@
 {{-- Advanced JSON-LD Structured Data --}}
 @section('schema-markup')
 <?php
-// 1. LocalBusiness / Plumber Schema
-$localBusinessSchema = [
+// 1. Service Schema (Google Compliant - avoiding fake LocalBusiness streetAddress penalties)
+$serviceSchema = [
   "@context" => "https://schema.org",
-  "@type" => ["LocalBusiness", "Plumber", "HomeAndConstructionBusiness"],
-  "name" => "Rootera Plumbing - " . $category->name . " " . $locationName,
-  "alternateName" => ["Rootera", "Rootera Indonesia", "J&J Group Plumbing Division"],
+  "@type" => "Service",
+  "name" => "Jasa " . $category->name . " " . $locationName,
+  "serviceType" => "Plumbing & Drain Cleaning Service",
   "description" => $description,
-  "@id" => $canonical . "#organization",
+  "@id" => $canonical . "#service",
   "url" => $canonical,
-  "telephone" => "+" . ($city->whatsapp_number ?: "6281385404000"),
-  "logo" => asset('images/logo final.png'),
-  "image" => $ogImage,
-  "priceRange" => "$$",
-  "parentOrganization" => [
-    "@type" => "Organization",
-    "name" => "J&J GROUP",
-    "url" => url('/')
-  ],
-  "knowsAbout" => [
-    "Pelancaran Pipa Mampet Tanpa Bongkar",
-    "B2B Preventive Plumbing Maintenance",
-    "Hydro Jetting Industrial System",
-    "CCTV Pipe Inspection",
-    "Residential Door-to-Door Plumbing Service"
-  ],
-  "address" => [
-    "@type" => "PostalAddress",
-    "addressLocality" => $city->name,
-    "addressRegion" => $city->province->name ?? "Indonesia",
-    "addressCountry" => "ID"
-  ],
-  "openingHoursSpecification" => [
-    "@type" => "OpeningHoursSpecification",
-    "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    "opens" => "00:00",
-    "closes" => "23:59"
-  ],
-  "aggregateRating" => [
-    "@type" => "AggregateRating",
-    "ratingValue" => "4.9",
-    "reviewCount" => "2300"
+  "provider" => [
+    "@type" => ["LocalBusiness", "Plumber"],
+    "name" => "Rootera Plumbing (J&J Group)",
+    "url" => url('/'),
+    "telephone" => "+" . (ltrim($city->whatsapp_number ?: "6281385404000", "+")),
+    "logo" => asset('images/logo-final.webp'),
+    "image" => $ogImage,
+    "address" => [
+      "@type" => "PostalAddress",
+      "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
+      "addressLocality" => "Jakarta Timur",
+      "addressRegion" => "DKI Jakarta",
+      "postalCode" => "13770",
+      "addressCountry" => "ID"
+    ]
   ],
   "areaServed" => [
     "@type" => "AdministrativeArea",
@@ -89,7 +72,7 @@ $breadcrumbItems = [
     "@type" => "ListItem",
     "position" => 4,
     "name" => $city->name,
-    "item" => url("/layanan/{$category->slug}/{$city->slug}")
+    "item" => url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}")
   ]
 ];
 
@@ -143,7 +126,7 @@ $faqSchema = [
 ?>
 
 <script type="application/ld+json">
-{!! json_encode($localBusinessSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($serviceSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 <script type="application/ld+json">
 {!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
@@ -311,7 +294,7 @@ $faqSchema = [
             <span>›</span>
             <a href="{{ route('layanan.show', $category->slug) }}">{{ $category->name }}</a>
             <span>›</span>
-            <a href="{{ url('/layanan/' . $category->slug . '/' . $city->slug) }}">{{ $city->name }}</a>
+            <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $city->slug) }}">{{ $city->name }}</a>
             @if($district)
                 <span>›</span>
                 <span style="color: #ffffff; font-weight: 700;">{{ $district->name }}</span>
@@ -542,21 +525,30 @@ $faqSchema = [
     'locationShort' => $locationShort
 ])
 
-<!-- Hub Kawasan Jabodetabek Terpopuler -->
+<!-- Hub Kawasan Terpopuler -->
 <section style="background: #ffffff; padding: 4rem 1.5rem; border-top: 1px solid #E5E7EB;">
     <div style="max-width: 1200px; margin: 0 auto;">
-        <h3 style="color: #0A2E78; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">🔥 Hotspot Kawasan Jabodetabek &amp; Banten Terpopuler</h3>
-        <p style="color: #6B7280; font-size: 0.95rem; margin-bottom: 1.5rem;">Pintasan ke pusat pemukiman residensial &amp; kawasan bisnis utama:</p>
+        <h3 style="color: #0A2E78; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem;">🔥 Hotspot Kawasan {{ $city->province->name ?? $city->name }} Terpopuler</h3>
+        <p style="color: #6B7280; font-size: 0.95rem; margin-bottom: 1.5rem;">Pintasan ke pusat pemukiman residensial &amp; kawasan bisnis di {{ $city->province->name ?? $city->name }}:</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.85rem;">
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/jakarta-utara/pantai-indah-kapuk-pik') }}" class="spoke-link">📍 PIK Pantai Indah Kapuk</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/jakarta-utara/kelapa-gading') }}" class="spoke-link">📍 Kelapa Gading Jakarta</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bintaro-jaya') }}" class="spoke-link">📍 Bintaro Jaya Tangsel</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bsd-city') }}" class="spoke-link">📍 BSD City Serpong</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/kabupaten-bogor/sentul-city') }}" class="spoke-link">📍 Sentul City Bogor</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/bekasi/grand-galaxy-city') }}" class="spoke-link">📍 Grand Galaxy Bekasi</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/depok/margonda') }}" class="spoke-link">📍 Margonda Depok</a>
-            <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/kabupaten-bekasi/cikarang-selatan-kawasan-mm2100-jababeka') }}" class="spoke-link">📍 Cikarang Industri</a>
+            @if(isset($siblingDistricts) && $siblingDistricts->isNotEmpty())
+                @foreach($siblingDistricts->take(8) as $sd)
+                    <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $city->slug . '/' . $sd->slug) }}" class="spoke-link">📍 {{ $sd->name }}</a>
+                @endforeach
+            @elseif(isset($siblingCities) && $siblingCities->isNotEmpty())
+                @foreach($siblingCities->take(8) as $sc)
+                    <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $sc->slug) }}" class="spoke-link">📍 {{ $sc->name }}</a>
+                @endforeach
+            @else
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/jakarta-utara/pantai-indah-kapuk-pik') }}" class="spoke-link">📍 PIK Pantai Indah Kapuk</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bintaro-jaya') }}" class="spoke-link">📍 Bintaro Jaya Tangsel</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bsd-city') }}" class="spoke-link">📍 BSD City Serpong</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/kabupaten-bogor/sentul-city') }}" class="spoke-link">📍 Sentul City Bogor</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/depok/tapos-margonda-gdc') }}" class="spoke-link">📍 Margonda Depok</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/bekasi/rawalumbu-grand-galaxy-jatiwaringin-jatiwarna-summarecon') }}" class="spoke-link">📍 Grand Galaxy Bekasi</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/kabupaten-bekasi/cikarang-selatan-kawasan-mm2100-jababeka-ejip-delta-silicon') }}" class="spoke-link">📍 Cikarang Industri</a>
+            @endif
         </div>
     </div>
 </section>
