@@ -73,6 +73,7 @@ Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-ka
 Route::get('/tentang-kami/profil', [AboutController::class, 'profil'])->name('tentang-kami.profil');
 Route::get('/tentang-kami/peralatan-teknologi', [AboutController::class, 'peralatanTeknologi'])->name('tentang-kami.peralatan-teknologi');
 Route::get('/tentang-kami/portofolio-klien', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.portofolio-klien');
+Route::get('/tentang-kami/kemitraan', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.kemitraan');
 Route::get('/tentang-kami/garansi-layanan', [AboutController::class, 'garansiLayanan'])->name('tentang-kami.garansi-layanan');
 Route::redirect('/tentang-kami/faq', '/faq', 301)->name('tentang-kami.faq');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
