@@ -180,7 +180,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Technologies CRUD
     // =====================================================
     Route::get('/technologies', [TechnologyController::class, 'index'])->name('technologies.index');
+    Route::get('/technologies/create', [TechnologyController::class, 'create'])->name('technologies.create');
     Route::post('/technologies', [TechnologyController::class, 'store'])->name('technologies.store');
+    Route::get('/technologies/{technology}/edit', [TechnologyController::class, 'edit'])->name('technologies.edit');
     Route::put('/technologies/{technology}', [TechnologyController::class, 'update'])->name('technologies.update');
     Route::patch('/technologies/{technology}/toggle', [TechnologyController::class, 'toggleActive'])->name('technologies.toggle');
     Route::delete('/technologies/{technology}', [TechnologyController::class, 'destroy'])->name('technologies.destroy');

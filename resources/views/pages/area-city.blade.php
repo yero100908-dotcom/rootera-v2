@@ -236,6 +236,11 @@ $cityBreadcrumbs = [
     </div>
 </section>
 
+<!-- Equipment & Technology Showcase Section (Dynamic DB Data) -->
+<div style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;">
+    <x-equipment-showcase title="🛠️ Peralatan Modern Teknisi Rootera di {{ $cityNameClean }}" subtitle="Unit mekanis &amp; kamera digital berstandar internasional yang disiapkan untuk area {{ $cityNameClean }} 100% tanpa bongkar." />
+</div>
+
 <!-- Interactive Media Documentation Showcase (Before-After Photos & Video Reels) -->
 @include('components.media-documentation', [
     'projectShowcases' => $projectShowcases ?? null,

@@ -1,70 +1,102 @@
 @extends('layouts.admin')
-@section('title', 'Kelola Teknologi & Alat')
-@section('page-title', 'Kelola Teknologi & Alat')
+@section('title', 'Kelola Teknologi & Peralatan')
+@section('page-title', 'Armada Mesin & Teknologi Rootera')
 
 @section('admin-content')
-<div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden mb-8">
-    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <h2 class="text-xl font-bold text-slate-900">Teknologi & Alat</h2>
-            <p class="text-sm text-slate-500 mt-1">Total: <strong>{{ $technologies->count() ?? 0 }}</strong> alat/teknologi</p>
+<div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
+    {{-- Header Action Bar --}}
+    <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold text-lg shadow-xs shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-extrabold text-slate-900">Manajemen Armada Peralatan & Mesin</h2>
+                <p class="text-xs text-slate-500 mt-0.5">Total <strong class="text-emerald-600 font-bold">{{ $technologies->count() }}</strong> alat / teknologi terdaftar di database.</p>
+            </div>
         </div>
-        <button onclick="document.getElementById('modal-add-tech').style.display='flex'" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2">
-            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Tambah Alat
-        </button>
+
+        <a href="{{ route('admin.technologies.create') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-md hover:shadow-emerald-600/20 flex items-center gap-2 shrink-0">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span>Tambah Peralatan Baru</span>
+        </a>
     </div>
 
+    {{-- Alert Flash --}}
+    @if(session('success'))
+    <div class="m-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2">
+        <span>✅</span> {{ session('success') }}
+    </div>
+    @endif
+
+    {{-- Table Container --}}
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
-            <thead class="bg-slate-50/80 border-b border-slate-200/60">
+            <thead class="bg-slate-50/80 border-b border-slate-200/80">
                 <tr>
-                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Foto</th>
-                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Nama Alat</th>
-                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Urutan</th>
-                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5">Status</th>
-                    <th class="text-xs font-semibold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-right">Aksi</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5">Foto Alat</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5">Nama &amp; Brand</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5">Spesifikasi &amp; Peruntukan</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-center">Badge</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-center">Status</th>
+                    <th class="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider px-6 py-3.5 text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
             @forelse($technologies as $tech)
-                <tr class="hover:bg-slate-50/60 transition-colors">
+                <tr class="hover:bg-slate-50/80 transition-colors">
                     <td class="px-6 py-4">
-                        @if($tech->image_url)
-                            <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" class="w-12 h-12 rounded-lg object-cover border border-slate-200/80">
-                        @else
-                            <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-400 border border-slate-200/80">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-                            </div>
+                        <div class="w-16 h-14 bg-slate-900 rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs relative">
+                            <img src="{{ $tech->image_url }}" alt="{{ $tech->tool_name }}" class="w-full h-full object-cover">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 max-w-xs">
+                        <strong class="text-slate-900 text-sm font-extrabold block mb-0.5">{{ $tech->tool_name }}</strong>
+                        <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 inline-block font-mono">
+                            {{ $tech->type_brand ?? 'Standard Unit' }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 max-w-sm">
+                        @if($tech->main_spec)
+                        <div class="text-xs text-slate-800 font-semibold mb-1 line-clamp-1">⚙️ {{ $tech->main_spec }}</div>
+                        @endif
+                        @if($tech->pipe_target)
+                        <div class="text-[11px] text-slate-500 line-clamp-1">🎯 Target: {{ $tech->pipe_target }}</div>
                         @endif
                     </td>
-                    <td class="px-6 py-4">
-                        <strong class="text-slate-900 text-sm font-medium block mb-0.5">{{ $tech->tool_name }}</strong>
-                        <div class="text-xs text-slate-500">{{ Str::limit($tech->description, 40) }}</div>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                            {{ $tech->badge_text ?? 'ALAT RESMI' }}
+                        </span>
                     </td>
-                    <td class="px-6 py-4 text-sm text-slate-600">{{ $tech->sort_order }}</td>
-                    <td class="px-6 py-4">
-                        <button onclick="toggleTech({{ $tech->id }}, this)" data-active="{{ $tech->is_active ? '1' : '0' }}" class="focus:outline-none transition-transform active:scale-95">
+                    <td class="px-6 py-4 text-center">
+                        <button type="button" onclick="toggleTech({{ $tech->id }}, this)" data-active="{{ $tech->is_active ? '1' : '0' }}" class="focus:outline-none">
                             @if($tech->is_active)
-                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-xs font-medium px-2.5 py-1 rounded-full block">Aktif</span>
+                                <span class="bg-emerald-100 text-emerald-800 border border-emerald-200/80 text-xs font-bold px-3 py-1 rounded-full">Aktif</span>
                             @else
-                                <span class="bg-slate-50 text-slate-600 border border-slate-200/60 text-xs font-medium px-2.5 py-1 rounded-full block">Nonaktif</span>
+                                <span class="bg-slate-100 text-slate-600 border border-slate-200/80 text-xs font-bold px-3 py-1 rounded-full">Nonaktif</span>
                             @endif
                         </button>
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex items-center justify-end gap-3">
-                            <button type="button" onclick='openEditTech(@json($tech))' class="text-slate-600 bg-slate-100 hover:bg-emerald-100 hover:text-emerald-700 font-medium text-sm transition-colors px-3 py-2 rounded-lg">Edit</button>
-                            <form action="{{ route('admin.technologies.destroy', $tech) }}" method="POST" onsubmit="return confirm('Hapus alat ini?')">
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('admin.technologies.edit', $tech) }}" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 border border-slate-200/80 transition-all hover:scale-105" title="Edit Alat">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            </a>
+                            <form action="{{ route('admin.technologies.destroy', $tech) }}" method="POST" onsubmit="return confirm('Hapus peralatan {{ $tech->tool_name }} secara permanen?')" class="inline">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-slate-600 bg-slate-100 hover:bg-rose-100 hover:text-rose-700 font-medium text-sm transition-colors px-3 py-2 rounded-lg">Hapus</button>
+                                <button type="submit" class="p-2 rounded-xl text-rose-600 hover:bg-rose-50 border border-slate-200/80 transition-all hover:scale-105" title="Hapus Alat">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                </button>
                             </form>
                         </div>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-12 text-center text-slate-400 text-sm">Belum ada alat/teknologi.</td>
+                    <td colspan="6" class="px-6 py-12 text-center text-slate-400 font-medium">
+                        Belum ada peralatan atau teknologi terdaftar. Klik "+ Tambah Peralatan Baru" di atas.
+                    </td>
                 </tr>
             @endforelse
             </tbody>
@@ -72,89 +104,8 @@
     </div>
 </div>
 
-{{-- Modal Tambah Tech --}}
-<div id="modal-add-tech" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-auto overflow-hidden">
-        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
-            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Tambah Alat/Teknologi</h2>
-            <button type="button" onclick="document.getElementById('modal-add-tech').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
-        </div>
-        <form method="POST" action="{{ route('admin.technologies.store') }}" enctype="multipart/form-data" class="p-4 sm:p-6">
-            @csrf
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Nama Alat <span style="color:#ef4444">*</span></label>
-                <input type="text" name="tool_name" required placeholder="Contoh: Rigid Sectional Machine" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
-            </div>
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Alat</label>
-                <textarea name="description" rows="3" placeholder="Tulis deskripsi fungsi alat..." style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
-            </div>
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Alat</label>
-                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
-            </div>
-            <div style="margin-bottom:1.5rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan Tampil</label>
-                <input type="number" name="sort_order" value="0" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:.75rem">
-                <button type="button" onclick="document.getElementById('modal-add-tech').style.display='none'" class="px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-500 hover:bg-slate-50 text-sm font-medium transition-colors">Batal</button>
-                <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors">Simpan</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-{{-- Modal Edit Tech --}}
-<div id="modal-edit-tech" class="fixed inset-0 bg-slate-900/50 z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-auto overflow-hidden">
-        <div class="flex items-center justify-between p-4 sm:p-6 border-b border-slate-200">
-            <h2 style="font-size:1.15rem;font-weight:bold;color:#0A2E78;margin:0">Edit Alat/Teknologi</h2>
-            <button type="button" onclick="document.getElementById('modal-edit-tech').style.display='none'" style="font-size:1.5rem;color:#9ca3af;background:none;border:none;cursor:pointer;line-height:1">&times;</button>
-        </div>
-        <form id="edit-tech-form" method="POST" enctype="multipart/form-data" class="p-4 sm:p-6">
-            @csrf @method('PUT')
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Nama Alat <span style="color:#ef4444">*</span></label>
-                <input type="text" name="tool_name" id="edit-tool-name" required style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
-            </div>
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Deskripsi Alat</label>
-                <textarea name="description" id="edit-description" rows="3" style="width:100%;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box;resize:vertical"></textarea>
-            </div>
-            <div style="margin-bottom:1rem">
-                <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Foto Alat (Biarkan kosong jika tidak diganti)</label>
-                <input type="file" name="image_path" accept="image/*" style="width:100%;font-size:.9rem;color:#6b7280">
-            </div>
-            <div style="display:flex;gap:1.5rem;margin-bottom:1.5rem">
-                <div>
-                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Urutan</label>
-                    <input type="number" name="sort_order" id="edit-sort-order" style="width:100px;padding:.6rem .8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:.9rem;outline:none;box-sizing:border-box">
-                </div>
-                <div>
-                    <label style="display:block;font-size:.85rem;font-weight:600;color:#374151;margin-bottom:.5rem">Status Aktif</label>
-                    <input type="checkbox" name="is_active" id="edit-is-active" value="1" style="width:18px;height:18px;cursor:pointer">
-                </div>
-            </div>
-            <div style="display:flex;justify-content:flex-end;gap:.75rem">
-                <button type="button" onclick="document.getElementById('modal-edit-tech').style.display='none'" class="px-4 py-2 border border-slate-200 rounded-lg bg-white text-slate-500 hover:bg-slate-50 text-sm font-medium transition-colors">Batal</button>
-                <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors">Perbarui</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 @push('scripts')
 <script>
-function openEditTech(tech) {
-    document.getElementById('edit-tech-form').action = `/admin/technologies/${tech.id}`;
-    document.getElementById('edit-tool-name').value = tech.tool_name;
-    document.getElementById('edit-description').value = tech.description ?? '';
-    document.getElementById('edit-sort-order').value = tech.sort_order;
-    document.getElementById('edit-is-active').checked = tech.is_active == 1;
-    document.getElementById('modal-edit-tech').style.display='flex';
-}
-
 function toggleTech(id, btn) {
     fetch(`/admin/technologies/${id}/toggle`, {
         method: 'PATCH',
@@ -165,13 +116,7 @@ function toggleTech(id, btn) {
     })
     .then(r => r.json())
     .then(data => {
-        const isActive = data.is_active;
-        btn.dataset.active = isActive ? '1' : '0';
-        btn.className = btn.className.replace(isActive ? 'bg-gray-300' : 'bg-green-500', isActive ? 'bg-green-500' : 'bg-gray-300');
-        btn.querySelector('span').className = btn.querySelector('span').className.replace(
-            isActive ? 'translate-x-1' : 'translate-x-6',
-            isActive ? 'translate-x-6' : 'translate-x-1'
-        );
+        location.reload();
     });
 }
 </script>

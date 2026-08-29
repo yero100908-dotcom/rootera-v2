@@ -247,7 +247,9 @@ class AboutController extends Controller
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
-        return view('pages.about.peralatan-teknologi', compact('seo'));
+        $technologies = \App\Models\Technology::where('is_active', true)->orderBy('order_priority')->get();
+
+        return view('pages.about.peralatan-teknologi', compact('seo', 'technologies'));
     }
 
     public function portofolioKlien()

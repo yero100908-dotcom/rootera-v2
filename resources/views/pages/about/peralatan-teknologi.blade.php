@@ -69,33 +69,21 @@ $schemaData = [
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200">
+                        @forelse($technologies as $tech)
                         <tr class="hover:bg-slate-50">
                             <td class="p-4 font-bold text-slate-900 flex items-center gap-2">
-                                <span>🌀</span> Mesin Spiral Cable
+                                <span>🛠️</span> {{ $tech->tool_name }}
                             </td>
-                            <td class="p-4 font-semibold text-emerald-700">Ridgid K-50 / K-60 (USA)</td>
-                            <td class="p-4">Kabel baja fleksibel 5/8"-7/8", rotasi 400 RPM</td>
-                            <td class="p-4">Wastafel, floor drain, kloset, pipa 2-4 inci</td>
-                            <td class="p-4 text-emerald-700 font-semibold">Memotong akar &amp; rambut tanpa merusak PVC</td>
+                            <td class="p-4 font-semibold text-emerald-700">{{ $tech->type_brand ?? '-' }}</td>
+                            <td class="p-4">{{ $tech->main_spec ?? '-' }}</td>
+                            <td class="p-4">{{ $tech->pipe_target ?? '-' }}</td>
+                            <td class="p-4 text-emerald-700 font-semibold">{{ $tech->main_advantage ?? '-' }}</td>
                         </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-4 font-bold text-slate-900 flex items-center gap-2">
-                                <span>📷</span> Micro CCTV Pipe Camera
-                            </td>
-                            <td class="p-4 font-semibold text-blue-700">SeeSnake Flex HD 1080p</td>
-                            <td class="p-4">Lensa IP68 Waterproof + Sonde frequency locator</td>
-                            <td class="p-4">Inspeksi awal &amp; deteksi kebocoran dalam dinding</td>
-                            <td class="p-4 text-blue-700 font-semibold">Akurasi posisi mampet 99.9% tanpa galian</td>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-slate-400 font-medium">Belum ada data spesifikasi peralatan terdaftar.</td>
                         </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-4 font-bold text-slate-900 flex items-center gap-2">
-                                <span>🌊</span> High Pressure Hydro Jetting
-                            </td>
-                            <td class="p-4 font-semibold text-purple-700">Jet-Clean Pro 300 Bar</td>
-                            <td class="p-4">Nozzle jetting rotasi 360°, debit 40L/menit</td>
-                            <td class="p-4">Grease trap restoran, pipa industri 4-12 inci</td>
-                            <td class="p-4 text-purple-700 font-semibold">Mengikis kerak lemak jenuh &amp; pasir 100% bersih</td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

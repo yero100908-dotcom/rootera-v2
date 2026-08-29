@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             GallerySeeder::class,
             BlogSeeder::class,
             FaqSeeder::class,
+            TechnologySeeder::class,
         ]);
 
         // 3. Gallery Photos
