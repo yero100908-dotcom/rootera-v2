@@ -46,6 +46,15 @@
                         'url' => '/layanan/kamar-mandi-mampet',
                     ],
                     [
+                        'icon' => '🚰',
+                        'title' => 'Cuci Toren & Kuras Tandon Air',
+                        'badge' => '✨ Perawatan Higienis',
+                        'desc' => 'Pembersihan kerak lumut membandel, endapan lumpur, dan sterilisasi tangki air bersih rumah tangga & komersial tanpa bahan kimia berbahaya.',
+                        'tags' => ['High-Pressure Jet Cleaner', '100% Bebas Kimia Korosif', 'Cek Pelampung Otomatis', 'Air Bersih & Higienis'],
+                        'url' => route('services.cuci-toren'),
+                        'direct_link' => true,
+                    ],
+                    [
                         'icon' => '🌊',
                         'title' => 'Hydro-Jetting Pelengkap B2B',
                         'badge' => '🔥 Kerak Lemak Ekstrem',
@@ -101,16 +110,35 @@
                 </div>
 
                 <div style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh jasa pelancaran: ' . $item['title']) }}" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:text-emerald-300 min-h-[44px]">
-                        <span>Panggil Teknisi untuk Masalah Ini →</span>
-                    </a>
+                    @if(isset($item['direct_link']) && $item['direct_link'])
+                        <a href="{{ $item['url'] }}" style="color: #06b6d4; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:text-cyan-300 min-h-[44px]">
+                            <span>Lihat Layanan Cuci Toren →</span>
+                        </a>
+                    @else
+                        <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh jasa pelancaran: ' . $item['title']) }}" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:text-emerald-300 min-h-[44px]">
+                            <span>Panggil Teknisi untuk Masalah Ini →</span>
+                        </a>
+                    @endif
                 </div>
 
             </div>
             @endforeach
         </div>
 
-        <div class="text-center mt-12">
+        {{-- CROSS-SELLING MINI HIGHLIGHT BANNER --}}
+        <div class="mt-8 bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md max-w-4xl mx-auto">
+            <div class="flex items-center gap-3 text-left">
+                <span class="text-2xl shrink-0">💡</span>
+                <p class="text-xs sm:text-sm text-slate-300">
+                    <strong class="text-white">Sekalian Perawatan Toren Air?</strong> Kami sediakan layanan kuras &amp; sterilisasi toren bertekanan tinggi saat teknisi standby di lokasi Anda.
+                </p>
+            </div>
+            <a href="{{ route('services.cuci-toren') }}" class="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full transition-all hover:scale-105 min-h-[44px] flex items-center justify-center">
+                Pelajari Jasa Cuci Toren →
+            </a>
+        </div>
+
+        <div class="text-center mt-10">
             <a href="{{ route('layanan') }}" style="background: linear-gradient(90deg, #10b981, #06b6d4); color: #ffffff; text-decoration: none; padding: 0.95rem 2.25rem; border-radius: 12px; font-weight: 800; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);" class="hover:scale-105 transition-all min-h-[48px]">
                 Lihat Katalog Lengkap &amp; Estimasi Harga →
             </a>

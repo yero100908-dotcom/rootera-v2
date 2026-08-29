@@ -2,39 +2,89 @@
 
 @section('schema-markup')
 <?php
-$homeFaqSchema = [
+$homeSchema = [
   "@context" => "https://schema.org",
-  "@type" => "FAQPage",
-  "mainEntity" => [
+  "@graph" => [
     [
-      "@type" => "Question",
-      "name" => "Berapa lama proses pengerjaan pelancar saluran mampet Rootera?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Estimasi waktu pengerjaan pelancar saluran mampet berkisar antara 1 hingga 2 jam saja menggunakan teknologi rotasi mekanis modern tanpa membongkar struktur bangunan."
+      "@type" => "Plumber",
+      "@id" => url('/') . '#organization',
+      "name" => "Rootera Plumbing",
+      "url" => url('/'),
+      "telephone" => "+6281385404000",
+      "priceRange" => "Rp 150.000 - Rp 1.500.000",
+      "address" => [
+        "@type" => "PostalAddress",
+        "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung",
+        "addressLocality" => "Pasar Rebo, Jakarta Timur",
+        "addressRegion" => "DKI Jakarta",
+        "postalCode" => "13770",
+        "addressCountry" => "ID"
+      ],
+      "hasOfferCatalog" => [
+        "@type" => "OfferCatalog",
+        "name" => "Katalog Layanan Sanitasi & Pipa Rootera",
+        "itemListElement" => [
+          [
+            "@type" => "Offer",
+            "itemOffered" => [
+              "@type" => "Service",
+              "name" => "Jasa Pelancar Pipa Mampet Tanpa Bongkar",
+              "description" => "Pelancaran wastafel, kloset, floor drain, dan got tersumbat bergaransi 30 hari."
+            ]
+          ],
+          [
+            "@type" => "Offer",
+            "itemOffered" => [
+              "@type" => "Service",
+              "name" => "Jasa Hydro-Jetting High-Pressure Cleaning",
+              "description" => "Semprotan air tekanan tinggi 300 Bar pengikis lemak padat industri & restoran."
+            ]
+          ],
+          [
+            "@type" => "Offer",
+            "itemOffered" => [
+              "@type" => "Service",
+              "name" => "Cuci Toren & Kuras Tandon Air",
+              "description" => "Pengurasan lumut, endapan lumpur, dan sterilisasi tangki air bersih food-grade safety."
+            ]
+          ]
+        ]
       ]
     ],
     [
-      "@type" => "Question",
-      "name" => "Apakah metode pembersihan Rootera aman untuk pipa PVC?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Sangat aman. Kami menggunakan spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari cairan asam korosif berbahaya."
-      ]
-    ],
-    [
-      "@type" => "Question",
-      "name" => "Apakah ada garansi untuk setiap pekerjaan?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi 30 hari. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
+      "@type" => "FAQPage",
+      "mainEntity" => [
+        [
+          "@type" => "Question",
+          "name" => "Berapa lama proses pengerjaan pelancar saluran mampet Rootera?",
+          "acceptedAnswer" => [
+            "@type" => "Answer",
+            "text" => "Estimasi waktu pengerjaan pelancar saluran mampet berkisar antara 1 hingga 2 jam saja menggunakan teknologi rotasi mekanis modern tanpa membongkar struktur bangunan."
+          ]
+        ],
+        [
+          "@type" => "Question",
+          "name" => "Apakah metode pembersihan Rootera aman untuk pipa PVC?",
+          "acceptedAnswer" => [
+            "@type" => "Answer",
+            "text" => "Sangat aman. Kami menggunakan spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari cairan asam korosif berbahaya."
+          ]
+        ],
+        [
+          "@type" => "Question",
+          "name" => "Apakah ada garansi untuk setiap pekerjaan?",
+          "acceptedAnswer" => [
+            "@type" => "Answer",
+            "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi 30 hari. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
+          ]
+        ]
       ]
     ]
   ]
 ];
 ?>
 <script type="application/ld+json">
-{!! json_encode($homeFaqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($homeSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 

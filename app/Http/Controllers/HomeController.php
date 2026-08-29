@@ -69,9 +69,9 @@ class HomeController extends Controller
 
         $seo = [
             'title'       => 'Rootera Plumbing – Jasa Pelancar Pipa Mampet & Hydro-Jetting No. 1 Indonesia',
-            'description' => 'Solusi tuntas pelancaran pipa mampet, wastafel, kloset, got & hydro-jetting modern 300 Bar tanpa bongkar keramik. Teknisi certified 24 jam nonstop garansi 30 hari.',
+            'description' => 'Jasa pelancaran saluran pipa mampet, wastafel, toilet, dan drainase bergaransi 30 hari tanpa bongkar. Melayani juga cuci toren & kuras tandon air higienis di Jabodetabek, Jabar, Jateng, DIY, Jatim, & Lampung.',
             'canonical'   => url('/'),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.home', compact(
