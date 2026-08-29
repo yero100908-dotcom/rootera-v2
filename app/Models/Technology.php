@@ -28,12 +28,21 @@ class Technology extends Model
         'sort_order',
         'order_priority',
         'is_active',
+        'meta_title',
+        'meta_description',
+        'safety_guarantee_text',
+        'ideal_use_cases',
+        'spec_sheet',
+        'faqs',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
         'order_priority' => 'integer',
+        'ideal_use_cases' => 'array',
+        'spec_sheet' => 'array',
+        'faqs' => 'array',
     ];
 
     protected static function boot()

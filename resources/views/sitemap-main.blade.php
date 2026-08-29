@@ -76,4 +76,18 @@
         <priority>0.85</priority>
     </url>
     @endforeach
+
+    @if(isset($technologies))
+    @foreach ($technologies as $tech)
+    <url>
+        <loc>{{ route('technologies.show', $tech->slug) }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.88</priority>
+        <image:image>
+            <image:loc>{{ $tech->image_url }}</image:loc>
+            <image:title>{{ $tech->tool_name }} - Rootera Plumbing</image:title>
+        </image:image>
+    </url>
+    @endforeach
+    @endif
 </urlset>

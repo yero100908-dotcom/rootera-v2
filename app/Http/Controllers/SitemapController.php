@@ -31,7 +31,8 @@ class SitemapController extends Controller
     {
         $content = Cache::remember('sitemap_main_xml', 3600, function () {
             $faqCategories = \App\Models\FaqCategory::where('is_active', true)->get();
-            return view('sitemap-main', compact('faqCategories'))->render();
+            $technologies = \App\Models\Technology::where('is_active', true)->get();
+            return view('sitemap-main', compact('faqCategories', 'technologies'))->render();
         });
 
         return response($content, 200)->header('Content-Type', 'text/xml');

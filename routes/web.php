@@ -72,6 +72,8 @@ Route::redirect('/jasa-saluran-mampet/solo', '/jasa-saluran-mampet/surakarta', 3
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
 Route::get('/tentang-kami/profil', [AboutController::class, 'profil'])->name('tentang-kami.profil');
 Route::get('/tentang-kami/peralatan-teknologi', [AboutController::class, 'peralatanTeknologi'])->name('tentang-kami.peralatan-teknologi');
+Route::get('/peralatan-teknologi/{slug}', [AboutController::class, 'showEquipment'])->name('technologies.show');
+Route::get('/tentang-kami/peralatan-teknologi/{slug}', [AboutController::class, 'showEquipment']);
 Route::get('/tentang-kami/portofolio-klien', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.portofolio-klien');
 Route::get('/tentang-kami/kemitraan', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.kemitraan');
 Route::get('/tentang-kami/garansi-layanan', [AboutController::class, 'garansiLayanan'])->name('tentang-kami.garansi-layanan');

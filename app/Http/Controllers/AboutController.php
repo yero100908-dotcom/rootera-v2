@@ -241,15 +241,42 @@ class AboutController extends Controller
     public function peralatanTeknologi()
     {
         $seo = [
-            'title'       => 'Peralatan & Teknologi Modern Tanpa Bongkar - Rootera Plumbing',
-            'description' => 'Spesifikasi mesin Ridgid K-50/K-60, Kamera Inspeksi CCTV 1080p waterproof, dan Hydro Jetting 300 Bar untuk pelancaran pipa mampet presisi.',
+            'title'       => 'Armada Mesin Rooter & Hydro Jetting Modern Tanpa Bongkar | Rootera',
+            'description' => 'Spesifikasi armada mesin Ridgid K-50/K-60, SeeSnake CCTV 1080p IP68, & Hydro Jetting 300 Bar. Jasa pelancar saluran mampet 24 jam bergaransi resmi tanpa bongkar.',
             'canonical'   => url('/tentang-kami/peralatan-teknologi'),
-            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            'og_image'    => asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp'),
         ];
 
         $technologies = \App\Models\Technology::where('is_active', true)->orderBy('order_priority')->get();
 
         return view('pages.about.peralatan-teknologi', compact('seo', 'technologies'));
+    }
+
+    public function showEquipment(string $slug)
+    {
+        $technology = \App\Models\Technology::where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        $relatedTechnologies = \App\Models\Technology::where('is_active', true)
+            ->where('id', '!=', $technology->id)
+            ->orderBy('order_priority')
+            ->take(3)
+            ->get();
+
+        $relatedServices = \App\Models\ServiceCategory::where('is_active', true)
+            ->orderBy('sort_order')
+            ->take(4)
+            ->get();
+
+        $seo = [
+            'title'       => $technology->tool_name . ' - Teknologi Pelancar Pipa Tanpa Bongkar | Rootera Plumbing',
+            'description' => \Illuminate\Support\Str::limit($technology->description ?? ($technology->tool_name . ' dengan ' . $technology->main_spec . ' untuk pelancaran saluran mampet presisi.'), 155),
+            'canonical'   => url('/peralatan-teknologi/' . $technology->slug),
+            'og_image'    => $technology->image_url,
+        ];
+
+        return view('pages.technology-detail', compact('technology', 'relatedTechnologies', 'relatedServices', 'seo'));
     }
 
     public function portofolioKlien()
