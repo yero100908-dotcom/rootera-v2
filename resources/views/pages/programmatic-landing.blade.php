@@ -542,8 +542,8 @@ $faqSchema = [
                 @endforeach
             @else
                 <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/jakarta-utara/pantai-indah-kapuk-pik') }}" class="spoke-link">📍 PIK Pantai Indah Kapuk</a>
-                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bintaro-jaya') }}" class="spoke-link">📍 Bintaro Jaya Tangsel</a>
-                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/bsd-city') }}" class="spoke-link">📍 BSD City Serpong</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/pondok-aren-bintaro-jaya') }}" class="spoke-link">📍 Bintaro Jaya Tangsel</a>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/tangerang-selatan/serpong-bsd-city') }}" class="spoke-link">📍 BSD City Serpong</a>
                 <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/kabupaten-bogor/sentul-city') }}" class="spoke-link">📍 Sentul City Bogor</a>
                 <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/depok/tapos-margonda-gdc') }}" class="spoke-link">📍 Margonda Depok</a>
                 <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/bekasi/rawalumbu-grand-galaxy-jatiwaringin-jatiwarna-summarecon') }}" class="spoke-link">📍 Grand Galaxy Bekasi</a>

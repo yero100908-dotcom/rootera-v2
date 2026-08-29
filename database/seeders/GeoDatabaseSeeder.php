@@ -93,6 +93,8 @@ class GeoDatabaseSeeder extends Seeder
                     [
                         'name' => 'Tangerang',
                         'type' => 'Kota',
+                        'latitude' => '-6.1783',
+                        'longitude' => '106.6319',
                         'districts' => [
                             'Batuceper', 'Benda', 'Cibodas', 'Ciledug', 'Cipondoh', 'Jatiuwung',
                             'Karangtengah', 'Karawaci', 'Larangan', 'Neglasari', 'Periuk', 'Pinang', 'Tangerang'
@@ -101,6 +103,8 @@ class GeoDatabaseSeeder extends Seeder
                     [
                         'name' => 'Tangerang Selatan',
                         'type' => 'Kota',
+                        'latitude' => '-6.2886',
+                        'longitude' => '106.7179',
                         'districts' => [
                             'Serpong (BSD City)', 'Serpong Utara (Alam Sutera)', 'Pondok Aren (Bintaro Jaya)',
                             'Ciputat', 'Ciputat Timur', 'Pamulang', 'Setu'
@@ -109,10 +113,14 @@ class GeoDatabaseSeeder extends Seeder
                     [
                         'name' => 'Tangerang',
                         'type' => 'Kabupaten',
+                        'latitude' => '-6.2369',
+                        'longitude' => '106.4674',
                         'districts' => [
                             'Balaraja', 'Cikupa (Citra Raya Boulevard)', 'Curug', 'Pasar Kemis',
                             'Kelapa Dua (Gading Serpong)', 'Legok', 'Tigaraksa', 'Panongan',
-                            'Teluknaga', 'Kosambi (Kawasan PIK 2 Banten)', 'Sepatan', 'Rajeg'
+                            'Teluknaga', 'Kosambi (Kawasan PIK 2 Banten)', 'Sepatan', 'Rajeg',
+                            'Pagedangan (Kawasan BSD City & ICE)', 'Cisauk (Kawasan Intermoda BSD)',
+                            'Sindang Jaya (Kawasan Suvarna Sutera)'
                         ]
                     ],
                     [
@@ -416,6 +424,8 @@ class GeoDatabaseSeeder extends Seeder
                         'type' => $cityItem['type'],
                         'whatsapp_number' => '6281385404000',
                         'estimated_arrival' => '25-40 Menit',
+                        'latitude' => $cityItem['latitude'] ?? null,
+                        'longitude' => $cityItem['longitude'] ?? null,
                         'sort_order' => $cIdx + 1,
                         'is_active' => true
                     ]

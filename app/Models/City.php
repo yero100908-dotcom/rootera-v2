@@ -17,6 +17,8 @@ class City extends Model
         'phone_number',
         'whatsapp_number',
         'estimated_arrival',
+        'latitude',
+        'longitude',
         'meta_title',
         'meta_description',
         'is_active',
