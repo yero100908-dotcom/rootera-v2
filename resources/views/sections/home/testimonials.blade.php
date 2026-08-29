@@ -51,7 +51,7 @@
                     class="w-full h-full rounded-3xl">
                 </iframe>
                 <div class="absolute bottom-3 left-3 z-10">
-                    <a href="https://maps.app.goo.gl/6uri6rGLiSyaeLaM6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 backdrop-blur-md text-white text-xs font-bold shadow-lg hover:bg-emerald-600 transition-colors">
+                    <a href="https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900/90 backdrop-blur-md text-white text-xs font-bold shadow-lg hover:bg-emerald-600 transition-colors">
                         📍 Buka Peta Google Maps →
                     </a>
                 </div>
@@ -111,64 +111,115 @@
             @php
             $realReviews = [
                 [
+                    'name' => 'Nawri Ibrahim Argiffari',
+                    'initial' => 'N',
+                    'avatarInitial' => 'N',
+                    'rating' => 5,
+                    'timeAgo' => '2 hari lalu',
+                    'date' => '2 hari lalu',
+                    'isNew' => true,
+                    'badge' => 'BARU',
+                    'bg' => 'bg-[#00796B]',
+                    'text' => 'Mantap bener pelayanan dari Rootera Plumbing. Wastafel dapur gw semalem mampet total, pagi dihubungi siang lgsg dateng. Gak pake ribet bongkar-bongkar, taunya lgsg plong lagi. Istri di rumah seneng gak ngomel mulu hahaha. Recommended lah pokoknya!',
+                    'review' => 'Mantap bener pelayanan dari Rootera Plumbing. Wastafel dapur gw semalem mampet total, pagi dihubungi siang lgsg dateng. Gak pake ribet bongkar-bongkar, taunya lgsg plong lagi. Istri di rumah seneng gak ngomel mulu hahaha. Recommended lah pokoknya!',
+                    'priceRating' => 'Harga bagus (Rp 200–400 rb)',
+                    'service' => 'Pelancaran Saluran Wastafel Dapur',
+                    'tags' => [
+                        'Harga bagus (Rp 200–400 rb)',
+                        'Pelancaran Saluran Wastafel Dapur'
+                    ]
+                ],
+                [
+                    'name' => 'Mina lope',
+                    'initial' => 'M',
+                    'avatarInitial' => 'M',
+                    'rating' => 5,
+                    'timeAgo' => '2 hari lalu',
+                    'date' => '2 hari lalu',
+                    'isNew' => true,
+                    'badge' => 'BARU',
+                    'bg' => 'bg-[#D81B60]',
+                    'text' => 'Sangat membantu di saat darurat. Saluran air mampet langsung beres hari itu juga. Hasil kerja mantap dan bergaransi.',
+                    'review' => 'Sangat membantu di saat darurat. Saluran air mampet langsung beres hari itu juga. Hasil kerja mantap dan bergaransi.',
+                    'priceRating' => null,
+                    'service' => 'Pelancaran Saluran Air',
+                    'tags' => [
+                        'Pelancaran Saluran Air'
+                    ]
+                ],
+                [
+                    'name' => 'marlia kelana',
+                    'initial' => 'M',
+                    'avatarInitial' => 'M',
+                    'rating' => 5,
+                    'timeAgo' => '2 hari lalu',
+                    'date' => '2 hari lalu',
+                    'isNew' => true,
+                    'badge' => 'BARU',
+                    'bg' => 'bg-[#558B2F]',
+                    'text' => 'Saluran wastafel resto mampet dan air mulai menggenang. Saya coba hubungi Rootera, responsnya cukup cepat. Teknisi datang bawa peralatan dan langsung dikerjakan. Tidak perlu bongkar besar-besaran, setelah selesai salurannya sudah normal lagi.',
+                    'review' => 'Saluran wastafel resto mampet dan air mulai menggenang. Saya coba hubungi Rootera, responsnya cukup cepat. Teknisi datang bawa peralatan dan langsung dikerjakan. Tidak perlu bongkar besar-besaran, setelah selesai salurannya sudah normal lagi.',
+                    'priceRating' => null,
+                    'service' => 'Pelancaran Saluran Wastafel Resto',
+                    'tags' => [
+                        'Pelancaran Saluran Wastafel Resto'
+                    ]
+                ],
+                [
+                    'name' => 'RAZQHA FAHZRY',
+                    'initial' => 'R',
+                    'avatarInitial' => 'R',
+                    'rating' => 5,
+                    'timeAgo' => '3 hari lalu',
+                    'date' => '3 hari lalu',
+                    'isNew' => true,
+                    'badge' => 'BARU',
+                    'bg' => 'bg-[#C0392B]',
+                    'text' => 'rootera plumbing membuat saluran di resto kembali lancar, pengerjaan cepat dan rapih . teknisi ramah atas nama mas abi dan mas galih',
+                    'review' => 'rootera plumbing membuat saluran di resto kembali lancar, pengerjaan cepat dan rapih . teknisi ramah atas nama mas abi dan mas galih',
+                    'priceRating' => 'Harga: Rp 800 rb – Rp 1 jt',
+                    'service' => 'Pelancaran Saluran Air Resto',
+                    'tags' => [
+                        'Harga: Rp 800 rb – Rp 1 jt',
+                        'Pelancaran Saluran Air Resto'
+                    ]
+                ],
+                [
+                    'name' => 'Yero Virdhan Akifan',
+                    'initial' => 'Y',
+                    'avatarInitial' => 'Y',
+                    'rating' => 5,
+                    'timeAgo' => '1 bulan lalu',
+                    'date' => '1 bulan lalu',
+                    'isNew' => false,
+                    'badge' => null,
+                    'bg' => 'bg-[#4267B2]',
+                    'text' => 'Sempat panik! Saluran dapur restoran kami mampet parah🤯. Mulai dari sink cuci piring, gutter, sampai saluran utama bikin air meluap dan dapur hampir banjir, apalagi pas restoran lagi ramai. 😵💦 Untung tim Rootera Plumbing💙💚 gercep datang dan langsung menangani masalahnya. Setelah dibersihkan, saluran kembali lancar dan operasional dapur normal lagi. 🙌 Secara keseluruhan puas dengan pelayanannya. Terima kasih Rootera Plumbing, sukses selalu! 👍👍',
+                    'review' => 'Sempat panik! Saluran dapur restoran kami mampet parah🤯. Mulai dari sink cuci piring, gutter, sampai saluran utama bikin air meluap dan dapur hampir banjir, apalagi pas restoran lagi ramai. 😵💦 Untung tim Rootera Plumbing💙💚 gercep datang dan langsung menangani masalahnya. Setelah dibersihkan, saluran kembali lancar dan operasional dapur normal lagi. 🙌 Secara keseluruhan puas dengan pelayanannya. Terima kasih Rootera Plumbing, sukses selalu! 👍👍',
+                    'priceRating' => null,
+                    'service' => 'Pelancaran Saluran Dapur Restoran (Sink & Gutter)',
+                    'tags' => [
+                        'Pelancaran Saluran Dapur Restoran (Sink & Gutter)'
+                    ]
+                ],
+                [
                     'name' => 'Agoy Satya',
                     'initial' => 'A',
-                    'bg' => 'bg-[#5c3826]',
-                    'text' => 'Luar biasa, mantap betul pelayanannya. Penanganan saluran pembuangan dan talang di Haka Dimsum Blok M sangat profesional. Mas-mas teknisinya ramah, komunikatif, dan alat yang dipakai lengkap banget. Dapur dan area sekitar langsung bersih lancar kembali. Terima kasih banyak, sukses terus buat usahanya! 👍',
+                    'avatarInitial' => 'A',
+                    'rating' => 5,
+                    'timeAgo' => '2 minggu lalu',
                     'date' => '2 minggu lalu',
-                    'badge' => 'BARU',
+                    'isNew' => false,
+                    'badge' => null,
+                    'bg' => 'bg-[#5c3826]',
+                    'text' => 'Luar biasa, mantap betul pelayanannya. Penanganan saluran pembuangan dan talang di Haka Dimsum Blok M sangat profesional. Mas-mas teknisinya ramah, komunikatif, dan alat yang dipakai lengkap banget. Dapur dan area sekitar langsung bersih lancar kembali. Terima kasih banyak, sukses terus buat usahanya! 👍🏼',
+                    'review' => 'Luar biasa, mantap betul pelayanannya. Penanganan saluran pembuangan dan talang di Haka Dimsum Blok M sangat profesional. Mas-mas teknisinya ramah, komunikatif, dan alat yang dipakai lengkap banget. Dapur dan area sekitar langsung bersih lancar kembali. Terima kasih banyak, sukses terus buat usahanya! 👍🏼',
                     'priceRating' => 'Harga terjangkau',
-                    'service' => 'Saluran pembuangan & talang (Haka Dimsum Blok M)'
-                ],
-                [
-                    'name' => 'Prayoga Kelana',
-                    'initial' => 'P',
-                    'bg' => 'bg-[#4267B2]',
-                    'text' => 'pengerjaan nya cepat bersih dan profesional, teknisi nya ramah, respon cepat terimakasih rootera plumbing',
-                    'date' => 'seminggu lalu',
-                    'badge' => 'BARU',
-                    'priceRating' => null,
-                    'service' => null
-                ],
-                [
-                    'name' => 'NUR SIDIK',
-                    'initial' => 'N',
-                    'bg' => 'bg-[#558B2F]',
-                    'text' => 'Saluran Wastafel Sudah Saya Lancar, terimakasih rootera plumbing',
-                    'date' => '5 hari lalu',
-                    'badge' => 'BARU',
-                    'priceRating' => 'Harga bagus (Rp 400–600 rb)',
-                    'service' => 'Pelancaran Saluran Wastafel'
-                ],
-                [
-                    'name' => 'Agim Firdaus20_',
-                    'initial' => 'A',
-                    'bg' => 'bg-[#C0392B]',
-                    'text' => 'Terimakasih rootera plumbing atas pekerjaan saluran kloset di lampung, saluran sudah lancar, Teknisi ramah dan pengerjaan cepat',
-                    'date' => '3 hari lalu',
-                    'badge' => 'BARU',
-                    'priceRating' => 'Harga bagus (Rp 400–600 rb)',
-                    'service' => 'Reparasi toilet / Kloset'
-                ],
-                [
-                    'name' => 'Radit',
-                    'initial' => 'R',
-                    'bg' => 'bg-[#00796B]',
-                    'text' => 'Harga bersahabat, cepat, dan bergaransi, hasil maksimal, trm ksh J&J',
-                    'date' => 'seminggu lalu',
-                    'badge' => 'BARU',
-                    'priceRating' => null,
-                    'service' => null
-                ],
-                [
-                    'name' => 'Ummi Rhmatill',
-                    'initial' => 'U',
-                    'bg' => 'bg-[#D81B60]',
-                    'text' => 'Tempat Strategis,pelayanan cepat',
-                    'date' => '3 minggu lalu',
-                    'badge' => 'BARU',
-                    'priceRating' => null,
-                    'service' => null
+                    'service' => 'Pelancaran Saluran Pembuangan & Talang',
+                    'tags' => [
+                        'Harga terjangkau',
+                        'Pelancaran Saluran Pembuangan & Talang'
+                    ]
                 ]
             ];
             // Repeated arrays to construct smooth continuous loop
@@ -189,15 +240,15 @@
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <h4 class="font-bold text-slate-900 text-base tracking-wide">{{ $review['name'] }}</h4>
-                                        @if(!empty($review['badge']))
+                                        @if(!empty($review['isNew']) || !empty($review['badge']))
                                         <span class="bg-red-500 text-white text-[0.65rem] font-extrabold px-1.5 py-0.5 rounded uppercase">
-                                            {{ $review['badge'] }}
+                                            {{ $review['badge'] ?? 'BARU' }}
                                         </span>
                                         @endif
                                     </div>
                                     <div class="flex items-center gap-1.5 text-amber-400 text-sm mt-0.5">
                                         ★ ★ ★ ★ ★
-                                        <span class="text-xs text-slate-400 font-normal ml-1">• {{ $review['date'] }}</span>
+                                        <span class="text-xs text-slate-400 font-normal ml-1">• {{ $review['timeAgo'] ?? $review['date'] }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -211,23 +262,24 @@
                         
                         <!-- Review Text -->
                         <p class="text-slate-700 text-sm leading-relaxed mb-4 font-medium">
-                            "{{ $review['text'] }}"
+                            "{{ $review['review'] ?? $review['text'] }}"
                         </p>
                     </div>
 
                     <!-- Footer Tags (Service & Price Details) -->
-                    @if(!empty($review['priceRating']) || !empty($review['service']))
+                    @if(!empty($review['tags']))
                     <div class="pt-3 border-t border-slate-100 mt-auto flex flex-wrap gap-1.5">
-                        @if(!empty($review['priceRating']))
+                        @foreach($review['tags'] as $tag)
+                        @if(str_contains(strtolower($tag), 'harga'))
                         <span class="bg-emerald-50 text-emerald-700 text-[0.72rem] font-bold px-2.5 py-1 rounded-md border border-emerald-200/60">
-                            🏷️ {{ $review['priceRating'] }}
+                            🏷️ {{ $tag }}
                         </span>
-                        @endif
-                        @if(!empty($review['service']))
+                        @else
                         <span class="bg-blue-50 text-blue-700 text-[0.72rem] font-bold px-2.5 py-1 rounded-md border border-blue-200/60">
-                            🔧 {{ $review['service'] }}
+                            🔧 {{ $tag }}
                         </span>
                         @endif
+                        @endforeach
                     </div>
                     @endif
                 </div>
@@ -237,7 +289,7 @@
 
         <!-- Tombol Lihat Lebih Banyak (CTA) -->
         <div class="text-center mt-4">
-            <a href="https://maps.app.goo.gl/6uri6rGLiSyaeLaM6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3.5 bg-[#10b981] hover:bg-emerald-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/20 transform hover:-translate-y-0.5 cursor-pointer text-sm sm:text-base">
+            <a href="https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-7 py-3.5 bg-[#10b981] hover:bg-emerald-600 text-white font-bold rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/20 transform hover:-translate-y-0.5 cursor-pointer text-sm sm:text-base">
                 <span>Lihat Lebih Banyak di Google Maps</span>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
