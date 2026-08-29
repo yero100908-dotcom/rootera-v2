@@ -176,4 +176,33 @@ class SitemapController extends Controller
 
         return response($content, 200)->header('Content-Type', 'text/xml');
     }
+
+    /**
+     * Cuci Toren City Hubs sitemap (/sitemap-cuci-toren-cities.xml)
+     */
+    public function cuciTorenCities(): Response
+    {
+        $content = Cache::remember('sitemap_cuci_toren_cities_xml', 3600, function () {
+            $cities = City::where('is_active', true)->get();
+            return view('sitemap-cuci-toren-cities', compact('cities'))->render();
+        });
+
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    }
+
+    /**
+     * Cuci Toren District Spokes sitemap (/sitemap-cuci-toren-districts.xml)
+     */
+    public function cuciTorenDistricts(): Response
+    {
+        $content = Cache::remember('sitemap_cuci_toren_districts_xml', 3600, function () {
+            $cities = City::where('is_active', true)->with(['districts' => function ($q) {
+                $q->where('is_active', true);
+            }])->get();
+
+            return view('sitemap-cuci-toren-districts', compact('cities'))->render();
+        });
+
+        return response($content, 200)->header('Content-Type', 'text/xml');
+    }
 }

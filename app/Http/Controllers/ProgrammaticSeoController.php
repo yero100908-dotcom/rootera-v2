@@ -171,4 +171,113 @@ class ProgrammaticSeoController extends Controller
 
         return response($html);
     }
+
+    /**
+     * Display programmatic Cuci Toren City Hub landing page (/jasa-cuci-toren/{citySlug})
+     */
+    public function cuciTorenCity(string $citySlug)
+    {
+        return $this->renderCuciTorenPage($citySlug, null);
+    }
+
+    /**
+     * Display programmatic Cuci Toren District Spoke landing page (/layanan-cuci-toren/{citySlug}/{districtSlug})
+     */
+    public function cuciTorenDistrict(string $citySlug, string $districtSlug)
+    {
+        return $this->renderCuciTorenPage($citySlug, $districtSlug);
+    }
+
+    protected function renderCuciTorenPage(string $citySlug, ?string $districtSlug = null)
+    {
+        $cacheKey = "pseo_cuci_toren_v1_{$citySlug}_" . ($districtSlug ?? 'all');
+
+        $html = Cache::remember($cacheKey, 86400, function () use ($citySlug, $districtSlug) {
+            $city = City::where('slug', $citySlug)
+                ->where('is_active', true)
+                ->with(['province', 'districts' => function ($q) {
+                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
+                }])
+                ->firstOrFail();
+
+            $district = null;
+            if ($districtSlug) {
+                $district = District::where('city_id', $city->id)
+                    ->where('slug', $districtSlug)
+                    ->where('is_active', true)
+                    ->firstOrFail();
+            }
+
+            // Neighboring districts in the same city for spoke linking
+            $siblingDistricts = $city->districts->filter(function ($d) use ($district) {
+                return !$district || $d->id !== $district->id;
+            })->take(12)->values();
+
+            // Neighboring cities in the same province for regional linking
+            $siblingCities = City::where('province_id', $city->province_id)
+                ->where('id', '!=', $city->id)
+                ->where('is_active', true)
+                ->get();
+
+            $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
+            $locationShort = $district ? $district->name : $city->name;
+            $estimatedArrival = $district ? ($district->estimated_arrival ?? "25–40 Menit") : ($city->estimated_arrival ?? "30–45 Menit");
+            $dispatchHub = $district ? "Pos Armada Sanitasi Kecamatan {$district->name}" : "Pos Armada Sanitasi Utama {$city->name}";
+
+            $title = $district
+                ? "Jasa Cuci Toren {$district->name}, {$city->name} | Kuras Tandon Air Bersih Bergaransi - Rootera"
+                : "Jasa Cuci Toren & Kuras Tandon Air {$city->full_name} | Air Jernih Higienis - Rootera";
+
+            $description = $district
+                ? "Layanan cuci toren dan kuras tandon air profesional di {$district->name}, {$city->name}. Sterilisasi kerak lumut, pasir & endapan lumpur menggunakan High-Pressure Jet Cleaner. Respon cepat!"
+                : "Spesialis jasa cuci toren air & kuras tandon terpercaya di {$city->full_name}. Pengurasan higienis tanpa bahan kimia korosif, garansi air jernih bebas bau. Hubungi WhatsApp 24 Jam!";
+
+            $canonical = $district
+                ? url("/layanan-cuci-toren/{$city->slug}/{$district->slug}")
+                : url("/jasa-cuci-toren/{$city->slug}");
+
+            $ogImage = asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp');
+
+            $seo = [
+                'title'       => $title,
+                'description' => $description,
+                'canonical'   => $canonical,
+                'og_image'    => $ogImage,
+            ];
+
+            $localFaqs = [
+                [
+                    'question' => "Berapa estimasi waktu teknisi cuci toren tiba di wilayah {$locationShort}?",
+                    'answer' => "Teknisi disiagakan dari {$dispatchHub} dengan estimasi waktu tiba rata-rata {$estimatedArrival} setelah jadwal pemesanan dikonfirmasi via WhatsApp."
+                ],
+                [
+                    'question' => "Mengapa air tanah / toren di kawasan {$locationShort} sering berlumut dan kuning?",
+                    'answer' => "Endapan pasir, zat besi tinggi, dan paparan sinar matahari memicu timbulnya lumut tebal & sisa karat di dinding toren area {$locationShort}. Pengurasan rutin 3-6 bulan sekali sangat disarankan."
+                ],
+                [
+                    'question' => "Apakah proses cuci toren di {$locationShort} menggunakan cairan kimia keras?",
+                    'answer' => "Tidak. Kami menggunakan 100% mechanical cleaning dengan High-Pressure Jet Washer mini food-grade safety tanpa asam korosif cair berbahaya."
+                ]
+            ];
+
+            return view('pages.programmatic-cuci-toren', compact(
+                'city',
+                'district',
+                'siblingDistricts',
+                'siblingCities',
+                'locationName',
+                'locationShort',
+                'estimatedArrival',
+                'dispatchHub',
+                'title',
+                'description',
+                'canonical',
+                'ogImage',
+                'seo',
+                'localFaqs'
+            ))->render();
+        });
+
+        return response($html);
+    }
 }

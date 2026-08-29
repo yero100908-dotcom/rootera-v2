@@ -39,6 +39,8 @@ Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->n
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
+Route::get('/sitemap-cuci-toren-cities.xml', [SitemapController::class, 'cuciTorenCities'])->name('sitemap.cuci-toren-cities');
+Route::get('/sitemap-cuci-toren-districts.xml', [SitemapController::class, 'cuciTorenDistricts'])->name('sitemap.cuci-toren-districts');
 
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/jasa-cuci-toren-air', [ServiceController::class, 'cuciToren'])->name('services.cuci-toren');
@@ -50,6 +52,8 @@ Route::get('/jasa-saluran-mampet/{citySlug}', [AreaServiceController::class, 'sh
 Route::get('/area-jasa-pipa-mampet/{regionSlug}', [AreaServiceController::class, 'showRegion'])->name('area.region');
 Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.city');
 Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.district');
+Route::get('/jasa-cuci-toren/{citySlug}', [ProgrammaticSeoController::class, 'cuciTorenCity'])->name('pseo.cuci-toren.city');
+Route::get('/layanan-cuci-toren/{citySlug}/{districtSlug}', [ProgrammaticSeoController::class, 'cuciTorenDistrict'])->name('pseo.cuci-toren.district');
 Route::get('/solusi/{problemSlug}/{citySlug?}', [App\Http\Controllers\ProblemHubController::class, 'show'])->name('solusi.problem');
 
 // Master B2B Commercial & Sector Programmatic Routes
