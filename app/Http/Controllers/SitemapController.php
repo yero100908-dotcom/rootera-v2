@@ -21,7 +21,7 @@ class SitemapController extends Controller
             return view('sitemap-index')->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -35,7 +35,7 @@ class SitemapController extends Controller
             return view('sitemap-main', compact('faqCategories', 'technologies'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -49,7 +49,7 @@ class SitemapController extends Controller
             return view('sitemap-sectors', compact('sectors', 'cities'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -63,7 +63,7 @@ class SitemapController extends Controller
             return view('sitemap-cities', compact('cities', 'propertyTypes'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -80,7 +80,7 @@ class SitemapController extends Controller
             return view('sitemap-districts', compact('categories', 'cities'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -90,51 +90,40 @@ class SitemapController extends Controller
     {
         $content = Cache::remember('sitemap_services_xml', 3600, function () {
             $categories = ServiceCategory::where('is_active', true)->get();
-            $propertyTypes = \App\Models\PropertyType::where('is_active', true)->get();
-            $sectors = \App\Models\ServiceSector::where('is_active', true)->get();
-            $cities = City::where('is_active', true)->with(['districts' => function ($q) {
-                $q->where('is_active', true);
-            }])->get();
+            $cities = City::where('is_active', true)->get();
+            $districts = District::where('is_active', true)->get();
 
-            return view('sitemap-services', compact('categories', 'propertyTypes', 'sectors', 'cities'))->render();
+            return view('sitemap-services', compact('categories', 'cities', 'districts'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
-     * Blog articles & guides sitemap (/sitemap-blog.xml)
+     * Articles & Educational Blog sitemap (/sitemap-blog.xml)
      */
     public function blog(): Response
     {
         $content = Cache::remember('sitemap_blog_xml', 3600, function () {
-            $articles = Article::published()->latest('updated_at')->get();
+            $articles = Article::published()->latest('published_at')->get();
             return view('sitemap-blog', compact('articles'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
-     * Documentation Videos sitemap (/sitemap-videos.xml)
+     * Video Documentation sitemap (/sitemap-videos.xml)
      */
     public function videos(): Response
     {
         $content = Cache::remember('sitemap_videos_xml', 3600, function () {
             $videos = [
                 [
-                    'title' => 'Video Inspeksi Kamera CCTV Pipa Gedung Kantor Jakarta',
-                    'description' => 'Dokumentasi inspeksi visual kamera CCTV pipa saluran tersumbat gedung bertingkat oleh teknisi Rootera Plumbing Jakarta.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-inspeksi-cctv-gedung-kantor-jakarta.webp'),
-                    'content' => asset('videos/dokumentasi/video-inspeksi-cctv-gedung-kantor-jakarta.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ],
-                [
-                    'title' => 'Video Inspeksi CCTV Saluran Wastafel Rumah',
-                    'description' => 'Deteksi titik sumbatan lemak dan kerak menggunakan kamera CCTV endoskopi pipa wastafel cuci piring.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-inspeksi-cctv-wastafel.webp'),
-                    'content' => asset('videos/dokumentasi/video-inspeksi-cctv-wastafel.mp4'),
+                    'title' => 'Video High-Pressure Hydro Jetting Restoran Marugame Udon',
+                    'description' => 'Dokumentasi tim Rootera Plumbing melancarkan pipa saluran pembuangan lemak Restoran Marugame Udon.',
+                    'thumbnail' => asset('images/dokumentasi/thumb-video-hydro-jetting-marugame-udon.webp'),
+                    'content' => asset('videos/dokumentasi/video-hydro-jetting-marugame-udon.mp4'),
                     'page_url' => url('/galeri'),
                     'pub_date' => '2026-08-25T08:00:00+07:00'
                 ],
@@ -174,7 +163,7 @@ class SitemapController extends Controller
             return view('sitemap-videos', compact('videos'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -187,7 +176,7 @@ class SitemapController extends Controller
             return view('sitemap-cuci-toren-cities', compact('cities'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 
     /**
@@ -203,6 +192,6 @@ class SitemapController extends Controller
             return view('sitemap-cuci-toren-districts', compact('cities'))->render();
         });
 
-        return response($content, 200)->header('Content-Type', 'text/xml');
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 }
