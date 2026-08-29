@@ -19,7 +19,7 @@ $sectorSchema = [
     "name" => "Rootera Plumbing (Divisi Plumbing Resmi J&J Group)",
     "url" => url('/'),
     "telephone" => "+6281385404000",
-    "logo" => asset('images/logo final.png'),
+    "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   ],
   "areaServed" => (isset($city) && is_object($city)) ? [
     "@type" => "City",

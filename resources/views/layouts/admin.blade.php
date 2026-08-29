@@ -6,7 +6,7 @@
     <title>@yield('title', 'Admin') – Rootera</title>
     <meta name="robots" content="noindex,nofollow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon-cropped.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css'])
     <style>

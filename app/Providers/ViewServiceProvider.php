@@ -39,7 +39,7 @@ class ViewServiceProvider extends ServiceProvider
                 'canonical'    => $customSeo['canonical'] ?? $seoModel['canonical_url'] ?? url()->current(),
                 'og_image'     => $customSeo['og_image'] ?? ($seoModel && !empty($seoModel['og_image']) 
                                     ? asset('storage/' . $seoModel['og_image']) 
-                                    : asset('images/logo final.png')),
+                                    : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')),
                 'is_indexable' => $customSeo['is_indexable'] ?? $seoModel['is_indexable'] ?? true,
             ];
 

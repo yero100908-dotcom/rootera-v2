@@ -41,7 +41,7 @@
         <meta property="og:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
     <meta property="og:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
-    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/JnJ.webp') }}">
+    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
     <meta property="og:locale"      content="id_ID">
 
@@ -53,10 +53,10 @@
         <meta name="twitter:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
     <meta name="twitter:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
-    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/JnJ.webp') }}">
+    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
-    @if (View::hasSection('schema-markup'))
+    @hasSection('schema-markup')
         @yield('schema-markup')
     @else
         <?php
@@ -71,7 +71,7 @@
               "@id" => url('/') . "#organization",
               "url" => url('/'),
               "telephone" => "+6281385404000",
-              "logo" => asset('images/logo-final.webp'),
+              "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
               "image" => asset('images/JnJ.webp'),
               "priceRange" => "$$",
               "parentOrganization" => [
@@ -152,7 +152,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon-cropped.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
 
     {{-- Styles --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])

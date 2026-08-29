@@ -7,7 +7,7 @@ $blogPostingSchema = [
   "@type" => "BlogPosting",
   "headline" => $article->title,
   "description" => $article->excerpt,
-  "image" => $article->thumbnail_url ?: asset('images/logo-final.webp'),
+  "image" => $article->thumbnail_url ?: asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   "author" => [
     "@type" => "Person",
     "name" => $article->author ?: "Tim Ahli Rootera Plumbing"
@@ -20,7 +20,7 @@ $blogPostingSchema = [
     "url" => url('/'),
     "logo" => [
       "@type" => "ImageObject",
-      "url" => asset('images/logo-final.webp')
+      "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
     ]
   ],
   "mainEntityOfPage" => [
@@ -216,7 +216,7 @@ $readTimeMinutes = max(2, ceil($wordCount / 180));
                     <div class="space-y-4">
                         @foreach($relatedArticles as $rel)
                         <a href="{{ route('blog.show', $rel->slug) }}" class="flex items-center gap-3 group text-decoration-none">
-                            <img src="{{ $rel->thumbnail_url ?: asset('images/logo-final.webp') }}" alt="{{ $rel->title }}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-100">
+                            <img src="{{ $rel->thumbnail_url ?: asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}" alt="{{ $rel->title }}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0 border border-slate-100">
                             <div>
                                 <h4 class="text-xs font-bold text-slate-900 group-hover:text-emerald-600 transition leading-snug line-clamp-2">{{ $rel->title }}</h4>
                                 <span class="text-[10px] text-slate-400 mt-1 block">{{ $rel->published_at?->translatedFormat('d M Y') }}</span>
