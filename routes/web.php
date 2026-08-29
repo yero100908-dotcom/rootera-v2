@@ -41,6 +41,7 @@ Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitem
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
 
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
+Route::get('/jasa-cuci-toren-air', [ServiceController::class, 'cuciToren'])->name('services.cuci-toren');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
 
 // New High-Intent Keyword-Rich Routes & Problem Hub

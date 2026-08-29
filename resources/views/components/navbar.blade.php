@@ -182,6 +182,14 @@
                                         <div class="text-xs text-slate-500 line-clamp-1">Deteksi kebocoran & posisi mampet di dalam dinding</div>
                                     </div>
                                 </a>
+
+                                <a href="{{ route('services.cuci-toren') }}" class="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150">
+                                    <div class="w-9 h-9 rounded-lg bg-teal-100/70 text-teal-700 flex items-center justify-center font-bold text-lg group-hover/item:bg-teal-600 group-hover/item:text-white transition-colors shrink-0">🚰</div>
+                                    <div>
+                                        <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors">Cuci Toren & Tandon Air</div>
+                                        <div class="text-xs text-slate-500 line-clamp-1">Pengurasan lumut & lumpur food-grade safety</div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
 
@@ -420,6 +428,9 @@
                     </a>
                     <a href="{{ url('/layanan/inspeksi-pipa-kamera') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
                         <span>📷</span> Inspeksi Kamera CCTV Pipa
+                    </a>
+                    <a href="{{ route('services.cuci-toren') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>🚰</span> Jasa Cuci Toren &amp; Tandon Air
                     </a>
 
                     <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Komersial & B2B</div>

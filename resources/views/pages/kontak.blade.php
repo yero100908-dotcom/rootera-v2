@@ -257,6 +257,7 @@ $contactSchema = [
                                         <option value="{{ $srv->name }}" {{ old('service_type') == $srv->name ? 'selected' : '' }}>{{ $srv->name }}</option>
                                     @endforeach
                                 @else
+                                    <option value="Jasa Cuci Toren & Kuras Tandon Air" {{ old('service_type') == 'Jasa Cuci Toren & Kuras Tandon Air' ? 'selected' : '' }}>Jasa Cuci Toren &amp; Kuras Tandon Air</option>
                                     <option value="Pelancaran Wastafel Dapur" {{ old('service_type') == 'Pelancaran Wastafel Dapur' ? 'selected' : '' }}>Pelancaran Wastafel Dapur Mampet</option>
                                     <option value="Pelancaran Floor Drain" {{ old('service_type') == 'Pelancaran Floor Drain' ? 'selected' : '' }}>Pelancaran Floor Drain Kamar Mandi</option>
                                     <option value="Pelancaran Kloset & WC" {{ old('service_type') == 'Pelancaran Kloset & WC' ? 'selected' : '' }}>Pelancaran Kloset &amp; WC Mampet</option>
