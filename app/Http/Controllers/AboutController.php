@@ -479,8 +479,8 @@ class AboutController extends Controller
     public function garansiLayanan()
     {
         $seo = [
-            'title'       => 'Jaminan & Kebijakan Garansi 30 Hari - Rootera Plumbing',
-            'description' => 'Garansi tuntas 30 hari resmi Rootera Plumbing. Ketentuan jaminan pengerjaan pelancaran pipa tanpa biaya tambahan jika terjadi sumbatan ulang.',
+            'title'       => 'Garansi Pengerjaan Saluran Mampet 30 Hari | Kebijakan Service Resmi Rootera',
+            'description' => 'Komitmen kepuasan Rootera Plumbing: Garansi pelancaran pipa mampet hingga 30 hari, skema tuntas baru bayar, invoice digital resmi, dan bebas biaya kunjungan ulang.',
             'canonical'   => url('/tentang-kami/garansi-layanan'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
