@@ -7,6 +7,8 @@ if (isset($district) && isset($category)) {
 } elseif (isset($category) && isset($city)) {
     $cityName = $city->full_name ?? $city->name;
     $waText = "Halo Rootera Plumbing, saya butuh order jasa {$category->name} di area {$cityName}. Mohon info ketersediaan teknisi.";
+} elseif (isset($category)) {
+    $waText = "Halo Rootera Plumbing, saya butuh info & konsultasi gratis jasa {$category->name}. Mohon info ketersediaan teknisi.";
 } elseif (isset($sector)) {
     $sectorCityName = isset($city) ? " di " . ($city->full_name ?? $city->name) : "";
     $waText = "Halo Rootera B2B Sales, kami ingin konsultasi kontrak maintenance plumbing sektor {$sector->sector_name}{$sectorCityName}. Mohon info penawaran.";

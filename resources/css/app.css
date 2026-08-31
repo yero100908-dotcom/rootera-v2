@@ -326,7 +326,7 @@
   .footer-container{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;text-align:center}
   .section{padding:3.5rem 0}
-  .whatsapp-float{bottom:8.5rem; right:1.5rem} /* Adjusted to sit in the gap between hero buttons */
+  .whatsapp-float{bottom:1.5rem; right:1rem} /* Fixed cleanly at bottom right without overlapping content */
 }
 @media(max-width:480px){
   .hero-actions{flex-direction:column; width:100%}
