@@ -15,18 +15,18 @@ class ServiceSectorController extends Controller
         return view('admin.service-sectors.index', compact('sectors'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'sector_name' => 'required|string|max:150',
             'description' => 'nullable|string',
             'icon'        => 'nullable|string|max:50',
-            'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'sort_order'  => 'nullable|integer',
         ]);
 
         if ($request->hasFile('image_path')) {
-            $validated['image_path'] = $request->file('image_path')->store('sectors', 'public');
+            $validated['image_path'] = $webpService->convertAndStore($request->file('image_path'), 'sectors');
         }
 
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
@@ -36,22 +36,20 @@ class ServiceSectorController extends Controller
             ->with('success', 'Sektor berhasil ditambahkan.');
     }
 
-    public function update(Request $request, ServiceSector $serviceSector)
+    public function update(Request $request, ServiceSector $serviceSector, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'sector_name' => 'required|string|max:150',
             'description' => 'nullable|string',
             'icon'        => 'nullable|string|max:50',
-            'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image_path'  => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'sort_order'  => 'nullable|integer',
             'is_active'   => 'nullable|boolean',
         ]);
 
         if ($request->hasFile('image_path')) {
-            if ($serviceSector->image_path) {
-                Storage::disk('public')->delete($serviceSector->image_path);
-            }
-            $validated['image_path'] = $request->file('image_path')->store('sectors', 'public');
+            $webpService->deleteIfExists($serviceSector->image_path);
+            $validated['image_path'] = $webpService->convertAndStore($request->file('image_path'), 'sectors');
         }
 
         $validated['is_active']  = $request->boolean('is_active');
@@ -74,11 +72,9 @@ class ServiceSectorController extends Controller
         ]);
     }
 
-    public function destroy(ServiceSector $serviceSector)
+    public function destroy(ServiceSector $serviceSector, \App\Services\WebpConverterService $webpService)
     {
-        if ($serviceSector->image_path) {
-            Storage::disk('public')->delete($serviceSector->image_path);
-        }
+        $webpService->deleteIfExists($serviceSector->image_path);
         $serviceSector->delete();
 
         return redirect()->route('admin.service-sectors.index')

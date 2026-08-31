@@ -241,4 +241,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/cities/{city}/districts', [CityManageController::class, 'storeDistrict'])->name('cities.districts.store');
     Route::delete('/districts/{district}', [CityManageController::class, 'destroyDistrict'])->name('districts.destroy');
 
+    // WYSIWYG Rich Text Editor Upload Endpoint
+    Route::post('/upload-image', [\App\Http\Controllers\Admin\EditorUploadController::class, 'uploadImage'])->name('upload.image');
+
 });

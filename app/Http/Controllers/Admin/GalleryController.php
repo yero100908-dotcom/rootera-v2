@@ -33,7 +33,7 @@ class GalleryController extends Controller
         return view('admin.gallery.index', compact('galleries'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'title'               => 'required|string|max:200',
@@ -41,7 +41,7 @@ class GalleryController extends Controller
             'media_type'          => 'required|in:image,video',
             'thumbnail_file'      => 'nullable|image|max:5120',
             'thumbnail_path'      => 'nullable|string',
-            'media_file'          => 'nullable|file|mimes:mp4,webm,mov,jpg,jpeg,png,webp|max:30720',
+            'media_file'          => 'nullable|file|mimes:mp4,webm,mov,jpg,jpeg,png,webp,bmp,gif,svg|max:30720',
             'external_media_url'  => 'nullable|url',
             'before_image_file'   => 'nullable|image|max:5120',
             'location_tag'        => 'nullable|string|max:100',
@@ -55,19 +55,25 @@ class GalleryController extends Controller
 
         // Handle thumbnail upload
         if ($request->hasFile('thumbnail_file')) {
-            $validated['thumbnail_path'] = $request->file('thumbnail_file')->store('galleries/thumbnails', 'public');
+            $validated['thumbnail_path'] = $webpService->convertAndStore($request->file('thumbnail_file'), 'galleries/thumbnails');
         } elseif (empty($validated['thumbnail_path'])) {
             $validated['thumbnail_path'] = 'images/JnJ.jpeg';
         }
 
-        // Handle main media file upload
+        // Handle main media file upload (Image converted to WebP, Video saved as-is)
         if ($request->hasFile('media_file')) {
-            $validated['media_file_path'] = $request->file('media_file')->store('galleries/media', 'public');
+            $file = $request->file('media_file');
+            $mime = $file->getMimeType();
+            if (Str::startsWith($mime, 'image/')) {
+                $validated['media_file_path'] = $webpService->convertAndStore($file, 'galleries/media');
+            } else {
+                $validated['media_file_path'] = $file->store('galleries/media', 'public');
+            }
         }
 
         // Handle before image upload
         if ($request->hasFile('before_image_file')) {
-            $validated['before_image_path'] = $request->file('before_image_file')->store('galleries/before', 'public');
+            $validated['before_image_path'] = $webpService->convertAndStore($request->file('before_image_file'), 'galleries/before');
         }
 
         $validated['is_featured'] = $request->boolean('is_featured');
@@ -80,7 +86,7 @@ class GalleryController extends Controller
             ->with('success', 'Dokumentasi proyek galeri baru berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Gallery $gallery)
+    public function update(Request $request, Gallery $gallery, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'title'               => 'required|string|max:200',
@@ -88,7 +94,7 @@ class GalleryController extends Controller
             'media_type'          => 'required|in:image,video',
             'thumbnail_file'      => 'nullable|image|max:5120',
             'thumbnail_path'      => 'nullable|string',
-            'media_file'          => 'nullable|file|mimes:mp4,webm,mov,jpg,jpeg,png,webp|max:30720',
+            'media_file'          => 'nullable|file|mimes:mp4,webm,mov,jpg,jpeg,png,webp,bmp,gif,svg|max:30720',
             'external_media_url'  => 'nullable|url',
             'before_image_file'   => 'nullable|image|max:5120',
             'location_tag'        => 'nullable|string|max:100',
@@ -101,24 +107,24 @@ class GalleryController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
 
         if ($request->hasFile('thumbnail_file')) {
-            if ($gallery->thumbnail_path && !Str::startsWith($gallery->thumbnail_path, ['http', 'images/'])) {
-                Storage::disk('public')->delete($gallery->thumbnail_path);
-            }
-            $validated['thumbnail_path'] = $request->file('thumbnail_file')->store('galleries/thumbnails', 'public');
+            $webpService->deleteIfExists($gallery->thumbnail_path);
+            $validated['thumbnail_path'] = $webpService->convertAndStore($request->file('thumbnail_file'), 'galleries/thumbnails');
         }
 
         if ($request->hasFile('media_file')) {
-            if ($gallery->media_file_path && !Str::startsWith($gallery->media_file_path, ['http', 'images/'])) {
-                Storage::disk('public')->delete($gallery->media_file_path);
+            $webpService->deleteIfExists($gallery->media_file_path);
+            $file = $request->file('media_file');
+            $mime = $file->getMimeType();
+            if (Str::startsWith($mime, 'image/')) {
+                $validated['media_file_path'] = $webpService->convertAndStore($file, 'galleries/media');
+            } else {
+                $validated['media_file_path'] = $file->store('galleries/media', 'public');
             }
-            $validated['media_file_path'] = $request->file('media_file')->store('galleries/media', 'public');
         }
 
         if ($request->hasFile('before_image_file')) {
-            if ($gallery->before_image_path && !Str::startsWith($gallery->before_image_path, ['http', 'images/'])) {
-                Storage::disk('public')->delete($gallery->before_image_path);
-            }
-            $validated['before_image_path'] = $request->file('before_image_file')->store('galleries/before', 'public');
+            $webpService->deleteIfExists($gallery->before_image_path);
+            $validated['before_image_path'] = $webpService->convertAndStore($request->file('before_image_file'), 'galleries/before');
         }
 
         $validated['is_featured'] = $request->boolean('is_featured');
@@ -129,17 +135,11 @@ class GalleryController extends Controller
             ->with('success', 'Data galeri proyek berhasil diperbarui.');
     }
 
-    public function destroy(Gallery $gallery)
+    public function destroy(Gallery $gallery, \App\Services\WebpConverterService $webpService)
     {
-        if ($gallery->thumbnail_path && !Str::startsWith($gallery->thumbnail_path, ['http', 'images/'])) {
-            Storage::disk('public')->delete($gallery->thumbnail_path);
-        }
-        if ($gallery->media_file_path && !Str::startsWith($gallery->media_file_path, ['http', 'images/'])) {
-            Storage::disk('public')->delete($gallery->media_file_path);
-        }
-        if ($gallery->before_image_path && !Str::startsWith($gallery->before_image_path, ['http', 'images/'])) {
-            Storage::disk('public')->delete($gallery->before_image_path);
-        }
+        $webpService->deleteIfExists($gallery->thumbnail_path);
+        $webpService->deleteIfExists($gallery->media_file_path);
+        $webpService->deleteIfExists($gallery->before_image_path);
 
         $gallery->delete();
 

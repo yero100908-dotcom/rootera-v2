@@ -29,17 +29,17 @@ class Article extends Model
 
     public function getThumbnailUrlAttribute(): string
     {
-        // Jika artikel berbentuk video (memiliki youtube_video_id atau post_type 'video_guide')
-        if ($this->youtube_video_id || $this->post_type === 'video_guide') {
-            if ($this->thumbnail && \Illuminate\Support\Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
+        if ($this->thumbnail) {
+            if (\Illuminate\Support\Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
                 return $this->thumbnail;
             }
-            if ($this->youtube_video_id) {
-                return "https://i.ytimg.com/vi/{$this->youtube_video_id}/hqdefault.jpg";
-            }
+            return \Illuminate\Support\Facades\Storage::url($this->thumbnail);
         }
 
-        // Untuk artikel catatan (bukan video), sambungkan seluruh thumbnail ke public/images/JnJ.webp
+        if ($this->youtube_video_id) {
+            return "https://i.ytimg.com/vi/{$this->youtube_video_id}/hqdefault.jpg";
+        }
+
         return asset('images/JnJ.webp');
     }
 

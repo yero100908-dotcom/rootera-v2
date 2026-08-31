@@ -16,7 +16,7 @@ class ServiceCategoryController extends Controller
         return view('admin.services.categories', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'name'             => 'required|string|max:150',
@@ -25,7 +25,7 @@ class ServiceCategoryController extends Controller
             'price_home'       => 'nullable|string|max:150',
             'price_corporate'  => 'nullable|string|max:150',
             'price_description'=> 'nullable|string',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'sort_order'       => 'nullable|integer',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
@@ -34,7 +34,7 @@ class ServiceCategoryController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('services', 'public');
+            $validated['image'] = $webpService->convertAndStore($request->file('image'), 'services');
         }
 
         ServiceCategory::create($validated);
@@ -43,7 +43,7 @@ class ServiceCategoryController extends Controller
             ->with('success', 'Kategori berhasil ditambahkan.');
     }
 
-    public function update(Request $request, ServiceCategory $serviceCategory)
+    public function update(Request $request, ServiceCategory $serviceCategory, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'name'             => 'required|string|max:150',
@@ -52,7 +52,7 @@ class ServiceCategoryController extends Controller
             'price_home'       => 'nullable|string|max:150',
             'price_corporate'  => 'nullable|string|max:150',
             'price_description'=> 'nullable|string',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'is_active'        => 'boolean',
             'sort_order'       => 'nullable|integer',
             'meta_title'       => 'nullable|string|max:255',
@@ -62,8 +62,8 @@ class ServiceCategoryController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            if ($serviceCategory->image) Storage::disk('public')->delete($serviceCategory->image);
-            $validated['image'] = $request->file('image')->store('services', 'public');
+            $webpService->deleteIfExists($serviceCategory->image);
+            $validated['image'] = $webpService->convertAndStore($request->file('image'), 'services');
         }
 
         $serviceCategory->update($validated);
@@ -72,9 +72,9 @@ class ServiceCategoryController extends Controller
             ->with('success', 'Kategori berhasil diperbarui.');
     }
 
-    public function destroy(ServiceCategory $serviceCategory)
+    public function destroy(ServiceCategory $serviceCategory, \App\Services\WebpConverterService $webpService)
     {
-        if ($serviceCategory->image) Storage::disk('public')->delete($serviceCategory->image);
+        $webpService->deleteIfExists($serviceCategory->image);
         $serviceCategory->delete();
 
         return redirect()->route('admin.service-categories.index')

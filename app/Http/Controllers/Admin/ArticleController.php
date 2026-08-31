@@ -21,14 +21,14 @@ class ArticleController extends Controller
         return view('admin.articles.form', ['article' => new Article(), 'mode' => 'create']);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
-            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
@@ -39,7 +39,7 @@ class ArticleController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
 
         if ($request->hasFile('thumbnail')) {
-            $validated['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
+            $validated['thumbnail'] = $webpService->convertAndStore($request->file('thumbnail'), 'articles');
         }
 
         if ($validated['status'] === 'published' && empty($validated['published_at'])) {
@@ -57,14 +57,14 @@ class ArticleController extends Controller
         return view('admin.articles.form', compact('article') + ['mode' => 'edit']);
     }
 
-    public function update(Request $request, Article $article)
+    public function update(Request $request, Article $article, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug,' . $article->id . '|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
-            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
@@ -75,8 +75,8 @@ class ArticleController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
 
         if ($request->hasFile('thumbnail')) {
-            if ($article->thumbnail) Storage::disk('public')->delete($article->thumbnail);
-            $validated['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
+            $webpService->deleteIfExists($article->thumbnail);
+            $validated['thumbnail'] = $webpService->convertAndStore($request->file('thumbnail'), 'articles');
         }
 
         if ($validated['status'] === 'published' && empty($article->published_at) && empty($validated['published_at'])) {
@@ -89,9 +89,9 @@ class ArticleController extends Controller
             ->with('success', 'Artikel berhasil diperbarui.');
     }
 
-    public function destroy(Article $article)
+    public function destroy(Article $article, \App\Services\WebpConverterService $webpService)
     {
-        if ($article->thumbnail) Storage::disk('public')->delete($article->thumbnail);
+        $webpService->deleteIfExists($article->thumbnail);
         $article->delete();
 
         return redirect()->route('admin.articles.index')

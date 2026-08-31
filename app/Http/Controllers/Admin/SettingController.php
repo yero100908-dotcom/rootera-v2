@@ -15,27 +15,23 @@ class SettingController extends Controller
         return view('admin.settings.index', compact('settings'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $data = $request->except('_token');
 
         foreach ($data as $key => $value) {
             if ($request->hasFile($key)) {
                 $file = $request->file($key);
-                $path = $file->store('settings', 'public');
                 
                 $setting = Setting::firstOrCreate(['key' => $key]);
-                if ($setting->value && !str_starts_with($setting->value, 'images/')) {
-                    Storage::disk('public')->delete($setting->value);
-                }
-                
+                $webpService->deleteIfExists($setting->value);
+
+                $path = $webpService->convertAndStore($file, 'settings');
+
                 $setting->update([
                     'value' => $path,
-                    'type' => 'image'
+                    'type'  => 'image'
                 ]);
-            } else {
-                // If it's a regular text input and not a file
-                // But for now, we only have file inputs. If we have text inputs later, handle here.
             }
         }
 

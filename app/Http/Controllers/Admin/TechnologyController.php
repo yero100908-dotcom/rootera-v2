@@ -49,7 +49,7 @@ class TechnologyController extends Controller
         ]);
 
         if ($request->hasFile('image_path')) {
-            $validated['image_path'] = $this->processAndStoreWebp($request->file('image_path'));
+            $validated['image_path'] = app(\App\Services\WebpConverterService::class)->convertAndStore($request->file('image_path'), 'technologies');
         }
 
         $validated['order_priority'] = $validated['order_priority'] ?? 0;
@@ -88,7 +88,7 @@ class TechnologyController extends Controller
             'feature_1_value'       => 'nullable|string|max:100',
             'feature_2_label'       => 'nullable|string|max:100',
             'feature_2_value'       => 'nullable|string|max:100',
-            'image_path'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image_path'            => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'order_priority'        => 'nullable|integer',
             'sort_order'            => 'nullable|integer',
             'is_active'             => 'nullable|boolean',
@@ -101,10 +101,8 @@ class TechnologyController extends Controller
         ]);
 
         if ($request->hasFile('image_path')) {
-            if ($technology->image_path && Storage::disk('public')->exists($technology->image_path)) {
-                Storage::disk('public')->delete($technology->image_path);
-            }
-            $validated['image_path'] = $this->processAndStoreWebp($request->file('image_path'));
+            app(\App\Services\WebpConverterService::class)->deleteIfExists($technology->image_path);
+            $validated['image_path'] = app(\App\Services\WebpConverterService::class)->convertAndStore($request->file('image_path'), 'technologies');
         }
 
         $validated['is_active']      = $request->boolean('is_active');
@@ -136,42 +134,10 @@ class TechnologyController extends Controller
 
     public function destroy(Technology $technology)
     {
-        if ($technology->image_path && Storage::disk('public')->exists($technology->image_path)) {
-            Storage::disk('public')->delete($technology->image_path);
-        }
+        app(\App\Services\WebpConverterService::class)->deleteIfExists($technology->image_path);
         $technology->delete();
 
         return redirect()->route('admin.technologies.index')
             ->with('success', 'Data Peralatan berhasil dihapus.');
-    }
-
-    /**
-     * Process uploaded file to WebP format if GD library available, or store safely.
-     */
-    private function processAndStoreWebp($file): string
-    {
-        $filename = 'tech_' . time() . '_' . Str::random(6) . '.webp';
-        $destinationPath = storage_path('app/public/technologies');
-
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0755, true);
-        }
-
-        $targetFile = $destinationPath . '/' . $filename;
-
-        if (function_exists('imagecreatefromstring') && function_exists('imagewebp')) {
-            $img = @imagecreatefromstring(file_get_contents($file->getRealPath()));
-            if ($img !== false) {
-                // Preserving transparency for PNG/WebP if needed
-                imagealphablending($img, true);
-                imagesavealpha($img, true);
-                imagewebp($img, $targetFile, 85);
-                imagedestroy($img);
-                return 'technologies/' . $filename;
-            }
-        }
-
-        // Fallback standard storage
-        return $file->store('technologies', 'public');
     }
 }

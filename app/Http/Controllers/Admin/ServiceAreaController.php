@@ -21,14 +21,14 @@ class ServiceAreaController extends Controller
         return view('admin.areas.form', ['area' => new ServiceArea(), 'mode' => 'create']);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'name'             => 'required|string|max:150',
             'slug'             => 'nullable|string|unique:service_areas,slug|max:150',
             'description'      => 'nullable|string',
             'province'         => 'nullable|string|max:100',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'google_maps_embed'=> 'nullable|string',
             'sort_order'       => 'nullable|integer',
             'meta_title'       => 'nullable|string|max:255',
@@ -38,7 +38,7 @@ class ServiceAreaController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('areas', 'public');
+            $validated['image'] = $webpService->convertAndStore($request->file('image'), 'areas');
         }
 
         ServiceArea::create($validated);
@@ -52,14 +52,14 @@ class ServiceAreaController extends Controller
         return view('admin.areas.form', ['area' => $serviceArea, 'mode' => 'edit']);
     }
 
-    public function update(Request $request, ServiceArea $serviceArea)
+    public function update(Request $request, ServiceArea $serviceArea, \App\Services\WebpConverterService $webpService)
     {
         $validated = $request->validate([
             'name'             => 'required|string|max:150',
             'slug'             => 'nullable|string|unique:service_areas,slug,' . $serviceArea->id . '|max:150',
             'description'      => 'nullable|string',
             'province'         => 'nullable|string|max:100',
-            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'image'            => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'google_maps_embed'=> 'nullable|string',
             'is_active'        => 'boolean',
             'sort_order'       => 'nullable|integer',
@@ -70,8 +70,8 @@ class ServiceAreaController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         if ($request->hasFile('image')) {
-            if ($serviceArea->image) Storage::disk('public')->delete($serviceArea->image);
-            $validated['image'] = $request->file('image')->store('areas', 'public');
+            $webpService->deleteIfExists($serviceArea->image);
+            $validated['image'] = $webpService->convertAndStore($request->file('image'), 'areas');
         }
 
         $serviceArea->update($validated);
@@ -80,9 +80,9 @@ class ServiceAreaController extends Controller
             ->with('success', 'Area layanan berhasil diperbarui.');
     }
 
-    public function destroy(ServiceArea $serviceArea)
+    public function destroy(ServiceArea $serviceArea, \App\Services\WebpConverterService $webpService)
     {
-        if ($serviceArea->image) Storage::disk('public')->delete($serviceArea->image);
+        $webpService->deleteIfExists($serviceArea->image);
         $serviceArea->delete();
 
         return redirect()->route('admin.service-areas.index')
