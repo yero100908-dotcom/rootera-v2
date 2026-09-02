@@ -102,10 +102,10 @@ $cityBreadcrumbs = [
             </div>
 
             <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; color: #ffffff;">
-                Jasa Saluran Pipa Mampet {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}
+                {!! $heroHeadline ?? ("Jasa Saluran Pipa Mampet " . ($city->full_name ?? $city->name ?? 'Wilayah Terkait')) !!}
             </h1>
             <p style="font-size: 1.1rem; color: rgba(255,255,255,0.85); max-width: 800px; margin-bottom: 2rem; line-height: 1.6;">
-                Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>{{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.
+                {!! $heroSubtitle ?? ("Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>" . ($city->full_name ?? $city->name ?? 'Wilayah Terkait') . "</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.") !!}
             </p>
 
             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">

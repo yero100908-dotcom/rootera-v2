@@ -17,10 +17,12 @@
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
     {{-- Dynamic SEO Meta Tags --}}
-    @if(request()->routeIs('home') || request()->path() === '/')
+    @if(isset($seo['title']) && !empty($seo['title']))
+        <title>{{ $seo['title'] }}</title>
+    @elseif(request()->routeIs('home') || request()->path() === '/')
         <title>Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi</title>
     @else
-        <title>{{ $seo['title'] ?? $title ?? 'Rootera Plumbing - Jasa Saluran Pipa Mampet 24 Jam' }}</title>
+        <title>{{ $title ?? 'Rootera Plumbing - Jasa Saluran Pipa Mampet 24 Jam' }}</title>
     @endif
     <meta name="description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
     <meta name="keywords" content="jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera">
@@ -35,10 +37,12 @@
     {{-- Open Graph --}}
     <meta property="og:type"        content="website">
     <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
-    @if(request()->routeIs('home') || request()->path() === '/')
+    @if(isset($seo['title']) && !empty($seo['title']))
+        <meta property="og:title"   content="{{ $seo['title'] }}">
+    @elseif(request()->routeIs('home') || request()->path() === '/')
         <meta property="og:title"   content="Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi">
     @else
-        <meta property="og:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
+        <meta property="og:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
     <meta property="og:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
@@ -47,10 +51,12 @@
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">
-    @if(request()->routeIs('home') || request()->path() === '/')
+    @if(isset($seo['title']) && !empty($seo['title']))
+        <meta name="twitter:title"   content="{{ $seo['title'] }}">
+    @elseif(request()->routeIs('home') || request()->path() === '/')
         <meta name="twitter:title"   content="Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi">
     @else
-        <meta name="twitter:title"   content="{{ $seo['title'] ?? $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
+        <meta name="twitter:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
     <meta name="twitter:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
     <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">

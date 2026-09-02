@@ -58,11 +58,11 @@ $regionSchema = [
         </div>
 
         <h1 style="font-size: clamp(2.1rem, 4vw, 3.25rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.25rem; color: #ffffff;">
-            Jasa Pipa Mampet Provinsi {{ $province->name }} — Rootera Plumbing
+            {!! $heroHeadline ?? ("Jasa Pipa Mampet Provinsi " . $province->name . " — Rootera Plumbing") !!}
         </h1>
 
         <p style="font-size: 1.15rem; color: rgba(255,255,255,0.9); max-width: 850px; margin-bottom: 2.25rem; line-height: 1.6;">
-            Daftar lengkap kota, kabupaten, dan kecamatan jangkauan pelancaran saluran pipa air mampet, wastafel, floor drain, dan kloset tanpa bongkar di wilayah <strong>{{ $province->name }}</strong> dan sekitarnya.
+            {!! $heroSubtitle ?? ("Daftar lengkap kota, kabupaten, dan kecamatan jangkauan pelancaran saluran pipa air mampet, wastafel, floor drain, dan kloset tanpa bongkar di wilayah <strong>" . $province->name . "</strong> dan sekitarnya.") !!}
         </p>
 
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">

@@ -9,11 +9,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // 1. ADD NEW CITIES IN LAMPUNG (PROVINCE_ID: 7)
+        // 1. ADD NEW CITIES IN LAMPUNG (DYNAMIC PROVINCE LOOKUP)
+        $lampungId = DB::table('provinces')->where('slug', 'lampung')->value('id') ?? 7;
+
         $metroCity = City::firstOrCreate(
             ['slug' => 'metro'],
             [
-                'province_id' => 7,
+                'province_id' => $lampungId,
                 'name' => 'Metro',
                 'type' => 'Kota',
                 'phone_number' => '0813-8540-4000',
@@ -29,7 +31,7 @@ return new class extends Migration
         $lampungSelatanKab = City::firstOrCreate(
             ['slug' => 'kabupaten-lampung-selatan'],
             [
-                'province_id' => 7,
+                'province_id' => $lampungId,
                 'name' => 'Lampung Selatan',
                 'type' => 'Kabupaten',
                 'phone_number' => '0813-8540-4000',

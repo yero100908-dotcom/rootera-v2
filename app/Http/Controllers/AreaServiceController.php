@@ -8,11 +8,19 @@ use App\Models\ServiceCategory;
 use App\Models\ProjectGallery;
 use App\Models\Article;
 use App\Models\Faq;
+use App\Services\SpintaxService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class AreaServiceController extends Controller
 {
+    protected SpintaxService $spintaxService;
+
+    public function __construct(SpintaxService $spintaxService)
+    {
+        $this->spintaxService = $spintaxService;
+    }
+
     /**
      * Master Index Directory Page (/jasa-saluran-mampet)
      */
@@ -110,12 +118,30 @@ class AreaServiceController extends Controller
 
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
 
+            // Priority Custom DB Meta Tags with Dynamic Fallback
+            $title = !empty($city->meta_title)
+                ? $city->meta_title
+                : "Jasa Saluran Pipa Mampet {$city->full_name} 24 Jam Bergaransi | Rootera (J&J Group)";
+
+            $description = !empty($city->meta_description)
+                ? $city->meta_description
+                : "Solusi jasa perbaikan pipa mampet, wastafel tersumbat, kran air, & toilet di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) oleh Rootera Plumbing.";
+
+            $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+
             $seo = [
-                'title'       => "Jasa Saluran Pipa Mampet {$city->full_name} 24 Jam Bergaransi | Rootera (J&J Group)",
-                'description' => "Solusi jasa perbaikan pipa mampet, wastafel tersumbat, kran air, & toilet di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) oleh Rootera Plumbing.",
-                'canonical'   => url("/jasa-saluran-mampet/{$city->slug}"),
+                'title'       => $title,
+                'description' => $description,
+                'canonical'   => $canonical,
                 'og_image'    => asset('images/JnJ.webp'),
             ];
+
+            // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
+            $seedKey = "city_hub_" . md5($canonical);
+            $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $city->full_name, $seedKey);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $city->estimated_arrival ?? "25–40 Menit", $seedKey);
+            $valueProps = $this->spintaxService->generateValueProps($city->name, $seedKey);
+            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $city->full_name, $seedKey);
 
             return view('pages.area-city', compact(
                 'city',
@@ -124,7 +150,11 @@ class AreaServiceController extends Controller
                 'projectShowcases',
                 'relatedArticles',
                 'faqs',
-                'seo'
+                'seo',
+                'heroHeadline',
+                'heroSubtitle',
+                'valueProps',
+                'areaTechnicalIntro'
             ))->render();
         });
 
@@ -148,16 +178,23 @@ class AreaServiceController extends Controller
 
             $allCategories = ServiceCategory::where('is_active', true)->orderBy('sort_order')->get();
 
+            $canonical = url("/area-jasa-pipa-mampet/{$province->slug}");
+
             $seo = [
                 'title'       => "Jasa Pipa Mampet Wilayah {$province->name} - 24 Jam | Rootera Plumbing",
                 'description' => "Layanan panggil teknisi pipa mampet profesional untuk seluruh kota & kabupaten di provinsi {$province->name}. Pengerjaan tanpa bongkar & bergaransi.",
-                'canonical'   => url("/area-jasa-pipa-mampet/{$province->slug}"),
+                'canonical'   => $canonical,
                 'og_image'    => asset('images/JnJ.webp'),
             ];
 
-            return view('pages.area-region', compact('province', 'allCategories', 'seo'))->render();
+            $seedKey = "region_hub_" . md5($canonical);
+            $heroHeadline = $this->spintaxService->generateHeroHeadline("Pipa Mampet", "Provinsi " . $province->name, $seedKey);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Pipa Mampet", "Provinsi " . $province->name, "25–45 Menit", $seedKey);
+
+            return view('pages.area-region', compact('province', 'allCategories', 'seo', 'heroHeadline', 'heroSubtitle'))->render();
         });
 
         return response($html);
     }
 }
+

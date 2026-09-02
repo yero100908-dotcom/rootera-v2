@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             PropertyTypeSeeder::class,
             GeoDatabaseSeeder::class,
             KeywordDirectorySeeder::class,
+            LampungFullCoverageSeeder::class,
             ProjectGallerySeeder::class,
             GallerySeeder::class,
             BlogSeeder::class,
