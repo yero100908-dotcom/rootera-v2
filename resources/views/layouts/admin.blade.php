@@ -248,6 +248,7 @@
 
         @php
         $unreadContactsCount = \App\Models\Contact::where('status', 'new')->count();
+        $unreviewedFaqFeedbackCount = \App\Models\FaqFeedback::where('is_reviewed', false)->count();
         @endphp
 
         <div style="padding:.25rem 0;flex:1">
@@ -317,7 +318,12 @@
 
             <a href="{{ route('admin.faqs.index') }}" class="sidebar-link {{ request()->routeIs('admin.faqs.*') ? 'active' : '' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                FAQ System
+                <span>FAQ System</span>
+                @if($unreviewedFaqFeedbackCount > 0)
+                <span class="ml-auto bg-amber-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm" title="Feedback pengunjung belum ditinjau">
+                    {{ $unreviewedFaqFeedbackCount }}
+                </span>
+                @endif
             </a>
 
             <a href="{{ route('admin.technologies.index') }}" class="sidebar-link {{ request()->routeIs('admin.technologies.*') ? 'active' : '' }}">

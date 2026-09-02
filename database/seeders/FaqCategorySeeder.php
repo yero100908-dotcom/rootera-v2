@@ -19,7 +19,7 @@ class FaqCategorySeeder extends Seeder
                 'sort_order' => 1,
             ],
             [
-                'name' => 'Metode & Teknologi Alat',
+                'name' => 'Metode & Mesin Spiral/Hydro Jetting',
                 'slug' => 'metode-dan-teknologi-alat',
                 'description' => 'Penjelasan teknologi pengerjaan pipa tanpa bongkar menggunakan mesin spiral rotary flex cable, hydro-jetting tekanan tinggi, dan inspeksi kamera CCTV.',
                 'icon' => '🛠️',
@@ -33,14 +33,14 @@ class FaqCategorySeeder extends Seeder
                 'sort_order' => 3,
             ],
             [
-                'name' => 'Cakupan Wilayah & Respon',
-                'slug' => 'cakupan-wilayah-dan-respon',
-                'description' => 'Jangkauan panggil teknisi 24 jam nonstop untuk Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung dengan estimasi tiba 25-40 menit.',
-                'icon' => '📍',
+                'name' => 'Cairan/Kimia & Bahaya',
+                'slug' => 'cairan-kimia-dan-bahaya',
+                'description' => 'Peringatan risiko penggunaan soda api, cairan kimia asam kuat, bahaya pipa PVC meleleh atau membeku keras, dan solusi aman bebas kimia.',
+                'icon' => '🧪',
                 'sort_order' => 4,
             ],
             [
-                'name' => 'Layanan B2B & Kontrak Maintenance',
+                'name' => 'Layanan B2B & Restoran/Gedung',
                 'slug' => 'layanan-b2b-dan-kontrak-maintenance',
                 'description' => 'Paket pemeliharaan berkala (PKS/Preventive Maintenance) untuk restoran, cafe, hotel, apartemen, mall, rumah sakit, dan kawasan industri pabrik.',
                 'icon' => '🏢',
@@ -52,6 +52,13 @@ class FaqCategorySeeder extends Seeder
                 'description' => 'Solusi dan panduan teknis penanganan wastafel berlemak membeku, kloset toilet meluap, floor drain kamar mandi bau, dan backflow air got saat hujan.',
                 'icon' => '💧',
                 'sort_order' => 6,
+            ],
+            [
+                'name' => 'Area Layanan & Respon 24 Jam',
+                'slug' => 'cakupan-wilayah-dan-respon',
+                'description' => 'Jangkauan panggil teknisi 24 jam nonstop untuk Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung dengan estimasi tiba 25-40 menit.',
+                'icon' => '📍',
+                'sort_order' => 7,
             ],
         ];
 

@@ -28,6 +28,12 @@ class FaqController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $allFaqs = Faq::where('is_active', true)
+            ->with('category')
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get();
+
         $searchResults = collect();
         if (!empty($searchQuery)) {
             $searchResults = Faq::where('is_active', true)
@@ -47,7 +53,7 @@ class FaqController extends Controller
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
-        return view('pages.faq.index', compact('categories', 'featuredFaqs', 'searchResults', 'searchQuery', 'seo'));
+        return view('pages.faq.index', compact('categories', 'allFaqs', 'featuredFaqs', 'searchResults', 'searchQuery', 'seo'));
     }
 
     /**
@@ -103,5 +109,51 @@ class FaqController extends Controller
         ];
 
         return view('pages.faq.show', compact('faq', 'relatedFaqs', 'seo'));
+    }
+
+    /**
+     * Submit Interactive Feedback for single FAQ (/faq/{id}/feedback)
+     */
+    public function submitFeedback(Request $request, int $id)
+    {
+        $faq = Faq::where('is_active', true)->findOrFail($id);
+
+        $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
+            'is_helpful' => 'required|boolean',
+            'reason'     => 'nullable|string|max:255',
+            'comment'    => 'nullable|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        $sessionKey = 'faq_feedback_voted_' . $faq->id;
+
+        if ($request->session()->has($sessionKey)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Anda sudah memberikan feedback untuk pertanyaan ini.',
+            ]);
+        }
+
+        \App\Models\FaqFeedback::create([
+            'faq_id'     => $faq->id,
+            'is_helpful' => $request->boolean('is_helpful'),
+            'reason'     => $request->input('reason'),
+            'comment'    => $request->input('comment'),
+            'ip_address' => $request->ip(),
+            'user_agent' => substr($request->userAgent() ?? '', 0, 500),
+        ]);
+
+        $request->session()->put($sessionKey, true);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Terima kasih atas masukan Anda!',
+        ]);
     }
 }

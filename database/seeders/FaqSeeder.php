@@ -11,6 +11,9 @@ class FaqSeeder extends Seeder
 {
     public function run(): void
     {
+        // Delete stale or invalid FAQs with empty slugs
+        Faq::whereNull('slug')->orWhere('slug', '')->delete();
+
         // First reset all is_featured_home flags to false
         Faq::query()->update(['is_featured_home' => false]);
 
@@ -123,6 +126,29 @@ class FaqSeeder extends Seeder
                 'sort_order' => 14,
             ],
 
+            // 4. Cairan/Kimia & Bahaya
+            [
+                'cat' => 'cairan-kimia-dan-bahaya',
+                'question' => 'Apakah aman menggunakan soda api (Sodium Hydroxide) untuk melancarkan saluran mampet?',
+                'answer' => 'Sangat TIDAK disarankan. Reaksi kimia soda api dengan air menghasilkan suhu panas ekstrem yang dapat melelehkan, merenggangkan sambungan lem, atau meretakkan pipa PVC paralon rumah. Selain itu, jika soda api tidak berhasil menghancurkan sumbatan, ia akan mendingin dan membeku keras seperti semen di dalam pipa, memperparah penyumbatan.',
+                'is_featured_home' => false,
+                'sort_order' => 21,
+            ],
+            [
+                'cat' => 'cairan-kimia-dan-bahaya',
+                'question' => 'Mengapa cairan pembersih asam pekat dapat merusak instalasi plumbing?',
+                'answer' => 'Cairan pembersih berbasis asam sulfat atau asam klorida berorientasi merusak korosif pada leher angsa, seal karet, dan pipa besi/baja. Uap asam pekat juga sangat berbahaya bagi pernapasan dan mata penghuni rumah. Metode Rootera menggunakan mekanis rotary tanpa bahan kimia berbahaya sehingga 100% aman untuk instalasi & kesehatan.',
+                'is_featured_home' => false,
+                'sort_order' => 22,
+            ],
+            [
+                'cat' => 'cairan-kimia-dan-bahaya',
+                'question' => 'Apa yang harus dilakukan jika pipa sudah telanjur disiram soda api dan membeku?',
+                'answer' => 'Jangan menyiramkan bahan kimia tambahan lagi karena dapat membahayakan teknisi. Segera hubungi Rootera Plumbing. Tim teknisi kami akan menggunakan mesin spiral kabel flex khusus untuk mengikis dan memecah gumpalan batu soda api secara mekanis tanpa merusak pipa PVC Anda.',
+                'is_featured_home' => false,
+                'sort_order' => 23,
+            ],
+
             // 5. Layanan B2B & Kontrak Maintenance
             [
                 'cat' => 'layanan-b2b-dan-kontrak-maintenance',
@@ -163,8 +189,8 @@ class FaqSeeder extends Seeder
             ],
             [
                 'cat' => 'masalah-saluran-spesifik',
-                'question' => 'Apakah aman menggunakan soda api / bahan kimia pembersih pipa mampet?',
-                'answer' => 'Sangat tidak disarankan. Soda api reaksi kimianya menghasilkan panas tinggi yang dapat menyebabkan pipa PVC melengkung, mengkerut, bahkan pecah. Selain itu, soda api yang mendingin di dalam pipa justru bisa membeku menjadi gumpalan batu yang makin menyumbat pipa.',
+                'question' => 'Bagaimana cara mengatasi saluran kloset / toilet yang sering mampet meluap?',
+                'answer' => 'Kloset mampet umumnya disebabkan penumpukan tisu basah, pembalut, mainan anak, atau kapasitas septic tank yang sudah penuh. Teknisi Rootera menggunakan peralatan auger pendorong khusus kloset untuk menarik benda asing tanpa perlu membongkar mangkuk kloset Anda.',
                 'is_featured_home' => false,
                 'sort_order' => 20,
             ],

@@ -3,6 +3,18 @@
 @section('page-title', 'Kelola Multi-Tier FAQ Knowledge Base')
 
 @section('admin-content')
+<div class="space-y-6">
+
+    {{-- Navigation Tabs --}}
+    <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
+        <a href="{{ route('admin.faqs.index') }}" class="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-white shadow-xs">
+            📋 Kelola Daftar FAQ
+        </a>
+        <a href="{{ route('admin.faqs.feedback') }}" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors">
+            💬 Respon &amp; Feedback Pengunjung
+        </a>
+    </div>
+
 <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xs overflow-hidden">
     {{-- Header Action Bar --}}
     <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
@@ -256,8 +268,8 @@ function toggleFaq(id, btn) {
     .then(r => r.json())
     .then(data => {
         location.reload();
-    });
 }
 </script>
 @endpush
+</div>
 @endsection

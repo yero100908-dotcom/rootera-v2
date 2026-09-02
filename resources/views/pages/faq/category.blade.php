@@ -50,87 +50,98 @@ $catFaqSchema = [
 @endsection
 
 @section('content')
-<!-- Hero Category Section -->
-<section style="background: linear-gradient(135deg, #0A2E78 0%, #04122C 100%); color: #ffffff; padding: 4rem 1.5rem; border-bottom: 4px solid #169F81;">
-    <div style="max-width: 1000px; margin: 0 auto;">
-        
-        <div style="display: flex; items-center; gap: 0.5rem; color: #2dd4bf; font-size: 0.88rem; font-weight: 700; margin-bottom: 1rem;">
-            <a href="{{ route('faq.index') }}" style="color: #2dd4bf; text-decoration: none;">← Pusat Bantuan FAQ</a>
-            <span>/</span>
-            <span>Kategori {{ $category->name }}</span>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-            <span style="font-size: 3rem;">{{ $category->icon }}</span>
-            <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #ffffff; margin: 0;">
-                FAQ {{ $category->name }}
-            </h1>
-        </div>
-
-        <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9); max-width: 800px; line-height: 1.6; margin-bottom: 2rem;">
-            {{ $category->description }}
-        </p>
-
-        <span style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #ffffff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700;">
-            Daftar {{ $category->faqs->count() }} Pertanyaan &amp; Jawaban Mendalam
-        </span>
-    </div>
-</section>
-
-<!-- FAQs List Section -->
-<section style="padding: 4.5rem 1.5rem; max-width: 1000px; margin: 0 auto;">
+<div class="bg-slate-50 min-h-screen text-slate-800 font-['Inter',sans-serif]">
     
-    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-        @forelse($category->faqs as $faq)
-            <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 18px; padding: 1.75rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                <h2 style="color: #0A2E78; font-size: 1.25rem; font-weight: 800; margin-bottom: 0.85rem;">
-                    <a href="{{ route('faq.show', $faq->slug) }}" style="color: inherit; text-decoration: none;">
-                        ❓ {{ $faq->question }}
-                    </a>
-                </h2>
+    {{-- Hero Section --}}
+    <section class="relative overflow-hidden bg-gradient-to-br from-[#0B192C] via-[#0A2540] to-[#0d3a94] text-white py-12 md:py-16 border-b border-cyan-500/20">
+        <div class="container mx-auto px-4 max-w-4xl relative z-10">
+            
+            {{-- Breadcrumb Navigation --}}
+            <div class="flex items-center gap-2 text-xs sm:text-sm text-cyan-300 font-semibold mb-4">
+                <a href="{{ route('faq.index') }}" class="hover:underline flex items-center gap-1">
+                    <span>← Pusat Bantuan FAQ</span>
+                </a>
+                <span class="text-slate-400">/</span>
+                <span class="text-slate-200">Kategori {{ $category->name }}</span>
+            </div>
 
-                <div style="color: #475569; font-size: 1rem; line-height: 1.7; border-top: 1px solid #F1F5F9; padding-top: 1rem; margin-bottom: 1.25rem;">
-                    {!! $faq->answer !!}
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E2E8F0; padding-top: 0.85rem;">
-                    <a href="{{ route('faq.show', $faq->slug) }}" style="color: #169F81; font-weight: 700; font-size: 0.88rem; text-decoration: none;">
-                        Direct Link Halaman Pertanyaan →
-                    </a>
-                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya ingin menanyakan hal ini: ' . $faq->question) }}" target="_blank" style="color: #25D366; font-weight: 700; font-size: 0.85rem; text-decoration: none;">
-                        💬 Tanya CS via WA
-                    </a>
+            <div class="flex items-center gap-4 mb-4">
+                <span class="text-4xl sm:text-5xl p-3 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-md">
+                    {{ $category->icon }}
+                </span>
+                <div>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold font-['Plus_Jakarta_Sans',sans-serif] text-white">
+                        FAQ {{ $category->name }}
+                    </h1>
+                    <span class="inline-block mt-1 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-bold">
+                        {{ $category->faqs->count() }} Pertanyaan Terverifikasi
+                    </span>
                 </div>
             </div>
-        @empty
-            <div style="text-align: center; padding: 3rem; color: #94A3B8;">
-                Belum ada pertanyaan pada kategori ini.
-            </div>
-        @endforelse
-    </div>
 
-</section>
-
-<!-- Related Categories Navigation Grid -->
-@if(isset($allCategories) && $allCategories->isNotEmpty())
-<section style="padding: 4rem 1.5rem; background: #F8FAFC; border-top: 1px solid #E2E8F0;">
-    <div style="max-width: 1100px; margin: 0 auto;">
-        <h3 style="color: #0A2E78; font-size: 1.4rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center;">Kategori FAQ Lainnya</h3>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.25rem;">
-            @foreach($allCategories as $catItem)
-                @if($catItem->id !== $category->id)
-                    <a href="{{ route('faq.category', $catItem->slug) }}" style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.25rem; color: #0A2E78; text-decoration: none; display: flex; align-items: center; gap: 0.85rem;" class="hover:border-[#169F81]">
-                        <span style="font-size: 1.8rem;">{{ $catItem->icon }}</span>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.95rem;">{{ $catItem->name }}</div>
-                            <div style="font-size: 0.78rem; color: #64748B;">{{ $catItem->faqs_count }} Pertanyaan</div>
-                        </div>
-                    </a>
-                @endif
-            @endforeach
+            <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                {{ $category->description }}
+            </p>
         </div>
-    </div>
-</section>
-@endif
+    </section>
+
+    {{-- FAQs List Section --}}
+    <main class="container mx-auto px-4 py-10 max-w-4xl">
+        <div class="space-y-4">
+            @forelse($category->faqs as $faq)
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-md transition-all">
+                    <h2 class="text-base sm:text-lg font-bold text-slate-900 mb-3 leading-snug">
+                        <a href="{{ route('faq.show', $faq->slug) }}" class="hover:text-cyan-600 transition-colors">
+                            ❓ {{ $faq->question }}
+                        </a>
+                    </h2>
+
+                    <div class="text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3 mb-4 space-y-2">
+                        {!! $faq->answer !!}
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-dashed border-slate-200 text-xs sm:text-sm">
+                        <a href="{{ route('faq.show', $faq->slug) }}" class="text-cyan-600 hover:text-cyan-700 font-bold flex items-center gap-1">
+                            <span>Halaman Pertanyaan Lengkap →</span>
+                        </a>
+                        
+                        <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya membaca FAQ category ' . $category->name . ' tentang: ' . $faq->question) }}" 
+                           target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm w-fit">
+                            <span>💬 Tanya CS via WA</span>
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center text-slate-500">
+                    Belum ada pertanyaan pada kategori ini.
+                </div>
+            @endforelse
+        </div>
+    </main>
+
+    {{-- Other Categories Navigation --}}
+    @if(isset($allCategories) && $allCategories->isNotEmpty())
+    <section class="bg-slate-100 py-12 border-t border-slate-200">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-6 text-center">Kategori FAQ Lainnya</h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                @foreach($allCategories as $catItem)
+                    @if($catItem->id !== $category->id)
+                        <a href="{{ route('faq.category', $catItem->slug) }}" 
+                           class="bg-white p-4 rounded-xl border border-slate-200 hover:border-cyan-500 shadow-sm hover:shadow transition-all flex items-center gap-3">
+                            <span class="text-2xl">{{ $catItem->icon }}</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 text-xs sm:text-sm">{{ $catItem->name }}</h4>
+                                <span class="text-[11px] text-slate-500">{{ $catItem->faqs_count }} Pertanyaan</span>
+                            </div>
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+</div>
 @endsection

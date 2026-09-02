@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
+use App\Helpers\YouTubeHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -34,9 +35,21 @@ class ArticleController extends Controller
             'published_at'     => 'nullable|date',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+            'youtube_video_id' => 'nullable|string|max:255',
+            'category'         => 'nullable|string|max:100',
+            'post_type'        => 'nullable|string|max:50',
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
+
+        if (!empty($validated['youtube_video_id'])) {
+            $extractedId = YouTubeHelper::extractId($validated['youtube_video_id']);
+            $validated['youtube_video_id'] = $extractedId;
+            $validated['video_embed_url'] = YouTubeHelper::getEmbedUrl($extractedId);
+            if (empty($validated['post_type'])) {
+                $validated['post_type'] = 'video_guide';
+            }
+        }
 
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $webpService->convertAndStore($request->file('thumbnail'), 'articles');
@@ -70,9 +83,24 @@ class ArticleController extends Controller
             'published_at'     => 'nullable|date',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+            'youtube_video_id' => 'nullable|string|max:255',
+            'category'         => 'nullable|string|max:100',
+            'post_type'        => 'nullable|string|max:50',
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
+
+        if (!empty($validated['youtube_video_id'])) {
+            $extractedId = YouTubeHelper::extractId($validated['youtube_video_id']);
+            $validated['youtube_video_id'] = $extractedId;
+            $validated['video_embed_url'] = YouTubeHelper::getEmbedUrl($extractedId);
+            if (empty($validated['post_type'])) {
+                $validated['post_type'] = 'video_guide';
+            }
+        } else {
+            $validated['youtube_video_id'] = null;
+            $validated['video_embed_url'] = null;
+        }
 
         if ($request->hasFile('thumbnail')) {
             $webpService->deleteIfExists($article->thumbnail);
@@ -98,3 +126,4 @@ class ArticleController extends Controller
             ->with('success', 'Artikel berhasil dihapus.');
     }
 }
+

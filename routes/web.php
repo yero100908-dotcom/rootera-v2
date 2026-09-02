@@ -86,6 +86,7 @@ Route::redirect('/tentang-kami/faq', '/faq', 301)->name('tentang-kami.faq');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
 Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::class, 'category'])->name('faq.category');
 Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');
+Route::post('/faq/{id}/feedback', [App\Http\Controllers\FaqController::class, 'submitFeedback'])->name('faq.feedback');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/galeri-dokumentasi', [App\Http\Controllers\GalleryController::class, 'index'])->name('galeri');
@@ -175,9 +176,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::delete('/contacts/{contact}', [ContactManageController::class, 'destroy'])->name('contacts.destroy');
 
     // =====================================================
-    // FAQ CRUD
+    // FAQ CRUD & Feedback Management
     // =====================================================
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs.index');
+    Route::get('/faqs/feedback', [FaqController::class, 'feedbackIndex'])->name('faqs.feedback');
+    Route::patch('/faqs/feedback/{feedback}/toggle-review', [FaqController::class, 'toggleFeedbackReview'])->name('faqs.feedback.toggle');
+    Route::delete('/faqs/feedback/{feedback}', [FaqController::class, 'destroyFeedback'])->name('faqs.feedback.destroy');
     Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
     Route::put('/faqs/{faq}', [FaqController::class, 'update'])->name('faqs.update');
     Route::patch('/faqs/{faq}/toggle', [FaqController::class, 'toggleActive'])->name('faqs.toggle');

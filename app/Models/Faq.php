@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Faq extends Model
@@ -41,5 +42,10 @@ class Faq extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(FaqCategory::class, 'faq_category_id');
+    }
+
+    public function feedback(): HasMany
+    {
+        return $this->hasMany(FaqFeedback::class);
     }
 }

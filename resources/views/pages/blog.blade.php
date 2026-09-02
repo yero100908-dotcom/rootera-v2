@@ -140,6 +140,9 @@
                     #{{ $subTag }}
                 </a>
             @endforeach
+            <a href="https://www.youtube.com/channel/UCKC8vr5ES6beRrSkgOq_4qw" target="_blank" rel="noopener noreferrer" style="background: #dc2626; color: #ffffff; padding: 0.25rem 0.75rem; border-radius: 9999px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.3rem;" class="hover:bg-red-700 transition">
+                📺 Channel YouTube Resmi →
+            </a>
             @if(!empty($currentSearch) || !empty($currentTag))
                 <a href="{{ route('blog') }}" style="color: #dc2626; font-weight: 700; text-decoration: underline; margin-left: 0.5rem;">Reset Filter ×</a>
             @endif

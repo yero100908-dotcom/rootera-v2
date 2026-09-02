@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Helpers\YouTubeHelper;
 
 class Article extends Model
 {
@@ -27,6 +28,22 @@ class Article extends Model
                      ->where('published_at', '<=', now());
     }
 
+    /**
+     * Mutator to automatically extract pure 11-char YouTube ID from any input URL.
+     */
+    public function setYoutubeVideoIdAttribute($value): void
+    {
+        $this->attributes['youtube_video_id'] = YouTubeHelper::extractId($value);
+    }
+
+    /**
+     * Get privacy-enhanced YouTube embed URL.
+     */
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        return YouTubeHelper::getEmbedUrl($this->youtube_video_id);
+    }
+
     public function getThumbnailUrlAttribute(): string
     {
         if ($this->thumbnail) {
@@ -37,7 +54,8 @@ class Article extends Model
         }
 
         if ($this->youtube_video_id) {
-            return "https://i.ytimg.com/vi/{$this->youtube_video_id}/hqdefault.jpg";
+            return YouTubeHelper::getThumbnailUrl($this->youtube_video_id, 'hqdefault', false)
+                ?: "https://i.ytimg.com/vi/{$this->youtube_video_id}/hqdefault.jpg";
         }
 
         return asset('images/JnJ.webp');
@@ -54,3 +72,4 @@ class Article extends Model
         $this->increment('views');
     }
 }
+

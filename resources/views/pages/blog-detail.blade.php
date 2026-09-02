@@ -114,21 +114,6 @@ $readTimeMinutes = max(2, ceil($wordCount / 180));
     </div>
 </header>
 
-{{-- Featured Video or Image --}}
-@if($article->youtube_video_id)
-<div class="article-hero-img">
-    <div style="width:100%; aspect-ratio:16/9; border-radius:20px; overflow:hidden; background:#000; box-shadow: 0 20px 40px rgba(0,0,0,.08);">
-        <iframe style="width:100%; height:100%; border:0;" src="https://www.youtube-nocookie.com/embed/{{ $article->youtube_video_id }}" title="{{ $article->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-</div>
-@elseif($article->thumbnail_url)
-<div class="article-hero-img">
-    <figure>
-        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}" width="1000" height="550" loading="eager" decoding="async">
-    </figure>
-</div>
-@endif
-
 {{-- Main Article Content Layout --}}
 <section class="pb-20">
     <div class="article-layout">
@@ -136,6 +121,17 @@ $readTimeMinutes = max(2, ceil($wordCount / 180));
         {{-- Article Content Column --}}
         <article class="article-body-content">
             
+            {{-- Single Featured Video or Featured Image (Inside Main Article Column) --}}
+            @if($article->youtube_video_id)
+                <div class="mb-8">
+                    <x-youtube-embed :url="$article->youtube_video_id" :title="$article->title" />
+                </div>
+            @elseif($article->thumbnail_url)
+                <div class="mb-8 rounded-2xl overflow-hidden shadow-md">
+                    <img src="{{ $article->thumbnail_url }}" alt="{{ $article->title }}" class="w-full h-auto object-cover max-h-[480px]">
+                </div>
+            @endif
+
             {{-- Dynamic Table of Contents (TOC) --}}
             <div id="tableOfContents" class="toc-container hidden">
                 <div class="toc-title">
@@ -144,9 +140,16 @@ $readTimeMinutes = max(2, ceil($wordCount / 180));
                 <ol id="tocList" class="toc-list space-y-1 text-sm list-decimal pl-5"></ol>
             </div>
 
+            @php
+                // Prevent video player duplication if raw content HTML contains an inline iframe
+                $cleanedArticleContent = $article->youtube_video_id 
+                    ? preg_replace('/<iframe[^>]*>.*?<\/iframe>/is', '', $article->content) 
+                    : $article->content;
+            @endphp
+
             {{-- Main Article HTML Content --}}
             <div id="articleBody">
-                {!! $article->content !!}
+                {!! $cleanedArticleContent !!}
             </div>
 
             {{-- High Conversion WhatsApp CTA Box --}}
@@ -204,6 +207,20 @@ $readTimeMinutes = max(2, ceil($wordCount / 180));
                     </p>
                     <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya mau panggil teknisi pipa mampet sekarang.') }}" target="_blank" class="w-full inline-flex items-center justify-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white text-xs font-extrabold py-3 px-4 rounded-xl transition text-decoration-none">
                         <span>📱 Panggil Teknisi WA 24Jam</span>
+                    </a>
+                </div>
+
+                {{-- YouTube Channel Official Banner --}}
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/80 rounded-3xl p-5 text-white shadow-md text-center">
+                    <div class="w-10 h-10 rounded-full bg-red-600/20 text-red-500 flex items-center justify-center mx-auto mb-2 border border-red-500/30">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </div>
+                    <h4 class="text-sm font-bold text-white font-['Plus_Jakarta_Sans',sans-serif] mb-1">YouTube Resmi Rootera</h4>
+                    <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                        Tonton dokumentasi aksi teknisi &amp; tips edukasi pelancaran pipa 24 jam.
+                    </p>
+                    <a href="https://www.youtube.com/channel/UCKC8vr5ES6beRrSkgOq_4qw" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white text-xs font-extrabold py-2.5 px-4 rounded-xl transition text-decoration-none shadow-md">
+                        <span>▶ Subscribe Channel YouTube</span>
                     </a>
                 </div>
 

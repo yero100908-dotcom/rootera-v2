@@ -110,6 +110,39 @@
                     </div>
                 </div>
 
+                {{-- YouTube Video & Category Settings Card --}}
+                <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
+                    <h3 class="font-extrabold text-slate-900 text-base mb-4 border-b border-slate-100 pb-3 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        Video YouTube &amp; Kategori
+                    </h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="youtube_video_id" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 block">Link / ID Video YouTube</label>
+                            <input type="text" id="youtube_video_id" name="youtube_video_id" value="{{ old('youtube_video_id', $article->youtube_video_id) }}" placeholder="https://youtu.be/... atau ID: 5O63iR_8NIs"
+                                   class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-red-500/20 focus:border-red-500 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 transition-all">
+                            <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                                Format didukung: <code>youtube.com/watch?v=...</code>, <code>youtu.be/...</code>, <code>shorts/...</code>, atau ID langsung.
+                            </p>
+                        </div>
+
+                        <div>
+                            <label for="category" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 block">Kategori Post</label>
+                            <input type="text" id="category" name="category" value="{{ old('category', $article->category ?? 'Edukasi Plumbing') }}" placeholder="Contoh: Wastafel, Hydro-Jetting, Kloset"
+                                   class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 transition-all">
+                        </div>
+
+                        <div>
+                            <label for="post_type" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 block">Tipe Post</label>
+                            <select id="post_type" name="post_type" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-800 transition-all">
+                                <option value="article" {{ old('post_type', $article->post_type) === 'article' ? 'selected' : '' }}>📄 Artikel / Panduan Teknis</option>
+                                <option value="video_guide" {{ old('post_type', $article->post_type) === 'video_guide' || $article->youtube_video_id ? 'selected' : '' }}>▶️ Video Panduan Utama</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- Image Thumbnail Card with Instant Live Preview --}}
                 <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
                     <h3 class="font-extrabold text-slate-900 text-base mb-4 border-b border-slate-100 pb-3">Gambar Thumbnail</h3>
@@ -118,6 +151,8 @@
                         <div id="previewContainer" class="w-full aspect-[16/10] bg-slate-100 rounded-2xl overflow-hidden border border-slate-200/80 relative flex items-center justify-center">
                             @if($article->thumbnail)
                                 <img id="thumbnailPreview" src="{{ Storage::url($article->thumbnail) }}" alt="Thumbnail" class="w-full h-full object-cover">
+                            @elseif($article->youtube_video_id)
+                                <img id="thumbnailPreview" src="https://i.ytimg.com/vi/{{ $article->youtube_video_id }}/hqdefault.jpg" alt="Thumbnail YouTube" class="w-full h-full object-cover">
                             @else
                                 <img id="thumbnailPreview" src="" alt="Thumbnail Preview" class="w-full h-full object-cover hidden">
                                 <span id="placeholderText" class="text-xs text-slate-400 font-bold flex flex-col items-center gap-1">
