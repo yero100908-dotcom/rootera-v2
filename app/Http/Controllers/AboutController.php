@@ -10,9 +10,9 @@ class AboutController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Tentang Kami - Rootera Plumbing | Pionir Jasa Pipa Mampet & Drainase Tanpa Bongkar',
-            'description' => 'Mengenal Rootera Plumbing, spesialis pelancaran pipa mampet, saluran air, dan drainase modern tanpa bongkar bergaransi. Didukung 50+ teknisi tersertifikasi K3 & teknologi Ridgid & Hydro-Jetting.',
-            'keywords'    => 'Jasa pipa mampet tanpa bongkar, hydro jetting profesional, deteksi cctv pipa, teknisi plumbing bergaransi, rootera plumbing, tim teknisi plumbing',
+            'title'       => 'Tentang Kami — Profil Perusahaan, Workshop Resmi & Tim Ahli Rootera Plumbing',
+            'description' => 'Mengenal profil Rootera Plumbing, spesialis saluran pipa mampet tanpa bongkar yang dipimpin oleh Rafael Abimanyu. Kantor pusat & workshop resmi di Cijantung, Jakarta Timur. Bergaransi & siaga 24 jam.',
+            'keywords'    => 'Profil Perusahaan & Legalitas Operasional, Workshop & Pusat Logistik Armada Jakarta Timur, Standar Kerja Spesialis Pipa Mampet Tanpa Bongkar Bergaransi, Rafael Abimanyu',
             'canonical'   => url('/tentang-kami'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
@@ -107,114 +107,8 @@ class AboutController extends Controller
             ],
         ];
 
-        // Standardized SEO Staff Data
-        $teamMembers = [
-            [
-                'name'  => 'Rafael Abimanyu',
-                'role'  => 'Founder & Lead Director',
-                'badge' => 'Leadership',
-                'image' => asset('assets/staff/rafael-abimanyu-rootera-plumbing.webp'),
-                'alt'   => 'Foto Rafael Abimanyu - Founder & Lead Director Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Yero Virdhan',
-                'role'  => 'IT & Software Lead',
-                'badge' => 'IT & Systems',
-                'image' => asset('assets/staff/yero-virdhan-it-rootera-plumbing.webp'),
-                'alt'   => 'Foto Yero Virdhan - IT & Software Lead Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Ariana Mikayla',
-                'role'  => 'IT & Digital Systems',
-                'badge' => 'IT Support',
-                'image' => asset('assets/staff/ariana-mikayla-it-rootera-plumbing.webp'),
-                'alt'   => 'Foto Ariana Mikayla - IT & Digital Systems Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Ghaitsaa',
-                'role'  => 'Customer Service & Dispatcher 24/7',
-                'badge' => 'Customer Care',
-                'image' => asset('assets/staff/ghaitsaa-customer-service-rootera-plumbing.webp'),
-                'alt'   => 'Foto Ghaitsaa - Customer Service & Dispatcher 24/7 Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Maura',
-                'role'  => 'Marketing Specialist',
-                'badge' => 'Marketing',
-                'image' => asset('assets/staff/maura-marketing-rootera-plumbing.webp'),
-                'alt'   => 'Foto Maura - Marketing Specialist Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Yoga',
-                'role'  => 'Marketing Specialist',
-                'badge' => 'Marketing',
-                'image' => asset('assets/staff/yoga-marketing-rootera-plumbing.webp'),
-                'alt'   => 'Foto Yoga - Marketing Specialist Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Rafa R',
-                'role'  => 'Social Media Manager',
-                'badge' => 'Social Media',
-                'image' => asset('assets/staff/rafa-r-manage-sosmed-rootera-plumbing.webp'),
-                'alt'   => 'Foto Rafa R - Social Media Manager Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Aries',
-                'role'  => 'Teknisi Plumbing Senior',
-                'badge' => 'Teknisi Senior',
-                'image' => asset('assets/staff/aries-teknisi-plumbing-senior-rootera-plumbing.webp'),
-                'alt'   => 'Foto Aries - Teknisi Plumbing Senior Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Harmoko',
-                'role'  => 'Teknisi Plumbing Senior',
-                'badge' => 'Teknisi Senior',
-                'image' => asset('assets/staff/harmoko-teknisi-plumbing-senior-rootera-plumbing.webp'),
-                'alt'   => 'Foto Harmoko - Teknisi Plumbing Senior Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Ikbal Ramadhan',
-                'role'  => 'Teknisi Saluran Senior',
-                'badge' => 'Teknisi Senior',
-                'image' => asset('assets/staff/ikbal-ramadhan-teknisi-saluran-senior-rootera-plumbing.webp'),
-                'alt'   => 'Foto Ikbal Ramadhan - Teknisi Saluran Senior Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Andi',
-                'role'  => 'Teknisi Inspeksi Kamera CCTV',
-                'badge' => 'CCTV Specialist',
-                'image' => asset('assets/staff/andi-teknisi-inspeksi-kamera-rootera-plumbing.webp'),
-                'alt'   => 'Foto Andi - Teknisi Inspeksi Kamera CCTV Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Ramadhan',
-                'role'  => 'Teknisi Instalasi & Perbaikan Pipa',
-                'badge' => 'Teknisi Instalasi',
-                'image' => asset('assets/staff/ramadhan-teknisi-instalasi-pemasangan-dan-perbaikan-pipa-rootera-plumbing.webp'),
-                'alt'   => 'Foto Ramadhan - Teknisi Instalasi Pipa Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Andre',
-                'role'  => 'Teknisi Konstruksi Pembangunan',
-                'badge' => 'Teknisi Konstruksi',
-                'image' => asset('assets/staff/andre-teknisi-konstruksi-pembangunan-rootera-plumbing.webp'),
-                'alt'   => 'Foto Andre - Teknisi Konstruksi Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Agus',
-                'role'  => 'Teknisi Support',
-                'badge' => 'Teknisi Support',
-                'image' => asset('assets/staff/agus-teknisi-support-rootera-plumbing.webp'),
-                'alt'   => 'Foto Agus - Teknisi Support Rootera Plumbing',
-            ],
-            [
-                'name'  => 'Wendi',
-                'role'  => 'Teknisi Junior',
-                'badge' => 'Teknisi Junior',
-                'image' => asset('assets/staff/wendi-teknisi-junior-rootera-plumbing.webp'),
-                'alt'   => 'Foto Wendi - Teknisi Junior Rootera Plumbing',
-            ],
-        ];
+        // Standardized Structured Team Data across 3 Tiers
+        $teamMembers = $this->getTeamData();
 
         $documentationGallery = [];
         $sopSteps = [];
@@ -224,6 +118,242 @@ class AboutController extends Controller
             'seo', 'sectors', 'advantages', 'teamMembers', 
             'documentationGallery', 'sopSteps', 'technologies'
         ));
+    }
+
+    /**
+     * Show detailed profile page for leadership team members.
+     */
+    public function showTeamMember(string $slug)
+    {
+        $team = $this->getTeamData();
+        $member = collect($team)->firstWhere('slug', $slug);
+
+        if (!$member || empty($member['slug'])) {
+            abort(404);
+        }
+
+        $seo = [
+            'title'       => 'Profil ' . $member['name'] . ' — ' . $member['role'] . ' | Rootera Plumbing',
+            'description' => \Illuminate\Support\Str::limit($member['bio'] ?? ($member['name'] . ' adalah ' . $member['role'] . ' di Rootera Plumbing.'), 155),
+            'canonical'   => url('/tentang-kami/tim/' . $member['slug']),
+            'og_image'    => $member['image'],
+        ];
+
+        $relatedArticles = \App\Models\Article::published()->latest()->take(3)->get();
+
+        return view('pages.about.team-detail', compact('member', 'seo', 'relatedArticles'));
+    }
+
+    /**
+     * Centralized 3-Tier Structured Team Data
+     */
+    private function getTeamData(): array
+    {
+        return [
+            // Tier 1: THE FOUNDER & LEADER (Solo Showcase — Kartu Tunggal Heroik)
+            [
+                'slug'          => 'rafael-abimanyu',
+                'category'      => 'pimpinan',
+                'tier'          => 1,
+                'name'          => 'Rafael Abimanyu',
+                'role'          => 'Founder & Lead Director',
+                'badge'         => 'FOUNDER & EXECUTIVE LEADER',
+                'experience'    => '3+ Tahun Mengakar di Lapangan & Rekayasa Sanitasi Modern',
+                'quote'         => 'Bagi kami, pipa bukan sekadar saluran air di balik dinding, melainkan urat nadi kenyamanan sebuah hunian. Masalah saluran yang tuntas tanpa merusak adalah bentuk penghormatan tertinggi kami terhadap properti Anda.',
+                'image'         => asset('assets/staff/rafael-abimanyu-rootera-plumbing.webp'),
+                'alt'           => 'Foto Rafael Abimanyu - Founder & Lead Director Rootera Plumbing',
+                'certification' => 'Sertifikasi K3 & Technical Hydro-Jetting Specialist',
+                'bio'           => 'Rafael Abimanyu memimpin strategi dan ekspansi operasional Rootera Plumbing dalam menghadirkan solusi pelancaran saluran air modern bebas bongkar. Berbekal pengalaman mendalam dari akar rumput di bidang teknik sanitasi dan manajemen fasilitas, ia memelopori integrasi mesin Ridgid spiral fleksibel serta teknologi Hydro Jetting 300 Bar berstandar K3.',
+                'bio_part1_title' => 'Dari Meja Kantor hingga Kotoran Saluran (The Dual Perspective)',
+                'bio_part1'       => 'Keunggulan terbesar Rafael Abimanyu bukan diraih dari teori di balik meja kantor, melainkan karena ia mengawali langkahnya langsung dari akar rumput. Dimulai sebagai staf kantor dan admin customer service, ia mendengar langsung kepanikan, rasa frustrasi, dan keluhan masyarakat yang kerap kecewa akibat praktek oknum tukang abal-abal maupun harga yang tidak transparan.' . "\n\n" . 'Tidak berhenti di balik meja admin, Rafael memilih terjun langsung ke lapangan sebagai teknisi. Ia memegang sendiri kabel mesin spiral Ridgid, mencium bau sengatan saluran tersumbat, membersihkan kerak lemak membatu di grease trap restoran komersial, hingga memecahkan kebuntuan pipa gedung bertingkat yang paling rumit.',
+                'bio_part2_title' => 'Titik Balik Lahirnya Rootera Plumbing',
+                'bio_part2'       => 'Dari pengalaman dwifungsi (kantor & lapangan) tersebut, Rafael melihat celah mendasar dalam industri sanitasi Indonesia: Masyarakat tidak kekurangan tukang, tetapi kekurangan penyedia jasa yang jujur, menguasai sains drainase modern, dan benar-benar menghargai struktur properti pelanggan.' . "\n\n" . 'Dari kesadaran itulah lahir Rootera Plumbing—sebuah brand yang dirancang bukan hanya sebagai pembersih kotoran pipa, melainkan pelindung kenyamanan dan kesehatan sanitasi bangunan modern yang bekerja dengan integritas mutlak, teknologi tanpa bongkar, serta standardisasi layanan korporat.',
+                'personal_vision' => 'Membawa peradaban baru pada profesi teknisi drainase di Indonesia—dari yang sebelumnya dianggap sekadar pekerjaan kasar menjadi profesi engineering sanitasi yang presisi, dihormati, dan dipercaya sepenuhnya oleh setiap keluarga dan pemilik bisnis.',
+                'personal_mission' => [
+                    'Terus mengawal SOP kerja setiap armada teknisi agar tidak ada kompromi pada kualitas dan keramahan.',
+                    'Mengembangkan teknologi pelancaran saluran tanpa bongkar ke seluruh penjuru Nusantara.',
+                    'Membina teknisi-teknisi muda lokal agar memiliki keahlian teknis tinggi, sertifikasi keselamatan kerja, dan integritas moral yang kuat.',
+                ],
+                'knows_about'   => ['Diagnostic Plumbing Systems', 'High-Pressure Hydro-Jetting', 'CCTV Pipeline Inspection', 'Grease Trap Engineering', 'Sanitary Risk Assessment'],
+                'expertise_badges' => ['Diagnostic Plumbing Systems', 'High-Pressure Hydro-Jetting', 'CCTV Pipeline Inspection', 'Grease Trap Engineering', 'Sanitary Risk Assessment'],
+                'metrics' => [
+                    ['number' => '3+ Tahun', 'label' => 'Pengalaman Lapangan'],
+                    ['number' => '1.000+', 'label' => 'Kasus Saluran Ekstrem'],
+                    ['number' => '100%', 'label' => 'Standar Mutu Rootera'],
+                ],
+                'socials'       => [
+                    'email'    => 'rafael@rooteraplumbing.com',
+                    'whatsapp' => '6281385404000',
+                ]
+            ],
+            // Tier 2: MANAJEMEN, TEKNOLOGI & CUSTOMER SERVICE
+            [
+                'slug'          => 'yero-virdhan',
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Yero Virdhan',
+                'role'          => 'IT & Software Lead',
+                'badge'         => 'Systems & Tech Lead',
+                'experience'    => 'Sistem Inspeksi Digital & Automation Dispatch 8+ Tahun',
+                'quote'         => 'Mengintegrasikan teknologi inspeksi CCTV digital 1080p dan sistem penjadwalan presisi untuk pengiriman armada teknisi tercepat.',
+                'image'         => asset('assets/staff/yero-virdhan-it-rootera-plumbing.webp'),
+                'alt'           => 'Foto Yero Virdhan - IT & Software Lead Rootera Plumbing',
+                'certification' => 'Digital Systems & Smart Pipe Monitoring Certified',
+                'bio'           => 'Yero Virdhan mengomandoi arsitektur sistem IT, inspeksi digital, dan otomasi armada di Rootera Plumbing.',
+                'knows_about'   => ['CCTV Pipe Inspection Systems', 'Field Service Dispatch Automation', 'Plumbing Tech Infrastructure'],
+                'socials'       => [
+                    'email'    => 'yero@rooteraplumbing.com',
+                    'whatsapp' => '6281385404000',
+                ]
+            ],
+            [
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Ariana Mikayla',
+                'role'          => 'IT & Digital Systems',
+                'badge'         => 'System Dispatcher',
+                'experience'    => 'Monitoring & Operasional IT Systems',
+                'image'         => asset('assets/staff/ariana-mikayla-it-rootera-plumbing.webp'),
+                'alt'           => 'Foto Ariana Mikayla - IT & Digital Systems Rootera Plumbing',
+            ],
+            [
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Ghaitsaa',
+                'role'          => 'Customer Service & Dispatcher 24/7',
+                'badge'         => 'Fast Response CS (< 3 Mnt)',
+                'experience'    => 'Layanan Garansi & Respon Darurat',
+                'image'         => asset('assets/staff/ghaitsaa-customer-service-rootera-plumbing.webp'),
+                'alt'           => 'Foto Ghaitsaa - Customer Service & Dispatcher 24/7 Rootera Plumbing',
+            ],
+            [
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Maura',
+                'role'          => 'Marketing & Client Relations',
+                'badge'         => 'Commercial Support',
+                'experience'    => 'Hubungan Klien Restoran & F&B',
+                'image'         => asset('assets/staff/maura-marketing-rootera-plumbing.webp'),
+                'alt'           => 'Foto Maura - Marketing Specialist Rootera Plumbing',
+            ],
+            [
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Yoga',
+                'role'          => 'Marketing Specialist',
+                'badge'         => 'B2B Partnership',
+                'experience'    => 'Pengadaan Tender & Kontrak B2B',
+                'image'         => asset('assets/staff/yoga-marketing-rootera-plumbing.webp'),
+                'alt'           => 'Foto Yoga - Marketing Specialist Rootera Plumbing',
+            ],
+            [
+                'category'      => 'staf-cs',
+                'tier'          => 2,
+                'name'          => 'Rafa R',
+                'role'          => 'Social Media Manager',
+                'badge'         => 'Edukasi & Media',
+                'experience'    => 'Edukasi Perawatan Pipa & Sanitasi',
+                'image'         => asset('assets/staff/rafa-r-manage-sosmed-rootera-plumbing.webp'),
+                'alt'           => 'Foto Rafa R - Social Media Manager Rootera Plumbing',
+            ],
+            // Tier 3: Teknisi Armada Lapangan
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Aries',
+                'role'          => 'Teknisi Plumbing Senior',
+                'badge'         => 'Rigid Spiral Certified',
+                'area'          => 'Area Metro & Lampung Tengah',
+                'specialization'=> 'Pipa Mampet Restoran, Kitchen Sink & Riser Vertikal',
+                'certification' => 'Ridgid Machine K-50/K-60 Specialist',
+                'image'         => asset('assets/staff/aries-teknisi-plumbing-senior-rootera-plumbing.webp'),
+                'alt'           => 'Foto Aries - Teknisi Plumbing Senior Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Harmoko',
+                'role'          => 'Teknisi Plumbing Senior',
+                'badge'         => 'Hydro-Jetting Specialist',
+                'area'          => 'Area Bekasi, Depok & Jakarta Timur',
+                'specialization'=> 'Hydro Jetting 300 Bar & Bak Kontrol Kerak Lemak',
+                'certification' => 'High-Pressure Water Jetting K3',
+                'image'         => asset('assets/staff/harmoko-teknisi-plumbing-senior-rootera-plumbing.webp'),
+                'alt'           => 'Foto Harmoko - Teknisi Plumbing Senior Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Ikbal Ramadhan',
+                'role'          => 'Teknisi Saluran Senior',
+                'badge'         => 'K3 Plumbing Safety',
+                'area'          => 'Area Bogor & Jakarta Selatan',
+                'specialization'=> 'Pelancaran Floor Drain, Closet & Saluran Air Hujan',
+                'certification' => 'Sertifikasi K3 Sanitasi & APD',
+                'image'         => asset('assets/staff/ikbal-ramadhan-teknisi-saluran-senior-rootera-plumbing.webp'),
+                'alt'           => 'Foto Ikbal Ramadhan - Teknisi Saluran Senior Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Andi',
+                'role'          => 'Teknisi Inspeksi Kamera CCTV',
+                'badge'         => 'CCTV Inspector 1080p',
+                'area'          => 'Cover All Metro Area',
+                'specialization'=> 'Inspeksi Kamera Flex 1080p IP68 & Deteksi Pipa Pecah',
+                'certification' => 'SeeSnake CCTV Diagnostics Certified',
+                'image'         => asset('assets/staff/andi-teknisi-inspeksi-kamera-rootera-plumbing.webp'),
+                'alt'           => 'Foto Andi - Teknisi Inspeksi Kamera CCTV Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Ramadhan',
+                'role'          => 'Teknisi Instalasi & Perbaikan Pipa',
+                'badge'         => 'Piping Rig Master',
+                'area'          => 'Area Semarang & Jawa Tengah',
+                'specialization'=> 'Relokasi & Instalasi Pipa Pembuangan Bebas Bocor',
+                'certification' => 'Master Piping Fitter',
+                'image'         => asset('assets/staff/ramadhan-teknisi-instalasi-pemasangan-dan-perbaikan-pipa-rootera-plumbing.webp'),
+                'alt'           => 'Foto Ramadhan - Teknisi Instalasi Pipa Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Andre',
+                'role'          => 'Teknisi Konstruksi Pembangunan',
+                'badge'         => 'Civil Sanitation',
+                'area'          => 'Area Bandung & Jawa Barat',
+                'specialization'=> 'Konstruksi Drainase Industri & Grease Trap Tanaman',
+                'certification' => 'Sertifikasi Konstruksi Drainase',
+                'image'         => asset('assets/staff/andre-teknisi-konstruksi-pembangunan-rootera-plumbing.webp'),
+                'alt'           => 'Foto Andre - Teknisi Konstruksi Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Agus',
+                'role'          => 'Teknisi Support Lapangan',
+                'badge'         => 'Fast Emergency Unit',
+                'area'          => 'Area Surabaya & Jawa Timur',
+                'specialization'=> 'Respon Darurat Wastafel & Pendamping Hydro Jetting',
+                'certification' => 'Emergency Response Specialist',
+                'image'         => asset('assets/staff/agus-teknisi-support-rootera-plumbing.webp'),
+                'alt'           => 'Foto Agus - Teknisi Support Rootera Plumbing',
+            ],
+            [
+                'category'      => 'teknisi',
+                'tier'          => 3,
+                'name'          => 'Wendi',
+                'role'          => 'Teknisi Junior',
+                'badge'         => 'Spiral Cable Tech',
+                'area'          => 'Area Metro & Lampung',
+                'specialization'=> 'Pelancaran Saluran Residensial & Pipa Cuci Piring',
+                'certification' => 'Standard Rigging Tech',
+                'image'         => asset('assets/staff/wendi-teknisi-junior-rootera-plumbing.webp'),
+                'alt'           => 'Foto Wendi - Teknisi Junior Rootera Plumbing',
+            ],
+        ];
     }
 
     public function profil()
