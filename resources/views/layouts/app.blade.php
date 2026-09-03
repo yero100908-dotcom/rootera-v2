@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="w-full h-full">
 <head>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga4_id', env('GA4_TRACKING_ID', 'G-DGGQRFGDFL')) }}"></script>
@@ -164,12 +164,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body>
+<body class="min-h-screen w-full bg-white text-slate-800 antialiased overflow-x-hidden m-0 p-0">
     {{-- Navbar --}}
     @include('components.navbar')
 
     {{-- Main Content --}}
-    <main id="main-content">
+    <main id="main-content" class="w-full min-h-screen">
         @yield('content')
     </main>
 

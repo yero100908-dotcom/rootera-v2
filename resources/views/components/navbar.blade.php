@@ -22,7 +22,7 @@
     /* Dropdown Core & Alignment Styles */
     .nav-item-dropdown { position: relative; }
     
-    @media (min-width: 1024px) {
+    @media (min-width: 1280px) {
         .dropdown-menu-box {
             position: absolute;
             top: calc(100% + 10px);
@@ -119,7 +119,7 @@
         </a>
 
         {{-- Desktop Menu --}}
-        <ul class="nav-menu hidden lg:flex items-center gap-1 xl:gap-2 ml-auto" role="list">
+        <ul class="nav-menu hidden xl:flex items-center gap-1 xl:gap-2 ml-auto" role="list">
             <li>
                 <a href="{{ route('home') }}" class="nav-link px-3 py-2 text-sm font-semibold text-slate-700 hover:text-emerald-600 rounded-lg transition-colors {{ request()->routeIs('home') ? 'active text-emerald-600' : '' }}">
                     Beranda
@@ -363,23 +363,23 @@
         </ul>
 
         {{-- Desktop CTA Button --}}
-        <a href="{{ route('kontak') }}" class="nav-cta" id="nav-cta-btn">
+        <a href="{{ route('kontak') }}" class="nav-cta hidden xl:inline-flex" id="nav-cta-btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.65 3.42 2 2 0 0 1 3.62 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>
             Hubungi Kami
         </a>
 
         {{-- Mobile Hamburger Button --}}
-        <button class="nav-hamburger lg:hidden" id="hamburger-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-drawer">
+        <button class="nav-hamburger xl:hidden" id="hamburger-btn" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-drawer">
             <span></span><span></span><span></span>
         </button>
     </div>
 </nav>
 
 {{-- Mobile Drawer Backdrop Overlay --}}
-<div id="mobile-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9998] transition-opacity duration-300 opacity-0 pointer-events-none lg:hidden" aria-hidden="true"></div>
+<div id="mobile-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9998] transition-opacity duration-300 opacity-0 pointer-events-none xl:hidden" aria-hidden="true"></div>
 
 {{-- Mobile Off-Canvas Drawer Component --}}
-<div id="mobile-drawer" class="fixed top-0 right-0 bottom-0 w-[88%] max-w-[380px] bg-white shadow-2xl z-[9999] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col overflow-hidden lg:hidden" role="dialog" aria-modal="true" aria-label="Menu mobile">
+<div id="mobile-drawer" class="fixed top-0 right-0 bottom-0 w-[88%] max-w-[380px] bg-white shadow-2xl z-[9999] transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col overflow-hidden xl:hidden" role="dialog" aria-modal="true" aria-label="Menu mobile">
     {{-- Header Drawer --}}
     <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-white">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
