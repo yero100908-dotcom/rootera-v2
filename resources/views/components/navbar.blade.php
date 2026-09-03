@@ -112,7 +112,7 @@
 </style>
 
 <nav id="navbar" class="navbar relative z-[999]" role="navigation" aria-label="Navigasi utama">
-    <div class="nav-container">
+    <div class="nav-container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo" aria-label="Rootera - Beranda">
             <img src="{{ asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}" alt="Logo Rootera Jasa Pipa Mampet" class="nav-logo-img" width="180" height="80" decoding="async" loading="eager">

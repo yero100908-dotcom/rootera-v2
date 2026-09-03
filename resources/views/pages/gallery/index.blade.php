@@ -106,7 +106,7 @@
     <div class="absolute -top-24 -left-24 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
             <div class="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-400/30 text-teal-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
@@ -122,22 +122,22 @@
 
         @if($featuredProject)
         {{-- FEATURED SHOWCASE CARD --}}
-        <div class="bg-white/5 border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-md shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-0 max-w-5xl mx-auto">
-            <div class="lg:col-span-7 relative bg-slate-950 flex items-center justify-center min-h-[220px] sm:min-h-[320px]">
+        <div class="bg-white/5 border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-md shadow-2xl grid grid-cols-1 lg:grid-cols-2 gap-0 w-full max-w-7xl mx-auto">
+            <div class="lg:col-span-1 relative bg-slate-950 flex items-center justify-center min-h-[240px] sm:min-h-[320px] lg:min-h-[380px]">
                 @if($featuredProject->media_type === 'video' && $featuredProject->display_media)
-                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[360px]">
+                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[420px]">
                         <source src="{{ $featuredProject->display_media }}" type="video/mp4">
                         Browser Anda tidak mendukung video tag.
                     </video>
                 @else
-                    <img src="{{ $featuredProject->display_thumbnail }}" alt="Proyek Unggulan - {{ $featuredProject->title }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[360px]">
+                    <img src="{{ $featuredProject->display_thumbnail }}" alt="Proyek Unggulan - {{ $featuredProject->title }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[420px]">
                 @endif
                 <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
                     <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wide shadow-md">⭐ Proyek Unggulan</span>
                     <span class="bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-md">{{ $featuredProject->category_label }}</span>
                 </div>
             </div>
-            <div class="lg:col-span-5 p-5 sm:p-8 flex flex-col justify-between bg-slate-900/90 border-t lg:border-t-0 lg:border-l border-white/10">
+            <div class="lg:col-span-1 p-5 sm:p-8 flex flex-col justify-between bg-slate-900/90 border-t lg:border-t-0 lg:border-l border-white/10">
                 <div>
                     @if($featuredProject->location_tag)
                     <div class="text-teal-300 text-xs font-bold mb-2 flex items-center gap-1">
@@ -171,7 +171,7 @@
 
 {{-- DYNAMIC FILTER BAR & HYBRID MEDIA GRID SECTION --}}
 <section class="py-8 sm:py-14 bg-slate-50 min-h-screen">
-    <div class="container max-w-7xl mx-auto px-3 sm:px-6">
+    <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {{-- MOBILE-FIRST HORIZONTAL SCROLLABLE FILTER PILLS --}}
         <div class="relative mb-6 sm:mb-10">
@@ -220,7 +220,7 @@
         </div>
 
         {{-- SKELETON LOADING GRID (HIDDEN BY DEFAULT) --}}
-        <div id="skeleton-grid" class="hidden grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mb-8">
+        <div id="skeleton-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
             @for($i = 0; $i < 8; $i++)
             <div class="bg-white rounded-xl sm:rounded-2xl p-3 border border-slate-200 animate-pulse space-y-3">
                 <div class="aspect-[4/3] bg-slate-200 rounded-lg w-full"></div>
@@ -231,7 +231,7 @@
         </div>
 
         {{-- HYBRID MEDIA GRID CARDS CONTAINER --}}
-        <div id="gallery-grid-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 transition-opacity duration-300">
+        <div id="gallery-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8 transition-opacity duration-300">
             @include('pages.gallery.partials.gallery_grid', ['galleries' => $galleries])
         </div>
 
