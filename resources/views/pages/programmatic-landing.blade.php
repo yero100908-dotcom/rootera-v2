@@ -507,6 +507,15 @@ $faqSchema = [
     </div>
 </section>
 
+<!-- Local Micro-Coverage & Kelurahan Mesh Grid -->
+<x-local-micro-mesh 
+    :locationShort="$locationShort"
+    :locationName="$locationName"
+    :estimatedArrival="$estimatedArrival"
+    :dispatchHub="$dispatchHub ?? 'Pos Armada Siaga'"
+    :landmarks="$nearbyLandmarks ?? []"
+/>
+
 <!-- Interactive Media Documentation Showcase (Before-After Photos & Video Reels) -->
 @include('components.media-documentation', [
     'projectShowcases' => $projectShowcases ?? null,

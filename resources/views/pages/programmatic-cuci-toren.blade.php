@@ -62,13 +62,11 @@ $schemaData = [
 {{-- HERO HEADER --}}
 <div class="relative bg-gradient-to-b from-slate-900 via-[#070F1E] to-slate-900 text-white pt-20 pb-16 sm:pt-24 sm:pb-20 overflow-hidden border-b border-slate-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <nav class="flex justify-center items-center gap-2 text-xs sm:text-sm text-slate-300 mb-6 font-medium" aria-label="Breadcrumb">
-            <a href="{{ route('home') }}" class="hover:text-emerald-400 transition-colors">Beranda</a>
-            <span class="text-slate-500">/</span>
-            <a href="{{ route('services.cuci-toren') }}" class="hover:text-emerald-400 transition-colors">Cuci Toren</a>
-            <span class="text-slate-500">/</span>
-            <span class="text-emerald-400 font-semibold">{{ $locationShort }}</span>
-        </nav>
+        <x-breadcrumbs :items="[
+            ['name' => 'Beranda', 'url' => url('/')],
+            ['name' => 'Cuci Toren', 'url' => url('/jasa-cuci-toren-air')],
+            ['name' => $locationShort, 'url' => '']
+        ]" />
 
         <div class="text-center max-w-3xl mx-auto">
             <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mb-4 backdrop-blur-md">
@@ -143,6 +141,15 @@ $schemaData = [
                 </div>
             </div>
         </div>
+
+        {{-- LOCAL KELURAHAN MICRO MESH GRID --}}
+        <x-local-micro-mesh 
+            :locationShort="$locationShort"
+            :locationName="$locationName"
+            :estimatedArrival="$estimatedArrival ?? '25-40 Menit'"
+            :dispatchHub="$dispatchHub ?? 'Pos Armada Siaga'"
+            :landmarks="$nearbyLandmarks ?? []"
+        />
 
         {{-- SIBLING INTERNAL LINKING (SPOKE LINKS) --}}
         @if($siblingDistricts->isNotEmpty())

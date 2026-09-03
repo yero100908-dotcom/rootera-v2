@@ -95,6 +95,12 @@ $cityBreadcrumbs = [
     <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2.5rem;">
         
         <div style="flex: 1 1 550px;">
+            <x-breadcrumbs :items="[
+                ['name' => 'Beranda', 'url' => url('/')],
+                ['name' => 'Area Layanan', 'url' => route('area-layanan')],
+                ['name' => $cityName, 'url' => '']
+            ]" />
+
             <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(31, 175, 90, 0.2); border: 1px solid rgba(31, 175, 90, 0.4); color: #a3f0c2; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem;">
                 <span>📍 Pusat Layanan Area {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</span>
                 <span>•</span>

@@ -176,8 +176,9 @@
     {{-- Footer --}}
     @include('components.footer')
 
-    {{-- Floating WhatsApp Button (Disabled to prevent overlap with sticky mobile CTA bar) --}}
-    {{-- @include('components.whatsapp-float') --}}
+    {{-- Floating WhatsApp Button (Desktop) & Sticky Mobile CTA Bar --}}
+    @include('components.whatsapp-float')
+    @include('components.mobile-sticky-cta')
 
     @stack('scripts')
 </body>
