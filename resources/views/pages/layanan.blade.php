@@ -113,19 +113,29 @@
                      data-desc="{{ $category->price_description }}">
                 
                 {{-- Decorative Gradient Border Header --}}
-                <div class="h-2 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-blue-500"></div>
+                <div class="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-teal-400 to-blue-500"></div>
 
-                <div class="p-5 sm:p-7 flex flex-col flex-grow">
-                    {{-- Header Top Bar: Icon + Badge --}}
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border flex items-center justify-center transition-all duration-300 shadow-xs {{ $themeColors[$i % 3] }}">
+                {{-- Service Image Banner --}}
+                <div class="relative h-44 sm:h-48 w-full bg-slate-900 overflow-hidden">
+                    <img src="{{ $category->image_url }}" 
+                         alt="{{ $category->name }} Rootera Plumbing" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+                    
+                    {{-- Floating Icon & Badge --}}
+                    <div class="absolute bottom-3 left-4 right-4 flex items-center justify-between z-10">
+                        <div class="w-10 h-10 rounded-xl border flex items-center justify-center shadow-md backdrop-blur-md bg-white/90 text-slate-800 border-white/40">
                             {!! $icons[$i % 3] !!}
                         </div>
-                        <span class="bg-slate-100 text-slate-700 font-bold text-[10px] sm:text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-full border border-slate-200">
+                        <span class="bg-slate-900/80 backdrop-blur-md text-emerald-400 font-bold text-[10px] sm:text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-full border border-emerald-500/30 shadow-xs">
                             {{ $badges[$i % 3] }}
                         </span>
                     </div>
+                </div>
 
+                <div class="p-5 sm:p-7 flex flex-col flex-grow">
                     {{-- Title & Description --}}
                     <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 group-hover:text-emerald-600 transition-colors mb-2 font-['Plus_Jakarta_Sans',sans-serif]">
                         <a href="{{ route('layanan.show', $category->slug) }}" class="hover:underline">

@@ -128,6 +128,27 @@ $faqSchema = [
                 <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Panggilan Darurat</span>
             </div>
         </div>
+
+        {{-- Service Main Hero Banner Image Card --}}
+        <div class="mt-8 max-w-4xl mx-auto rounded-3xl overflow-hidden border border-slate-700/80 shadow-2xl relative group bg-slate-900">
+            <div class="relative h-56 sm:h-80 md:h-96 w-full">
+                <img src="{{ $category->image_url }}" 
+                     alt="Dokumentasi Jasa {{ $category->name }} Rootera Plumbing" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                     loading="eager"
+                     onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#070F1E] via-[#070F1E]/30 to-transparent"></div>
+                <div class="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-wrap items-center justify-between gap-3 z-10">
+                    <span class="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md text-emerald-300 text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-full border border-emerald-500/40">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        Dokumentasi Hasil Pengerjaan Real Field
+                    </span>
+                    <span class="text-xs text-slate-300 bg-slate-900/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 hidden sm:inline-block">
+                        100% Pengerjaan Tanpa Bongkar
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -303,45 +324,45 @@ $faqSchema = [
                 
                 if (str_contains($catSlug, 'bio') || str_contains($catSlug, 'septic') || str_contains($catSlug, 'tank')) {
                     $docItems = [
-                        ['title' => 'Pelancaran Saluran Bio Tank Bogor', 'img' => 'pelancaran-saluran-bio-tank-bogor-jabar.webp', 'desc' => 'Pembersihan penumpukan kerak dan sumbatan pipa outlet pembuangan bio tank di Bogor.'],
-                        ['title' => 'Pelancaran Bak Kontrol Perumahan', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pengurasan endapan lumpur dan pasir yang menyumbat saluran pembuangan utama bio tank.'],
-                        ['title' => 'Pembersihan Grease Trap & Drainase', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Penyedotan dan pengikatan sedimen padat pada sistem tangki peresapan.']
+                        ['title' => 'Pelancaran Saluran Bio Tank Bogor', 'img' => 'images/dokumentasi/pelancaran-saluran-bio-tank-bogor-jabar.webp', 'desc' => 'Pembersihan penumpukan kerak dan sumbatan pipa outlet pembuangan bio tank.'],
+                        ['title' => 'Pelancaran Bak Kontrol Perumahan', 'img' => 'images/dokumentasi/pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pengurasan endapan lumpur dan pasir yang menyumbat saluran pembuangan utama.'],
+                        ['title' => 'Pembersihan Grease Trap & Drainase', 'img' => 'assets/services/grease-trap-saluran-restoran-rootera-plumbinh.jpg', 'desc' => 'Penyedotan dan pengikatan sedimen padat pada sistem tangki peresapan.']
                     ];
                 } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
                     $docItems = [
-                        ['title' => 'Pelancaran Kloset Pabrik Industri', 'img' => 'pelancaran-kloset-mampet-pabrik-industri.webp', 'desc' => 'Penanganan kloset toilet karyawan pabrik mampet total tanpa bongkar dengan mesin Ridgid.'],
-                        ['title' => 'Pelancaran Saluran Kloset Spiral Baja', 'img' => 'pelancar-saluran-kloset-toilet-mampet.webp', 'desc' => 'Teknisi menggunakan spiral baja fleksibel pendorong sumbatan leher angsa kloset.'],
-                        ['title' => 'Inspeksi CCTV Dalam Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Deteksi benda asing atau gumpalan keras di dalam pipa kloset dengan kamera CCTV.']
+                        ['title' => 'Dokumentasi Pelancaran Kloset Toilet', 'img' => 'assets/services/kloset-rootera-plumbing.jpg', 'desc' => 'Pelancaran leher angsa kloset duduk/jongkok tanpa membongkar porselen.'],
+                        ['title' => 'Pelancaran Kloset Pabrik Industri', 'img' => 'images/dokumentasi/pelancaran-kloset-mampet-pabrik-industri.webp', 'desc' => 'Penanganan kloset toilet karyawan pabrik mampet total dengan mesin Ridgid.'],
+                        ['title' => 'Inspeksi CCTV Dalam Kloset', 'img' => 'images/dokumentasi/inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Deteksi benda asing atau gumpalan keras di dalam pipa kloset dengan kamera CCTV.']
                     ];
                 } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
                     $docItems = [
-                        ['title' => 'Floor Drain Resto EM Gelato Blok M', 'img' => 'pelancaran-floor-drain-em-gelato-blok-m.webp', 'desc' => 'Penanganan rontokan rambut & endapan sabun pada floor drain area kuliner Blok M.'],
-                        ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan internal pipa floor drain kantor Pertamina Sunter Jakarta Utara.'],
-                        ['title' => 'Pelancaran Floor Drain Rumah Tinggal', 'img' => 'pelancar-floor-drain-kamar-mandi-rumah.webp', 'desc' => 'Pembersihan pipa 2 inchi kamar mandi perumahan warga secara aman dan cepat.']
+                        ['title' => 'Pembersihan Floor Drain Kamar Mandi', 'img' => 'assets/services/floor-drain-kamarmandi-rooteraplumbing.jpg', 'desc' => 'Pelancaran saringan pembuangan lantai dari rontokan rambut & sabun.'],
+                        ['title' => 'Floor Drain Stainless Steel Maintenance', 'img' => 'assets/services/rootera-plumbing-saluran-floor-drain-kamarmandi-stainless-steel_.jpg', 'desc' => 'Pembersihan pipa kamar mandi rumah tangga secara aman tanpa bongkar ubin.'],
+                        ['title' => 'Floor Drain Resto EM Gelato Blok M', 'img' => 'images/dokumentasi/pelancaran-floor-drain-em-gelato-blok-m.webp', 'desc' => 'Penanganan rontokan rambut & endapan sabun pada floor drain area kuliner.']
                     ];
                 } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'dapur') || str_contains($catSlug, 'cuci-piring')) {
                     $docItems = [
-                        ['title' => 'Pelancaran Wastafel Mampet Rumah Warga', 'img' => 'pelancaran-wastafel-mampet-rumah-warga.webp', 'desc' => 'Pembersihan pipa afur wastafel cuci piring rumah tangga yang tersumbat minyak makanan.'],
-                        ['title' => 'Drainase Kitchen Soichiro Steakhouse', 'img' => 'pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp', 'desc' => 'Pengikatan lemak beku pada drainase kitchen resto Soichiro Steakhouse Jakarta.'],
-                        ['title' => 'Teknisi APD Penanganan Sink Pabrik Makanan', 'img' => 'teknisi-apd-lengkap-sink-pabrik-makanan.webp', 'desc' => 'Standar steril APD K3 penanganan sink mampet fasilitas industri makanan ternama.']
+                        ['title' => 'Pembersihan Saluran Wastafel Dapur', 'img' => 'assets/services/wastafel-rooteraplumbing.jpg', 'desc' => 'Pembersihan pipa afur wastafel cuci piring yang tersumbat minyak makanan.'],
+                        ['title' => 'Pelancaran Sink Cuci Piring Rumahan', 'img' => 'assets/services/sink-cuci-piring-area-rumahan-rootera-plumbing.jpg', 'desc' => 'Pengikisan kerak minyak & lemak jenuh pada bak cuci piring dapur.'],
+                        ['title' => 'Pelancaran Wastafel Mampet Rumah Warga', 'img' => 'images/dokumentasi/pelancaran-wastafel-mampet-rumah-warga.webp', 'desc' => 'Teknisi menggunakan spiral fleksibel pelancar lemak tanpa bongkar.']
                     ];
                 } elseif (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'deteksi') || str_contains($catSlug, 'inspeksi')) {
                     $docItems = [
-                        ['title' => 'Kondisi Pipa Resto Mall Tersumbat Lemak', 'img' => 'kondisi-pipa-lemak-resto-mall-tersumbat.webp', 'desc' => 'Visual internal pipa resto mall yang penuh dengan endapan lemak pekat membatu.'],
-                        ['title' => 'Inspeksi CCTV Saluran Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Kamera endoskopi memetakan retakan atau sumbatan pipa paralon bawah lantai.'],
-                        ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan titik bocor & sumbatan pipa saluran kantor Pertamina Sunter.']
+                        ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'images/dokumentasi/inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan titik bocor & sumbatan pipa saluran kantor Pertamina Sunter.'],
+                        ['title' => 'Kondisi Pipa Resto Mall Tersumbat Lemak', 'img' => 'images/dokumentasi/kondisi-pipa-lemak-resto-mall-tersumbat.webp', 'desc' => 'Visual internal pipa resto mall yang penuh dengan endapan lemak pekat.'],
+                        ['title' => 'Inspeksi CCTV Saluran Kloset', 'img' => 'images/dokumentasi/inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Kamera endoskopi memetakan retakan atau sumbatan pipa paralon bawah lantai.']
                     ];
-                } elseif (str_contains($catSlug, 'talang') || str_contains($catSlug, 'gutter')) {
+                } elseif (str_contains($catSlug, 'got') || str_contains($catSlug, 'pembuangan') || str_contains($catSlug, 'talang') || str_contains($catSlug, 'gutter')) {
                     $docItems = [
-                        ['title' => 'Before Pembersihan Talang Gutter', 'img' => 'before-pembersihan-talang-gutter.webp', 'desc' => 'Kondisi fisik talang air sebelum pembersihan total dari penumpukan lumpur hitam.'],
-                        ['title' => 'After Pembersihan Gutter Restoran Clean', 'img' => 'after-pembersihan-talang-gutter-rootera.webp', 'desc' => 'Hasil akhir talang air gutter bersih total bebas genangan air setelah diservis.'],
-                        ['title' => 'Pembersihan Talang Gutter Seporsi Mie Kari', 'img' => 'pelancaran-gutter-seporsi-mie-kari-jakarta.webp', 'desc' => 'Pembersihan serasah daun & minyak yang menyumbat talang gutter resto Mie Kari.']
+                        ['title' => 'Pelancaran Got & Saluran Pembuangan', 'img' => 'assets/services/saluran-pembuangan-got-rumahan-dan-industri-rooteraplumbing.jpg', 'desc' => 'Pembersihan got luar perumahan dari tumpukan sampah & sedimen.'],
+                        ['title' => 'Pembersihan Gutter & Talang Air Restoran', 'img' => 'assets/services/gutter-saluran-resto-rootera-plumbing.jpg', 'desc' => 'Pembersihan serasah daun & minyak yang menyumbat talang gutter.'],
+                        ['title' => 'Saluran Pembuangan Outdoor Industri', 'img' => 'assets/services/saluran-pembuangan-got-rumahan-dan-industri-rootera-rooteraplumbing_.jpg', 'desc' => 'Pengurasan sedimen lumpur padat di bak kontrol pembuangan air.']
                     ];
                 } else {
                     $docItems = [
-                        ['title' => 'Pembersihan Lemak Bak Kontrol Resto', 'img' => 'pembersihan-lemak-bak-kontrol-resto.webp', 'desc' => 'Pengangkatan gumpalan lemak padat dari saluran bak kontrol pembuangan resto.'],
-                        ['title' => 'Pembersihan Grease Trap Restoran', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Pembersihan box jebakan lemak resto agar operasional tetap higienis.'],
-                        ['title' => 'Pelancaran Bak Kontrol Perumahan Warga', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pembersihan sisa lumpur & sampah pada bak kontrol drainase pembuangan perumahan.']
+                        ['title' => 'Instalasi & Maintenance Pipa Gedung', 'img' => 'assets/services/instalasi-saluran-pipa-area-komersial-industri-mall-perkantoran-gedung-rooteraplumbing.jpg', 'desc' => 'Pembersihan pipa diameter besar pada area komersial & gedung.'],
+                        ['title' => 'Drainase & Saluran Industri Pabrik', 'img' => 'assets/services/saluran-komersial-mall-industri-pabrik-perkantoran-gedung-rootera-plumbing.jpg', 'desc' => 'Maintenance jaringan sanitasi pabrik olahan makanan & gudang.'],
+                        ['title' => 'Pembersihan Grease Trap Restoran', 'img' => 'assets/services/grease-trap-saluran-restoran-rootera-plumbinh.jpg', 'desc' => 'Pengurasan & sterilisasi perangkap lemak dapur komersial.']
                     ];
                 }
             @endphp
@@ -359,7 +380,11 @@ $faqSchema = [
                     @foreach($docItems as $doc)
                     <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
                         <div class="relative h-40 bg-slate-900 overflow-hidden">
-                            <img src="{{ asset('images/dokumentasi/' . $doc['img']) }}" alt="{{ $doc['title'] }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                            <img src="{{ str_starts_with($doc['img'], 'assets/') || str_starts_with($doc['img'], 'images/') ? asset($doc['img']) : asset('images/dokumentasi/' . $doc['img']) }}" 
+                                 alt="{{ $doc['title'] }}" 
+                                 class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
                             <span class="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md border border-white/20">
                                 ✓ Real Documentation
                             </span>

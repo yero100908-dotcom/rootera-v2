@@ -28,6 +28,7 @@
                         'desc' => 'Pembersihan endapan lemak padat, sisa minyak makanan, & saringan berkerak pada bak cuci piring dapur.',
                         'tags' => ['Mesin Drain Cleaner', 'Spiral Rotary K-50', 'Bebas Bau'],
                         'url' => '/layanan/wastafel-mampet',
+                        'image' => 'assets/services/wastafel-rooteraplumbing.jpg',
                     ],
                     [
                         'icon' => '🚽',
@@ -36,6 +37,7 @@
                         'desc' => 'Pelancaran WC tersumbat benda asing, tisu padat, atau leher angsa mampet tanpa membongkar porselen.',
                         'tags' => ['Spiral Steel Auger', 'Higienis K3', 'Tanpa Bongkar'],
                         'url' => '/layanan/wc-toilet-mampet',
+                        'image' => 'assets/services/kloset-rootera-plumbing.jpg',
                     ],
                     [
                         'icon' => '🚿',
@@ -44,6 +46,7 @@
                         'desc' => 'Pembersihan tumpukan rontokan rambut, sisa sabun membeku, & pasir yang membuat air kamar mandi meluap.',
                         'tags' => ['Mesin Ridgid Rotary', 'Pipa PVC Safe', 'Lancar Total'],
                         'url' => '/layanan/kamar-mandi-mampet',
+                        'image' => 'assets/services/floor-drain-kamarmandi-rooteraplumbing.jpg',
                     ],
                     [
                         'icon' => '🚰',
@@ -53,6 +56,7 @@
                         'tags' => ['High-Pressure Jet Cleaner', '100% Bebas Kimia Korosif', 'Cek Pelampung Otomatis', 'Air Bersih & Higienis'],
                         'url' => route('services.cuci-toren'),
                         'direct_link' => true,
+                        'image' => 'assets/services/saluran-komersial-mall-industri-pabrik-perkantoran-gedung-rootera-plumbing.jpg',
                     ],
                     [
                         'icon' => '🌊',
@@ -61,6 +65,7 @@
                         'desc' => 'Metode pelengkap semprotan air bertekanan 300 Bar untuk pembilas jaringan pipa restoran & pabrik skala besar.',
                         'tags' => ['Tekanan 300 Bar', 'Pipa Resto & Pabrik', 'Pembersih Kerak'],
                         'url' => '/layanan-b2b-komersial',
+                        'image' => 'assets/services/instalasi-saluran-pipa-area-komersial-industri-mall-perkantoran-gedung-rooteraplumbing.jpg',
                     ],
                     [
                         'icon' => '🏬',
@@ -69,6 +74,7 @@
                         'desc' => 'Pembersihan got luar, bak penampungan, & pipa pembuangan utama perumahan agar air lancar saat hujan deras.',
                         'tags' => ['Ridgid Heavy Duty', 'Got Perumahan', 'Bebas Banjir'],
                         'url' => '/layanan/got-saluran-pembuangan',
+                        'image' => 'assets/services/saluran-pembuangan-got-rumahan-dan-industri-rootera-rooteraplumbing_.jpg',
                     ],
                     [
                         'icon' => '🎥',
@@ -77,21 +83,33 @@
                         'desc' => 'Audit jaringan pipa vertikal/horisontal menggunakan kamera crawler 30M untuk melacak lokasi retakan & sumbatan.',
                         'tags' => ['CCTV 30M HD', 'Laporan Digital', 'Deteksi Presisi'],
                         'url' => '/tentang-kami',
+                        'image' => 'images/dokumentasi/inspeksi-cctv-floor-drain-pertamina-sunter.webp',
                     ],
                 ];
             @endphp
 
             @foreach($serviceItems as $item)
-            <div style="background: rgba(30, 41, 59, 0.7); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); padding: 1.75rem; backdrop-filter: blur(10px); display: flex; flex-direction: column;" class="w-[300px] sm:w-[340px] md:w-auto shrink-0 snap-start hover:border-emerald-500/50 hover:bg-slate-800/80 transition-all duration-300 group">
+            <div style="background: rgba(30, 41, 59, 0.7); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); display: flex; flex-direction: column;" class="w-[300px] sm:w-[340px] md:w-auto shrink-0 snap-start hover:border-emerald-500/50 hover:bg-slate-800/80 transition-all duration-300 group overflow-hidden">
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <div style="width: 54px; height: 54px; border-radius: 16px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.75rem;" class="group-hover:scale-110 transition-transform">
-                        {{ $item['icon'] }}
-                    </div>
-                    <span style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #2dd4bf; font-size: 0.72rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 9999px; height: fit-content;">
+                {{-- Card Image Banner --}}
+                @if(isset($item['image']))
+                <div class="relative h-40 sm:h-44 w-full bg-slate-900 overflow-hidden">
+                    <img src="{{ asset($item['image']) }}" 
+                         alt="{{ $item['title'] }}" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                         loading="lazy"
+                         onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/30 to-transparent"></div>
+                    <span style="position: absolute; top: 0.75rem; right: 0.75rem; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(16, 185, 129, 0.4); color: #2dd4bf; font-size: 0.72rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 9999px; backdrop-filter: blur(4px);">
                         {{ $item['badge'] }}
                     </span>
+                    <div style="position: absolute; bottom: 0.75rem; left: 1rem; width: 44px; height: 44px; border-radius: 12px; background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; backdrop-filter: blur(4px);" class="group-hover:scale-110 transition-transform">
+                        {{ $item['icon'] }}
+                    </div>
                 </div>
+                @endif
+
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
 
                 <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;" class="group-hover:text-emerald-400 transition-colors">
                     {{ $item['title'] }}
