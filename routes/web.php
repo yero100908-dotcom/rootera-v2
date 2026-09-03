@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\ProjectGalleryController;
 use App\Http\Controllers\Admin\CityManageController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\ProgrammaticSeoController;
+use App\Http\Controllers\DiagnosticController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,10 @@ use App\Http\Controllers\ProgrammaticSeoController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-Route::get('/sitemap-main.xml', [SitemapController::class, 'main'])->name('sitemap.main');
+Route::redirect('/sitemap-main.xml', '/sitemap.xml', 301);
+Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
 Route::get('/sitemap-sectors.xml', [SitemapController::class, 'sectors'])->name('sitemap.sectors');
 Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('sitemap.cities');
 Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');

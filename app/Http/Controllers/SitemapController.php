@@ -26,11 +26,11 @@ class SitemapController extends Controller
     }
 
     /**
-     * Main static pages sitemap (/sitemap-main.xml)
+     * Main static pages sitemap (/sitemap-pages.xml)
      */
-    public function main(): Response
+    public function pages(): Response
     {
-        $content = Cache::remember('sitemap_main_xml', 3600, function () {
+        $content = Cache::remember('sitemap_pages_xml', 3600, function () {
             $faqCategories = \App\Models\FaqCategory::where('is_active', true)->get();
             $technologies = \App\Models\Technology::where('is_active', true)->get();
             return view('sitemap-main', compact('faqCategories', 'technologies'))->render();

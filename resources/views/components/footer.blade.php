@@ -102,6 +102,7 @@
                     <li><a href="{{ url('/layanan/kamar-mandi-mampet') }}" class="hover:text-white transition duration-150 inline-block">Floor Drain Kamar Mandi</a></li>
                     <li><a href="{{ url('/layanan/got-saluran-pembuangan') }}" class="hover:text-white transition duration-150 inline-block">Talang Hujan &amp; Pipa Rooftop</a></li>
                     <li><a href="{{ route('services.cuci-toren') }}" class="text-teal-300 font-semibold hover:text-teal-200 transition duration-150 inline-block">Cuci Toren &amp; Tandon Air</a></li>
+                    <li><a href="{{ route('diagnostic.index') }}" class="text-emerald-400 font-semibold hover:text-emerald-300 transition duration-150 inline-block">Cek Pipa Mandiri (Diagnosa) →</a></li>
                     <li><a href="{{ url('/sektor-plumbing/restoran-cafe') }}" class="hover:text-white transition duration-150 inline-block">Sedot Lemak (Grease Trap)</a></li>
                     <li><a href="{{ route('property.index') }}" class="text-amber-300 font-semibold hover:text-amber-200 transition duration-150 inline-block">Hub Solusi Properti →</a></li>
                 </ul>

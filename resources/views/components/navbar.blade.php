@@ -186,8 +186,19 @@
                                 <a href="{{ route('services.cuci-toren') }}" class="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150">
                                     <div class="w-9 h-9 rounded-lg bg-teal-100/70 text-teal-700 flex items-center justify-center font-bold text-lg group-hover/item:bg-teal-600 group-hover/item:text-white transition-colors shrink-0">🚰</div>
                                     <div>
-                                        <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors">Cuci Toren & Tandon Air</div>
-                                        <div class="text-xs text-slate-500 line-clamp-1">Pengurasan lumut & lumpur food-grade safety</div>
+                                        <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors">Cuci Toren &amp; Tandon Air</div>
+                                        <div class="text-xs text-slate-500 line-clamp-1">Pengurasan lumut &amp; lumpur food-grade safety</div>
+                                    </div>
+                                </a>
+
+                                <a href="{{ route('diagnostic.index') }}" class="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150">
+                                    <div class="w-9 h-9 rounded-lg bg-emerald-100/70 text-emerald-700 flex items-center justify-center font-bold text-lg group-hover/item:bg-emerald-600 group-hover/item:text-white transition-colors shrink-0">🔍</div>
+                                    <div>
+                                        <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors flex items-center gap-1.5">
+                                            Cek Pipa Mandiri
+                                            <span class="text-[10px] font-extrabold px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-md">Alat Gratis</span>
+                                        </div>
+                                        <div class="text-xs text-slate-500 line-clamp-1">Diagnosa tingkat keparahan mampet 30 detik</div>
                                     </div>
                                 </a>
                             </div>
