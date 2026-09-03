@@ -34,8 +34,8 @@ class ViewServiceProvider extends ServiceProvider
             }
 
             $seo = [
-                'title'        => $customSeo['title'] ?? $seoModel['meta_title'] ?? 'Rootera – Jasa Pipa & Saluran Mampet Profesional',
-                'description'  => $customSeo['description'] ?? $seoModel['meta_description'] ?? 'Rootera solusi terpercaya pipa dan wastafel mampet. Profesional, cepat, bergaransi.',
+                'title'        => $customSeo['title'] ?? $seoModel['meta_title'] ?? 'Jasa Saluran Pipa Mampet 24 Jam | Rootera',
+                'description'  => $customSeo['description'] ?? $seoModel['meta_description'] ?? 'Layanan jasa saluran pipa mampet & pelancaran drainase profesional tanpa bongkar oleh Rootera. Solusi wastafel, got, & WC tersumbat bergaransi. CS 24 Jam!',
                 'canonical'    => $customSeo['canonical'] ?? $seoModel['canonical_url'] ?? url()->current(),
                 'og_image'     => $customSeo['og_image'] ?? ($seoModel && !empty($seoModel['og_image']) 
                                     ? asset('storage/' . $seoModel['og_image']) 

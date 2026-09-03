@@ -110,14 +110,27 @@ class ProgrammaticSeoController extends Controller
                 ]
             ];
 
-            // Generate Dynamic Transactional SEO Metadata
+            // Generate Dynamic Transactional SEO Metadata (Strict Bounds: Title <60, Description 130-155)
             $title = $district
-                ? "Jasa Pipa Mampet {$district->name}, {$city->name} - Cepat 24 Jam Bergaransi | Rootera"
-                : "Jasa Saluran Pipa Mampet {$city->full_name} - Respon Cepat 30 Menit Bergaransi | Rootera";
+                ? "Jasa Pipa Mampet {$district->name}, {$city->name} | Rootera"
+                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
+
+            if (mb_strlen($title) > 60) {
+                $title = $district
+                    ? "Jasa Pipa Mampet {$district->name} | Rootera"
+                    : "Jasa Pipa Mampet {$city->name} 24 Jam | Rootera";
+            }
+            if (mb_strlen($title) > 60) {
+                $title = mb_strimwidth($title, 0, 58, '..');
+            }
 
             $description = $district
-                ? "Tukang saluran air tersumbat & jasa {$category->name} di {$district->name}, {$city->name}. Respon cepat ({$travelTime}), pengerjaan mekanis rotasi spiral tanpa bongkar pipa & bergaransi 30 hari. Hubungi WhatsApp 24 Jam!"
-                : "Spesialis jasa {$category->name} terpercaya di {$city->full_name}. Pengerjaan cepat ({$travelTime}), profesional tanpa bongkar paksa, dan bergaransi resmi PT/CV J&J Group. Hubungi WhatsApp 24 Jam!";
+                ? "Jasa {$category->name} di {$district->name}, {$city->name}. Tanpa bongkar pipa, respon cepat ({$travelTime}), & garansi 30 hari. WA 24 Jam!"
+                : "Spesialis jasa {$category->name} terpercaya di {$city->name}. Respon cepat ({$travelTime}), tanpa bongkar paksa, & bergaransi 30 hari. WA 24 Jam!";
+
+            if (mb_strlen($description) > 155) {
+                $description = mb_strimwidth($description, 0, 152, '...');
+            }
 
             if (!$district && $category->slug === 'pipa-mampet') {
                 $canonical = url("/jasa-saluran-mampet/{$city->slug}");
@@ -229,12 +242,25 @@ class ProgrammaticSeoController extends Controller
             $dispatchHub = $district ? "Pos Armada Sanitasi Kecamatan {$district->name}" : "Pos Armada Sanitasi Utama {$city->name}";
 
             $title = $district
-                ? "Jasa Cuci Toren {$district->name}, {$city->name} | Kuras Tandon Air Bersih Bergaransi - Rootera"
-                : "Jasa Cuci Toren & Kuras Tandon Air {$city->full_name} | Air Jernih Higienis - Rootera";
+                ? "Jasa Cuci Toren {$district->name}, {$city->name} | Rootera"
+                : "Jasa Cuci Toren & Kuras Tandon {$city->name} | Rootera";
+
+            if (mb_strlen($title) > 60) {
+                $title = $district
+                    ? "Jasa Cuci Toren {$district->name} | Rootera"
+                    : "Jasa Cuci Toren {$city->name} | Rootera";
+            }
+            if (mb_strlen($title) > 60) {
+                $title = mb_strimwidth($title, 0, 58, '..');
+            }
 
             $description = $district
-                ? "Layanan cuci toren dan kuras tandon air profesional di {$district->name}, {$city->name}. Sterilisasi kerak lumut, pasir & endapan lumpur menggunakan High-Pressure Jet Cleaner. Respon cepat!"
-                : "Spesialis jasa cuci toren air & kuras tandon terpercaya di {$city->full_name}. Pengurasan higienis tanpa bahan kimia korosif, garansi air jernih bebas bau. Hubungi WhatsApp 24 Jam!";
+                ? "Jasa cuci toren & kuras tandon air di {$district->name}, {$city->name}. Sterilisasi lumut & lumpur jet washer food-grade. Garansi air jernih!"
+                : "Spesialis jasa cuci toren air & kuras tandon terpercaya di {$city->name}. Pengurasan higienis tanpa kimia korosif. Garansi air jernih. WA 24 Jam!";
+
+            if (mb_strlen($description) > 155) {
+                $description = mb_strimwidth($description, 0, 152, '...');
+            }
 
             $canonical = $district
                 ? url("/layanan-cuci-toren/{$city->slug}/{$district->slug}")

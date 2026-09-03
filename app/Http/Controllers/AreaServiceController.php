@@ -45,8 +45,8 @@ class AreaServiceController extends Controller
                 : collect();
 
             $seo = [
-                'title'       => 'Jasa Saluran Pipa Mampet Terdekat di Seluruh Indonesia - 24 Jam Bergaransi | Rootera Plumbing',
-                'description' => 'Direktori resmi wilayah operasional Rootera Plumbing (J&J Group). Layanan pelancaran pipa mampet tanpa bongkar di Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung.',
+                'title'       => 'Jasa Saluran Pipa Mampet 24 Jam | Rootera Plumbing',
+                'description' => 'Direktori resmi wilayah operasional Rootera Plumbing. Jasa pipa mampet tanpa bongkar di Jabodetabek, Jabar, Jateng, DIY, Jatim, & Lampung. CS 24 Jam!',
                 'canonical'   => route('area-layanan'),
                 'og_image'    => asset('images/JnJ.webp'),
             ];
@@ -118,11 +118,11 @@ class AreaServiceController extends Controller
             // Priority Custom DB Meta Tags with Dynamic Fallback
             $title = !empty($city->meta_title)
                 ? $city->meta_title
-                : "Jasa Saluran Pipa Mampet {$city->full_name} 24 Jam Bergaransi | Rootera (J&J Group)";
+                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
 
             $description = !empty($city->meta_description)
                 ? $city->meta_description
-                : "Solusi jasa perbaikan pipa mampet, wastafel tersumbat, kran air, & toilet di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) oleh Rootera Plumbing.";
+                : "Solusi perbaikan pipa mampet, wastafel, & WC tersumbat di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) & bergaransi. CS 24 Jam!";
 
             $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 
@@ -178,8 +178,8 @@ class AreaServiceController extends Controller
             $canonical = url("/area-jasa-pipa-mampet/{$province->slug}");
 
             $seo = [
-                'title'       => "Jasa Pipa Mampet Wilayah {$province->name} - 24 Jam | Rootera Plumbing",
-                'description' => "Layanan panggil teknisi pipa mampet profesional untuk seluruh kota & kabupaten di provinsi {$province->name}. Pengerjaan tanpa bongkar & bergaransi.",
+                'title'       => "Jasa Pipa Mampet {$province->name} 24 Jam | Rootera",
+                'description' => "Layanan panggil teknisi pipa mampet profesional untuk seluruh kota & kabupaten di provinsi {$province->name}. Pengerjaan tanpa bongkar & bergaransi. WA 24 Jam!",
                 'canonical'   => $canonical,
                 'og_image'    => asset('images/JnJ.webp'),
             ];
