@@ -81,7 +81,7 @@ $organizationSchema = [
     "hoursAvailable" => "Mo-Su 00:00-24:00"
   ],
   "sameAs" => [
-    "https://www.rooteraplumbing.id",
+    "https://rooteraplumbing.id",
     "https://instagram.com/rootera.plumbing",
     "https://tiktok.com/@rootera_plumbing",
     "https://facebook.com/rooteraplumbing",
@@ -313,7 +313,7 @@ $aboutPageSchema = [
 
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                         {{-- 1. Website Resmi --}}
-                        <a href="https://www.rooteraplumbing.id" 
+                        <a href="https://rooteraplumbing.id" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-emerald-950/60 border border-slate-700/80 hover:border-emerald-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">

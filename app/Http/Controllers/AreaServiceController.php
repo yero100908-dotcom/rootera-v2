@@ -62,6 +62,20 @@ class AreaServiceController extends Controller
      */
     public function showCity(string $citySlug)
     {
+        $aliasMap = [
+            'tangerang-kota'   => 'tangerang',
+            'kab-tangerang'    => 'kabupaten-tangerang',
+            'cikarang'         => 'kabupaten-bekasi',
+            'karawang'         => 'kabupaten-karawang',
+            'sleman'           => 'kabupaten-sleman',
+            'sidoarjo'         => 'kabupaten-sidoarjo',
+            'gresik'           => 'surabaya',
+        ];
+
+        if (isset($aliasMap[$citySlug])) {
+            return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
+        }
+
         $html = Cache::remember("area_city_v3_{$citySlug}", 86400, function () use ($citySlug) {
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
@@ -69,23 +83,6 @@ class AreaServiceController extends Controller
                     $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
                 }])
                 ->first();
-
-            if (!$city) {
-                $aliasMap = [
-                    'tangerang-kota'   => 'tangerang',
-                    'kab-tangerang'    => 'kabupaten-tangerang',
-                    'cikarang'         => 'kabupaten-bekasi',
-                    'karawang'         => 'kabupaten-karawang',
-                    'sleman'           => 'kabupaten-sleman',
-                    'sidoarjo'         => 'kabupaten-sidoarjo',
-                    'gresik'           => 'surabaya',
-                ];
-
-                if (isset($aliasMap[$citySlug])) {
-                    $targetSlug = $aliasMap[$citySlug];
-                    $city = City::where('slug', $targetSlug)->where('is_active', true)->first();
-                }
-            }
 
             if (!$city) {
                 $city = City::where('slug', 'like', "%{$citySlug}%")->where('is_active', true)->first()

@@ -21,7 +21,7 @@
         </image:image>
     </url>
     <url>
-        <loc>{{ route('area-layanan') }}</loc>
+        <loc>{{ url('/jasa-saluran-mampet') }}</loc>
         <changefreq>daily</changefreq>
         <priority>0.95</priority>
     </url>

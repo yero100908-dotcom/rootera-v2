@@ -23,7 +23,7 @@
         {{-- Programmatic Category x City Landing Pages --}}
         @foreach ($cities as $city)
         <url>
-            <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}") }}</loc>
+            <loc>{{ $category->slug === 'pipa-mampet' ? url("/jasa-saluran-mampet/{$city->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}") }}</loc>
             <changefreq>weekly</changefreq>
             <priority>0.90</priority>
         </url>

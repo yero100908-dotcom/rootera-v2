@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
                 'route_name' => 'area-layanan',
                 'meta_title' => 'Area Jangkauan Layanan Plumbing ROOTERA',
                 'meta_description' => 'ROOTERA melayani perbaikan pipa air & saluran mampet di Jabodetabek, Bandung, Cirebon, Semarang, Yogyakarta, dan Lampung. Hubungi kami terdekat.',
-                'canonical_url' => url('/area-layanan'),
+                'canonical_url' => url('/jasa-saluran-mampet'),
                 'is_indexable' => true
             ],
             [

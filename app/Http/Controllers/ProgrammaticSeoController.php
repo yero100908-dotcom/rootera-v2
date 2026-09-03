@@ -28,6 +28,10 @@ class ProgrammaticSeoController extends Controller
      */
     public function show(string $categorySlug, string $citySlug, ?string $districtSlug = null)
     {
+        if (!$districtSlug && $categorySlug === 'pipa-mampet') {
+            return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
+        }
+
         $cacheKey = "prog_seo_v3_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
