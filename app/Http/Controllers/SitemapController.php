@@ -7,6 +7,7 @@ use App\Models\ServiceCategory;
 use App\Models\City;
 use App\Models\District;
 use App\Models\ServiceArea;
+use App\Models\Gallery;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
@@ -113,53 +114,28 @@ class SitemapController extends Controller
     }
 
     /**
+     * Project Gallery & Documentation Images sitemap (/sitemap-gallery.xml)
+     */
+    public function gallery(): Response
+    {
+        $content = Cache::remember('sitemap_gallery_xml', 3600, function () {
+            $galleries = Gallery::where('is_active', true)->latest('created_at')->get();
+            return view('sitemap-gallery', compact('galleries'))->render();
+        });
+
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
+    }
+
+    /**
      * Video Documentation sitemap (/sitemap-videos.xml)
      */
     public function videos(): Response
     {
         $content = Cache::remember('sitemap_videos_xml', 3600, function () {
-            $videos = [
-                [
-                    'title' => 'Video High-Pressure Hydro Jetting Restoran Marugame Udon',
-                    'description' => 'Dokumentasi tim Rootera Plumbing melancarkan pipa saluran pembuangan lemak Restoran Marugame Udon.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-hydro-jetting-marugame-udon.webp'),
-                    'content' => asset('videos/dokumentasi/video-hydro-jetting-marugame-udon.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ],
-                [
-                    'title' => 'Video Pelancaran Gutter Lemak Restoran Sushi Tei',
-                    'description' => 'Pembersihan kerak gumpalan lemak padat pada saluran gutter dapur restoran komersial Sushi Tei.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-pelancaran-gutter-lemak-sushi-tei.webp'),
-                    'content' => asset('videos/dokumentasi/video-pelancaran-gutter-lemak-sushi-tei.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ],
-                [
-                    'title' => 'Video Pelancaran Saluran Stasiun Tugu Yogyakarta',
-                    'description' => 'Penanganan pipa tersumbat fasilitas publik Stasiun Tugu Yogyakarta oleh tim spesialis Rootera Plumbing.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-pelancaran-saluran-stasiun-tugu-yogyakarta.webp'),
-                    'content' => asset('videos/dokumentasi/video-pelancaran-saluran-stasiun-tugu-yogyakarta.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ],
-                [
-                    'title' => 'Video Ridgid Drain Cleaner Gutter Mie Kari',
-                    'description' => 'Pembersihan saluran talang air mampet restoran Seporsi Mie Kari menggunakan mesin Ridgid Drain Cleaner.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-ridgid-drain-cleaner-gutter-mie-kari.webp'),
-                    'content' => asset('videos/dokumentasi/video-ridgid-drain-cleaner-gutter-mie-kari.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ],
-                [
-                    'title' => 'Video Ridgid Pelancaran Saluran Kloset Pabrik Jabar',
-                    'description' => 'Pelancaran saluran toilet kloset meluap kawasan industri pabrik Jawa Barat tanpa membongkar pipa.',
-                    'thumbnail' => asset('images/dokumentasi/thumb-video-ridgid-saluran-kloset-pabrik-jabar.webp'),
-                    'content' => asset('videos/dokumentasi/video-ridgid-saluran-kloset-pabrik-jabar.mp4'),
-                    'page_url' => url('/galeri'),
-                    'pub_date' => '2026-08-25T08:00:00+07:00'
-                ]
-            ];
+            $videos = Gallery::where('is_active', true)
+                ->where('media_type', 'video')
+                ->latest('created_at')
+                ->get();
             return view('sitemap-videos', compact('videos'))->render();
         });
 

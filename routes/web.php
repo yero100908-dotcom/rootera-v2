@@ -38,6 +38,7 @@ Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('s
 Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
+Route::get('/sitemap-gallery.xml', [SitemapController::class, 'gallery'])->name('sitemap.gallery');
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
 Route::get('/sitemap-cuci-toren-cities.xml', [SitemapController::class, 'cuciTorenCities'])->name('sitemap.cuci-toren-cities');
 Route::get('/sitemap-cuci-toren-districts.xml', [SitemapController::class, 'cuciTorenDistricts'])->name('sitemap.cuci-toren-districts');

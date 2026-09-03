@@ -3,13 +3,13 @@
         xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
     @foreach($videos as $video)
     <url>
-        <loc>{{ $video['page_url'] }}</loc>
+        <loc>{{ route('galeri.show', $video->slug) }}</loc>
         <video:video>
-            <video:thumbnail_loc>{{ $video['thumbnail'] }}</video:thumbnail_loc>
-            <video:title>{{ $video['title'] }}</video:title>
-            <video:description>{{ $video['description'] }}</video:description>
-            <video:content_loc>{{ $video['content'] }}</video:content_loc>
-            <video:publication_date>{{ $video['pub_date'] }}</video:publication_date>
+            <video:thumbnail_loc>{{ $video->display_thumbnail }}</video:thumbnail_loc>
+            <video:title>{{ $video->title }}</video:title>
+            <video:description>{{ $video->description ?? ('Dokumentasi video riil pengerjaan pelancaran pipa mampet ' . $video->title . ' oleh teknisi Rootera Plumbing.') }}</video:description>
+            <video:content_loc>{{ $video->display_media }}</video:content_loc>
+            <video:publication_date>{{ $video->created_at ? $video->created_at->toAtomString() : now()->toAtomString() }}</video:publication_date>
             <video:family_friendly>yes</video:family_friendly>
             <video:requires_subscription>no</video:requires_subscription>
             <video:live>no</video:live>

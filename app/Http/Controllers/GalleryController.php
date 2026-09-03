@@ -62,8 +62,10 @@ class GalleryController extends Controller
         $seo = [
             'title' => 'Galeri & Dokumentasi Pekerjaan Pipa Mampet Real',
             'description' => 'Dokumentasi riil video pengerjaan pelancaran pipa mampet, foto komparasi sebelum-sesudah (before-after), & aksi teknisi profesional Rootera Plumbing.',
-            'canonical' => route('galeri'),
+            'canonical' => $galleries->currentPage() > 1 ? $galleries->url($galleries->currentPage()) : route('galeri'),
             'is_indexable' => true,
+            'prev_page_url' => $galleries->previousPageUrl(),
+            'next_page_url' => $galleries->nextPageUrl(),
         ];
 
         return view('pages.gallery.index', compact('galleries', 'featuredProject', 'category', 'mediaType', 'counts', 'seo'));

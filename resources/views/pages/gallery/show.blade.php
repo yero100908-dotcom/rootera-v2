@@ -92,6 +92,34 @@
             ]
         ];
     }
+    $imageSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'ImageObject',
+        'name' => $project->title,
+        'description' => $seo['description'] ?? $project->title,
+        'contentUrl' => $project->display_thumbnail,
+        'url' => route('galeri.show', $project->slug),
+        'author' => [
+            '@type' => 'Organization',
+            'name' => 'Rootera Plumbing'
+        ]
+    ];
+
+    $beforeImageSchema = [];
+    if ($project->display_before_image) {
+        $beforeImageSchema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'ImageObject',
+            'name' => 'Kondisi Sebelum Pengerjaan - ' . $project->title,
+            'description' => 'Foto komparasi kondisi pipa tersumbat sebelum tindakan pelancaran oleh teknisi Rootera Plumbing.',
+            'contentUrl' => $project->display_before_image,
+            'url' => route('galeri.show', $project->slug),
+            'author' => [
+                '@type' => 'Organization',
+                'name' => 'Rootera Plumbing'
+            ]
+        ];
+    }
 @endphp
 
 @push('head')
@@ -102,6 +130,16 @@
 <script type="application/ld+json">
 {!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
+
+<script type="application/ld+json">
+{!! json_encode($imageSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+
+@if(!empty($beforeImageSchema))
+<script type="application/ld+json">
+{!! json_encode($beforeImageSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+@endif
 
 @if(!empty($faqSchema))
 <script type="application/ld+json">
@@ -168,7 +206,7 @@
         <div class="bg-slate-950 rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-800 shadow-2xl mb-8 sm:mb-12">
             @if($project->media_type === 'video' && $project->display_media)
                 <div class="relative aspect-video max-h-[520px] bg-black flex items-center justify-center">
-                    <video controls playsinline preload="metadata" poster="{{ $project->display_thumbnail }}" class="w-full h-full object-contain">
+                    <video controls playsinline preload="metadata" poster="{{ $project->display_thumbnail }}" title="{{ $project->title }} - Rootera Plumbing" class="w-full h-full object-contain">
                         <source src="{{ $project->display_media }}" type="video/mp4">
                         Browser Anda tidak mendukung pemutaran video.
                     </video>
@@ -178,21 +216,21 @@
                     <div class="text-center bg-slate-950 p-2 sm:p-3 rounded-2xl border border-red-500/30">
                         <span class="bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-md uppercase mb-2 inline-block shadow">SEBELUM (BEFORE)</span>
                         <div class="aspect-[4/3] overflow-hidden rounded-xl">
-                            <img src="{{ $project->display_before_image }}" alt="Sebelum Pengerjaan - {{ $project->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $project->display_before_image }}" alt="Sebelum Pengerjaan - {{ $project->title }}" title="Kondisi Sebelum Pengerjaan - {{ $project->title }}" class="w-full h-full object-cover">
                         </div>
                         <p class="text-xs text-slate-400 mt-2 font-medium">Kondisi pipa tersumbat sebelum tindakan</p>
                     </div>
                     <div class="text-center bg-slate-950 p-2 sm:p-3 rounded-2xl border border-emerald-500/30">
                         <span class="bg-emerald-600 text-white text-xs font-extrabold px-3 py-1 rounded-md uppercase mb-2 inline-block shadow">SESUDAH (AFTER)</span>
                         <div class="aspect-[4/3] overflow-hidden rounded-xl">
-                            <img src="{{ $project->display_thumbnail }}" alt="Sesudah Pengerjaan - {{ $project->title }}" class="w-full h-full object-cover">
+                            <img src="{{ $project->display_thumbnail }}" alt="Sesudah Pengerjaan - {{ $project->title }}" title="Hasil Sesudah Pengerjaan - {{ $project->title }}" class="w-full h-full object-cover">
                         </div>
                         <p class="text-xs text-slate-400 mt-2 font-medium">Hasil akhir pembersihan 100% lancar</p>
                     </div>
                 </div>
             @else
                 <div class="relative aspect-video max-h-[520px] overflow-hidden bg-black flex items-center justify-center">
-                    <img src="{{ $project->display_thumbnail }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+                    <img src="{{ $project->display_thumbnail }}" alt="Dokumentasi - {{ $project->title }}" title="{{ $project->title }} - Rootera Plumbing" class="w-full h-full object-cover">
                 </div>
             @endif
         </div>

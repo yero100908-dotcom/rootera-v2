@@ -46,9 +46,52 @@
             }
         }
     }
+    $galleryCollectionParts = [];
+    if (isset($galleries)) {
+        foreach ($galleries as $gItem) {
+            if ($gItem->media_type === 'video' && $gItem->display_media) {
+                $galleryCollectionParts[] = [
+                    '@type' => 'VideoObject',
+                    'name' => $gItem->title,
+                    'description' => $gItem->description ?? $gItem->title,
+                    'thumbnailUrl' => $gItem->display_thumbnail,
+                    'contentUrl' => $gItem->display_media,
+                    'url' => route('galeri.show', $gItem->slug),
+                ];
+            } else {
+                $galleryCollectionParts[] = [
+                    '@type' => 'ImageObject',
+                    'name' => $gItem->title,
+                    'description' => $gItem->description ?? $gItem->title,
+                    'contentUrl' => $gItem->display_thumbnail,
+                    'url' => route('galeri.show', $gItem->slug),
+                ];
+            }
+        }
+    }
+
+    $imageGallerySchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'ImageGallery',
+        'name' => 'Galeri Dokumentasi Riil Rootera Plumbing',
+        'description' => 'Kumpulan foto & video riil aksi teknisi pelancaran pipa mampet tanpa bongkar di Jabodetabek.',
+        'url' => route('galeri'),
+        'hasPart' => $galleryCollectionParts,
+    ];
 @endphp
 
 @push('head')
+@if(!empty($seo['prev_page_url']))
+<link rel="prev" href="{{ $seo['prev_page_url'] }}">
+@endif
+@if(!empty($seo['next_page_url']))
+<link rel="next" href="{{ $seo['next_page_url'] }}">
+@endif
+
+<script type="application/ld+json">
+{!! json_encode($imageGallerySchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+</script>
+
 @foreach($galleryVideoSchemas as $vSchema)
 <script type="application/ld+json">
 {!! json_encode($vSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
@@ -82,12 +125,12 @@
         <div class="bg-white/5 border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-md shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-0 max-w-5xl mx-auto">
             <div class="lg:col-span-7 relative bg-slate-950 flex items-center justify-center min-h-[220px] sm:min-h-[320px]">
                 @if($featuredProject->media_type === 'video' && $featuredProject->display_media)
-                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" class="w-full h-full object-cover max-h-[360px]">
+                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[360px]">
                         <source src="{{ $featuredProject->display_media }}" type="video/mp4">
                         Browser Anda tidak mendukung video tag.
                     </video>
                 @else
-                    <img src="{{ $featuredProject->display_thumbnail }}" alt="{{ $featuredProject->title }}" class="w-full h-full object-cover max-h-[360px]">
+                    <img src="{{ $featuredProject->display_thumbnail }}" alt="Proyek Unggulan - {{ $featuredProject->title }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[360px]">
                 @endif
                 <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
                     <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wide shadow-md">⭐ Proyek Unggulan</span>

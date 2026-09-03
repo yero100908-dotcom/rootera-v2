@@ -13,7 +13,7 @@
     
     {{-- MEDIA THUMBNAIL CONTAINER --}}
     <div class="media-container relative aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer group" onclick="openMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}', '{{ urlencode($item->title) }}')">
-        <img src="{{ $item->display_thumbnail }}" alt="{{ $item->title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+        <img src="{{ $item->display_thumbnail }}" alt="Dokumentasi - {{ $item->title }}" title="{{ $item->title }} - Rootera Plumbing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
         
         {{-- Badges Top Left --}}
         <div class="absolute top-2 left-2 flex flex-wrap gap-1 z-10 pointer-events-none">
