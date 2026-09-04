@@ -15,7 +15,7 @@
             </div>
 
             <h2 id="area-heading" style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: #ffffff; margin-bottom: 1rem; line-height: 1.2; letter-spacing: -0.02em;">
-                Jangkauan Cabang <span style="background: linear-gradient(90deg, #34d399, #22d3ee, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rootera Plumbing</span>
+                Area Jangkauan Layanan Jasa Saluran Pipa Mampet <span style="background: linear-gradient(90deg, #34d399, #22d3ee, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rootera</span>
             </h2>
 
             <p style="color: rgba(255, 255, 255, 0.82); font-size: 1.05rem; line-height: 1.65; margin: 0 auto; max-width: 720px;">

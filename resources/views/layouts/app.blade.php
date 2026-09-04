@@ -16,16 +16,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
+    {{-- LCP Image Preload for Homepage --}}
+    @if(request()->routeIs('home') || request()->path() === '/')
+        <link rel="preload" as="image" href="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" type="image/webp">
+    @endif
+
     {{-- Dynamic SEO Meta Tags --}}
     @if(isset($seo['title']) && !empty($seo['title']))
         <title>{{ $seo['title'] }}</title>
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <title>Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi</title>
+        <title>Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera</title>
     @else
-        <title>{{ $title ?? 'Rootera Plumbing - Jasa Saluran Pipa Mampet 24 Jam' }}</title>
+        <title>{{ $title ?? 'Jasa Saluran Pipa Mampet 24 Jam - Rootera Plumbing' }}</title>
     @endif
-    <meta name="description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
-    <meta name="keywords" content="jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera">
+    <meta name="description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+    <meta name="keywords" content="jasa saluran pipa mampet, jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
     
     @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
@@ -40,11 +45,11 @@
     @if(isset($seo['title']) && !empty($seo['title']))
         <meta property="og:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta property="og:title"   content="Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi">
+        <meta property="og:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
     @else
         <meta property="og:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
-    <meta property="og:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
+    <meta property="og:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
     <meta property="og:locale"      content="id_ID">
@@ -54,11 +59,11 @@
     @if(isset($seo['title']) && !empty($seo['title']))
         <meta name="twitter:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta name="twitter:title"   content="Rootera Plumbing - Jasa Saluran Pipa Mampet Cepat & Bergaransi">
+        <meta name="twitter:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
     @else
         <meta name="twitter:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
-    <meta name="twitter:description" content="{{ $seo['description'] ?? 'Layanan jasa saluran pipa mampet tanpa bongkar, cepat, dan profesional oleh Rootera Plumbing. Solusi wastafel, got, & WC tersumbat bergaransi di Jabodetabek, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, & Lampung.' }}">
+    <meta name="twitter:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
     <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}

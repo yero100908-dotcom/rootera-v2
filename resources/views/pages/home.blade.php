@@ -6,12 +6,15 @@ $homeSchema = [
   "@context" => "https://schema.org",
   "@graph" => [
     [
-      "@type" => "Plumber",
+      "@type" => ["Plumber", "LocalBusiness"],
       "@id" => url('/') . '#organization',
       "name" => "Rootera Plumbing",
+      "alternateName" => ["Rootera", "Jasa Saluran Pipa Mampet Rootera"],
       "url" => url('/'),
       "telephone" => "+6281385404000",
       "priceRange" => "Rp 150.000 - Rp 1.500.000",
+      "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+      "image" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
       "address" => [
         "@type" => "PostalAddress",
         "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung",
@@ -20,15 +23,37 @@ $homeSchema = [
         "postalCode" => "13770",
         "addressCountry" => "ID"
       ],
+      "aggregateRating" => [
+        "@type" => "AggregateRating",
+        "ratingValue" => "5.0",
+        "reviewCount" => "120",
+        "bestRating" => "5",
+        "worstRating" => "1"
+      ],
+      "areaServed" => [
+        "DKI Jakarta",
+        "Jabodetabek",
+        "Bandar Lampung",
+        "Bandung",
+        "Semarang",
+        "Yogyakarta",
+        "Surabaya",
+        "Serang"
+      ],
+      "sameAs" => [
+        "https://www.instagram.com/Rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
+        "https://www.facebook.com/Rootera.id",
+        "https://www.tiktok.com/@Rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h"
+      ],
       "hasOfferCatalog" => [
         "@type" => "OfferCatalog",
-        "name" => "Katalog Layanan Sanitasi & Pipa Rootera",
+        "name" => "Katalog Layanan Jasa Saluran Pipa Mampet Rootera",
         "itemListElement" => [
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
-              "name" => "Jasa Pelancar Pipa Mampet Tanpa Bongkar",
+              "name" => "Jasa Saluran Pipa Mampet Tanpa Bongkar",
               "description" => "Pelancaran wastafel, kloset, floor drain, dan got tersumbat bergaransi 30 hari."
             ]
           ],
@@ -52,11 +77,21 @@ $homeSchema = [
       ]
     ],
     [
+      "@type" => "Service",
+      "serviceType" => "Jasa Saluran Pipa Mampet",
+      "name" => "Jasa Saluran Pipa Mampet & Pelancar Wastafel WC Tersumbat",
+      "provider" => [
+        "@id" => url('/') . '#organization'
+      ],
+      "areaServed" => ["Jabodetabek", "Bandar Lampung", "Jawa Barat", "Jawa Tengah", "Jawa Timur"],
+      "description" => "Layanan jasa pelancaran saluran pipa mampet cepat 24 jam tanpa bongkar keramik bergaransi tuntas 30 hari."
+    ],
+    [
       "@type" => "FAQPage",
       "mainEntity" => [
         [
           "@type" => "Question",
-          "name" => "Berapa lama proses pengerjaan pelancar saluran mampet Rootera?",
+          "name" => "Berapa lama proses pengerjaan jasa saluran pipa mampet Rootera?",
           "acceptedAnswer" => [
             "@type" => "Answer",
             "text" => "Estimasi waktu pengerjaan pelancar saluran mampet berkisar antara 1 hingga 2 jam saja menggunakan teknologi rotasi mekanis modern tanpa membongkar struktur bangunan."
@@ -107,18 +142,18 @@ $homeSchema = [
                 {{-- Glowing Capsule Badge --}}
                 <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.45rem 1.1rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
                     <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981;" class="animate-pulse"></span>
-                    ✨ JASA PELANCAR PIPA &amp; KAMERA CCTV INSPEKSI NO. 1
+                    ✨ JASA SALURAN PIPA MAMPET &amp; KAMERA CCTV INSPEKSI NO. 1
                 </div>
 
                 {{-- Dual-tone Headline --}}
                 <h1 style="font-size: clamp(2.1rem, 4.5vw, 3.3rem); font-weight: 800; line-height: 1.18; margin-bottom: 1.25rem; color: #ffffff; letter-spacing: -0.02em;">
-                    Atasi Saluran Pipa Mampet Total<br>
+                    Jasa Saluran Pipa Mampet Profesional<br>
                     <span style="background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tanpa Bongkar Keramik &amp; Bergaransi</span>
                 </h1>
 
                 {{-- Subheadline --}}
                 <p style="color: rgba(255, 255, 255, 0.85); font-size: 1.08rem; line-height: 1.65; margin-bottom: 2rem; max-width: 630px;">
-                    Solusi cepat pelancaran pipa tersumbat menggunakan <strong>Mesin Spiral Drain Cleaner Modern (Ridgid System)</strong> &amp; <strong>Kamera CCTV Inspeksi Digital</strong>. Metode Hydro-Jetting 300 Bar siap melayani kerak lemak ekstrem industri B2B. Respon cepat dengan garansi tuntas 30 hari!
+                    Layanan <strong>jasa saluran pipa mampet</strong> tercepat dan profesional menggunakan <strong>Mesin Spiral Drain Cleaner Modern (Ridgid System)</strong> &amp; <strong>Kamera CCTV Inspeksi Digital</strong>. Solusi wastafel, kloset, floor drain, &amp; got tersumbat tanpa bongkar bergaransi tuntas 30 hari!
                 </p>
 
                 {{-- CTA Action Buttons --}}

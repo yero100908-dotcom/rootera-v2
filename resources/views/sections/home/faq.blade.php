@@ -6,7 +6,7 @@
                 ❓ PERTANYAAN UMUM (FAQ)
             </span>
             <h2 class="section-title" id="faq-heading" style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; color: #0b2b64; margin-bottom: 0.75rem;">
-                Pertanyaan Yang <span style="background: linear-gradient(90deg, #0b2b64, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Sering Diajukan</span>
+                FAQ Jasa Saluran Pipa Mampet <span style="background: linear-gradient(90deg, #0b2b64, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rootera</span>
             </h2>
             <p style="color: #64748b; font-size: 1rem; margin: 0;">
                 Jawaban cepat seputar metode pengerjaan tanpa bongkar, garansi 30 hari, dan estimasi waktu teknisi tiba.
