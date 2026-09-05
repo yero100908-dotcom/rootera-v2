@@ -1,39 +1,39 @@
-<section style="padding: 5.5rem 0; background: linear-gradient(180deg, #0b132b 0%, #061434 50%, #081b42 100%); color: #ffffff; position: relative; overflow: hidden;" id="area-jangkauan" aria-labelledby="area-heading">
+<section id="area-jangkauan" aria-labelledby="area-heading" class="relative overflow-hidden bg-slate-50/50 text-slate-900 py-8 sm:py-10 md:py-16 lg:py-20 border-t border-b border-slate-200/60">
 
-    {{-- Subtle Ambient Glows --}}
-    <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 800px; height: 350px; background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
-    <div style="position: absolute; bottom: 0; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
 
-    <div class="container relative z-10">
+    {{-- Subtle Ambient Radial Glow Orbs --}}
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-cyan-400/10 blur-[100px] rounded-full pointer-events-none z-0" aria-hidden="true"></div>
+
+    <div class="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- SECTION HEADER --}}
-        <div class="text-center" style="max-width: 820px; margin: 0 auto 3.5rem;">
+        <div class="text-center max-w-[820px] mx-auto mb-6 sm:mb-8 md:mb-14">
             
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399; font-size: 0.8rem; font-weight: 800; padding: 0.4rem 1.2rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1.25rem; backdrop-filter: blur(8px);">
-                <span style="width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 10px #10b981;" class="animate-pulse"></span>
+            <div class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider py-1 px-3 sm:px-4 rounded-full mb-2 md:mb-4 backdrop-blur-md whitespace-nowrap shadow-2xs">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 shadow-[0_0_8px_#10b981] animate-pulse"></span>
                 📍 COVERAGE HUBS &amp; CABANG OPERASIONAL
             </div>
 
-            <h2 id="area-heading" style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 800; color: #ffffff; margin-bottom: 1rem; line-height: 1.2; letter-spacing: -0.02em;">
-                Area Jangkauan Layanan Jasa Saluran Pipa Mampet <span style="background: linear-gradient(90deg, #34d399, #22d3ee, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rootera</span>
+            <h2 id="area-heading" class="text-xl sm:text-2xl md:text-[clamp(2rem,4vw,2.75rem)] font-extrabold text-slate-900 leading-tight md:leading-tight mb-2 md:mb-4 tracking-tight">
+                Area Jangkauan Layanan Jasa Saluran Pipa Mampet <span class="text-emerald-600">Rootera</span>
             </h2>
 
-            <p style="color: rgba(255, 255, 255, 0.82); font-size: 1.05rem; line-height: 1.65; margin: 0 auto; max-width: 720px;">
+            <p class="text-xs sm:text-sm md:text-[1.05rem] text-slate-600 leading-relaxed max-w-2xl mx-auto mb-4 md:mb-8">
                 Teknisi profesional kami disiagakan di <strong>7 Hub Utama Nasional</strong> (Jabodetabek, Banten, Jawa Barat, Jawa Tengah, D.I. Yogyakarta, Jawa Timur, &amp; Sumatera/Lampung) siap datang cepat tanpa membongkar keramik.
             </p>
 
-            {{-- Quick Stats Summary Pills --}}
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.85rem; margin-top: 2rem;">
-                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.82rem; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 0.4rem;">
-                    <span>🏛️</span> 7 Hub Regional Utama
+            {{-- Quick Stats Summary Pills (Light Theme 2-Column Grid on Mobile, Flex on Desktop) --}}
+            <div class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 sm:gap-3.5 mt-3 md:mt-8 max-w-lg sm:max-w-none mx-auto">
+                <div class="bg-white border border-slate-200 shadow-2xs py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-xl text-[11px] sm:text-xs md:text-[0.82rem] font-bold text-slate-700 flex items-center justify-center sm:justify-start gap-1.5">
+                    <span>🏛️</span> 7 Hub Regional
                 </div>
-                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.82rem; font-weight: 700; color: #e2e8f0; display: flex; align-items: center; gap: 0.4rem;">
-                    <span>📍</span> 150+ Kecamatan Tercover
+                <div class="bg-white border border-slate-200 shadow-2xs py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-xl text-[11px] sm:text-xs md:text-[0.82rem] font-bold text-slate-700 flex items-center justify-center sm:justify-start gap-1.5">
+                    <span>📍</span> 150+ Kecamatan
                 </div>
-                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(16, 185, 129, 0.25); padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.82rem; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 0.4rem;">
-                    <span>⏱️</span> Standby 24 Jam Nonstop
+                <div class="bg-emerald-50 border border-emerald-200 shadow-2xs py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-xl text-[11px] sm:text-xs md:text-[0.82rem] font-bold text-emerald-700 flex items-center justify-center sm:justify-start gap-1.5">
+                    <span>⏱️</span> Standby 24 Jam
                 </div>
-                <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(6, 182, 212, 0.25); padding: 0.5rem 1rem; border-radius: 12px; font-size: 0.82rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 0.4rem;">
+                <div class="bg-sky-50 border border-sky-200 shadow-2xs py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-xl text-[11px] sm:text-xs md:text-[0.82rem] font-bold text-sky-700 flex items-center justify-center sm:justify-start gap-1.5">
                     <span>🚚</span> Bebas Transportasi
                 </div>
             </div>
@@ -122,70 +122,70 @@
             ];
         @endphp
 
-        {{-- MOBILE HORIZONTAL SWIPE HINT (DISPLAYED ON MOBILE ONLY) --}}
-        <div class="flex items-center justify-between sm:hidden mb-3 px-1">
-            <span style="font-size: 0.78rem; font-weight: 700; color: #34d399; display: flex; align-items: center; gap: 0.35rem;">
-                <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        {{-- MOBILE HORIZONTAL SWIPE HINT --}}
+        <div class="flex items-center justify-between sm:hidden mb-2 px-1">
+            <span class="text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5 animate-bounce text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 Geser kesamping untuk wilayah lain (7 Hub)
             </span>
-            <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Swipe ➔</span>
+            <span class="text-[10px] text-slate-500 font-semibold">Swipe ➔</span>
         </div>
 
         {{-- MAIN CARDS CONTAINER: GRID ON DESKTOP/TABLET, HORIZONTAL SNAP CAROUSEL ON MOBILE --}}
-        <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory scrollbar-none pb-4 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0" id="coverage-hub-slider">
+        <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory mobile-scrollbar touch-pan-x pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0" id="coverage-hub-slider">
             
             @foreach($coverageHubs as $index => $hub)
             @php
                 $isLast = ($index === count($coverageHubs) - 1);
             @endphp
 
-            <div class="w-[88vw] max-w-[340px] sm:w-auto flex-shrink-0 snap-center sm:snap-align-none flex flex-col {{ $isLast ? 'sm:col-span-2 lg:col-span-3' : '' }}">
+            <div class="w-[82vw] min-w-[82vw] sm:min-w-0 max-w-[320px] sm:w-auto shrink-0 snap-center sm:snap-align-none flex flex-col {{ $isLast ? 'sm:col-span-2 lg:col-span-3' : '' }}">
                 
-                <div style="background: linear-gradient(145deg, rgba(15, 23, 42, 0.95) 0%, rgba(6, 20, 52, 0.98) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; overflow: hidden; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; height: 100%; transition: all 0.3s ease;" class="hover:-translate-y-2 hover:border-emerald-400/60 hover:shadow-2xl hover:shadow-emerald-950/40 group">
+                <div class="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-400/60 transition-all duration-300 flex flex-col h-full group">
                     
                     {{-- CARD COVER IMAGE HEADER --}}
-                    <div style="position: relative; overflow: hidden;" class="{{ $isLast ? 'h-48 sm:h-52 lg:h-60' : 'h-48 sm:h-52' }}">
-                        <img src="{{ $hub['image'] }}" alt="Jasa Saluran Pipa Mampet Cabang {{ $hub['province'] }} Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+                    <div class="relative overflow-hidden {{ $isLast ? 'h-36 sm:h-52 lg:h-60' : 'h-32 sm:h-52' }}">
+                        <img src="{{ $hub['image'] }}" alt="Jasa Saluran Pipa Mampet Cabang {{ $hub['province'] }} Rootera Plumbing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                         
                         {{-- Dark Gradient Overlay --}}
-                        <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(6, 20, 52, 0.95) 0%, rgba(6, 20, 52, 0.4) 60%, rgba(0,0,0,0.15) 100%);"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-black/15"></div>
 
                         {{-- Top Badges Overlay --}}
-                        <div style="position: absolute; top: 1rem; left: 1rem; right: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+                        <div class="absolute top-2.5 left-2.5 right-2.5 sm:top-4 sm:left-4 sm:right-4 flex justify-between items-center gap-1.5">
                             {{-- Region Tag Pill --}}
-                            <span style="background: rgba(6, 20, 52, 0.85); border: 1px solid rgba(52, 211, 153, 0.5); color: #34d399; font-size: 0.72rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 9999px; text-transform: uppercase; backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 0.3rem;">
+                            <span class="bg-slate-900/80 border border-emerald-400/50 text-emerald-300 text-[10px] sm:text-[0.72rem] font-extrabold py-0.5 px-2 sm:py-1 sm:px-3 rounded-full uppercase backdrop-blur-md flex items-center gap-1">
                                 📍 {{ $hub['province'] }}
                             </span>
 
                             {{-- Status Badge --}}
-                            <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #6ee7cc; font-size: 0.7rem; font-weight: 700; padding: 0.3rem 0.65rem; border-radius: 9999px; backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 0.35rem;">
-                                <span style="width: 6px; height: 6px; border-radius: 50%; background: #10b981;" class="animate-ping"></span>
+                            <span class="bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[9px] sm:text-[0.7rem] font-bold py-0.5 px-2 sm:py-1 sm:px-2.5 rounded-full backdrop-blur-md flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                                 {{ $hub['status'] }}
                             </span>
                         </div>
 
                         {{-- Floating Headline on Image Bottom --}}
-                        <div style="position: absolute; bottom: 0.85rem; left: 1.25rem; right: 1.25rem;">
-                            <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2; text-shadow: 0 2px 6px rgba(0,0,0,0.7);" class="group-hover:text-emerald-300 transition-colors">
+                        <div class="absolute bottom-2 left-3 right-3 sm:bottom-3.5 sm:left-5 sm:right-5">
+                            <h3 class="text-sm sm:text-xl font-extrabold text-white mb-0.5 leading-tight group-hover:text-emerald-300 transition-colors drop-shadow-md">
                                 {{ $hub['province'] }}
                             </h3>
-                            <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.78rem; margin: 0.2rem 0 0; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">
+                            <p class="text-[11px] sm:text-[0.78rem] text-slate-200/90 mb-0 font-medium drop-shadow-sm line-clamp-1">
                                 {{ $hub['cities'] }}
                             </p>
                         </div>
                     </div>
 
                     {{-- CARD BODY CONTENT --}}
-                    <div style="padding: 1.25rem 1.25rem 1.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+                    <div class="p-3.5 sm:p-5 flex flex-col flex-grow bg-white">
                         
                         {{-- Highlights Micro-Badges / Area Chips --}}
-                        <div style="margin-bottom: 1rem;">
-                            <div style="font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.4rem;">
+                        <div class="mb-2 sm:mb-4">
+                            <div class="text-[10px] sm:text-[0.7rem] font-bold text-slate-400 uppercase tracking-wider mb-1 sm:mb-1.5">
                                 Area Layanan Utama:
                             </div>
-                            <div style="display: flex; flex-wrap: wrap; gap: 0.35rem;">
+                            <div class="flex flex-wrap gap-1 sm:gap-1.5">
                                 @foreach($hub['highlights'] as $chip)
-                                    <span style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 6px; transition: all 0.2s;" class="hover:border-emerald-400/50 hover:text-emerald-300">
+                                    <span class="bg-slate-100 border border-slate-200/70 text-slate-700 text-[10px] sm:text-[0.72rem] font-semibold py-0.5 px-1.5 sm:py-1 sm:px-2.5 rounded-md hover:border-emerald-400/50 hover:text-emerald-700 transition-colors">
                                         {{ $chip }}
                                     </span>
                                 @endforeach
@@ -193,21 +193,21 @@
                         </div>
 
                         {{-- Service Description --}}
-                        <p style="color: rgba(255, 255, 255, 0.75); font-size: 0.84rem; line-height: 1.55; margin: 0 0 1.25rem;">
+                        <p class="text-xs sm:text-[0.84rem] text-slate-600 leading-relaxed mb-3 sm:mb-5 line-clamp-2 md:line-clamp-none">
                             {{ $hub['service'] }}
                         </p>
 
                         {{-- BOTTOM DUAL CTA ACTION BUTTONS --}}
-                        <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 0.6rem;">
+                        <div class="mt-auto pt-2.5 sm:pt-4 border-t border-slate-100 flex items-center gap-2">
                             {{-- Primary CTA Button --}}
-                            <a href="{{ url('/jasa-saluran-mampet/' . $hub['slug']) }}" style="flex: 1; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; text-decoration: none; padding: 0.65rem 0.85rem; border-radius: 12px; font-weight: 700; font-size: 0.82rem; display: flex; align-items: center; justify-content: center; gap: 0.35rem; transition: all 0.2s ease;" class="hover:bg-emerald-500 hover:text-white hover:border-emerald-500 min-h-[40px]">
+                            <a href="{{ url('/jasa-saluran-mampet/' . $hub['slug']) }}" class="flex-1 bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-600 hover:text-white text-xs sm:text-[0.82rem] font-bold py-2 px-2.5 sm:py-2.5 sm:px-3.5 rounded-xl flex items-center justify-center gap-1 transition-all min-h-[36px] sm:min-h-[40px] text-decoration-none">
                                 <span>{{ $hub['cta'] }}</span>
                                 <span class="group-hover:translate-x-1 transition-transform">→</span>
                             </a>
 
                             {{-- Direct WhatsApp Technician Button --}}
-                            <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh panggil teknisi untuk wilayah ' . $hub['province']) }}" target="_blank" rel="noopener noreferrer" style="background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.35); color: #4ade80; text-decoration: none; padding: 0.65rem 0.75rem; border-radius: 12px; font-weight: 700; font-size: 0.78rem; display: flex; align-items: center; justify-content: center; gap: 0.3rem; transition: all 0.2s ease;" class="hover:bg-emerald-600 hover:text-white min-h-[40px]" title="Panggil Teknisi WA {{ $hub['province'] }}">
-                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.53 1.951.815 2.791.815 3.182 0 5.768-2.587 5.768-5.767 0-3.18-2.586-5.766-5.768-5.766z"/></svg>
+                            <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh panggil teknisi untuk wilayah ' . $hub['province']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-600 text-white hover:bg-emerald-700 text-xs sm:text-[0.78rem] font-bold py-2 px-2.5 sm:py-2.5 sm:px-3 rounded-xl flex items-center justify-center gap-1 transition-all min-h-[36px] sm:min-h-[40px] text-decoration-none" title="Panggil Teknisi WA {{ $hub['province'] }}">
+                                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.53 1.951.815 2.791.815 3.182 0 5.768-2.587 5.768-5.767 0-3.18-2.586-5.766-5.768-5.766z"/></svg>
                                 <span>Panggil</span>
                             </a>
                         </div>
@@ -222,15 +222,15 @@
         </div>
 
         {{-- MOBILE DOTS INDICATOR --}}
-        <div class="flex justify-center items-center gap-1.5 sm:hidden mt-4">
+        <div class="flex justify-center items-center gap-1.5 sm:hidden mt-3 mb-2">
             @foreach($coverageHubs as $idx => $h)
-                <div style="width: {{ $idx === 0 ? '20px' : '6px' }}; height: 6px; border-radius: 9999px; background: {{ $idx === 0 ? '#10b981' : 'rgba(255,255,255,0.2)' }}; transition: all 0.3s ease;"></div>
+                <div class="{{ $idx === 0 ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300' }} h-1.5 rounded-full transition-all duration-300"></div>
             @endforeach
         </div>
 
         {{-- MASTER DIRECTORY BOTTOM CTA BUTTON --}}
-        <div class="text-center" style="margin-top: 3.5rem;">
-            <a href="{{ route('area-layanan') }}" style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.18); color: #ffffff; text-decoration: none; padding: 0.9rem 2.25rem; border-radius: 50px; font-weight: 800; font-size: 0.95rem; display: inline-flex; items-center: center; gap: 0.5rem; backdrop-filter: blur(10px); transition: all 0.25s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.2);" class="hover:bg-white hover:text-slate-900 hover:scale-105">
+        <div class="text-center mt-6 sm:mt-14">
+            <a href="{{ route('area-layanan') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-full text-decoration-none shadow-md transition-all duration-300 hover:scale-105">
                 <span>🗺️ Eksplorasi Seluruh Direktori Wilayah &amp; Kecamatan Terdekat</span>
                 <span>→</span>
             </a>

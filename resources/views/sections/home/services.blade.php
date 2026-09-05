@@ -1,24 +1,27 @@
-<section style="padding: 5rem 0; background: #0f172a; color: #ffffff;" id="layanan" aria-labelledby="layanan-heading" class="relative overflow-hidden">
-    {{-- Background Glow --}}
-    <div style="position: absolute; top: 0; right: 0; width: 400px; height: 400px; background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
+<section id="layanan" aria-labelledby="layanan-heading" class="relative overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900 py-8 sm:py-12 md:py-16 border-t border-slate-200/60">
+    
+    {{-- Subtle Ambient Water Glow & Pattern --}}
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-100/50 via-emerald-50/20 to-transparent pointer-events-none z-0" aria-hidden="true"></div>
+    <div class="absolute top-20 right-0 w-[400px] h-[300px] bg-cyan-400/5 blur-[90px] rounded-full pointer-events-none z-0" aria-hidden="true"></div>
+    <div class="absolute bottom-10 left-0 w-[400px] h-[300px] bg-emerald-400/5 blur-[90px] rounded-full pointer-events-none z-0" aria-hidden="true"></div>
 
-    <div class="container relative z-10">
+    <div class="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {{-- SECTION HEADER --}}
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <span style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; margin-bottom: 1rem;">
+        <div class="text-center max-w-3xl mx-auto mb-6 md:mb-12">
+            <span class="inline-block bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider py-1 px-3.5 rounded-full mb-2 md:mb-3 shadow-2xs">
                 🛠️ SOLUSI SPESIALIS PIPA TANPA BONGKAR
             </span>
-            <h2 class="section-title" id="layanan-heading" style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; color: #ffffff; margin-bottom: 0.75rem;">
-                Layanan Jasa Saluran Pipa Mampet <span style="background: linear-gradient(90deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tanpa Bongkar</span>
+            <h2 class="section-title text-xl sm:text-2xl md:text-[clamp(1.8rem,3.5vw,2.5rem)] font-extrabold text-slate-900 leading-tight mb-2 md:mb-3" id="layanan-heading">
+                Layanan Jasa Saluran Pipa Mampet <span class="text-emerald-600">Tanpa Bongkar</span>
             </h2>
-            <p style="color: #94a3b8; font-size: 1.02rem; line-height: 1.6; margin: 0;">
+            <p class="text-xs sm:text-sm md:text-[1.02rem] text-slate-600 leading-relaxed max-w-2xl mx-auto mb-0">
                 Penanganan cepat pipa tersumbat menggunakan <strong>Mesin Spiral Drain Cleaner Modern</strong> &amp; <strong>Kamera CCTV Inspeksi Digital</strong> untuk rumah tangga, restoran, kantor, dan fasilitas publik.
             </p>
         </div>
 
         {{-- INTERACTIVE CARDS GRID / MOBILE HORIZONTAL SCROLL CAROUSEL --}}
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 no-scrollbar md:grid md:grid-cols-2 lg:grid-cols-3 md:pb-0">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
             @php
                 $serviceItems = [
                     [
@@ -82,40 +85,40 @@
             @endphp
 
             @foreach($serviceItems as $item)
-            <div style="background: rgba(30, 41, 59, 0.7); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); padding: 1.75rem; backdrop-filter: blur(10px); display: flex; flex-direction: column;" class="w-[300px] sm:w-[340px] md:w-auto shrink-0 snap-start hover:border-emerald-500/50 hover:bg-slate-800/80 transition-all duration-300 group">
+            <div class="w-[82vw] min-w-[82vw] sm:min-w-[340px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-lg hover:border-emerald-400/60 transition-all duration-300 group flex flex-col justify-between">
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <div style="width: 54px; height: 54px; border-radius: 16px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3); display: flex; align-items: center; justify-content: center; font-size: 1.75rem;" class="group-hover:scale-110 transition-transform">
+                <div class="flex justify-between items-center mb-3 md:mb-4">
+                    <div class="w-10 h-10 md:w-13 md:h-13 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-lg md:text-2xl group-hover:scale-110 transition-transform shrink-0">
                         {{ $item['icon'] }}
                     </div>
-                    <span style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #2dd4bf; font-size: 0.72rem; font-weight: 800; padding: 0.3rem 0.75rem; border-radius: 9999px; height: fit-content;">
+                    <span class="bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full h-fit">
                         {{ $item['badge'] }}
                     </span>
                 </div>
 
-                <h3 style="font-size: 1.2rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;" class="group-hover:text-emerald-400 transition-colors">
+                <h3 class="text-base md:text-[1.2rem] font-extrabold text-slate-900 mb-1 md:mb-2 group-hover:text-emerald-600 transition-colors">
                     {{ $item['title'] }}
                 </h3>
 
-                <p style="color: #94a3b8; font-size: 0.88rem; line-height: 1.6; margin-bottom: 1.25rem;">
+                <p class="text-xs md:text-[0.88rem] text-slate-600 leading-normal md:leading-relaxed mb-3 md:mb-5 line-clamp-3 md:line-clamp-none">
                     {{ $item['desc'] }}
                 </p>
 
-                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; margin-top: auto;">
+                <div class="flex flex-wrap gap-1 md:gap-1.5 mb-3 md:mb-6 mt-auto">
                     @foreach($item['tags'] as $tag)
-                        <span style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1; font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 6px;">
+                        <span class="bg-slate-100 border border-slate-200/70 text-slate-700 text-[10px] md:text-[0.72rem] font-semibold py-0.5 px-2 md:py-1 md:px-2.5 rounded-md">
                             ✓ {{ $tag }}
                         </span>
                     @endforeach
                 </div>
 
-                <div style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div class="pt-2.5 md:pt-4 border-t border-slate-100 mt-auto">
                     @if(isset($item['direct_link']) && $item['direct_link'])
-                        <a href="{{ $item['url'] }}" style="color: #06b6d4; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:text-cyan-300 min-h-[44px]">
+                        <a href="{{ $item['url'] }}" class="text-sky-600 font-bold text-xs md:text-sm inline-flex items-center gap-1 hover:text-sky-700 min-h-[40px] md:min-h-[44px] text-decoration-none">
                             <span>Lihat Layanan Cuci Toren →</span>
                         </a>
                     @else
-                        <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh jasa pelancaran: ' . $item['title']) }}" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:text-emerald-300 min-h-[44px]">
+                        <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya butuh jasa pelancaran: ' . $item['title']) }}" target="_blank" rel="noopener noreferrer" class="text-emerald-600 font-bold text-xs md:text-sm inline-flex items-center gap-1 hover:text-emerald-700 min-h-[40px] md:min-h-[44px] text-decoration-none">
                             <span>Panggil Teknisi untuk Masalah Ini →</span>
                         </a>
                     @endif
@@ -124,23 +127,30 @@
             </div>
             @endforeach
         </div>
+        <!-- Mobile Visual Scroll Indicator -->
+        <div class="md:hidden flex items-center justify-center gap-1.5 mt-3">
+            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        </div>
 
         {{-- CROSS-SELLING MINI HIGHLIGHT BANNER --}}
-        <div class="mt-8 bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md max-w-4xl mx-auto">
+        <div class="mt-6 md:mt-10 bg-slate-900 text-white rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md max-w-4xl mx-auto">
             <div class="flex items-center gap-3 text-left">
-                <span class="text-2xl shrink-0">💡</span>
+                <span class="text-xl sm:text-2xl shrink-0">💡</span>
                 <p class="text-xs sm:text-sm text-slate-300">
                     <strong class="text-white">Sekalian Perawatan Toren Air?</strong> Kami sediakan layanan kuras &amp; sterilisasi toren bertekanan tinggi saat teknisi standby di lokasi Anda.
                 </p>
             </div>
-            <a href="{{ route('services.cuci-toren') }}" class="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full transition-all hover:scale-105 min-h-[44px] flex items-center justify-center">
+            <a href="{{ route('services.cuci-toren') }}" class="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-full transition-all hover:scale-105 min-h-[40px] md:min-h-[44px] flex items-center justify-center text-decoration-none">
                 Pelajari Jasa Cuci Toren →
             </a>
         </div>
 
-        <div class="text-center mt-10">
-            <a href="{{ route('layanan') }}" style="background: linear-gradient(90deg, #10b981, #06b6d4); color: #ffffff; text-decoration: none; padding: 0.95rem 2.25rem; border-radius: 12px; font-weight: 800; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);" class="hover:scale-105 transition-all min-h-[48px]">
-                Lihat Katalog Lengkap &amp; Estimasi Harga →
+        <div class="text-center mt-8 md:mt-12">
+            <a href="{{ route('layanan') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white font-extrabold text-xs md:text-sm px-6 py-3 md:px-9 md:py-3.5 rounded-full text-decoration-none shadow-md transition-all">
+                <span>Lihat Katalog Lengkap &amp; Estimasi Harga →</span>
             </a>
         </div>
 

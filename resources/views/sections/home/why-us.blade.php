@@ -1,25 +1,25 @@
-<section style="position: relative; overflow: hidden; background: linear-gradient(135deg, #0b132b 0%, #0f172a 50%, #061434 100%); padding: 5.5rem 0;" aria-labelledby="why-heading">
+<section id="keunggulan" aria-labelledby="why-heading" class="relative overflow-hidden bg-gradient-to-br from-[#0b132b] via-[#0f172a] to-[#061434] py-8 sm:py-10 md:py-16 lg:py-20 text-white">
     
     {{-- Ambient Light Orb --}}
-    <div style="position: absolute; top: -100px; right: -100px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(16, 185, 129, 0.14) 0%, transparent 70%); pointer-events: none;"></div>
+    <div class="absolute -top-24 -right-24 w-[400px] h-[400px] md:w-[600px] md:h-[600px] bg-[radial-gradient(circle,_rgba(16,185,129,0.14)_0%,_transparent_70%)] pointer-events-none z-0" aria-hidden="true"></div>
 
-    <div class="container relative z-10">
+    <div class="container relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {{-- SECTION HEADER --}}
-        <div class="text-center max-w-3xl mx-auto mb-14">
-            <span style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.8rem; font-weight: 800; padding: 0.35rem 1rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em; backdrop-filter: blur(8px);">
+        <div class="text-center max-w-3xl mx-auto mb-6 md:mb-14">
+            <span class="inline-block bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-extrabold uppercase tracking-wider py-1 px-3 sm:px-3.5 rounded-full mb-2 md:mb-3 backdrop-blur-md whitespace-nowrap shadow-2xs">
                 🏆 KEUNGGULAN TEKNOLOGI &amp; PROTOKOL KERJA
             </span>
-            <h2 id="why-heading" style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; color: #ffffff; margin-top: 1rem; margin-bottom: 0.75rem;">
-                Keunggulan Jasa Saluran Pipa Mampet <span style="background: linear-gradient(90deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Rootera Plumbing</span>
+            <h2 id="why-heading" class="text-xl sm:text-2xl md:text-[clamp(1.8rem,3.5vw,2.5rem)] font-extrabold text-white leading-snug md:leading-tight mb-2.5 md:mb-3">
+                Keunggulan Jasa Saluran Pipa Mampet <span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">Rootera Plumbing</span>
             </h2>
-            <p style="color: rgba(255, 255, 255, 0.82); font-size: 1.05rem; line-height: 1.6; margin: 0;">
+            <p class="text-xs sm:text-sm md:text-[1.05rem] text-slate-300 md:text-slate-200/85 leading-relaxed max-w-2xl mx-auto mb-0">
                 Kami menerapkan standar kerja kelas profesional menggunakan peralatan canggih tanpa membongkar keramik lantai atau merusak struktur bangunan Anda.
             </p>
         </div>
 
-        {{-- 4 PILLARS GRID / MOBILE CAROUSEL --}}
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 no-scrollbar md:grid md:grid-cols-2 lg:grid-cols-4 md:pb-0">
+        {{-- 4 PILLARS GRID / MOBILE CAROUSEL PEEK SLIDER --}}
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
             @php
             $reasons = [
                 [
@@ -50,19 +50,33 @@
             @endphp
 
             @foreach($reasons as $r)
-            <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; padding: 2rem 1.5rem; backdrop-filter: blur(12px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); transition: transform 0.3s ease, border-color 0.3s ease;" class="w-[280px] sm:w-[320px] md:w-auto shrink-0 snap-start hover:-translate-y-2 hover:border-emerald-400/50 group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-                    <div style="font-size: 2rem;">{{ $r['icon'] }}</div>
-                    <span style="font-size: 1.5rem; font-weight: 800; color: rgba(255, 255, 255, 0.2); font-family: monospace;">{{ $r['number'] }}</span>
+            <div class="w-[80vw] min-w-[80vw] sm:min-w-[300px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white/[0.04] border border-white/[0.12] backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-xl hover:-translate-y-1 md:hover:-translate-y-2 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3 md:mb-5">
+                        <div class="text-xl sm:text-2xl md:text-3xl shrink-0 group-hover:scale-110 transition-transform">
+                            {{ $r['icon'] }}
+                        </div>
+                        <span class="text-base md:text-2xl font-extrabold text-slate-500/80 md:text-slate-400/40 font-mono">
+                            {{ $r['number'] }}
+                        </span>
+                    </div>
+                    <h3 class="text-sm sm:text-base md:text-[1.15rem] font-extrabold text-white mb-1.5 md:mb-2 group-hover:text-emerald-300 transition-colors">
+                        {{ $r['title'] }}
+                    </h3>
+                    <p class="text-xs md:text-[0.88rem] text-slate-300 md:text-slate-200/75 leading-relaxed line-clamp-3 md:line-clamp-none">
+                        {{ $r['desc'] }}
+                    </p>
                 </div>
-                <h3 style="font-size: 1.15rem; font-weight: 800; color: #ffffff; margin-bottom: 0.6rem;" class="group-hover:text-emerald-300 transition-colors">
-                    {{ $r['title'] }}
-                </h3>
-                <p style="color: rgba(255, 255, 255, 0.75); font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                    {{ $r['desc'] }}
-                </p>
             </div>
             @endforeach
+        </div>
+
+        {{-- Mobile Visual Scroll Indicator --}}
+        <div class="md:hidden flex items-center justify-center gap-1.5 mt-3">
+            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
         </div>
 
     </div>
