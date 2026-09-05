@@ -41,9 +41,9 @@ $homeSchema = [
         "Serang"
       ],
       "sameAs" => [
-        "https://www.instagram.com/Rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
+        "https://www.instagram.com/rootera_plumbing/",
         "https://www.facebook.com/Rootera.id",
-        "https://www.tiktok.com/@Rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h"
+        "https://www.tiktok.com/@rootera_plumbing"
       ],
       "hasOfferCatalog" => [
         "@type" => "OfferCatalog",

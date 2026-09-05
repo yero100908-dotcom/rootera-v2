@@ -53,6 +53,9 @@
     <meta property="og:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
+    <meta property="og:see_also"    content="https://www.instagram.com/rootera_plumbing/">
+    <meta property="og:see_also"    content="https://www.facebook.com/Rootera.id">
+    <meta property="og:see_also"    content="https://www.tiktok.com/@rootera_plumbing">
     <meta property="og:locale"      content="id_ID">
 
     @if(isset($seo['og_type']) && $seo['og_type'] === 'article')
@@ -146,9 +149,9 @@
                 "Serang"
               ],
               "sameAs" => [
-                "https://www.instagram.com/Rootera_plumbing?igsh=c2NkbXA1b3h6MTVy",
+                "https://www.instagram.com/rootera_plumbing/",
                 "https://www.facebook.com/Rootera.id",
-                "https://www.tiktok.com/@Rootera_plumbing?_r=1&_t=ZS-97nM89aiu5h"
+                "https://www.tiktok.com/@rootera_plumbing"
               ]
             ],
             [

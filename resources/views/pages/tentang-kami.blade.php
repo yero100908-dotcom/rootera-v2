@@ -81,11 +81,9 @@ $organizationSchema = [
     "hoursAvailable" => "Mo-Su 00:00-24:00"
   ],
   "sameAs" => [
-    "https://rooteraplumbing.id",
-    "https://instagram.com/rootera.plumbing",
-    "https://tiktok.com/@rootera_plumbing",
-    "https://facebook.com/rooteraplumbing",
-    "https://youtube.com/@rooteraplumbing"
+    "https://www.instagram.com/rootera_plumbing/",
+    "https://www.facebook.com/Rootera.id",
+    "https://www.tiktok.com/@rootera_plumbing"
   ]
 ];
 
@@ -335,18 +333,18 @@ $aboutPageSchema = [
                         </a>
 
                         {{-- 3. Instagram --}}
-                        <a href="https://instagram.com/rootera.plumbing" 
+                        <a href="https://www.instagram.com/rootera_plumbing/" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-rose-950/60 border border-slate-700/80 hover:border-rose-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">
                                 📸
                             </div>
                             <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Instagram</span>
-                            <span class="text-xs font-bold text-slate-200 group-hover:text-rose-300 truncate w-full mt-0.5">@rootera.plumbing</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-rose-300 truncate w-full mt-0.5">@rootera_plumbing</span>
                         </a>
 
                         {{-- 4. TikTok --}}
-                        <a href="https://tiktok.com/@rootera_plumbing" 
+                        <a href="https://www.tiktok.com/@rootera_plumbing" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-cyan-950/60 border border-slate-700/80 hover:border-cyan-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">
@@ -357,7 +355,7 @@ $aboutPageSchema = [
                         </a>
 
                         {{-- 5. Facebook --}}
-                        <a href="https://facebook.com/rooteraplumbing" 
+                        <a href="https://www.facebook.com/Rootera.id" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-blue-950/60 border border-slate-700/80 hover:border-blue-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">

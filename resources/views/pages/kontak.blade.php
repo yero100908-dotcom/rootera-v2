@@ -55,6 +55,11 @@ $contactSchema = [
                 'contactOption' => 'TollFree',
                 'areaServed' => ['ID'],
                 'availableLanguage' => ['Indonesian']
+            ],
+            'sameAs' => [
+                'https://www.instagram.com/rootera_plumbing/',
+                'https://www.facebook.com/Rootera.id',
+                'https://www.tiktok.com/@rootera_plumbing'
             ]
         ]
     ]
@@ -158,6 +163,17 @@ $contactSchema = [
                             <a href="mailto:info@rooteraplumbing.id" class="text-xs sm:text-sm font-bold text-white hover:text-emerald-400 transition-colors">info@rooteraplumbing.id</a>
                         </div>
                     </div>
+
+                    {{-- Instagram --}}
+                    <a href="https://www.instagram.com/rootera_plumbing/" target="_blank" rel="noopener noreferrer" class="flex items-start gap-3.5 p-3.5 bg-slate-800/80 hover:bg-slate-800 rounded-2xl border border-slate-700/80 transition-all group">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0 text-lg group-hover:scale-110 transition-transform">
+                            📸
+                        </div>
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-400 block uppercase">Instagram Resmi</span>
+                            <span class="text-xs sm:text-sm font-bold text-white group-hover:text-rose-300 transition-colors">@rootera_plumbing</span>
+                        </div>
+                    </a>
 
                     {{-- HQ Address --}}
                     <div class="flex items-start gap-3.5 p-3.5 bg-slate-800/80 rounded-2xl border border-slate-700/80">
