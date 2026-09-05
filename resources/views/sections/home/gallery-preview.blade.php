@@ -184,16 +184,16 @@ function openHomeMediaModal(type, url, title, beforeUrl) {
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; padding:1rem; width:100%;">
                 <div style="text-align:center;">
                     <span style="background:#dc2626; color:#fff; font-size:0.75rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:4px; margin-bottom:0.5rem; display:inline-block;">SEBELUM (BEFORE)</span>
-                    <img src="${beforeUrl}" style="width:100%; height:320px; object-fit:cover; border-radius:8px;">
+                    <img src="${beforeUrl}" style="width:100%; height:320px; object-fit:cover; border-radius:8px;" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
                 </div>
                 <div style="text-align:center;">
                     <span style="background:#10b981; color:#fff; font-size:0.75rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:4px; margin-bottom:0.5rem; display:inline-block;">SESUDAH (AFTER)</span>
-                    <img src="${url}" style="width:100%; height:320px; object-fit:cover; border-radius:8px;">
+                    <img src="${url}" style="width:100%; height:320px; object-fit:cover; border-radius:8px;" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
                 </div>
             </div>
         `;
     } else {
-        container.innerHTML = `<img src="${url}" style="width:100%; max-height:70vh; object-fit:contain;">`;
+        container.innerHTML = `<img src="${url}" style="width:100%; max-height:70vh; object-fit:contain;" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">`;
     }
     modal.style.display = 'flex';
 }

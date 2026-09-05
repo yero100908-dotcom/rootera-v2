@@ -16,9 +16,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
-    {{-- LCP Image Preload for Homepage --}}
+    {{-- LCP Image Preload for Homepage (Responsive Mobile & Desktop) --}}
     @if(request()->routeIs('home') || request()->path() === '/')
-        <link rel="preload" as="image" href="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" type="image/webp">
+        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" media="(max-width: 767px)" type="image/webp">
+        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" media="(min-width: 768px)" type="image/webp">
     @endif
 
     {{-- Dynamic SEO Meta Tags --}}
@@ -40,7 +41,7 @@
     @endif
 
     {{-- Open Graph --}}
-    <meta property="og:type"        content="website">
+    <meta property="og:type"        content="{{ $seo['og_type'] ?? 'website' }}">
     <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
     @if(isset($seo['title']) && !empty($seo['title']))
         <meta property="og:title"   content="{{ $seo['title'] }}">
@@ -53,6 +54,18 @@
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
     <meta property="og:locale"      content="id_ID">
+
+    @if(isset($seo['og_type']) && $seo['og_type'] === 'article')
+        @if(!empty($seo['published_time']))
+            <meta property="article:published_time" content="{{ $seo['published_time'] }}">
+        @endif
+        @if(!empty($seo['modified_time']))
+            <meta property="article:modified_time" content="{{ $seo['modified_time'] }}">
+        @endif
+        @if(!empty($seo['section']))
+            <meta property="article:section" content="{{ $seo['section'] }}">
+        @endif
+    @endif
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">

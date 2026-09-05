@@ -145,4 +145,36 @@ $etaOptions = ['15-25 Menit', '20-30 Menit', '25-35 Menit', '30-40 Menit'];
             </div>
         </div>
     </section>
+
+    <!-- 4. Reverse Silo Hierarchy Card (PageRank Booster to City Pillar & Homepage) -->
+    <section style="background: #F1F5F9; padding: 2.5rem 1.5rem; border-top: 1px solid #CBD5E1;">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="background: #ffffff; border: 1px solid #CBD5E1; border-radius: 20px; padding: 1.75rem 2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem;">
+                    <div>
+                        <span style="font-size: 0.75rem; font-weight: 800; color: #059669; text-transform: uppercase; letter-spacing: 0.05em;">Pusat Layanan Wilayah</span>
+                        <h4 style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 0.25rem 0 0;">
+                            Spesialis Saluran Air Mampet di {{ $locShort }}
+                        </h4>
+                    </div>
+                    
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center;">
+                        {{-- 1. Reverse Link ke Halaman Pilar Kota (Exact Match Anchor Target) --}}
+                        @if(isset($city) && is_object($city))
+                        <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" style="background: #0F172A; color: #ffffff; padding: 0.7rem 1.35rem; border-radius: 12px; font-weight: 700; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:bg-emerald-600 transition">
+                            <span>🏢 Hub Utama: Jasa Saluran Mampet {{ $city->name }}</span>
+                            <span>→</span>
+                        </a>
+                        @endif
+
+                        {{-- 2. Reverse Link ke Homepage (Short-Tail Target Booster) --}}
+                        <a href="{{ url('/') }}" style="background: #10B981; color: #ffffff; padding: 0.7rem 1.35rem; border-radius: 12px; font-weight: 800; font-size: 0.88rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;" class="hover:bg-emerald-600 transition">
+                            <span>🏠 Beranda Jasa Saluran Mampet Indonesia</span>
+                            <span>→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>

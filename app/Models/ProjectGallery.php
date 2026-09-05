@@ -62,11 +62,35 @@ class ProjectGallery extends Model
 
     public function getAfterImageUrlAttribute(): string
     {
-        return $this->after_image ? asset('storage/' . $this->after_image) : asset('images/ridgid.jpeg');
+        if ($this->after_image) {
+            if (\Illuminate\Support\Str::startsWith($this->after_image, ['http://', 'https://'])) {
+                return $this->after_image;
+            }
+            $path = \Illuminate\Support\Str::startsWith($this->after_image, ['storage/', 'images/', 'assets/'])
+                ? $this->after_image
+                : 'storage/' . $this->after_image;
+
+            if (file_exists(public_path($path))) {
+                return asset($path);
+            }
+        }
+        return asset('images/ridgid.jpeg');
     }
 
     public function getBeforeImageUrlAttribute(): string
     {
-        return $this->before_image ? asset('storage/' . $this->before_image) : asset('images/JnJ.jpeg');
+        if ($this->before_image) {
+            if (\Illuminate\Support\Str::startsWith($this->before_image, ['http://', 'https://'])) {
+                return $this->before_image;
+            }
+            $path = \Illuminate\Support\Str::startsWith($this->before_image, ['storage/', 'images/', 'assets/'])
+                ? $this->before_image
+                : 'storage/' . $this->before_image;
+
+            if (file_exists(public_path($path))) {
+                return asset($path);
+            }
+        }
+        return asset('images/JnJ.jpeg');
     }
 }

@@ -6,7 +6,7 @@
     <url>
         <loc>{{ url("/jasa-saluran-mampet/{$city->slug}") }}</loc>
         <changefreq>weekly</changefreq>
-        <priority>0.92</priority>
+        <priority>0.95</priority>
     </url>
     @endforeach
 

@@ -509,17 +509,17 @@ function openMediaModal(type, url, title, beforeUrl, encodedTitle) {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 w-full max-h-[70vh] overflow-y-auto">
                 <div class="text-center bg-slate-950 p-2 rounded-xl border border-red-500/30">
                     <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase mb-2 inline-block shadow">SEBELUM (BEFORE)</span>
-                    <img src="${beforeUrl}" class="w-full h-48 sm:h-64 object-cover rounded-lg">
+                    <img src="${beforeUrl}" class="w-full h-48 sm:h-64 object-cover rounded-lg" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
                 </div>
                 <div class="text-center bg-slate-950 p-2 rounded-xl border border-emerald-500/30">
                     <span class="bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase mb-2 inline-block shadow">SESUDAH (AFTER)</span>
-                    <img src="${url}" class="w-full h-48 sm:h-64 object-cover rounded-lg">
+                    <img src="${url}" class="w-full h-48 sm:h-64 object-cover rounded-lg" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
                 </div>
             </div>
         `;
     } else {
         container.innerHTML = `
-            <img src="${url}" class="w-full max-h-[70vh] object-contain p-2">
+            <img src="${url}" class="w-full max-h-[70vh] object-contain p-2" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
         `;
     }
 

@@ -26,6 +26,19 @@ class ServiceCategory extends Model
 
     public function getImageUrlAttribute(): string
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('images/JnJ.webp');
+        if (!$this->image) {
+            return asset('images/JnJ.webp');
+        }
+        if (file_exists(public_path($this->image))) {
+            return asset($this->image);
+        }
+        $basename = basename($this->image);
+        if (file_exists(public_path('assets/jenis-bangunan/' . $basename))) {
+            return asset('assets/jenis-bangunan/' . $basename);
+        }
+        if (file_exists(public_path('storage/' . $this->image))) {
+            return asset('storage/' . $this->image);
+        }
+        return asset('images/JnJ.webp');
     }
 }

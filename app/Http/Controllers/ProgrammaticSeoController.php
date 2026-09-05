@@ -140,7 +140,7 @@ class ProgrammaticSeoController extends Controller
                     : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
             }
 
-            $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.webp');
+            $ogImage = $category->image_url;
 
             $seo = [
                 'title'       => $title,

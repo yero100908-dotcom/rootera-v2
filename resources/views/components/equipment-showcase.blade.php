@@ -67,8 +67,8 @@
         <div class="group bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
             
             {{-- IMAGE CONTAINER WITH ASPECT RATIO & BADGE --}}
-            <div class="relative aspect-[4/3] bg-slate-900 overflow-hidden">
-                <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+            <div class="relative aspect-[4/3] bg-slate-100/90 border-b border-slate-200/60 overflow-hidden">
+                <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                 
                 {{-- BADGE ALAT RESMI --}}
                 <div class="absolute top-2 left-2 z-10">

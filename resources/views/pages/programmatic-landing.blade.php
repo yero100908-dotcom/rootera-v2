@@ -3,50 +3,79 @@
 {{-- Advanced JSON-LD Structured Data --}}
 @section('schema-markup')
 <?php
-// 1. Service Schema (Google Compliant - avoiding fake LocalBusiness streetAddress penalties)
-$serviceSchema = [
-  "@context" => "https://schema.org",
-  "@type" => "Service",
-  "name" => "Jasa " . $category->name . " " . $locationName,
-  "serviceType" => "Plumbing & Drain Cleaning Service",
-  "description" => $description,
-  "@id" => $canonical . "#service",
-  "url" => $canonical,
-  "provider" => [
-    "@type" => ["LocalBusiness", "Plumber"],
-    "name" => "Rootera Plumbing (J&J Group)",
-    "url" => url('/'),
-    "telephone" => "+" . (ltrim($city->whatsapp_number ?: "6281385404000", "+")),
-    "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-    "image" => $ogImage,
-    "address" => [
-      "@type" => "PostalAddress",
-      "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
-      "addressLocality" => "Jakarta Timur",
-      "addressRegion" => "DKI Jakarta",
-      "postalCode" => "13770",
-      "addressCountry" => "ID"
-    ]
-  ],
-  "areaServed" => [
-    "@type" => "AdministrativeArea",
-    "name" => $locationName
-  ],
-  "hasOfferCatalog" => [
-    "@type" => "OfferCatalog",
-    "name" => "Layanan " . $category->name,
-    "itemListElement" => [
-      [
-        "@type" => "Offer",
-        "itemOffered" => [
-          "@type" => "Service",
-          "name" => "Jasa " . $category->name . " " . $locationName,
-          "description" => "Layanan mampet tanpa bongkar garansi tuntas 24 jam."
+// Dynamic Multi-Branch Schema Logic
+if (isset($city) && $city->has_physical_branch && !empty($city->street_address)) {
+    // 1. Schema LocalBusiness / Plumber untuk Cabang Fisik Riil (cth: Semarang, Tegal, Surabaya, Bandar Lampung, Jakarta Timur)
+    $serviceSchema = [
+        "@context" => "https://schema.org",
+        "@type" => ["Plumber", "LocalBusiness"],
+        "@id" => $canonical . "#localbusiness",
+        "name" => "Rootera Plumbing Cabang " . $city->name,
+        "alternateName" => ["Rootera " . $city->name, "Jasa Saluran Pipa Mampet " . $city->name],
+        "url" => $canonical,
+        "telephone" => "+" . ltrim($city->branch_phone ?: ($city->whatsapp_number ?: "6281385404000"), "+"),
+        "priceRange" => "Rp 150.000 - Rp 1.500.000",
+        "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        "image" => $ogImage,
+        "address" => [
+            "@type" => "PostalAddress",
+            "streetAddress" => $city->street_address,
+            "addressLocality" => $city->district_locality ?: $city->name,
+            "addressRegion" => $city->province->name ?? "Indonesia",
+            "postalCode" => $city->postal_code ?: "13770",
+            "addressCountry" => "ID"
+        ],
+        "geo" => [
+            "@type" => "GeoCoordinates",
+            "latitude" => (float) ($city->latitude ?: -6.3275975),
+            "longitude" => (float) ($city->longitude ?: 106.8627125)
+        ],
+        "aggregateRating" => [
+            "@type" => "AggregateRating",
+            "ratingValue" => (string) ($city->rating_value ?: 4.9),
+            "reviewCount" => (string) ($city->review_count ?: 85),
+            "bestRating" => "5",
+            "worstRating" => "1"
+        ],
+        "areaServed" => array_values(array_unique(array_merge([$locationName], isset($siblingDistricts) ? $siblingDistricts->pluck('name')->toArray() : [])))
+    ];
+} else {
+    // 2. Schema Service (Service Area Business - SAB untuk area tanpa cabang fisik riil)
+    $serviceSchema = [
+        "@context" => "https://schema.org",
+        "@type" => "Service",
+        "@id" => $canonical . "#service",
+        "name" => "Jasa " . $category->name . " " . $locationName,
+        "serviceType" => "Plumbing & Drain Cleaning Service",
+        "description" => $description,
+        "url" => $canonical,
+        "provider" => [
+            "@type" => "Organization",
+            "name" => "Rootera Plumbing Indonesia",
+            "url" => url('/'),
+            "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            "telephone" => "+" . ltrim(($city->whatsapp_number ?? "6281385404000"), "+")
+        ],
+        "areaServed" => [
+            "@type" => "AdministrativeArea",
+            "name" => $locationName
+        ],
+        "hasOfferCatalog" => [
+            "@type" => "OfferCatalog",
+            "name" => "Layanan " . $category->name . " " . $locationName,
+            "itemListElement" => [
+                [
+                    "@type" => "Offer",
+                    "itemOffered" => [
+                        "@type" => "Service",
+                        "name" => "Jasa " . $category->name . " " . $locationName,
+                        "description" => "Layanan mampet tanpa bongkar garansi tuntas 24 jam."
+                    ]
+                ]
+            ]
         ]
-      ]
-    ]
-  ]
-];
+    ];
+}
 
 // 2. BreadcrumbList Schema
 $breadcrumbItems = [

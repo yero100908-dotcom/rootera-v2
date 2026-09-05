@@ -17,6 +17,13 @@ class City extends Model
         'phone_number',
         'whatsapp_number',
         'estimated_arrival',
+        'has_physical_branch',
+        'street_address',
+        'district_locality',
+        'postal_code',
+        'branch_phone',
+        'rating_value',
+        'review_count',
         'latitude',
         'longitude',
         'meta_title',
@@ -27,6 +34,9 @@ class City extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'has_physical_branch' => 'boolean',
+        'rating_value' => 'float',
+        'review_count' => 'integer',
     ];
 
     public function province()

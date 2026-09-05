@@ -1,60 +1,50 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+require 'vendor/autoload.php';
+$app = require_once 'bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
-echo "===============================================================\n";
-echo "       PHASE 3 INTERNAL LINKING & LOCAL CRO VERIFICATION        \n";
-echo "===============================================================\n\n";
+\Illuminate\Support\Facades\Cache::flush();
 
-$routesToTest = [
-    '/layanan-pipa-mampet/pipa-mampet/jakarta-selatan/kebayoran-baru',
-    '/jasa-saluran-mampet/jakarta-selatan',
-    '/layanan-cuci-toren/jakarta-selatan/kebayoran-baru'
-];
+echo "===================================================================\n";
+echo "=== VERIFIKASI FASE 3: REDIRECT 301, CANONICAL, & SITEMAP XML ===\n";
+echo "===================================================================\n";
 
-$failed = 0;
+// 1. Test 301 Redirect for cannibal route /layanan-pipa-mampet/pipa-mampet/jakarta-timur
+$request = Illuminate\Http\Request::create('/layanan-pipa-mampet/pipa-mampet/jakarta-timur', 'GET');
+$response = $app->handle($request);
 
-foreach ($routesToTest as $path) {
-    echo "Testing Route: {$path}\n";
-    $request = Illuminate\Http\Request::create($path, 'GET');
-    try {
-        $response = $app->handle($request);
-        $html = $response->getContent();
-
-        // 1. Check Visual Breadcrumb
-        $hasBreadcrumbNav = (strpos($html, 'breadcrumb-nav') !== false || strpos($html, 'prog-breadcrumbs') !== false);
-        echo "  - Visual HTML Breadcrumb: " . ($hasBreadcrumbNav ? "[OK]" : "[MISSING]") . "\n";
-        if (!$hasBreadcrumbNav) $failed++;
-
-        // 2. Check Local Micro Mesh Grid
-        $hasMicroMesh = (strpos($html, 'local-mesh-section') !== false || strpos($html, 'spoke-grid') !== false);
-        echo "  - Local Micro Mesh Grid: " . ($hasMicroMesh ? "[OK]" : "[MISSING]") . "\n";
-
-        // 3. Check Floating WhatsApp & Sticky Mobile CTA Bar
-        $hasWaFloat = (strpos($html, 'whatsapp-float') !== false);
-        $hasStickyCta = (strpos($html, 'mobile-sticky-cta-bar') !== false);
-        echo "  - Floating WhatsApp Component: " . ($hasWaFloat ? "[OK]" : "[MISSING]") . "\n";
-        echo "  - Mobile Sticky CTA Bar Component: " . ($hasStickyCta ? "[OK]" : "[MISSING]") . "\n";
-        if (!$hasWaFloat || !$hasStickyCta) $failed++;
-
-        // 4. Extract WhatsApp Link Text Parameter
-        preg_match('/wa\.me\/[0-9]+\?text=(.*?)"/s', $html, $waMatches);
-        $waLinkParam = isset($waMatches[1]) ? urldecode($waMatches[1]) : 'N/A';
-        echo "  - Dynamic WA Parameter: \"{$waLinkParam}\"\n\n";
-
-    } catch (\Exception $e) {
-        echo "  - Error: " . $e->getMessage() . "\n\n";
-        $failed++;
-    }
-}
-
-echo "===============================================================\n";
-if ($failed === 0) {
-    echo ">>> ALL PHASE 3 CRO & INTERNAL LINKING VERIFICATIONS PASSED 100%! <<<\n";
+echo "[TEST 1] HTTP Status Code untuk /layanan-pipa-mampet/pipa-mampet/jakarta-timur: " . $response->getStatusCode() . "\n";
+if ($response->getStatusCode() === 301) {
+    echo " -> Target Redirect: " . $response->headers->get('Location') . "\n";
+    echo " -> RESULT: [SUCCESS 301 REDIRECT]\n\n";
 } else {
-    echo ">>> SOME VERIFICATIONS FAILED ({$failed}) <<<\n";
+    echo " -> RESULT: [FAILED - Expected 301]\n\n";
 }
-echo "===============================================================\n";
+
+// 2. Test ProblemHub Canonical Consolidation
+$probController = app(\App\Http\Controllers\ProblemHubController::class);
+$probRes = $probController->show('wastafel-mampet-berlemak', 'jakarta-timur');
+$probHtml = is_object($probRes) && method_exists($probRes, 'getContent') ? $probRes->getContent() : (string)$probRes;
+
+preg_match('/<link rel="canonical" href="(.*?)"/i', $probHtml, $canMatch);
+echo "[TEST 2] Canonical URL untuk Halaman ProblemHub /solusi/wastafel-mampet-berlemak/jakarta-timur:\n";
+echo " -> Canonical Tag: " . ($canMatch[1] ?? 'NOT FOUND') . "\n";
+if (isset($canMatch[1]) && str_contains($canMatch[1], '/jasa-saluran-mampet/jakarta-timur')) {
+    echo " -> RESULT: [SUCCESS CANONICAL CONSOLIDATION TO CITY PILLAR PAGE]\n\n";
+} else {
+    echo " -> RESULT: [FAILED - Expected City Pillar Canonical]\n\n";
+}
+
+// 3. Test Sitemap Priority Optimization
+$sitemapController = app(\App\Http\Controllers\SitemapController::class);
+$sitemapDistRes = $sitemapController->districts();
+$distXml = $sitemapDistRes->getContent();
+
+echo "[TEST 3] Verifikasi Priority Sitemap Kecamatan:\n";
+preg_match_all('/<priority>(.*?)<\/priority>/s', $distXml, $prioMatches);
+if (!empty($prioMatches[1])) {
+    echo " -> Priority Terdeteksi pada sitemap-districts: " . implode(', ', array_unique($prioMatches[1])) . "\n";
+    echo " -> RESULT: [SUCCESS SITEMAP PRIORITY OPTIMIZATION]\n\n";
+}

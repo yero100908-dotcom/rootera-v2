@@ -71,9 +71,10 @@ Route::get('/kategori-properti', [App\Http\Controllers\PropertyTypeController::c
 Route::get('/solusi-properti/{propertyTypeSlug}', [App\Http\Controllers\PropertyTypeController::class, 'show'])->name('property.show');
 Route::get('/solusi-properti/{propertyTypeSlug}/{citySlug}', [App\Http\Controllers\PropertyTypeController::class, 'showCity'])->name('property.city');
 
-// Legacy URL 301 Permanent Redirects for SEO Backlinks & Indexing
+// Legacy & Canonical Consolidation 301 Permanent Redirects for SEO Backlinks & Indexing
 Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area.legacy.index');
 Route::redirect('/area-layanan/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301)->name('area.legacy.city');
+Route::redirect('/layanan-pipa-mampet/pipa-mampet/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301);
 Route::redirect('/layanan/{categorySlug}/{citySlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}', 301);
 Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', 301);
 Route::redirect('/jasa-saluran-mampet/solo', '/jasa-saluran-mampet/surakarta', 301);

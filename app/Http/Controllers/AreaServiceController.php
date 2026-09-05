@@ -76,86 +76,82 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("area_city_v3_{$citySlug}", 86400, function () use ($citySlug) {
-            $city = City::where('slug', $citySlug)
-                ->where('is_active', true)
-                ->with(['province', 'districts' => function ($q) {
-                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
-                }])
-                ->first();
+        $city = City::where('slug', $citySlug)
+            ->where('is_active', true)
+            ->with(['province', 'districts' => function ($q) {
+                $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
+            }])
+            ->first();
 
-            if (!$city) {
-                $city = City::where('slug', 'like', "%{$citySlug}%")->where('is_active', true)->first()
-                     ?? City::where('is_active', true)->firstOrFail();
-            }
+        if (!$city) {
+            $city = City::where('slug', 'like', "%{$citySlug}%")->where('is_active', true)->first()
+                 ?? City::where('is_active', true)->firstOrFail();
+        }
 
-            $siblingCities = City::where('province_id', $city->province_id)
-                ->where('id', '!=', $city->id)
-                ->where('is_active', true)
-                ->orderBy('name')
-                ->take(8)
-                ->get();
+        $siblingCities = City::where('province_id', $city->province_id)
+            ->where('id', '!=', $city->id)
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->take(8)
+            ->get();
 
-            $allCategories = ServiceCategory::where('is_active', true)
-                ->orderBy('sort_order')
-                ->get();
+        $allCategories = ServiceCategory::where('is_active', true)
+            ->orderBy('sort_order')
+            ->get();
 
-            $projectShowcases = ProjectGallery::where('is_active', true)
-                ->where(function ($q) use ($city) {
-                    $q->where('city_id', $city->id)->orWhereNull('city_id');
-                })
-                ->with(['district', 'city'])
-                ->take(6)
-                ->get();
+        $projectShowcases = ProjectGallery::where('is_active', true)
+            ->where(function ($q) use ($city) {
+                $q->where('city_id', $city->id)->orWhereNull('city_id');
+            })
+            ->with(['district', 'city'])
+            ->take(6)
+            ->get();
 
-            $relatedArticles = Article::published()
-                ->latest('published_at')
-                ->take(3)
-                ->get();
+        $relatedArticles = Article::published()
+            ->latest('published_at')
+            ->take(3)
+            ->get();
 
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
+        $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(4)->get();
 
-            // Priority Custom DB Meta Tags with Dynamic Fallback
-            $title = !empty($city->meta_title)
-                ? $city->meta_title
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
+        // Priority Custom DB Meta Tags with Dynamic Fallback
+        $title = !empty($city->meta_title)
+            ? $city->meta_title
+            : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
 
-            $description = !empty($city->meta_description)
-                ? $city->meta_description
-                : "Solusi perbaikan pipa mampet, wastafel, & WC tersumbat di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) & bergaransi. CS 24 Jam!";
+        $description = !empty($city->meta_description)
+            ? $city->meta_description
+            : "Solusi perbaikan pipa mampet, wastafel, & WC tersumbat di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) & bergaransi. CS 24 Jam!";
 
-            $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+        $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 
-            $seo = [
-                'title'       => $title,
-                'description' => $description,
-                'canonical'   => $canonical,
-                'og_image'    => asset('images/JnJ.webp'),
-            ];
+        $seo = [
+            'title'       => $title,
+            'description' => $description,
+            'canonical'   => $canonical,
+            'og_image'    => asset('images/JnJ.webp'),
+        ];
 
-            // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
-            $seedKey = "city_hub_" . md5($canonical);
-            $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $city->full_name, $seedKey);
-            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $city->estimated_arrival ?? "25–40 Menit", $seedKey);
-            $valueProps = $this->spintaxService->generateValueProps($city->name, $seedKey);
-            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $city->full_name, $seedKey);
+        // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
+        $seedKey = "city_hub_" . md5($canonical);
+        $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $city->full_name, $seedKey);
+        $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $city->estimated_arrival ?? "25–40 Menit", $seedKey);
+        $valueProps = $this->spintaxService->generateValueProps($city->name, $seedKey);
+        $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $city->full_name, $seedKey);
 
-            return view('pages.area-city', compact(
-                'city',
-                'siblingCities',
-                'allCategories',
-                'projectShowcases',
-                'relatedArticles',
-                'faqs',
-                'seo',
-                'heroHeadline',
-                'heroSubtitle',
-                'valueProps',
-                'areaTechnicalIntro'
-            ))->render();
-        });
-
-        return response($html);
+        return view('pages.area-city', compact(
+            'city',
+            'siblingCities',
+            'allCategories',
+            'projectShowcases',
+            'relatedArticles',
+            'faqs',
+            'seo',
+            'heroHeadline',
+            'heroSubtitle',
+            'valueProps',
+            'areaTechnicalIntro'
+        ));
     }
 
     /**

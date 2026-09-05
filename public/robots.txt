@@ -3,3 +3,5 @@ Disallow: /admin/
 Disallow: /login
 
 Sitemap: https://rooteraplumbing.id/sitemap.xml
+Sitemap: https://rooteraplumbing.id/sitemap-blog.xml
+Sitemap: https://rooteraplumbing.id/sitemap-pages.xml

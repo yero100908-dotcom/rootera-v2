@@ -128,11 +128,22 @@ $homeSchema = [
 {{-- ========================================================================= --}}
 {{-- 1. ULTRA MODERN HIGH-IMPACT HERO SECTION --}}
 {{-- ========================================================================= --}}
-<section style="background: linear-gradient(135deg, #0b132b 0%, #0f172a 50%, #061434 100%); color: #ffffff; padding: 6.5rem 0 4.5rem; position: relative; overflow: hidden;" class="pt-28 lg:pt-32 pb-16" aria-label="Hero Section">
+<section style="background-color: #0b132b; color: #ffffff; padding: 6.5rem 0 4.5rem; position: relative; overflow: hidden;" class="pt-28 lg:pt-32 pb-16" aria-label="Hero Section">
     
+    {{-- Responsive Hero Background Image Layer --}}
+    <div style="position: absolute; inset: 0; z-index: 0; pointer-events: none;">
+        <picture style="width: 100%; height: 100%; display: block;">
+            <source media="(max-width: 767px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" type="image/webp">
+            <source media="(min-width: 768px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" type="image/webp">
+            <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Banner Jasa Saluran Pipa Mampet Profesional Rootera Plumbing" loading="eager" fetchpriority="high" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+        </picture>
+        {{-- High-Contrast Dark Gradient Overlay --}}
+        <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 19, 43, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(6, 20, 52, 0.70) 100%);"></div>
+    </div>
+
     {{-- Dynamic Ambient Light Orbs --}}
-    <div style="position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
-    <div style="position: absolute; bottom: 0; right: 0; width: 500px; height: 500px; background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none;"></div>
+    <div style="position: absolute; top: -150px; left: 50%; transform: translateX(-50%); width: 900px; height: 500px; background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none; z-index: 1;"></div>
+    <div style="position: absolute; bottom: 0; right: 0; width: 500px; height: 500px; background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(6, 20, 52, 0) 70%); pointer-events: none; z-index: 1;"></div>
 
     <div class="container" style="position: relative; z-index: 2;">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -142,18 +153,18 @@ $homeSchema = [
                 {{-- Glowing Capsule Badge --}}
                 <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.45rem 1.1rem; border-radius: 9999px; font-size: 0.82rem; font-weight: 700; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.5rem; backdrop-filter: blur(10px);">
                     <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981;" class="animate-pulse"></span>
-                    ✨ JASA SALURAN PIPA MAMPET &amp; KAMERA CCTV INSPEKSI NO. 1
+                    ✨ JASA SALURAN MAMPET TANPA BONGKAR NO. 1 JAKARTA
                 </div>
 
                 {{-- Dual-tone Headline --}}
                 <h1 style="font-size: clamp(2.1rem, 4.5vw, 3.3rem); font-weight: 800; line-height: 1.18; margin-bottom: 1.25rem; color: #ffffff; letter-spacing: -0.02em;">
-                    Jasa Saluran Pipa Mampet Profesional<br>
+                    Jasa Saluran Mampet &amp; Tukang Pipa Tersumbat Jakarta<br>
                     <span style="background: linear-gradient(90deg, #10b981, #06b6d4, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Tanpa Bongkar Keramik &amp; Bergaransi</span>
                 </h1>
 
                 {{-- Subheadline --}}
                 <p style="color: rgba(255, 255, 255, 0.85); font-size: 1.08rem; line-height: 1.65; margin-bottom: 2rem; max-width: 630px;">
-                    Layanan <strong>jasa saluran pipa mampet</strong> tercepat dan profesional menggunakan <strong>Mesin Spiral Drain Cleaner Modern (Ridgid System)</strong> &amp; <strong>Kamera CCTV Inspeksi Digital</strong>. Solusi wastafel, kloset, floor drain, &amp; got tersumbat tanpa bongkar bergaransi tuntas 30 hari!
+                    Solusi profesional <strong>jasa saluran mampet</strong> tercepat di Jakarta &amp; Jabodetabek. Kami melayani perbaikan <strong>wastafel berlemak, WC kloset meluap, floor drain kamar mandi, dan got tersumbat</strong> menggunakan mesin <strong>Spiral Rotary Cable Rigid</strong> tanpa bongkar keramik &amp; bergaransi tuntas 30 hari.
                 </p>
 
                 {{-- CTA Action Buttons --}}

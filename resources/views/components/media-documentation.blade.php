@@ -1,89 +1,140 @@
 {{-- 
-  Komponen Media Dokumentasi Lapangan & Video Knowledge Showcase
+  Komponen Media Dokumentasi Lapangan & Gallery Showcase Preview
   Style: Luxury, Modern, High-Trust (Deep Navy #0B192C, Emerald #10B981)
 --}}
 @props([
     'projectShowcases' => null,
     'relatedArticles' => null,
-    'locationName' => 'Jabodetabek',
-    'locationShort' => 'Area Terkait'
+    'locationName' => null,
+    'locationShort' => null
 ])
 
 <?php
-$locName = $locationName ?? $locationShort ?? 'Jabodetabek';
-$locShort = $locationShort ?? 'Wilayah Terkait';
+$locName = $locationName ?? $locationShort ?? 'Wilayah Layanan';
+$locShort = $locationShort ?? $locationName ?? 'Area Layanan';
 $mediaService = app(\App\Services\MediaService::class);
 $toolkitImages = $mediaService->getToolkitImages();
 
-// Curated Fallback Showcases for Before-After Photos
-$fallbackShowcases = [
-    [
-        'title' => 'Pelancaran Pipa Wastafel Restoran & Kitchen Dapur',
-        'category' => 'Wastafel & Sink',
-        'before_img' => asset('images/was-mampet.jpg'),
-        'after_img' => $toolkitImages['hydro_jetting']['url'],
-        'issue' => 'Gumpalan Lemak Keras & Kerak Beku 5 Meter',
-        'tool' => 'High-Pressure Hydro Jet 250 Bar & Ridgid K-50',
-        'time' => '35 Menit - Tanpa Bongkar Lantai',
-        'client_type' => 'Komersial Resto',
-    ],
-    [
-        'title' => 'Pembersihan Floor Drain Kamar Mandi & Kerak Sabun',
-        'category' => 'Kamar Mandi',
-        'before_img' => asset('images/wc-mampet.jpg'),
-        'after_img' => $toolkitImages['ridgid_k50']['url'],
-        'issue' => 'Rontokan Rambut, Kerak Sabun & Endapan Kapur',
-        'tool' => 'Mesin Spiral Flexible Rotary Cables Ridgid',
-        'time' => '25 Menit - Bergaransi Tuntas 100%',
-        'client_type' => 'Rumah Tangga',
-    ],
-    [
-        'title' => 'Evakuasi Kloset WC Meluap & Inspeksi Pipa CCTV',
-        'category' => 'WC / Kloset',
-        'before_img' => asset('images/wastafel-mampet.jpg'),
-        'after_img' => $toolkitImages['cctv_camera']['url'],
-        'issue' => 'Sumbatan Benda Asing & Leher Angsa Meluap',
-        'tool' => 'Kamera Inspeksi CCTV & Heavy Duty Spiral',
-        'time' => '40 Menit - Steril Bebas Bau',
-        'client_type' => 'Hunian Apartemen',
-    ]
+// Fetch active gallery items (up to 4 items) from the active Gallery model (/galeri-dokumentasi)
+try {
+    $galleryShowcaseItems = \App\Models\Gallery::where('is_active', true)
+        ->orderBy('sort_order', 'asc')
+        ->orderBy('created_at', 'desc')
+        ->take(4)
+        ->get();
+} catch (\Throwable $e) {
+    $galleryShowcaseItems = collect();
+}
+
+// Fallback items if database gallery query is empty
+if (!is_iterable($galleryShowcaseItems) || (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) === 0)) {
+    $galleryShowcaseItems = [
+        [
+            'title' => 'Pelancaran Pipa Wastafel Dapur & Restoran',
+            'category_label' => 'Restoran & Kafe',
+            'display_thumbnail' => $toolkitImages['hydro_jetting']['url'],
+            'slug' => null,
+            'badge' => 'Restoran',
+        ],
+        [
+            'title' => 'Pembersihan Floor Drain Kamar Mandi Mampet',
+            'category_label' => 'Rumah Tinggal',
+            'display_thumbnail' => $toolkitImages['ridgid_k50']['url'],
+            'slug' => null,
+            'badge' => 'Rumah Tinggal',
+        ],
+        [
+            'title' => 'Pelancaran Saluran Pembuangan Kloset & WC',
+            'category_label' => 'Gedung & Publik',
+            'display_thumbnail' => asset('images/wc-mampet.jpg'),
+            'slug' => null,
+            'badge' => 'Gedung',
+        ],
+        [
+            'title' => 'Inspeksi Kamera CCTV Pipa Pembuangan Utilitas',
+            'category_label' => 'Inspeksi CCTV',
+            'display_thumbnail' => $toolkitImages['cctv_camera']['url'],
+            'slug' => null,
+            'badge' => 'Inspeksi CCTV',
+        ]
+    ];
+}
+
+// Limit showcase items to max 4 items
+if (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) > 4) {
+    if ($galleryShowcaseItems instanceof \Illuminate\Support\Collection) {
+        $galleryShowcaseItems = $galleryShowcaseItems->take(4);
+    } else if (is_array($galleryShowcaseItems)) {
+        $galleryShowcaseItems = array_slice($galleryShowcaseItems, 0, 4);
+    }
+}
+
+// Specific target slugs for Section 3 video blog cards
+$targetVideoSlugs = [
+    'jangan-tunggu-mampet-total-bahaya-endapan-lemak-di-pipa-jasapipamampet-beritaterkini-fypyoutube',
+    'nside-the-kai-misi-tim-rootera-jasapipamampetberitaterkini-fypyoutube-rooteraplumbing',
+    'inspeksi-saluran-mampet-di-kantor-pertamina-sunter-jasapipamampet-fypyoutube-beritaterkini'
 ];
 
-$itemsToDisplay = (isset($projectShowcases) && is_iterable($projectShowcases) && count($projectShowcases) > 0)
-    ? $projectShowcases
-    : $fallbackShowcases;
-
-// Fallback Video / Article Cards if $relatedArticles is empty
+// Fallback Video / Article Cards if DB items missing
 $fallbackArticles = [
     [
-        'title' => 'Cara Mengatasi Wastafel Mampet Akibat Lemak Membeku',
-        'slug' => 'cara-mengatasi-bak-cuci-piring-mampet-akibat-lemak-membeku',
-        'category' => 'Wastafel & Sink',
-        'thumbnail' => $toolkitImages['hydro_jetting']['url'],
-        'duration' => '0:45 Sec',
-        'youtube_id' => '5O63iR_8NIs'
+        'title' => 'Jangan Tunggu Mampet Total! Bahaya Endapan Lemak di Pipa🛑',
+        'slug' => 'jangan-tunggu-mampet-total-bahaya-endapan-lemak-di-pipa-jasapipamampet-beritaterkini-fypyoutube',
+        'category' => 'EDUKASI & VIDEO PANDUAN',
+        'thumbnail' => 'https://i.ytimg.com/vi/dkbZNoaIT9w/hqdefault.jpg',
+        'duration' => '⏱ 1 mnt',
+        'youtube_id' => 'dkbZNoaIT9w',
+        'published_at' => '13 Aug 2026',
+        'views' => '1.2k',
+        'author' => 'Rootera Plumbing',
+        'excerpt' => 'Saluran mampet jangan cuma dilihat dari air yang nggak ngalir—bisa jadi ada masalah besar di dalam pipanya! Lemak, kotoran, dan endapan menumpuk mempersempit jalur pipa.',
     ],
     [
-        'title' => 'Solusi Saluran Pembuangan Kamar Mandi Mampet Tanpa Bongkar',
-        'slug' => 'solusi-saluran-pembuangan-kamar-mandi-mampet-tanpa-bongkar-lantai',
-        'category' => 'Floor Drain',
-        'thumbnail' => $toolkitImages['ridgid_k50']['url'],
-        'duration' => '1:12 Min',
-        'youtube_id' => '5O63iR_8NIs'
+        'title' => 'NSIDE THE KAI - Misi Tim Rootera',
+        'slug' => 'nside-the-kai-misi-tim-rootera-jasapipamampetberitaterkini-fypyoutube-rooteraplumbing',
+        'category' => 'EDUKASI & VIDEO PANDUAN',
+        'thumbnail' => 'https://i.ytimg.com/vi/2NN31lF2O40/hqdefault.jpg',
+        'duration' => '⏱ 2 mnt',
+        'youtube_id' => '2NN31lF2O40',
+        'published_at' => '14 Aug 2026',
+        'views' => '2.5k',
+        'author' => 'Rootera Plumbing',
+        'excerpt' => 'Pernah penasaran bagaimana perawatan fasilitas publik berjalan di balik sibuknya jadwal stasiun kereta api? Di video recap short movie ini, tim Rooterin membawa Anda melihat langsung prosesnya.',
     ],
     [
-        'title' => 'Manfaat Inspection Camera (CCTV Pipe) untuk Deteksi Kebocoran Pipa',
-        'slug' => 'manfaat-inspection-camera-cctv-pipe-untuk-deteksi-kebocoran-pipa',
-        'category' => 'Inspeksi CCTV',
-        'thumbnail' => $toolkitImages['cctv_camera']['url'],
-        'duration' => '0:55 Sec',
-        'youtube_id' => '5O63iR_8NIs'
+        'title' => 'Inspeksi SALURAN MAMPET di Kantor Pertamina Sunter 🏢🎥',
+        'slug' => 'inspeksi-saluran-mampet-di-kantor-pertamina-sunter-jasapipamampet-fypyoutube-beritaterkini',
+        'category' => 'EDUKASI & VIDEO PANDUAN',
+        'thumbnail' => 'https://i.ytimg.com/vi/yvzZqMV6PKY/hqdefault.jpg',
+        'duration' => '⏱ 1 mnt',
+        'youtube_id' => 'yvzZqMV6PKY',
+        'published_at' => '12 Aug 2026',
+        'views' => '3.1k',
+        'author' => 'Rootera Plumbing',
+        'excerpt' => 'Kali ini tim Rootera dipercaya melakukan pengerjaan di Kantor Pertamina Sunter. Sebelum dieksekusi, teknisi kami melakukan inspeksi menggunakan Drain Camera (CCTV Pipa).',
     ]
 ];
 
-$articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) && count($relatedArticles) > 0)
-    ? $relatedArticles
-    : $fallbackArticles;
+try {
+    $fetchedArticles = \App\Models\Article::whereIn('slug', $targetVideoSlugs)->get()->keyBy('slug');
+    $orderedArticles = collect();
+
+    foreach ($targetVideoSlugs as $slug) {
+        if ($fetchedArticles->has($slug)) {
+            $orderedArticles->push($fetchedArticles->get($slug));
+        } else {
+            $fb = collect($fallbackArticles)->firstWhere('slug', $slug);
+            if ($fb) {
+                $orderedArticles->push($fb);
+            }
+        }
+    }
+
+    $articlesToDisplay = $orderedArticles;
+} catch (\Throwable $e) {
+    $articlesToDisplay = $fallbackArticles;
+}
 ?>
 
 <!-- Section 1: Operational Toolkit Showcase Grid (High Trust Equipment) -->
@@ -101,11 +152,12 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+        <!-- Section 1: Equipment Carousel/Grid -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
             @foreach($toolkitImages as $key => $tool)
-            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.3s ease;" class="hover:-translate-y-1.5 hover:border-emerald-400">
-                <div style="height: 180px; background: #0B192C; overflow: hidden; position: relative;">
-                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+            <div class="min-w-[82vw] sm:min-w-[300px] snap-center shrink-0 md:min-w-0 hover:-translate-y-1.5 hover:border-emerald-400" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.3s ease;">
+                <div style="height: 180px; background: #F1F5F9; overflow: hidden; position: relative;">
+                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                     <span style="position: absolute; top: 10px; right: 10px; background: rgba(16, 185, 129, 0.9); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 50px; text-transform: uppercase;">
                         ✓ Alat Resmi
                     </span>
@@ -124,7 +176,7 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
     </div>
 </section>
 
-<!-- Section 2: Interactive Before-After Photo Showcase -->
+<!-- Section 2: Gallery Showcase Preview Grid -->
 <section style="background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%); padding: 4.5rem 1.5rem; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;" id="dokumentasi-lapangan">
     <div style="max-width: 1200px; margin: 0 auto;">
         
@@ -132,167 +184,184 @@ $articlesToDisplay = (isset($relatedArticles) && is_iterable($relatedArticles) &
         <div style="text-align: center; margin-bottom: 3.5rem;">
             <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #059669; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 10px #10B981;"></span>
-                Dokumentasi Pengerjaan Nyata Lapangan
+                PORTFOLIO &amp; DOKUMENTASI PENGERJAAN
             </div>
             <h2 style="color: #0B192C; font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; margin-top: 0.4rem; letter-spacing: -0.02em;">
-                Bukti Hasil Kerja Perbaikan Saluran di {{ $locShort }}
+                Dokumentasi Lapangan &amp; Hasil Kerja Teknisi Rootera
             </h2>
-            <p style="color: #64748B; max-width: 760px; margin: 0.6rem auto 0; font-size: 1.05rem; line-height: 1.6;">
-                Bukti fisik kualitas penanganan tim teknisi Rootera (J&amp;J Group) menggunakan alat mekanis rotary spiral &amp; Hydro Jetting modern tanpa membongkar keramik.
+            <p style="color: #64748B; max-width: 780px; margin: 0.6rem auto 0; font-size: 1.05rem; line-height: 1.6;">
+                Cuplikan pengerjaan nyata pelancaran saluran air, wastafel, kloset, dan got tanpa bongkar menggunakan mesin rotary spiral modern.
             </p>
         </div>
 
-        <!-- Before-After Showcase Cards Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-            @foreach($itemsToDisplay as $index => $item)
-            <?php
-                $title = is_object($item) ? $item->title : $item['title'];
-                $issue = is_object($item) ? ($item->description ?? $item->title) : $item['issue'];
-                $tool = is_object($item) ? ($item->equipment_used ?? 'Mesin Spiral Ridgid & Hydro Jetting') : $item['tool'];
-                $time = is_object($item) ? ($item->completion_time ?? '30-45 Menit') : $item['time'];
-                $clientType = is_object($item) ? ($item->client_type ?? 'Proyek Terverifikasi') : $item['client_type'];
-                $beforeImg = is_object($item) ? ($item->before_image_url ?? asset('images/was-mampet.jpg')) : $item['before_img'];
-                $afterImg = is_object($item) ? ($item->after_image_url ?? $toolkitImages['ridgid_k50']['url']) : $item['after_img'];
-            ?>
-            <div style="background: #ffffff; border-radius: 20px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 10px 30px rgba(11, 25, 44, 0.05); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;" class="hover:-translate-y-1.5 hover:shadow-2xl hover:border-emerald-400/40 group">
-                
-                <!-- Dual Image Split / Before vs After -->
-                <div style="position: relative; height: 220px; background: #0B192C; overflow: hidden; display: flex;">
+        <!-- Gallery Showcase Preview Carousel/Grid -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
+            @foreach($galleryShowcaseItems as $gItem)
+            @php
+                $gTitle = is_object($gItem) ? $gItem->title : ($gItem['title'] ?? 'Dokumentasi Pengerjaan Pipa');
+                $gThumb = is_object($gItem) ? $gItem->display_thumbnail : ($gItem['display_thumbnail'] ?? asset('images/JnJ.jpeg'));
+                $gCategory = is_object($gItem) ? $gItem->category_label : ($gItem['category_label'] ?? $gItem['badge'] ?? 'Portofolio');
+                $gSlug = is_object($gItem) ? $gItem->slug : ($gItem['slug'] ?? null);
+                $gUrl = $gSlug ? route('galeri.show', $gSlug) : route('galeri');
+                $gMedia = is_object($gItem) ? $gItem->display_media : $gThumb;
+                $gMediaType = is_object($gItem) ? $gItem->media_type : 'photo';
+                $gBeforeImg = is_object($gItem) ? $gItem->display_before_image : null;
+            @endphp
+            <div class="min-w-[82vw] sm:min-w-[280px] snap-center shrink-0 md:min-w-0 hover:-translate-y-1.5 hover:shadow-xl hover:border-emerald-400/50 group flex flex-col justify-between" style="background: #ffffff; border-radius: 18px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 4px 20px rgba(11, 25, 44, 0.04); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <!-- Image Container with Job Type Badge -->
+                <div style="position: relative; height: 210px; background: #F1F5F9; overflow: hidden; cursor: pointer;" onclick="openMediaModal('{{ $gMediaType }}', '{{ $gMedia }}', '{{ addslashes($gTitle) }}', '{{ $gBeforeImg }}', '{{ urlencode($gTitle) }}')">
+                    <img src="{{ $gThumb }}" alt="{{ $gTitle }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async" onerror="this.src='/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'">
                     
-                    <!-- Before Section -->
-                    <div style="position: relative; width: 50%; height: 100%; border-right: 2px solid #ffffff; overflow: hidden;">
-                        <img src="{{ $beforeImg }}" alt="Sebelum Pengerjaan Jasa Pipa Mampet Rootera di {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85);" loading="lazy" decoding="async">
-                        <span style="position: absolute; top: 10px; left: 10px; background: rgba(225, 29, 72, 0.95); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; backdrop-filter: blur(4px);">
-                            ⚠️ SEBELUM
-                        </span>
-                    </div>
+                    <!-- Job Type Badge Overlay -->
+                    <span style="position: absolute; top: 12px; left: 12px; background: rgba(11, 25, 44, 0.85); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 50px; backdrop-filter: blur(4px); text-transform: uppercase;">
+                        🏷️ {{ $gCategory }}
+                    </span>
 
-                    <!-- After Section -->
-                    <div style="position: relative; width: 50%; height: 100%; overflow: hidden;">
-                        <img src="{{ $afterImg }}" alt="Hasil Pengerjaan Berhasil Pipa Lancar di {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
-                        <span style="position: absolute; top: 10px; right: 10px; background: rgba(16, 185, 129, 0.95); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 50px; text-transform: uppercase; backdrop-filter: blur(4px);">
-                            ✓ SESUDAH (100% LANCAR)
-                        </span>
-                    </div>
-
-                    <!-- Client Type Floating Badge -->
-                    <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: rgba(11, 25, 44, 0.85); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.85rem; border-radius: 50px; backdrop-filter: blur(6px); white-space: nowrap;">
-                        🏷️ {{ $clientType }}
-                    </div>
-                </div>
-
-                <!-- Showcase Metadata Details -->
-                <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.15rem; font-weight: 800; color: #0B192C; margin-bottom: 0.75rem; line-height: 1.4;">
-                        {{ $title }}
-                    </h3>
-
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem; color: #475569; margin-bottom: 1.25rem; background: #F8FAFC; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid #F1F5F9;">
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: #EF4444; font-weight: 700;">📌 Masalah:</span>
-                            <span style="font-weight: 600; color: #1E293B;">{{ $issue }}</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: #0284C7; font-weight: 700;">🛠️ Alat Digunakan:</span>
-                            <span style="font-weight: 600; color: #1E293B;">{{ $tool }}</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem;">
-                            <span style="color: #059669; font-weight: 700;">⏱️ Waktu Pengerjaan:</span>
-                            <span style="font-weight: 600; color: #10B981;">{{ $time }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Location Footer -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F1F5F9; padding-top: 0.85rem; font-size: 0.82rem; color: #64748B;">
-                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 700; color: #0B192C;">
-                            📍 Area {{ $locName }}
-                        </span>
-                        <span style="color: #10B981; font-weight: 800; display: inline-flex; align-items: center; gap: 0.25rem;">
-                            ✓ Garansi Resmi 30 Hari
+                    <!-- Visual Zoom Icon Overlay -->
+                    <div style="position: absolute; inset: 0; background: rgba(11, 25, 44, 0.25); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center;" class="group-hover:opacity-100">
+                        <span style="background: rgba(16, 185, 129, 0.95); color: #ffffff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 1.2rem;">
+                            🔍
                         </span>
                     </div>
                 </div>
+
+                <!-- Showcase Item Details -->
+                <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                    <div>
+                        <h3 style="font-size: 1.05rem; font-weight: 800; color: #0B192C; margin: 0 0 0.5rem; line-height: 1.4;" class="group-hover:text-emerald-600 transition-colors">
+                            <a href="{{ $gUrl }}" style="color: inherit; text-decoration: none;">
+                                {{ $gTitle }}
+                            </a>
+                        </h3>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 0.75rem; margin-top: 0.75rem; font-size: 0.8rem;">
+                        <span style="color: #10B981; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">
+                            ✓ Tanpa Bongkar
+                        </span>
+                        <a href="{{ $gUrl }}" style="color: #0284C7; font-weight: 800; text-decoration: none;" class="hover:underline">
+                            Detail →
+                        </a>
+                    </div>
+                </div>
+
             </div>
             @endforeach
+        </div>
+
+        <!-- Call-To-Action Button to Main Gallery Page -->
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{{ route('galeri') }}" style="display: inline-flex; align-items: center; gap: 0.6rem; background: #0B192C; color: #ffffff; padding: 0.95rem 2.25rem; border-radius: 50px; font-weight: 800; font-size: 0.95rem; text-decoration: none; box-shadow: 0 10px 25px rgba(11, 25, 44, 0.15); transition: all 0.25s ease;" class="hover:bg-emerald-600 hover:scale-105 active:scale-95">
+                <span>Lihat Portofolio &amp; Dokumentasi Lengkap di Galeri Kami →</span>
+            </a>
         </div>
     </div>
 </section>
 
-<!-- Section 3: Video Reels & Knowledge Guide Showcase -->
-<section style="background: #0B192C; color: #ffffff; padding: 4.5rem 1.5rem; position: relative; overflow: hidden;" id="video-dokumentasi">
-    <div style="position: absolute; top: -100px; right: -100px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(11, 25, 44, 0) 70%); pointer-events: none;"></div>
-    
-    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 2;">
+<!-- Section 3: Video Reels & Knowledge Guide Showcase (Clean Modern Card Style) -->
+<section class="bg-slate-50 border-t border-slate-200/80 py-12 md:py-16 px-4 relative overflow-hidden" id="video-dokumentasi">
+    <div class="max-w-6xl mx-auto relative z-10">
         
         <!-- Header Video Showcase -->
-        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1.5rem; margin-bottom: 3rem;">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-10">
             <div>
-                <span style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.35rem 1.1rem; border-radius: 50px; font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
-                    🎬 Video Rekaman Lapangan (Bukti Nyata)
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-950 font-bold text-xs uppercase tracking-wider mb-2">
+                    🎬 EDUKASI & VIDEO PANDUAN
                 </span>
-                <h2 style="font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; color: #ffffff; margin-top: 0.6rem;">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
                     Lihat Aksi Teknisi Rootera Melancarkan Pipa
                 </h2>
-                <p style="color: rgba(255, 255, 255, 0.75); max-width: 650px; margin-top: 0.4rem; font-size: 0.98rem; line-height: 1.6;">
-                    Video penanganan pengerjaan pipa tersumbat lemak beku &amp; kerak menggunakan mesin fleksibel Ridgid &amp; Hydro Jetting di area {{ $locShort }}.
+                <p class="text-slate-600 text-sm md:text-base max-w-2xl mt-2 leading-relaxed">
+                    Video penanganan pengerjaan pipa tersumbat lemak beku &amp; kerak menggunakan mesin fleksibel Ridgid &amp; Hydro Jetting di {{ $locName }}.
                 </p>
             </div>
             <div>
-                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya ingin pesan layanan pipa mampet untuk area ' . $locName) }}" target="_blank" class="btn" style="background: #10B981; color: #ffffff; font-weight: 800; padding: 0.85rem 1.8rem; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);">
-                    📞 Panggil Teknisi Sekarang (24 Jam)
+                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya ingin pesan layanan pipa mampet untuk area ' . $locName) }}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-[#0B192C] hover:bg-blue-900 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition-all duration-200">
+                    <span>📞 Panggil Teknisi (24 Jam)</span>
                 </a>
             </div>
         </div>
 
-        <!-- Interactive Video Cards Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem;">
+        <!-- Clean Modern Video Cards (Horizontal Snap Carousel on Mobile, Grid on Desktop) -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0">
             @foreach($articlesToDisplay as $artIdx => $art)
             <?php
-                $artTitle = is_object($art) ? $art->title : $art['title'];
-                $artSlug = is_object($art) ? $art->slug : $art['slug'];
-                $artCategory = is_object($art) ? ($art->category ?? 'Edukasi Plumbing') : ($art['category'] ?? 'Edukasi Plumbing');
-                $artUrl = route('blog.show', $artSlug);
+                $artTitle = is_object($art) ? $art->title : ($art['title'] ?? '');
+                $artSlug = is_object($art) ? $art->slug : ($art['slug'] ?? '#');
+                $artCategory = 'EDUKASI & VIDEO PANDUAN';
+                $artUrl = ($artSlug !== '#') ? url('/blog/' . $artSlug) : route('blog');
                 
                 if (is_object($art)) {
-                    $artThumb = $art->thumbnail_url ?: $toolkitImages['ridgid_k50']['url'];
+                    $artThumb = $art->thumbnail ?: ($art->thumbnail_url ?: $toolkitImages['ridgid_k50']['url']);
+                    $artDuration = $art->read_time ? ('⏱ ' . $art->read_time . ' mnt') : '⏱ 1 mnt';
+                    $artDate = $art->published_at ? $art->published_at->format('d M Y') : 'Terbaru';
+                    $artViews = number_format($art->views ?? 1250);
+                    $artAuthor = $art->author ?: 'Rootera Plumbing';
+                    $artExcerpt = $art->excerpt ?: 'Klik untuk menonton video panduan penanganan pipa mampet teknisi Rootera di lapangan.';
                 } else {
                     $artThumb = $art['thumbnail'] ?? $toolkitImages['ridgid_k50']['url'];
+                    $artDuration = $art['duration'] ?? '⏱ 1 mnt';
+                    $artDate = $art['published_at'] ?? 'Terbaru';
+                    $artViews = $art['views'] ?? '1.2k';
+                    $artAuthor = $art['author'] ?? 'Rootera Plumbing';
+                    $artExcerpt = $art['excerpt'] ?? 'Klik untuk menonton video panduan penanganan pipa mampet teknisi Rootera di lapangan.';
                 }
-
-                $badgeColors = ['#10B981', '#38BDF8', '#F59E0B'];
-                $badgeColor = $badgeColors[$artIdx % count($badgeColors)];
             ?>
-            <a href="{{ $artUrl }}" style="display: block; text-decoration: none; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); transition: all 0.3s ease;" class="hover:-translate-y-2 hover:border-emerald-500/50 hover:shadow-2xl group">
-                <div style="position: relative; height: 240px; background: #1E3E62; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                    <img src="{{ $artThumb }}" alt="{{ $artTitle }} - Rootera {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async">
+            <a href="{{ $artUrl }}" class="w-[82vw] max-w-[320px] flex-shrink-0 snap-center md:w-auto bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-100 overflow-hidden flex flex-col justify-between transition-all duration-300 group block text-left text-slate-800 no-underline">
+                <!-- Thumbnail Container -->
+                <div class="relative aspect-video w-full overflow-hidden bg-slate-100">
+                    <img src="{{ $artThumb }}" alt="{{ $artTitle }} - Rootera Plumbing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                     
-                    <div style="position: absolute; width: 60px; height: 60px; border-radius: 50%; background: #10B981; color: #ffffff; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 25px rgba(16, 185, 129, 0.8); transition: transform 0.3s ease;" class="group-hover:scale-110">
-                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-
-                    <span style="position: absolute; top: 12px; right: 12px; background: {{ $badgeColor }}; color: #ffffff; font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 50px; text-transform: uppercase;">
+                    <!-- Category Badge Top-Left -->
+                    <span class="absolute top-3 left-3 bg-[#0B192C] text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm z-10">
                         {{ $artCategory }}
                     </span>
 
-                    <span style="position: absolute; bottom: 12px; left: 12px; background: rgba(11, 25, 44, 0.85); color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 6px; backdrop-filter: blur(4px);">
-                        📖 Baca &amp; Tonton Panduan →
+                    <!-- Play Video Button Center -->
+                    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                        <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300">
+                            <svg class="w-5 h-5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Duration Badge Bottom-Right -->
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 text-white text-[11px] font-semibold px-2 py-0.5 rounded-md backdrop-blur-sm z-10 flex items-center gap-1">
+                        {{ $artDuration }}
                     </span>
                 </div>
-                <div style="padding: 1.35rem;">
-                    <span style="color: #34D399; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Panduan Teknisi Rootera</span>
-                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #ffffff; margin: 0.4rem 0 0.4rem; line-height: 1.4;" class="group-hover:text-emerald-400 transition">
-                        {{ $artTitle }}
-                    </h3>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Klik untuk melihat panduan teknis lengkap &amp; rekaman video penanganan pipa mampet di lapangan.
-                    </p>
+
+                <!-- Card Content Body -->
+                <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <!-- Metadata: Date & Views -->
+                        <div class="flex items-center gap-3 text-xs text-slate-500 mb-2 font-medium">
+                            <span class="flex items-center gap-1">📅 {{ $artDate }}</span>
+                            <span class="flex items-center gap-1">👁 {{ $artViews }} views</span>
+                        </div>
+
+                        <!-- Article/Video Title -->
+                        <h3 class="font-bold text-slate-900 text-base group-hover:text-blue-900 transition-colors line-clamp-2 leading-snug mb-2">
+                            {{ $artTitle }}
+                        </h3>
+
+                        <!-- Excerpt / Snippet -->
+                        <p class="line-clamp-2 text-slate-600 text-sm leading-relaxed mb-4">
+                            {{ $artExcerpt }}
+                        </p>
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs mt-auto">
+                        <span class="font-medium text-slate-500">✍️ {{ $artAuthor }}</span>
+                        <span class="font-bold text-[#0B192C] group-hover:text-blue-600 flex items-center gap-1 transition-colors">Tonton Video →</span>
+                    </div>
                 </div>
             </a>
             @endforeach
         </div>
 
-        <div style="text-align: center; margin-top: 3.5rem;">
-            <a href="{{ route('blog') }}" class="btn" style="display: inline-flex; align-items: center; gap: 0.6rem; border: 1.5px solid rgba(16, 185, 129, 0.6); color: #34D399; background: rgba(16, 185, 129, 0.08); padding: 0.9rem 2.2rem; border-radius: 50px; font-weight: 800; font-size: 0.98rem; text-decoration: none; backdrop-filter: blur(8px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.3s ease;" class="hover:bg-emerald-500 hover:text-white hover:border-emerald-500 hover:scale-105">
+        <div class="text-center mt-10 md:mt-12">
+            <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 bg-white hover:bg-slate-100 hover:border-slate-400 px-6 py-3 rounded-full font-bold text-sm shadow-sm transition-all duration-200">
                 <span>Lihat Semua Video &amp; Panduan Pengetahuan Lengkap →</span>
             </a>
         </div>

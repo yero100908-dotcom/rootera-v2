@@ -26,17 +26,23 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug|max:255',
+            'category'         => 'nullable|string|max:100',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
+            'is_headline'      => 'nullable|boolean',
+            'is_featured'      => 'nullable|boolean',
+            'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
+        $validated['is_headline'] = $request->boolean('is_headline');
+        $validated['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $webpService->convertAndStore($request->file('thumbnail'), 'articles');
@@ -62,17 +68,23 @@ class ArticleController extends Controller
         $validated = $request->validate([
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug,' . $article->id . '|max:255',
+            'category'         => 'nullable|string|max:100',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
+            'is_headline'      => 'nullable|boolean',
+            'is_featured'      => 'nullable|boolean',
+            'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
+        $validated['is_headline'] = $request->boolean('is_headline');
+        $validated['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('thumbnail')) {
             $webpService->deleteIfExists($article->thumbnail);

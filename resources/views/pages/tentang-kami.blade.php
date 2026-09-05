@@ -736,7 +736,7 @@ $aboutPageSchema = [
                 </div>
                 <div class="min-w-0">
                     <span id="modal-badge" class="px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"></span>
-                    <h3 id="modal-name" class="text-base sm:text-lg font-bold text-white font-['Plus_Jakarta_Sans',sans-serif] mt-1 truncate"></h3>
+                    <div id="modal-name" class="text-base sm:text-lg font-bold text-white font-['Plus_Jakarta_Sans',sans-serif] mt-1 truncate"></div>
                     <p id="modal-role" class="text-xs text-slate-300 font-medium truncate"></p>
                     <p id="modal-area" class="text-xs text-emerald-400 font-semibold mt-0.5 flex items-center gap-1 truncate"></p>
                 </div>

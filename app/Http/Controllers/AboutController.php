@@ -10,8 +10,8 @@ class AboutController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Tentang Kami — Profil Perusahaan, Workshop Resmi & Tim Ahli Rootera Plumbing',
-            'description' => 'Mengenal profil Rootera Plumbing, spesialis saluran pipa mampet tanpa bongkar yang dipimpin oleh Rafael Abimanyu. Kantor pusat & workshop resmi di Cijantung, Jakarta Timur. Bergaransi & siaga 24 jam.',
+            'title'       => 'Tentang Kami — Profil & Tim Ahli | Rootera Plumbing',
+            'description' => 'Profil Rootera Plumbing, spesialis saluran pipa mampet tanpa bongkar dipimpin Rafael Abimanyu. Workshop Cijantung Jakarta Timur, bergaransi & 24 jam.',
             'keywords'    => 'Profil Perusahaan & Legalitas Operasional, Workshop & Pusat Logistik Armada Jakarta Timur, Standar Kerja Spesialis Pipa Mampet Tanpa Bongkar Bergaransi, Rafael Abimanyu',
             'canonical'   => url('/tentang-kami'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),

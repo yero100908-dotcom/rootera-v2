@@ -114,7 +114,10 @@ class ProblemHubController extends Controller
 
             $title = "Solusi " . (str_starts_with(strtolower($cleanName), 'jasa') ? $cleanName : "Jasa " . $cleanName) . " Terdekat di {$cityName} - Rootera";
             $metaDescription = "Solusi {$cleanName} di {$cityName}. Garansi tuntas 100% tanpa bongkar ubin oleh teknisi bersertifikat Rootera (J&J Group). Hubungi 24 Jam!";
-            $canonical = url('/solusi/' . $problemSlug . ($citySlug ? '/' . $citySlug : ''));
+            // Canonical consolidation: pointing problem hub city pages to single source of truth City Pillar Page
+            $canonical = $city 
+                ? url('/jasa-saluran-mampet/' . $city->slug)
+                : url('/solusi/' . $problemSlug);
 
             $seo = [
                 'title'        => $title,

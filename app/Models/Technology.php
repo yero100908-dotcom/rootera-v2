@@ -59,14 +59,22 @@ class Technology extends Model
     public function getImageUrlAttribute(): string
     {
         if (!$this->image_path) {
-            return asset('images/JnJ.webp');
+            return asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp');
         }
 
-        if (Str::startsWith($this->image_path, ['http://', 'https://', 'images/', 'assets/'])) {
-            return asset($this->image_path);
+        if (Str::startsWith($this->image_path, ['http://', 'https://'])) {
+            return $this->image_path;
         }
 
-        return asset('storage/' . $this->image_path);
+        $path = Str::startsWith($this->image_path, ['images/', 'assets/'])
+            ? $this->image_path
+            : 'storage/' . $this->image_path;
+
+        if (file_exists(public_path($path))) {
+            return asset($path);
+        }
+
+        return asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp');
     }
 
     // Alias name for tool_name

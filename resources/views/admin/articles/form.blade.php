@@ -77,17 +77,58 @@
 
             {{-- Sidebar Column (4 Cols) --}}
             <div class="lg:col-span-4 space-y-6">
-                {{-- Publish Settings Card --}}
+                {{-- Publish & Portal Media Settings Card --}}
                 <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
-                    <h3 class="font-extrabold text-slate-900 text-base mb-5 border-b border-slate-100 pb-3">Status Publikasi</h3>
+                    <h3 class="font-extrabold text-slate-900 text-base mb-5 border-b border-slate-100 pb-3 flex items-center justify-between">
+                        <span>Pengaturan Portal Berita</span>
+                        <span class="text-xs text-emerald-600 font-extrabold bg-emerald-50 px-2 py-0.5 rounded">Rootera News</span>
+                    </h3>
 
                     <div class="space-y-4">
+                        <div>
+                            <label for="category" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Pilar Kategori Industri <span class="text-rose-500">*</span></label>
+                            <select id="category" name="category" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition-all">
+                                @foreach(\App\Models\Article::CATEGORIES as $catKey => $catLabel)
+                                    <option value="{{ $catKey }}" {{ old('category', $article->category) === $catKey ? 'selected' : '' }}>
+                                        📌 {{ $catKey }} ({{ $catLabel }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div>
                             <label for="status" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Status Artikel</label>
                             <select id="status" name="status" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition-all">
                                 <option value="published" {{ old('status',$article->status) === 'published' ? 'selected':'' }}>✅ Terbitkan Langsung</option>
                                 <option value="draft" {{ old('status',$article->status) === 'draft' ? 'selected':'' }}>⏸️ Simpan Sebagai Draft</option>
                             </select>
+                        </div>
+
+                        {{-- Portal Media Positions: Headline & Featured Toggles --}}
+                        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 space-y-3">
+                            <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 block mb-1">Posisi Layout Hero Portal</label>
+                            
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" name="is_headline" value="1" {{ old('is_headline', $article->is_headline) ? 'checked' : '' }} class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-900 block">🔥 Set Bagian Headline Utama (60%)</span>
+                                    <span class="text-[0.7rem] text-slate-500 block">Akan muncul sebagai kartu besar di hero utama blog</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-3 cursor-pointer">
+                                <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $article->is_featured) ? 'checked' : '' }} class="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500">
+                                <div>
+                                    <span class="text-xs font-bold text-slate-900 block">⚡ Set Side Headline / Unggulan (40%)</span>
+                                    <span class="text-[0.7rem] text-slate-500 block">Akan muncul di kolom side highlight hero</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label for="read_time" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Estimasi Waktu Baca (Menit)</label>
+                            <input type="number" id="read_time" name="read_time" min="1" max="300" value="{{ old('read_time', $article->read_time) }}" placeholder="Kosongkan untuk auto-kalkulasi dari total kata"
+                                   class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs text-slate-800 transition-all">
                         </div>
 
                         <div>

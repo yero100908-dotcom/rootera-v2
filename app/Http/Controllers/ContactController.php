@@ -10,7 +10,7 @@ class ContactController extends Controller
     public function index()
     {
         $seo = [
-            'title'       => 'Hubungi Rootera Plumbing | Layanan Pelancar Pipa Mampet 24 Jam & Emergency Call',
+            'title'       => 'Hubungi Rootera Plumbing | Pelancar Pipa Mampet 24 Jam',
             'description' => 'Pusat bantuan Rootera Plumbing: Layanan darurat pelancaran pipa mampet 24 jam nonstop. Hubungi via WhatsApp atau form resmi untuk respon teknisi tercepat.',
             'canonical'   => url('/kontak'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),

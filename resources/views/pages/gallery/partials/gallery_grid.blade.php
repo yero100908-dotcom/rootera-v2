@@ -12,8 +12,8 @@
 <div class="gallery-card group bg-white rounded-xl sm:rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
     
     {{-- MEDIA THUMBNAIL CONTAINER --}}
-    <div class="media-container relative aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer group" onclick="openMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}', '{{ urlencode($item->title) }}')">
-        <img src="{{ $item->display_thumbnail }}" alt="Dokumentasi - {{ $item->title }}" title="{{ $item->title }} - Rootera Plumbing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+    <div class="media-container relative aspect-[4/3] bg-slate-100 border-b border-slate-200/60 overflow-hidden cursor-pointer group" onclick="openMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}', '{{ urlencode($item->title) }}')">
+        <img src="{{ $item->display_thumbnail }}" alt="Dokumentasi - {{ $item->title }}" title="{{ $item->title }} - Rootera Plumbing" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
         
         {{-- Badges Top Left --}}
         <div class="absolute top-2 left-2 flex flex-wrap gap-1 z-10 pointer-events-none">

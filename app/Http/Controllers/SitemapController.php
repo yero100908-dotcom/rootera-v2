@@ -107,7 +107,8 @@ class SitemapController extends Controller
     {
         $content = Cache::remember('sitemap_blog_xml', 3600, function () {
             $articles = Article::published()->latest('published_at')->get();
-            return view('sitemap-blog', compact('articles'))->render();
+            $categories = Article::CATEGORIES;
+            return view('sitemap-blog', compact('articles', 'categories'))->render();
         });
 
         return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');

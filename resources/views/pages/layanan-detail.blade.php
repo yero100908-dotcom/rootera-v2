@@ -358,8 +358,8 @@ $faqSchema = [
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($docItems as $doc)
                     <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all flex flex-col justify-between">
-                        <div class="relative h-40 bg-slate-900 overflow-hidden">
-                            <img src="{{ asset('images/dokumentasi/' . $doc['img']) }}" alt="{{ $doc['title'] }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="relative h-40 bg-slate-100 border-b border-slate-200/60 overflow-hidden">
+                            <img src="{{ asset('images/dokumentasi/' . $doc['img']) }}" alt="{{ $doc['title'] }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
                             <span class="absolute bottom-2 left-2 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md border border-white/20">
                                 ✓ Real Documentation
                             </span>

@@ -68,18 +68,39 @@ class Gallery extends Model
         };
     }
 
+    protected function resolveAssetUrl(?string $rawPath, string $fallback = 'images/JnJ.jpeg'): string
+    {
+        if (empty($rawPath)) {
+            return asset($fallback);
+        }
+
+        $path = $rawPath;
+        if (Str::startsWith($path, ['http://', 'https://'])) {
+            $parsed = parse_url($path, PHP_URL_PATH);
+            if ($parsed) {
+                $path = ltrim($parsed, '/');
+            }
+        }
+
+        $cleanPath = ltrim($path, '/');
+        if (!Str::startsWith($cleanPath, ['images/', 'assets/', 'storage/', 'videos/'])) {
+            $cleanPath = 'storage/' . $cleanPath;
+        }
+
+        if (file_exists(public_path($cleanPath))) {
+            return asset($cleanPath);
+        }
+
+        if (Str::startsWith($rawPath, ['http://', 'https://']) && !str_contains($rawPath, 'rooteraplumbing')) {
+            return $rawPath;
+        }
+
+        return asset($fallback);
+    }
+
     public function getDisplayThumbnailAttribute(): string
     {
-        if (!$this->thumbnail_path) {
-            return asset('images/JnJ.jpeg');
-        }
-        if (Str::startsWith($this->thumbnail_path, ['http://', 'https://'])) {
-            return $this->thumbnail_path;
-        }
-        if (Str::startsWith($this->thumbnail_path, 'images/')) {
-            return asset($this->thumbnail_path);
-        }
-        return asset('storage/' . $this->thumbnail_path);
+        return $this->resolveAssetUrl($this->thumbnail_path, 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
     }
 
     public function getDisplayMediaAttribute(): string
@@ -88,13 +109,7 @@ class Gallery extends Model
             return $this->external_media_url;
         }
         if ($this->media_file_path) {
-            if (Str::startsWith($this->media_file_path, ['http://', 'https://'])) {
-                return $this->media_file_path;
-            }
-            if (Str::startsWith($this->media_file_path, ['images/', 'videos/'])) {
-                return asset($this->media_file_path);
-            }
-            return asset('storage/' . $this->media_file_path);
+            return $this->resolveAssetUrl($this->media_file_path, 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
         }
         return $this->display_thumbnail;
     }
@@ -104,13 +119,7 @@ class Gallery extends Model
         if (!$this->before_image_path) {
             return null;
         }
-        if (Str::startsWith($this->before_image_path, ['http://', 'https://'])) {
-            return $this->before_image_path;
-        }
-        if (Str::startsWith($this->before_image_path, 'images/')) {
-            return asset($this->before_image_path);
-        }
-        return asset('storage/' . $this->before_image_path);
+        return $this->resolveAssetUrl($this->before_image_path, 'images/JnJ.jpeg');
     }
 
     public function getToolsUsedAttribute(): array
