@@ -192,7 +192,7 @@
     @include('components.navbar')
 
     {{-- Main Content --}}
-    <main id="main-content" class="w-full min-h-screen">
+    <main id="main-content" class="w-full min-h-screen pb-20 md:pb-0">
         @yield('content')
     </main>
 

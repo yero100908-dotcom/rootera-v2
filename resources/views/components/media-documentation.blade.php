@@ -138,64 +138,71 @@ try {
 ?>
 
 <!-- Section 1: Operational Toolkit Showcase Grid (High Trust Equipment) -->
-<section style="background: #ffffff; padding: 4rem 1.5rem; border-top: 1px solid #E2E8F0;" id="teknologi-alat">
+<section class="py-8 px-4 md:py-16 md:px-6 bg-white border-t border-slate-200" id="teknologi-alat">
     <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <span style="color: #10B981; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">
+        <div class="text-center mb-6 md:mb-12">
+            <span class="text-emerald-600 font-extrabold text-[11px] md:text-[0.85rem] uppercase tracking-wider">
                 🛠️ Standar Teknologi &amp; Peralatan Canggih
             </span>
-            <h2 style="color: #0B192C; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 800; margin-top: 0.4rem;">
+            <h2 class="text-[18px] sm:text-[20px] md:text-[2.4rem] font-extrabold text-slate-900 mt-1 leading-tight">
                 Peralatan Modern Teknisi Rootera di {{ $locShort }}
             </h2>
-            <p style="color: #64748B; max-width: 720px; margin: 0.5rem auto 0; font-size: 1rem; line-height: 1.6;">
+            <p class="text-xs md:text-[1rem] text-slate-500 max-w-2xl md:max-w-[720px] mx-auto mt-1 md:mt-2 leading-relaxed md:leading-[1.6]">
                 Seluruh armada penanganan pipa tersumbat di {{ $locName }} dibekali peralatan standar industri tanpa bongkar ubin/keramik.
             </p>
         </div>
 
         <!-- Section 1: Equipment Carousel/Grid -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
             @foreach($toolkitImages as $key => $tool)
-            <div class="min-w-[82vw] sm:min-w-[300px] snap-center shrink-0 md:min-w-0 hover:-translate-y-1.5 hover:border-emerald-400" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.3s ease;">
-                <div style="height: 180px; background: #F1F5F9; overflow: hidden; position: relative;">
-                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
-                    <span style="position: absolute; top: 10px; right: 10px; background: rgba(16, 185, 129, 0.9); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: 50px; text-transform: uppercase;">
+            <div class="w-[82vw] min-w-[82vw] sm:min-w-[280px] snap-center shrink-0 md:w-auto md:min-w-0 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition hover:-translate-y-1.5 hover:border-emerald-400 flex flex-col justify-between">
+                <div class="h-[150px] md:h-[180px] bg-slate-100 overflow-hidden relative flex items-center justify-center p-2 md:p-0">
+                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" class="w-full h-full object-contain md:object-cover rounded-lg md:rounded-none" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+                    <span class="absolute top-2 right-2 md:top-2.5 md:right-2.5 bg-emerald-600/90 text-white text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded-full uppercase z-10">
                         ✓ Alat Resmi
                     </span>
                 </div>
-                <div style="padding: 1.25rem;">
-                    <h3 style="font-size: 1.05rem; font-weight: 800; color: #0B192C; margin-bottom: 0.35rem;">
+                <div class="p-3 md:p-[1.25rem] flex flex-col justify-between flex-grow">
+                    <h3 class="text-sm md:text-[1.05rem] font-extrabold text-slate-900 mb-1 md:mb-[0.35rem]">
                         {{ $tool['title'] }}
                     </h3>
-                    <p style="color: #64748B; font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                    <p class="text-xs md:text-[0.85rem] text-slate-500 line-clamp-2 md:line-clamp-none leading-relaxed md:leading-[1.5] margin-0">
                         {{ $tool['desc'] }}
                     </p>
                 </div>
             </div>
             @endforeach
         </div>
+        <!-- Mobile Visual Scroll Indicator -->
+        <div class="md:hidden flex items-center justify-center gap-1.5 mt-2">
+            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        </div>
     </div>
 </section>
 
 <!-- Section 2: Gallery Showcase Preview Grid -->
-<section style="background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%); padding: 4.5rem 1.5rem; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;" id="dokumentasi-lapangan">
+<section class="py-8 px-4 md:py-[4.5rem] md:px-6 bg-gradient-to-b from-slate-50 to-blue-50/50 border-t border-b border-slate-200" id="dokumentasi-lapangan">
     <div style="max-width: 1200px; margin: 0 auto;">
         
         <!-- Section Header -->
-        <div style="text-align: center; margin-bottom: 3.5rem;">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #059669; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
-                <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 10px #10B981;"></span>
-                PORTFOLIO &amp; DOKUMENTASI PENGERJAAN
+        <div class="text-center mb-6 md:mb-14">
+            <div class="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[11px] md:text-[0.85rem] font-extrabold uppercase tracking-wider mb-1.5">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span>
+                PORTFOLIO &amp; DOKUMENTASI
             </div>
-            <h2 style="color: #0B192C; font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800; margin-top: 0.4rem; letter-spacing: -0.02em;">
-                Dokumentasi Lapangan &amp; Hasil Kerja Teknisi Rootera
+            <h2 class="text-[18px] sm:text-[20px] md:text-[2.5rem] font-extrabold text-slate-900 leading-tight mt-1">
+                Hasil Kerja Teknisi Rootera
             </h2>
-            <p style="color: #64748B; max-width: 780px; margin: 0.6rem auto 0; font-size: 1.05rem; line-height: 1.6;">
+            <p class="text-xs md:text-[1.05rem] text-slate-500 max-w-2xl md:max-w-[780px] mx-auto mt-1 md:mt-2 leading-relaxed md:leading-[1.6]">
                 Cuplikan pengerjaan nyata pelancaran saluran air, wastafel, kloset, dan got tanpa bongkar menggunakan mesin rotary spiral modern.
             </p>
         </div>
 
         <!-- Gallery Showcase Preview Carousel/Grid -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
             @foreach($galleryShowcaseItems as $gItem)
             @php
                 $gTitle = is_object($gItem) ? $gItem->title : ($gItem['title'] ?? 'Dokumentasi Pengerjaan Pipa');
@@ -207,39 +214,39 @@ try {
                 $gMediaType = is_object($gItem) ? $gItem->media_type : 'photo';
                 $gBeforeImg = is_object($gItem) ? $gItem->display_before_image : null;
             @endphp
-            <div class="min-w-[82vw] sm:min-w-[280px] snap-center shrink-0 md:min-w-0 hover:-translate-y-1.5 hover:shadow-xl hover:border-emerald-400/50 group flex flex-col justify-between" style="background: #ffffff; border-radius: 18px; border: 1px solid #E2E8F0; overflow: hidden; box-shadow: 0 4px 20px rgba(11, 25, 44, 0.04); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+            <div class="w-[82vw] min-w-[82vw] sm:min-w-[260px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-emerald-400/50 group flex flex-col justify-between">
                 <!-- Image Container with Job Type Badge -->
-                <div style="position: relative; height: 210px; background: #F1F5F9; overflow: hidden; cursor: pointer;" onclick="openMediaModal('{{ $gMediaType }}', '{{ $gMedia }}', '{{ addslashes($gTitle) }}', '{{ $gBeforeImg }}', '{{ urlencode($gTitle) }}')">
-                    <img src="{{ $gThumb }}" alt="{{ $gTitle }} - Rootera Plumbing" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="group-hover:scale-105" loading="lazy" decoding="async" onerror="this.src='/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'">
+                <div class="relative h-[150px] md:h-[210px] bg-slate-900 overflow-hidden cursor-pointer flex items-center justify-center" onclick="openMediaModal('{{ $gMediaType }}', '{{ $gMedia }}', '{{ addslashes($gTitle) }}', '{{ $gBeforeImg }}', '{{ urlencode($gTitle) }}')">
+                    <img src="{{ $gThumb }}" alt="{{ $gTitle }} - Rootera Plumbing" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" onerror="this.src='/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'">
                     
                     <!-- Job Type Badge Overlay -->
-                    <span style="position: absolute; top: 12px; left: 12px; background: rgba(11, 25, 44, 0.85); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); font-size: 0.72rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 50px; backdrop-filter: blur(4px); text-transform: uppercase;">
+                    <span class="absolute top-2 left-2 md:top-3 md:left-3 bg-slate-900/85 text-emerald-400 border border-emerald-500/30 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full backdrop-blur-sm uppercase z-10">
                         🏷️ {{ $gCategory }}
                     </span>
 
                     <!-- Visual Zoom Icon Overlay -->
-                    <div style="position: absolute; inset: 0; background: rgba(11, 25, 44, 0.25); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: center; justify-content: center;" class="group-hover:opacity-100">
-                        <span style="background: rgba(16, 185, 129, 0.95); color: #ffffff; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); font-size: 1.2rem;">
+                    <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+                        <span class="bg-emerald-500 text-white w-8 h-8 md:w-11 md:h-11 rounded-full flex items-center justify-center shadow-md text-xs md:text-base">
                             🔍
                         </span>
                     </div>
                 </div>
 
                 <!-- Showcase Item Details -->
-                <div style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; flex-grow: 1;">
+                <div class="p-3 md:p-[1.25rem] flex flex-col justify-between flex-grow">
                     <div>
-                        <h3 style="font-size: 1.05rem; font-weight: 800; color: #0B192C; margin: 0 0 0.5rem; line-height: 1.4;" class="group-hover:text-emerald-600 transition-colors">
-                            <a href="{{ $gUrl }}" style="color: inherit; text-decoration: none;">
+                        <h3 class="text-xs md:text-[1.05rem] font-extrabold text-slate-900 mb-1 md:mb-2 leading-snug group-hover:text-emerald-600 transition-colors line-clamp-2">
+                            <a href="{{ $gUrl }}" class="text-inherit text-decoration-none">
                                 {{ $gTitle }}
                             </a>
                         </h3>
                     </div>
 
-                    <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 0.75rem; margin-top: 0.75rem; font-size: 0.8rem;">
-                        <span style="color: #10B981; font-weight: 700; display: inline-flex; align-items: center; gap: 0.25rem;">
+                    <div class="flex items-center justify-between border-t border-slate-100 pt-2 md:pt-3 mt-2 md:mt-3 text-[11px] md:text-[0.8rem]">
+                        <span class="text-emerald-600 font-bold flex items-center gap-1">
                             ✓ Tanpa Bongkar
                         </span>
-                        <a href="{{ $gUrl }}" style="color: #0284C7; font-weight: 800; text-decoration: none;" class="hover:underline">
+                        <a href="{{ $gUrl }}" class="text-sky-600 font-extrabold text-decoration-none hover:underline">
                             Detail →
                         </a>
                     </div>
@@ -248,10 +255,17 @@ try {
             </div>
             @endforeach
         </div>
+        <!-- Mobile Visual Scroll Indicator -->
+        <div class="md:hidden flex items-center justify-center gap-1.5 mt-2">
+            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        </div>
 
         <!-- Call-To-Action Button to Main Gallery Page -->
-        <div style="text-align: center; margin-top: 3rem;">
-            <a href="{{ route('galeri') }}" style="display: inline-flex; align-items: center; gap: 0.6rem; background: #0B192C; color: #ffffff; padding: 0.95rem 2.25rem; border-radius: 50px; font-weight: 800; font-size: 0.95rem; text-decoration: none; box-shadow: 0 10px 25px rgba(11, 25, 44, 0.15); transition: all 0.25s ease;" class="hover:bg-emerald-600 hover:scale-105 active:scale-95">
+        <div class="text-center mt-6 md:mt-12">
+            <a href="{{ route('galeri') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white px-5 py-3 md:px-9 md:py-3.5 rounded-full font-extrabold text-xs md:text-[0.95rem] text-decoration-none shadow-md transition-all">
                 <span>Lihat Portofolio &amp; Dokumentasi Lengkap di Galeri Kami →</span>
             </a>
         </div>
@@ -283,7 +297,7 @@ try {
         </div>
 
         <!-- Clean Modern Video Cards (Horizontal Snap Carousel on Mobile, Grid on Desktop) -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 no-scrollbar touch-pan-x px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 mobile-scrollbar touch-pan-x px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0">
             @foreach($articlesToDisplay as $artIdx => $art)
             <?php
                 $artTitle = is_object($art) ? $art->title : ($art['title'] ?? '');
@@ -358,6 +372,12 @@ try {
                 </div>
             </a>
             @endforeach
+        </div>
+        <!-- Mobile Visual Scroll Indicator -->
+        <div class="md:hidden flex items-center justify-center gap-1.5 mt-2">
+            <span class="w-6 h-1.5 rounded-full bg-blue-600"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
         </div>
 
         <div class="text-center mt-10 md:mt-12">
