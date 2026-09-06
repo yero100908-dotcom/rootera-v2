@@ -11,17 +11,67 @@ $homeSchema = [
       "name" => "Rootera Plumbing",
       "alternateName" => ["Rootera", "Jasa Saluran Pipa Mampet Rootera"],
       "url" => url('/'),
-      "telephone" => "+6281385404000",
-      "priceRange" => "Rp 150.000 - Rp 1.500.000",
       "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
       "image" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+      "description" => "Jasa pelancaran saluran pipa mampet profesional, kuras toren air, dan instalasi pipa tanpa bongkar bergaransi 30 hari di Jabodetabek dan kota besar Indonesia.",
+      "telephone" => "+6281385404000",
+      "priceRange" => "$$",
+      "currenciesAccepted" => "IDR",
+      "paymentAccepted" => "Cash, Bank Transfer, QRIS",
       "address" => [
         "@type" => "PostalAddress",
-        "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung",
-        "addressLocality" => "Pasar Rebo, Jakarta Timur",
+        "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
+        "addressLocality" => "Jakarta Timur",
         "addressRegion" => "DKI Jakarta",
         "postalCode" => "13770",
         "addressCountry" => "ID"
+      ],
+      "geo" => [
+        "@type" => "GeoCoordinates",
+        "latitude" => -6.3275278,
+        "longitude" => 106.8627778
+      ],
+      "hasMap" => "https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8",
+      "openingHoursSpecification" => [
+        [
+          "@type" => "OpeningHoursSpecification",
+          "dayOfWeek" => [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens" => "00:00",
+          "closes" => "23:59"
+        ]
+      ],
+      "areaServed" => [
+        ["@type" => "AdministrativeArea", "name" => "DKI Jakarta"],
+        ["@type" => "AdministrativeArea", "name" => "Jakarta Timur"],
+        ["@type" => "AdministrativeArea", "name" => "Jakarta Selatan"],
+        ["@type" => "AdministrativeArea", "name" => "Jakarta Barat"],
+        ["@type" => "AdministrativeArea", "name" => "Jakarta Utara"],
+        ["@type" => "AdministrativeArea", "name" => "Jakarta Pusat"],
+        ["@type" => "AdministrativeArea", "name" => "Tangerang"],
+        ["@type" => "AdministrativeArea", "name" => "Tangerang Selatan"],
+        ["@type" => "AdministrativeArea", "name" => "Bekasi"],
+        ["@type" => "AdministrativeArea", "name" => "Depok"],
+        ["@type" => "AdministrativeArea", "name" => "Bogor"],
+        ["@type" => "AdministrativeArea", "name" => "Serang"],
+        ["@type" => "AdministrativeArea", "name" => "Cilegon"],
+        ["@type" => "AdministrativeArea", "name" => "Bandung"],
+        ["@type" => "AdministrativeArea", "name" => "Semarang"],
+        ["@type" => "AdministrativeArea", "name" => "Yogyakarta"],
+        ["@type" => "AdministrativeArea", "name" => "Surabaya"],
+        ["@type" => "AdministrativeArea", "name" => "Bandar Lampung"]
+      ],
+      "sameAs" => [
+        "https://www.instagram.com/rootera_plumbing/",
+        "https://www.facebook.com/Rootera.id",
+        "https://www.tiktok.com/@rootera_plumbing"
       ],
       "aggregateRating" => [
         "@type" => "AggregateRating",
@@ -30,47 +80,32 @@ $homeSchema = [
         "bestRating" => "5",
         "worstRating" => "1"
       ],
-      "areaServed" => [
-        "DKI Jakarta",
-        "Jabodetabek",
-        "Bandar Lampung",
-        "Bandung",
-        "Semarang",
-        "Yogyakarta",
-        "Surabaya",
-        "Serang"
-      ],
-      "sameAs" => [
-        "https://www.instagram.com/rootera_plumbing/",
-        "https://www.facebook.com/Rootera.id",
-        "https://www.tiktok.com/@rootera_plumbing"
-      ],
       "hasOfferCatalog" => [
         "@type" => "OfferCatalog",
-        "name" => "Katalog Layanan Jasa Saluran Pipa Mampet Rootera",
+        "name" => "Layanan Spesialis Pipa & Sanitasi",
         "itemListElement" => [
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
               "name" => "Jasa Saluran Pipa Mampet Tanpa Bongkar",
-              "description" => "Pelancaran wastafel, kloset, floor drain, dan got tersumbat bergaransi 30 hari."
+              "description" => "Pelancaran wastafel, kran, floordrain, dan WC mampet menggunakan alat spiral rotary Ridgid."
             ]
           ],
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
-              "name" => "Jasa Hydro-Jetting High-Pressure Cleaning",
-              "description" => "Semprotan air tekanan tinggi 300 Bar pengikis lemak padat industri & restoran."
+              "name" => "Jasa Pembersihan Hydro-Jetting Pipa Industri",
+              "description" => "Pembersihan kerak lemak encer dan lumpur keras pipa restoran dan industri dengan tekanan air hingga 300 Bar."
             ]
           ],
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
-              "name" => "Cuci Toren & Kuras Tandon Air",
-              "description" => "Pengurasan lumut, endapan lumpur, dan sterilisasi tangki air bersih food-grade safety."
+              "name" => "Jasa Kuras & Sterilisasi Toren Air",
+              "description" => "Pembersihan lumut, endapan lumpur, dan disinfeksi tangki air bersih."
             ]
           ]
         ]
@@ -119,7 +154,7 @@ $homeSchema = [
 ];
 ?>
 <script type="application/ld+json">
-{!! json_encode($homeSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($homeSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
