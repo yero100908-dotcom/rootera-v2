@@ -10,18 +10,20 @@ $formattedPriceCorporate = is_numeric($category->price_corporate)
     ? 'Rp ' . number_format((float) $category->price_corporate, 0, ',', '.') 
     : ($category->price_corporate ?: 'Hubungi CS');
 
+$numericLowPrice = (int) preg_replace('/[^0-9]/', '', (string) ($category->price_home ?? '350000'));
+if ($numericLowPrice <= 0) {
+    $numericLowPrice = 350000;
+}
+
 $serviceSchema = [
   "@context" => "https://schema.org",
   "@type" => "Service",
   "name" => $category->name,
   "description" => $category->description,
   "provider" => [
-    "@type" => "Plumber",
-    "name" => "Rootera",
-    "telephone" => "+6281385404000",
-    "url" => url('/'),
-    "logo" => asset('images/brand/logo-hijau-rooteraplumbing-jasa-saluran-pipa-mampet.png'),
-    "image" => asset('images/JnJ.jpeg')
+    "@type" => "LocalBusiness",
+    "@id" => url('/') . '#organization',
+    "name" => "Rootera Plumbing"
   ],
   "areaServed" => [
     "Jabodetabek", "Lampung", "Bandung", "Yogyakarta", "Semarang", "Cirebon", "Solo"
@@ -29,8 +31,8 @@ $serviceSchema = [
   "offers" => [
     "@type" => "AggregateOffer",
     "priceCurrency" => "IDR",
-    "lowPrice" => $formattedPriceHome,
-    "priceRange" => "Rp",
+    "lowPrice" => $numericLowPrice,
+    "priceRange" => "$$",
     "description" => $category->price_description
   ]
 ];

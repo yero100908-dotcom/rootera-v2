@@ -31,17 +31,18 @@ $contactSchema = [
             'priceRange' => 'Rp 350.000 - Rp 1.500.000',
             'address' => [
                 '@type' => 'PostalAddress',
-                'streetAddress' => 'Jl. Raya Bogor KM 26 No. 8, Cijantung, Pasar Rebo',
-                'addressLocality' => 'Jakarta Timur',
-                'addressRegion' => 'DKI Jakarta',
+                'streetAddress' => 'Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo',
+                'addressLocality' => 'Kota Jakarta Timur',
+                'addressRegion' => 'Daerah Khusus Ibukota Jakarta',
                 'postalCode' => '13770',
                 'addressCountry' => 'ID'
             ],
             'geo' => [
                 '@type' => 'GeoCoordinates',
-                'latitude' => '-6.3190',
-                'longitude' => '106.8640'
+                'latitude' => -6.3275278,
+                'longitude' => 106.8627778
             ],
+            'hasMap' => 'https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8',
             'openingHoursSpecification' => [
                 '@type' => 'OpeningHoursSpecification',
                 'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -183,7 +184,7 @@ $contactSchema = [
                         <div>
                             <span class="text-[11px] font-bold text-slate-400 block uppercase">Kantor Pusat &amp; Workshop HQ</span>
                             <p class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-                                Jl. Raya Bogor KM 26 No. 8, Cijantung, Pasar Rebo, Jakarta Timur 13770
+                                Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta 13770
                             </p>
                         </div>
                     </div>
@@ -344,7 +345,7 @@ $contactSchema = [
                     <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mt-1">Peta Navigasi Workshop Rootera</h2>
                 </div>
 
-                <a href="https://maps.google.com/?q=Cijantung+Pasar+Rebo+Jakarta+Timur" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-emerald-600 bg-slate-100 hover:bg-slate-200 px-4 py-2.5 rounded-xl transition-colors border border-slate-200 shrink-0">
+                <a href="https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-emerald-600 bg-slate-100 hover:bg-slate-200 px-4 py-2.5 rounded-xl transition-colors border border-slate-200 shrink-0">
                     <span>🗺️ Buka Petunjuk Arah Google Maps (HQ Cijantung)</span>
                     <span>→</span>
                 </a>
