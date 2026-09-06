@@ -31,9 +31,24 @@ class HomeController extends Controller
             ->get();
 
         $latestArticles = Article::published()
+            ->where(function($q) {
+                $q->where('post_type', 'video_guide')
+                  ->orWhereNotNull('youtube_video_id');
+            })
             ->orderBy('published_at', 'desc')
-            ->take(3)
+            ->take(4)
             ->get();
+
+        if ($latestArticles->count() < 4) {
+            $existingIds = $latestArticles->pluck('id')->toArray();
+            $needed = 4 - $latestArticles->count();
+            $additionalArticles = Article::published()
+                ->whereNotIn('id', $existingIds)
+                ->orderBy('published_at', 'desc')
+                ->take($needed)
+                ->get();
+            $latestArticles = $latestArticles->concat($additionalArticles);
+        }
 
         $faqs = Faq::where('is_active', true)
             ->where('is_featured_home', true)
