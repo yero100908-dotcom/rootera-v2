@@ -21,7 +21,7 @@ $etaText = isset($district) ? ($district->estimated_arrival ?? '25-40 Menit') : 
 $areaLabel = isset($district) ? $district->name : (isset($city) ? $city->name : 'Lokasi Anda');
 ?>
 
-<div id="mobile-sticky-cta-bar" class="fixed bottom-0 left-0 right-0 z-[9990] md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800 px-3 py-2.5 shadow-2xl transition-transform duration-300">
+<div id="mobile-sticky-cta-bar" class="fixed bottom-0 left-0 right-0 z-[9990] md:hidden bg-[#061434]/90 border-t border-white/10 backdrop-blur-lg shadow-2xl transform-gpu px-3 py-2.5 transition-transform duration-300">
     <div class="flex items-center justify-between gap-2 max-w-lg mx-auto">
         <div class="flex items-center gap-2">
             <span class="relative flex h-3 w-3 shrink-0">

@@ -93,7 +93,7 @@
     ];
 @endphp
 
-<section id="partners-section" aria-labelledby="partners-heading" class="relative pt-10 sm:pt-14 md:pt-16 pb-14 sm:pb-14 md:pb-16 bg-gradient-to-br from-[#0B2545] via-[#0D3B66] to-[#071930] text-white overflow-hidden border-y border-white/10 scroll-mt-24 sm:scroll-mt-28">
+<section id="partners-section" aria-labelledby="partners-heading" class="relative pt-10 sm:pt-14 md:pt-16 pb-14 sm:pb-14 md:pb-16 bg-gradient-to-br from-[#0B2545] via-[#0D3B66] to-[#071930] text-white overflow-hidden border-t border-white/10 scroll-mt-24 sm:scroll-mt-28">
     {{-- Ambient Lighting --}}
     <div class="absolute -top-32 left-1/4 w-[500px] h-[300px] bg-emerald-500/10 blur-[100px] pointer-events-none rounded-full" aria-hidden="true"></div>
     <div class="absolute bottom-0 right-1/4 w-[500px] h-[300px] bg-cyan-500/10 blur-[100px] pointer-events-none rounded-full" aria-hidden="true"></div>

@@ -200,20 +200,20 @@ $homeSchema = [
                 </div>
 
                 {{-- Floating Badge 1 --}}
-                <div style="position: absolute; top: -1rem; right: -1rem; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); padding: 0.75rem 1.1rem; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 0.6rem; z-index: 3;" class="hidden sm:flex">
-                    <span style="font-size: 1.25rem;">⭐</span>
+                <div class="absolute -top-4 -right-4 bg-[#0B2545]/80 border border-white/15 backdrop-blur-md p-3 sm:px-4 sm:py-3 rounded-2xl shadow-2xl items-center gap-2.5 z-10 transform-gpu hidden sm:flex">
+                    <span class="text-xl shrink-0">⭐</span>
                     <div>
-                        <div style="font-weight: 800; font-size: 0.9rem; color: #fff;">5.0 / 5.0 Rating</div>
-                        <div style="font-size: 0.72rem; color: #94a3b8;">120+ Ulasan Asli Google Maps</div>
+                        <div class="font-extrabold text-xs sm:text-sm text-white">5.0 / 5.0 Rating</div>
+                        <div class="text-[11px] text-slate-300 font-medium">120+ Ulasan Asli Google Maps</div>
                     </div>
                 </div>
 
                 {{-- Floating Badge 2 --}}
-                <div style="position: absolute; bottom: -1.25rem; left: -1rem; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.75rem 1.1rem; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 0.6rem; z-index: 3;" class="hidden sm:flex">
-                    <span style="font-size: 1.25rem;">⏱️</span>
+                <div class="absolute -bottom-5 -left-4 bg-[#0B2545]/80 border border-emerald-500/30 backdrop-blur-md p-3 sm:px-4 sm:py-3 rounded-2xl shadow-2xl items-center gap-2.5 z-10 transform-gpu hidden sm:flex">
+                    <span class="text-xl shrink-0">⏱️</span>
                     <div>
-                        <div style="font-weight: 800; font-size: 0.9rem; color: #10b981;">Respon &lt; 30 Menit</div>
-                        <div style="font-size: 0.72rem; color: #94a3b8;">Teknisi Standby Jabodetabek</div>
+                        <div class="font-extrabold text-xs sm:text-sm text-emerald-400">Respon &lt; 30 Menit</div>
+                        <div class="text-[11px] text-slate-300 font-medium">Teknisi Standby Jabodetabek</div>
                     </div>
                 </div>
             </div>
@@ -221,18 +221,18 @@ $homeSchema = [
         </div>
 
         {{-- LIVE COUNTER METRIC BAR --}}
-        <div class="mt-4 md:mt-16 pt-4 md:pt-10 border-t border-white/10 grid grid-cols-3 gap-2 sm:gap-6 text-center">
-            <div class="py-2.5 px-1.5 sm:p-4 rounded-xl bg-white/5 border border-white/10">
-                <div class="text-base sm:text-2xl md:text-3xl font-extrabold text-emerald-400 leading-none">15.000+</div>
-                <div class="text-[10px] sm:text-xs text-slate-300 font-semibold mt-1">Saluran Mampet Tuntas</div>
+        <div class="mt-6 md:mt-16 pt-6 md:pt-10 border-t border-white/10 grid grid-cols-3 gap-2.5 sm:gap-6 text-center">
+            <div class="py-3 px-2 sm:p-5 rounded-2xl bg-[#0B2545]/70 border border-white/15 backdrop-blur-md shadow-2xl transition-all duration-300 hover:border-emerald-400/40 hover:bg-[#0B2545]/90 transform-gpu">
+                <div class="text-lg sm:text-2xl md:text-3xl font-extrabold text-emerald-400 leading-none mb-1">15.000+</div>
+                <div class="text-[10px] sm:text-xs text-slate-200 font-semibold">Saluran Mampet Tuntas</div>
             </div>
-            <div class="py-2.5 px-1.5 sm:p-4 rounded-xl bg-white/5 border border-white/10">
-                <div class="text-base sm:text-2xl md:text-3xl font-extrabold text-amber-400 leading-none">30 Hari</div>
-                <div class="text-[10px] sm:text-xs text-slate-300 font-semibold mt-1">Garansi Penuh</div>
+            <div class="py-3 px-2 sm:p-5 rounded-2xl bg-[#0B2545]/70 border border-white/15 backdrop-blur-md shadow-2xl transition-all duration-300 hover:border-amber-400/40 hover:bg-[#0B2545]/90 transform-gpu">
+                <div class="text-lg sm:text-2xl md:text-3xl font-extrabold text-amber-400 leading-none mb-1">30 Hari</div>
+                <div class="text-[10px] sm:text-xs text-slate-200 font-semibold">Garansi Penuh</div>
             </div>
-            <div class="py-2.5 px-1.5 sm:p-4 rounded-xl bg-white/5 border border-white/10">
-                <div class="text-base sm:text-2xl md:text-3xl font-extrabold text-cyan-400 leading-none">Tanpa Bongkar</div>
-                <div class="text-[10px] sm:text-xs text-slate-300 font-semibold mt-1">Mesin Drain Cleaner</div>
+            <div class="py-3 px-2 sm:p-5 rounded-2xl bg-[#0B2545]/70 border border-white/15 backdrop-blur-md shadow-2xl transition-all duration-300 hover:border-cyan-400/40 hover:bg-[#0B2545]/90 transform-gpu">
+                <div class="text-lg sm:text-2xl md:text-3xl font-extrabold text-cyan-400 leading-none mb-1">Tanpa Bongkar</div>
+                <div class="text-[10px] sm:text-xs text-slate-200 font-semibold">Mesin Drain Cleaner</div>
             </div>
         </div>
 
