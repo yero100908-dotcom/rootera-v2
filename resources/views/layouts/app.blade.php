@@ -13,6 +13,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {{-- Mobile Web App & Theme Color Standards --}}
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0B2545">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#071930">
+    <meta name="msapplication-navbutton-color" content="#0B2545">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
