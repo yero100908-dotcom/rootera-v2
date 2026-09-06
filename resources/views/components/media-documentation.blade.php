@@ -153,7 +153,7 @@ try {
         </div>
 
         <!-- Section 1: Equipment Carousel/Grid -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($toolkitImages as $key => $tool)
             <div class="w-[82vw] min-w-[82vw] sm:min-w-[280px] snap-center shrink-0 md:w-auto md:min-w-0 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition hover:-translate-y-1.5 hover:border-emerald-400 flex flex-col justify-between">
                 <div class="h-[150px] md:h-[180px] bg-slate-100 overflow-hidden relative flex items-center justify-center p-2 md:p-0">
@@ -202,7 +202,7 @@ try {
         </div>
 
         <!-- Gallery Showcase Preview Carousel/Grid -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($galleryShowcaseItems as $gItem)
             @php
                 $gTitle = is_object($gItem) ? $gItem->title : ($gItem['title'] ?? 'Dokumentasi Pengerjaan Pipa');
@@ -297,7 +297,7 @@ try {
         </div>
 
         <!-- Clean Modern Video Cards (Horizontal Snap Carousel on Mobile, Grid on Desktop) -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 mobile-scrollbar touch-pan-x px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0">
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 mobile-scrollbar touch-pan-x touch-pan-y px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($articlesToDisplay as $artIdx => $art)
             <?php
                 $artTitle = is_object($art) ? $art->title : ($art['title'] ?? '');

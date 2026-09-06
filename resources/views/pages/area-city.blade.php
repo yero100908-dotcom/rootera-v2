@@ -217,7 +217,7 @@ $cityBreadcrumbs = [
 
         <!-- Baris 1: 4 Masalah Utama (Horizontal Snap Carousel with Peek Effect on Mobile) -->
         <div class="mb-8 md:mb-10">
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-3.5 pb-3.5 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-5">
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-3.5 pb-3.5 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-5" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
                 @foreach($coreProblemCards as $card)
                 <a href="{{ $card['url'] }}" class="w-[82vw] min-w-[82vw] sm:min-w-[240px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white rounded-2xl border border-slate-200 overflow-hidden text-decoration-none flex flex-col justify-between shadow-sm transition hover:-translate-y-1 hover:border-emerald-500 hover:shadow-lg group">
                     <div>
