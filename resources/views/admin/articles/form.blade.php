@@ -138,6 +138,28 @@
                         </div>
 
                         <div>
+                            <label for="post_type" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Tipe Konten <span class="text-rose-500">*</span></label>
+                            <select id="post_type" name="post_type" onchange="toggleVideoSection(this.value)" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition-all">
+                                <option value="article" {{ old('post_type', $article->post_type ?? 'article') === 'article' ? 'selected' : '' }}>📄 Artikel Teks Biasa</option>
+                                <option value="video_guide" {{ old('post_type', $article->post_type ?? 'article') === 'video_guide' ? 'selected' : '' }}>🎥 Video Panduan / Rootera TV</option>
+                            </select>
+                            @error('post_type')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
+                        </div>
+
+                        {{-- Section Input Video YouTube (Tampil jika Tipe Konten Video) --}}
+                        <div id="video_input_wrapper" class="{{ old('post_type', $article->post_type ?? 'article') === 'video_guide' ? 'block' : 'hidden' }} bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80 space-y-2">
+                            <label for="youtube_video_id" class="text-xs font-extrabold uppercase tracking-wider text-amber-900 block flex items-center gap-1.5">
+                                <span>🎥 YouTube Video ID / Link URL</span>
+                            </label>
+                            <input type="text" id="youtube_video_id" name="youtube_video_id" value="{{ old('youtube_video_id', $article->youtube_video_id) }}" placeholder="Contoh: dQw4w9WgXcQ atau https://www.youtube.com/watch?v=..."
+                                   class="w-full bg-white border border-amber-300 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 transition-all">
+                            <p class="text-[0.725rem] text-amber-800/90 leading-tight">
+                                💡 <strong>Petunjuk:</strong> Masukkan 11 karakter ID video (seperti <code class="bg-amber-100 px-1 py-0.5 rounded font-bold">dQw4w9WgXcQ</code>) atau tempel link URL YouTube lengkap. Sistem akan otomatis menguraikan ID video tersebut.
+                            </p>
+                            @error('youtube_video_id')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
+                        </div>
+
+                        <div>
                             <label for="author" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Penulis</label>
                             <input type="text" id="author" name="author" value="{{ old('author', $article->author ?? 'Tim Rootera') }}"
                                    class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm text-slate-800 transition-all">
@@ -180,6 +202,15 @@
 </div>
 
 <script>
+function toggleVideoSection(type) {
+    const wrapper = document.getElementById('video_input_wrapper');
+    if (type === 'video_guide') {
+        wrapper.classList.remove('hidden');
+    } else {
+        wrapper.classList.add('hidden');
+    }
+}
+
 function previewImage(input) {
     const preview = document.getElementById('thumbnailPreview');
     const placeholder = document.getElementById('placeholderText');

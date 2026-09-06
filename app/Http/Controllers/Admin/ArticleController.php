@@ -27,6 +27,8 @@ class ArticleController extends Controller
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug|max:255',
             'category'         => 'nullable|string|max:100',
+            'post_type'        => 'required|in:article,video_guide',
+            'youtube_video_id' => 'nullable|string|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
@@ -43,6 +45,14 @@ class ArticleController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
         $validated['is_headline'] = $request->boolean('is_headline');
         $validated['is_featured'] = $request->boolean('is_featured');
+
+        // Extract YouTube Video ID if a full URL was pasted
+        if (!empty($validated['youtube_video_id'])) {
+            $rawVideo = trim($validated['youtube_video_id']);
+            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $rawVideo, $matches)) {
+                $validated['youtube_video_id'] = $matches[1];
+            }
+        }
 
         if ($request->hasFile('thumbnail')) {
             $validated['thumbnail'] = $webpService->convertAndStore($request->file('thumbnail'), 'articles');
@@ -69,6 +79,8 @@ class ArticleController extends Controller
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug,' . $article->id . '|max:255',
             'category'         => 'nullable|string|max:100',
+            'post_type'        => 'required|in:article,video_guide',
+            'youtube_video_id' => 'nullable|string|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
@@ -85,6 +97,14 @@ class ArticleController extends Controller
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
         $validated['is_headline'] = $request->boolean('is_headline');
         $validated['is_featured'] = $request->boolean('is_featured');
+
+        // Extract YouTube Video ID if a full URL was pasted
+        if (!empty($validated['youtube_video_id'])) {
+            $rawVideo = trim($validated['youtube_video_id']);
+            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $rawVideo, $matches)) {
+                $validated['youtube_video_id'] = $matches[1];
+            }
+        }
 
         if ($request->hasFile('thumbnail')) {
             $webpService->deleteIfExists($article->thumbnail);

@@ -62,13 +62,16 @@ class BlogController extends Controller
             ->take(6)
             ->get();
 
-        // 4. Categories pillars & post counts
+        // 4. Categories pillars & post counts (Single optimized aggregate query)
         $categories = Article::CATEGORIES;
+        $countsRaw = Article::published()
+            ->selectRaw('category, count(*) as total')
+            ->groupBy('category')
+            ->pluck('total', 'category');
+
         $categoryCounts = [];
         foreach ($categories as $catKey => $catLabel) {
-            $categoryCounts[$catKey] = Article::published()
-                ->where('category', $catKey)
-                ->count();
+            $categoryCounts[$catKey] = (int) ($countsRaw[$catKey] ?? 0);
         }
 
         // 5. Main Feed Query
