@@ -93,7 +93,7 @@
     ];
 @endphp
 
-<section aria-labelledby="partners-heading" class="relative py-16 bg-gradient-to-br from-[#0B2545] via-[#0D3B66] to-[#071930] text-white overflow-hidden border-y border-white/10">
+<section id="partners-section" aria-labelledby="partners-heading" class="relative pt-10 sm:pt-14 md:pt-16 pb-14 sm:pb-14 md:pb-16 bg-gradient-to-br from-[#0B2545] via-[#0D3B66] to-[#071930] text-white overflow-hidden border-y border-white/10 scroll-mt-24 sm:scroll-mt-28">
     {{-- Ambient Lighting --}}
     <div class="absolute -top-32 left-1/4 w-[500px] h-[300px] bg-emerald-500/10 blur-[100px] pointer-events-none rounded-full" aria-hidden="true"></div>
     <div class="absolute bottom-0 right-1/4 w-[500px] h-[300px] bg-cyan-500/10 blur-[100px] pointer-events-none rounded-full" aria-hidden="true"></div>
@@ -101,39 +101,39 @@
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {{-- Section Header & CTA Link --}}
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-10 text-center md:text-left">
+        <div class="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 md:mb-10 text-center sm:text-left">
             <div>
-                <span class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/30 px-3.5 py-1 rounded-full text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
+                <span class="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold text-emerald-400 uppercase tracking-wider mb-2">
                     🤝 Kemitraan &amp; Kepercayaan B2B
                 </span>
-                <h2 id="partners-heading" class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                <h2 id="partners-heading" class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
                     Mitra &amp; Klien <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">Kepercayaan Kami</span>
                 </h2>
             </div>
             
             {{-- CTA Button to Full Portfolio Page --}}
             <a href="{{ route('tentang-kami.portofolio-klien') }}" 
-               class="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-emerald-400/50 text-white font-bold text-xs sm:text-sm rounded-xl backdrop-blur-md transition-all group">
+               class="inline-flex items-center justify-center gap-2 px-4 py-2.5 sm:px-5 sm:py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-emerald-400/50 text-white font-bold text-xs sm:text-sm rounded-xl backdrop-blur-md transition-all group shrink-0 w-full sm:w-auto mt-1 sm:mt-0">
                 <span>Lihat Semua Portofolio Mitra &amp; Klien Komersial</span>
-                <svg class="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <svg class="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </a>
         </div>
 
         {{-- Paused Auto-Slide Carousel Wrapper --}}
-        <div class="relative overflow-hidden py-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-xl" id="mitra-carousel-wrapper">
+        <div class="relative overflow-hidden py-3 sm:py-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm shadow-xl" id="mitra-carousel-wrapper">
             
             {{-- Left & Right Edge Gradients for Smooth Seamless Look --}}
-            <div class="absolute left-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-r from-[#0B2545] to-transparent z-20 pointer-events-none"></div>
-            <div class="absolute right-0 top-0 bottom-0 w-12 sm:w-20 bg-gradient-to-l from-[#071930] to-transparent z-20 pointer-events-none"></div>
+            <div class="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-[#0B2545] to-transparent z-20 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-[#071930] to-transparent z-20 pointer-events-none"></div>
 
             {{-- Slider Track --}}
-            <div class="flex gap-4 sm:gap-6 transition-transform duration-700 ease-in-out cursor-grab active:cursor-grabbing select-none px-2" id="mitra-carousel-track">
+            <div class="flex gap-3 sm:gap-5 md:gap-6 transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing select-none px-4 sm:px-6" id="mitra-carousel-track" style="touch-action: pan-y;">
                 @foreach($mitraList as $index => $mitra)
                 {{-- Card Item (Refactored aspect ratio & object-cover for clear documentation display) --}}
-                <div class="flex-shrink-0 w-64 sm:w-72 md:w-80 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-2xl hover:border-emerald-400 transition-all duration-300 flex flex-col group">
+                <div class="flex-shrink-0 w-[76vw] max-w-[270px] sm:w-72 md:w-80 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-2xl hover:border-emerald-400 transition-all duration-300 flex flex-col group">
                     
-                    {{-- Top Photo Section (Dominant object-cover Image) --}}
-                    <div class="w-full h-44 sm:h-48 md:h-52 overflow-hidden relative bg-slate-100">
+                    {{-- Top Photo Section (Aspect Video / 4:3 Ratio Image) --}}
+                    <div class="w-full aspect-[4/3] sm:h-48 md:h-52 overflow-hidden relative bg-slate-100">
                         <img src="{{ $mitra['logo'] }}" 
                              alt="{{ $mitra['alt'] }}" 
                              loading="lazy" 
@@ -141,18 +141,18 @@
                              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
                         
                         {{-- Category Badge Overlay --}}
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-slate-900/80 text-emerald-400 backdrop-blur-xs shadow-xs">
+                        <span class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-slate-900/80 text-emerald-400 backdrop-blur-xs shadow-xs">
                             {{ $mitra['category'] }}
                         </span>
                     </div>
 
                     {{-- Bottom Card Body (Clean Typography) --}}
-                    <div class="p-4 bg-white rounded-b-2xl flex-1 flex flex-col justify-between border-t border-slate-100">
+                    <div class="p-3.5 sm:p-4 bg-white rounded-b-2xl flex-1 flex flex-col justify-between border-t border-slate-100">
                         <div>
-                            <h3 class="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                            <h3 class="text-sm sm:text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1 font-['Plus_Jakarta_Sans',sans-serif]">
                                 {{ $mitra['name'] }}
                             </h3>
-                            <span class="text-xs font-semibold text-emerald-600 uppercase tracking-wider block mt-1">
+                            <span class="text-[11px] sm:text-xs font-semibold text-emerald-600 uppercase tracking-wider block mt-0.5 sm:mt-1">
                                 Mitra Kepercayaan Rootera
                             </span>
                         </div>
@@ -162,8 +162,18 @@
                 @endforeach
             </div>
 
-            {{-- Navigation Dot Indicators --}}
-            <div class="flex justify-center items-center gap-1.5 mt-5" id="mitra-carousel-dots">
+            {{-- Mobile-Only Ringkas Counter & Dynamic Progress Bar Indicator (< sm) --}}
+            <div class="flex sm:hidden justify-center items-center gap-3 mt-3 px-4" id="mitra-carousel-mobile-indicator">
+                <div class="w-24 h-1.5 bg-white/20 rounded-full overflow-hidden shrink-0">
+                    <div id="mitra-carousel-progress" class="h-full bg-emerald-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                </div>
+                <span id="mitra-carousel-counter" class="text-xs font-bold text-emerald-400 bg-emerald-500/20 border border-emerald-400/30 px-2.5 py-0.5 rounded-full tracking-wider">
+                    1 / {{ count($mitraList) }}
+                </span>
+            </div>
+
+            {{-- Navigation Dot Indicators for Desktop/Tablet (>= sm) --}}
+            <div class="hidden sm:flex justify-center items-center gap-1.5 mt-3.5" id="mitra-carousel-dots">
                 {{-- Dynamic Dots --}}
             </div>
         </div>
@@ -177,6 +187,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const track = document.getElementById('mitra-carousel-track');
     const wrapper = document.getElementById('mitra-carousel-wrapper');
     const dotsContainer = document.getElementById('mitra-carousel-dots');
+    const progressBar = document.getElementById('mitra-carousel-progress');
+    const counterBadge = document.getElementById('mitra-carousel-counter');
     
     if (!track || !wrapper) return;
 
@@ -189,6 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let startX = 0;
     let currentTranslate = 0;
     let prevTranslate = 0;
+    const dragThreshold = 35;
 
     function getItemWidth() {
         if (items.length === 0) return 280;
@@ -222,7 +235,20 @@ document.addEventListener('DOMContentLoaded', function () {
         track.style.transform = `translateX(${translateX}px)`;
         prevTranslate = translateX;
 
-        // Update Dots
+        // Update Mobile Progress Bar & Counter (< sm)
+        const totalSteps = maxIdx + 1;
+        const currentStep = currentIndex + 1;
+        
+        if (progressBar) {
+            const percentage = (currentStep / totalSteps) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+        
+        if (counterBadge) {
+            counterBadge.textContent = `${currentStep} / ${totalSteps}`;
+        }
+
+        // Update Desktop Dots (>= sm)
         if (dotsContainer) {
             const dots = Array.from(dotsContainer.children);
             dots.forEach((dot, idx) => {
@@ -263,14 +289,23 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCarousel();
     }
 
+    function prevSlide() {
+        const maxIdx = getMaxIndex();
+        if (currentIndex <= 0) {
+            currentIndex = maxIdx;
+        } else {
+            currentIndex--;
+        }
+        updateCarousel();
+    }
+
     function startInterval() {
         stopInterval();
-        // Paused Auto-Slide interval: 1.8 seconds delay per step
         intervalId = setInterval(() => {
             if (!isHovered && !isDragging) {
                 nextSlide();
             }
-        }, 1800);
+        }, 2200);
     }
 
     function stopInterval() {
@@ -305,17 +340,18 @@ document.addEventListener('DOMContentLoaded', function () {
     function touchEnd() {
         if (!isDragging) return;
         isDragging = false;
-        track.style.transition = 'transform 0.7s ease-in-out';
+        track.style.transition = 'transform 0.5s ease-out';
         
         const movedBy = currentTranslate - prevTranslate;
         
-        if (movedBy < -40) {
-            currentIndex++;
-        } else if (movedBy > 40) {
-            currentIndex--;
+        if (movedBy < -dragThreshold) {
+            nextSlide();
+        } else if (movedBy > dragThreshold) {
+            prevSlide();
+        } else {
+            updateCarousel();
         }
         
-        updateCarousel();
         startInterval();
     }
 
