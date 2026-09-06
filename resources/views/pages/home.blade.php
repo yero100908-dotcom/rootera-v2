@@ -284,4 +284,66 @@ $homeSchema = [
 {{-- ========================================================================= --}}
 @include('sections.home.cta-banner')
 
+<script>
+window.scrollToSliderItem = function(containerId, index) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const items = container.children;
+    if (items && items[index]) {
+        items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+};
+
+window.initSliderSync = function(containerId, dotsContainerId, activeClass, inactiveClass) {
+    const container = document.getElementById(containerId);
+    const dotsContainer = document.getElementById(dotsContainerId);
+    if (!container || !dotsContainer) return;
+
+    const dots = dotsContainer.querySelectorAll('button');
+    const items = container.children;
+    if (!dots.length || !items.length) return;
+
+    let ticking = false;
+    container.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
+                let closestIndex = 0;
+                let minDistance = Infinity;
+
+                Array.from(items).forEach((item, idx) => {
+                    const itemRect = item.getBoundingClientRect();
+                    const itemCenter = itemRect.left + itemRect.width / 2;
+                    const distance = Math.abs(containerCenter - itemCenter);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestIndex = idx;
+                    }
+                });
+
+                dots.forEach((dot, idx) => {
+                    if (idx === closestIndex) {
+                        dot.className = `transition-all duration-300 rounded-full h-1.5 ${activeClass}`;
+                    } else {
+                        dot.className = `transition-all duration-300 rounded-full h-1.5 ${inactiveClass}`;
+                    }
+                });
+
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    initSliderSync('services-slider-container', 'services-dots-container', 'w-6 bg-emerald-500', 'w-1.5 bg-slate-300');
+    initSliderSync('whyus-slider-container', 'whyus-dots-container', 'w-6 bg-emerald-500', 'w-1.5 bg-slate-700');
+    initSliderSync('areas-slider-container', 'areas-dots-container', 'w-5 bg-emerald-500', 'w-1.5 bg-slate-300');
+    initSliderSync('articles-slider-container', 'articles-dots-container', 'w-6 bg-blue-600', 'w-1.5 bg-slate-300');
+    initSliderSync('gallery-slider-container', 'gallery-dots-container', 'w-6 bg-emerald-500', 'w-1.5 bg-slate-300');
+});
+</script>
+
 @endsection

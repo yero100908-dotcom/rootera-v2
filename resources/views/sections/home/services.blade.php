@@ -21,7 +21,9 @@
         </div>
 
         {{-- INTERACTIVE CARDS GRID / MOBILE HORIZONTAL SCROLL CAROUSEL --}}
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6">
+        <div id="services-slider-container" 
+             class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-6"
+             style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @php
                 $serviceItems = [
                     [
@@ -53,7 +55,7 @@
                         'title' => 'Cuci Toren & Kuras Tandon Air',
                         'badge' => '✨ Perawatan Higienis',
                         'desc' => 'Pembersihan kerak lumut membandel, endapan lumpur, dan sterilisasi tangki air bersih rumah tangga & komersial tanpa bahan kimia berbahaya.',
-                        'tags' => ['High-Pressure Jet Cleaner', '100% Bebas Kimia Korosif', 'Cek Pelampung Otomatis', 'Air Bersih & Higienis'],
+                        'tags' => ['High-Pressure Jet Cleaner', '100% Bebas Kimia Korosif', 'Air Higienis'],
                         'url' => route('services.cuci-toren'),
                         'direct_link' => true,
                     ],
@@ -85,31 +87,35 @@
             @endphp
 
             @foreach($serviceItems as $item)
-            <div class="w-[82vw] min-w-[82vw] sm:min-w-[340px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-lg hover:border-emerald-400/60 transition-all duration-300 group flex flex-col justify-between">
+            <div class="w-[82vw] min-w-[82vw] sm:min-w-[340px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-lg hover:border-emerald-400/60 transition-all duration-300 group flex flex-col justify-between h-full">
                 
-                <div class="flex justify-between items-center mb-3 md:mb-4">
-                    <div class="w-10 h-10 md:w-13 md:h-13 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-lg md:text-2xl group-hover:scale-110 transition-transform shrink-0">
-                        {{ $item['icon'] }}
+                <div class="flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-3 md:mb-4">
+                            <div class="w-10 h-10 md:w-13 md:h-13 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-lg md:text-2xl group-hover:scale-110 transition-transform shrink-0">
+                                {{ $item['icon'] }}
+                            </div>
+                            <span class="bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full h-fit">
+                                {{ $item['badge'] }}
+                            </span>
+                        </div>
+
+                        <h3 class="text-base md:text-[1.2rem] font-extrabold text-slate-900 mb-1 md:mb-2 group-hover:text-emerald-600 transition-colors">
+                            {{ $item['title'] }}
+                        </h3>
+
+                        <p class="text-xs md:text-[0.88rem] text-slate-600 leading-normal md:leading-relaxed mb-3 md:mb-5 line-clamp-3">
+                            {{ $item['desc'] }}
+                        </p>
                     </div>
-                    <span class="bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full h-fit">
-                        {{ $item['badge'] }}
-                    </span>
-                </div>
 
-                <h3 class="text-base md:text-[1.2rem] font-extrabold text-slate-900 mb-1 md:mb-2 group-hover:text-emerald-600 transition-colors">
-                    {{ $item['title'] }}
-                </h3>
-
-                <p class="text-xs md:text-[0.88rem] text-slate-600 leading-normal md:leading-relaxed mb-3 md:mb-5 line-clamp-3 md:line-clamp-none">
-                    {{ $item['desc'] }}
-                </p>
-
-                <div class="flex flex-wrap gap-1 md:gap-1.5 mb-3 md:mb-6 mt-auto">
-                    @foreach($item['tags'] as $tag)
-                        <span class="bg-slate-100 border border-slate-200/70 text-slate-700 text-[10px] md:text-[0.72rem] font-semibold py-0.5 px-2 md:py-1 md:px-2.5 rounded-md">
-                            ✓ {{ $tag }}
-                        </span>
-                    @endforeach
+                    <div class="flex flex-wrap gap-1 md:gap-1.5 mb-3 md:mb-6 mt-auto">
+                        @foreach($item['tags'] as $tag)
+                            <span class="bg-slate-100 border border-slate-200/70 text-slate-700 text-[10px] md:text-[0.72rem] font-semibold py-0.5 px-2 md:py-1 md:px-2.5 rounded-md">
+                                ✓ {{ $tag }}
+                            </span>
+                        @endforeach
+                    </div>
                 </div>
 
                 <div class="pt-2.5 md:pt-4 border-t border-slate-100 mt-auto">
@@ -127,12 +133,15 @@
             </div>
             @endforeach
         </div>
-        <!-- Mobile Visual Scroll Indicator -->
-        <div class="md:hidden flex items-center justify-center gap-1.5 mt-3">
-            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+        <!-- Mobile Dynamic Interactive Carousel Dots -->
+        <div id="services-dots-container" class="md:hidden flex items-center justify-center gap-1.5 mt-3">
+            @foreach($serviceItems as $index => $item)
+                <button type="button" 
+                        onclick="scrollToSliderItem('services-slider-container', {{ $index }})" 
+                        aria-label="Geser ke slide {{ $index + 1 }}" 
+                        class="transition-all duration-300 rounded-full h-1.5 {{ $index === 0 ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-300' }}">
+                </button>
+            @endforeach
         </div>
 
         {{-- CROSS-SELLING MINI HIGHLIGHT BANNER --}}

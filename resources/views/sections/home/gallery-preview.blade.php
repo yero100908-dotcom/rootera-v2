@@ -119,12 +119,14 @@
 
         {{-- HYBRID CARDS GRID --}}
         @if(isset($hybridGalleries) && $hybridGalleries->isNotEmpty())
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-6 no-scrollbar md:grid md:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12 md:pb-0">
+        <div id="gallery-slider-container"
+             class="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-6 no-scrollbar touch-pan-x touch-pan-y sm:grid sm:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12 sm:pb-0"
+             style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($hybridGalleries as $item)
-            <div class="w-[280px] sm:w-[340px] md:w-auto shrink-0 snap-start bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-emerald-400/80 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5">
+            <div class="w-[280px] sm:w-[340px] md:w-auto shrink-0 snap-start bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-emerald-400/80 transition-all duration-300 flex flex-col justify-between h-full group hover:-translate-y-1.5">
                 
                 {{-- MEDIA THUMBNAIL CONTAINER --}}
-                <div class="relative w-full aspect-[16/9] bg-slate-900 overflow-hidden cursor-pointer" onclick="openHomeMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}')">
+                <div class="relative w-full aspect-video bg-slate-900 overflow-hidden cursor-pointer" onclick="openHomeMediaModal('{{ $item->media_type }}', '{{ $item->display_media }}', '{{ addslashes($item->title) }}', '{{ $item->display_before_image }}')">
                     <img src="{{ $item->display_thumbnail }}" 
                          alt="Dokumentasi Pengerjaan Pipa {{ $item->title }} - Rootera Plumbing" 
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
@@ -187,6 +189,17 @@
                 </div>
 
             </div>
+            @endforeach
+        </div>
+
+        <!-- Mobile Dynamic Interactive Carousel Dots -->
+        <div id="gallery-dots-container" class="sm:hidden flex items-center justify-center gap-1.5 mt-3 mb-2">
+            @foreach($hybridGalleries as $index => $item)
+                <button type="button" 
+                        onclick="scrollToSliderItem('gallery-slider-container', {{ $index }})" 
+                        aria-label="Geser ke slide {{ $index + 1 }}" 
+                        class="transition-all duration-300 rounded-full h-1.5 {{ $index === 0 ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-300' }}">
+                </button>
             @endforeach
         </div>
         @endif

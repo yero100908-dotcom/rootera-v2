@@ -19,7 +19,9 @@
         </div>
 
         {{-- 4 PILLARS GRID / MOBILE CAROUSEL PEEK SLIDER --}}
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6">
+        <div id="whyus-slider-container"
+             class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-6 pb-3 mobile-scrollbar touch-pan-x touch-pan-y sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible sm:pb-0 sm:gap-6"
+             style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @php
             $reasons = [
                 [
@@ -50,7 +52,7 @@
             @endphp
 
             @foreach($reasons as $r)
-            <div class="w-[80vw] min-w-[80vw] sm:min-w-[300px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white/[0.04] border border-white/[0.12] backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-xl hover:-translate-y-1 md:hover:-translate-y-2 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div class="w-[80vw] min-w-[80vw] sm:min-w-0 snap-center shrink-0 sm:w-auto bg-white/[0.04] border border-white/[0.12] backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-xl hover:-translate-y-1 md:hover:-translate-y-2 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between h-full">
                 <div>
                     <div class="flex justify-between items-center mb-3 md:mb-5">
                         <div class="text-xl sm:text-2xl md:text-3xl shrink-0 group-hover:scale-110 transition-transform">
@@ -71,12 +73,15 @@
             @endforeach
         </div>
 
-        {{-- Mobile Visual Scroll Indicator --}}
-        <div class="md:hidden flex items-center justify-center gap-1.5 mt-3">
-            <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
-            <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+        {{-- Mobile Dynamic Interactive Carousel Dots --}}
+        <div id="whyus-dots-container" class="sm:hidden flex items-center justify-center gap-1.5 mt-3">
+            @foreach($reasons as $index => $r)
+                <button type="button" 
+                        onclick="scrollToSliderItem('whyus-slider-container', {{ $index }})" 
+                        aria-label="Geser ke slide {{ $index + 1 }}" 
+                        class="transition-all duration-300 rounded-full h-1.5 {{ $index === 0 ? 'w-6 bg-emerald-500' : 'w-1.5 bg-slate-700' }}">
+                </button>
+            @endforeach
         </div>
 
     </div>

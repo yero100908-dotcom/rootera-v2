@@ -132,7 +132,9 @@
         </div>
 
         {{-- MAIN CARDS CONTAINER: GRID ON DESKTOP/TABLET, HORIZONTAL SNAP CAROUSEL ON MOBILE --}}
-        <div class="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory mobile-scrollbar touch-pan-x pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0" id="coverage-hub-slider">
+        <div id="areas-slider-container"
+             class="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 overflow-x-auto sm:overflow-visible snap-x snap-mandatory mobile-scrollbar touch-pan-x touch-pan-y pb-3 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0"
+             style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             
             @foreach($coverageHubs as $index => $hub)
             @php
@@ -221,10 +223,14 @@
 
         </div>
 
-        {{-- MOBILE DOTS INDICATOR --}}
-        <div class="flex justify-center items-center gap-1.5 sm:hidden mt-3 mb-2">
+        {{-- MOBILE DYNAMIC INTERACTIVE CAROUSEL DOTS --}}
+        <div id="areas-dots-container" class="flex justify-center items-center gap-1.5 sm:hidden mt-3 mb-2">
             @foreach($coverageHubs as $idx => $h)
-                <div class="{{ $idx === 0 ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300' }} h-1.5 rounded-full transition-all duration-300"></div>
+                <button type="button" 
+                        onclick="scrollToSliderItem('areas-slider-container', {{ $idx }})" 
+                        aria-label="Geser ke slide {{ $idx + 1 }}" 
+                        class="transition-all duration-300 rounded-full h-1.5 {{ $idx === 0 ? 'w-5 bg-emerald-500' : 'w-1.5 bg-slate-300' }}">
+                </button>
             @endforeach
         </div>
 
