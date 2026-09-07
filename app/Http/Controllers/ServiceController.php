@@ -108,17 +108,9 @@ class ServiceController extends Controller
 
     public function cuciToren()
     {
-        $seo = [
-            'title'       => 'Jasa Cuci Toren & Sterilisasi Tandon Air Bersih | Rootera Plumbing',
-            'description' => 'Jasa cuci toren air & pengurasan tandon higienis 100% food-grade safety tanpa bahan kimia korosif. Pengurasan lumut, lumpur & garansi air jernih.',
-            'canonical'   => url('/jasa-cuci-toren-air'),
-            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-        ];
-
-        $service = \App\Models\Service::where('slug', 'cuci-toren-tandon-air')->first();
-        $relatedServices = \App\Models\ServiceCategory::where('is_active', true)->orderBy('sort_order')->take(4)->get();
-        $cities = \App\Models\City::where('is_active', true)->take(12)->get();
-
-        return view('pages.cuci-toren', compact('seo', 'service', 'relatedServices', 'cities'));
+        return response()->view('errors.410', [
+            'title'   => 'Layanan Cuci Toren Telah Dinonaktifkan Permanen',
+            'message' => 'Layanan Cuci Toren & Kuras Tandon Air telah dihentikan secara permanen.',
+        ], 410);
     }
 }

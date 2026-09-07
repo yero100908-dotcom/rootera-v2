@@ -28,15 +28,6 @@
             <changefreq>weekly</changefreq>
             <priority>0.90</priority>
         </url>
-
-            {{-- Programmatic Category x City x District Landing Pages --}}
-            @foreach ($city->districts as $district)
-            <url>
-                <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") }}</loc>
-                <changefreq>weekly</changefreq>
-                <priority>0.85</priority>
-            </url>
-            @endforeach
         @endforeach
     @endforeach
 

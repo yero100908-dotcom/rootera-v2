@@ -132,12 +132,19 @@ class ProgrammaticSeoController extends Controller
                 $description = mb_strimwidth($description, 0, 152, '...');
             }
 
-            if (!$district && $category->slug === 'pipa-mampet') {
-                $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+            if ($district) {
+                // Canonical consolidation: district pages consolidate link equity to parent City Hub or City Category Hub
+                if ($category->slug === 'pipa-mampet') {
+                    $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+                } else {
+                    $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
+                }
             } else {
-                $canonical = $district
-                    ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}")
-                    : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
+                if ($category->slug === 'pipa-mampet') {
+                    $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+                } else {
+                    $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
+                }
             }
 
             $ogImage = $category->image_url;
@@ -190,19 +197,25 @@ class ProgrammaticSeoController extends Controller
     }
 
     /**
-     * Display programmatic Cuci Toren City Hub landing page (/jasa-cuci-toren/{citySlug})
+     * Display programmatic Cuci Toren City Hub landing page (/jasa-cuci-toren/{citySlug}) -> 410 Gone
      */
     public function cuciTorenCity(string $citySlug)
     {
-        return $this->renderCuciTorenPage($citySlug, null);
+        return response()->view('errors.410', [
+            'title'   => 'Layanan Cuci Toren Telah Dinonaktifkan Permanen',
+            'message' => 'Layanan Cuci Toren & Kuras Tandon Air telah dihentikan secara permanen.',
+        ], 410);
     }
 
     /**
-     * Display programmatic Cuci Toren District Spoke landing page (/layanan-cuci-toren/{citySlug}/{districtSlug})
+     * Display programmatic Cuci Toren District Spoke landing page (/layanan-cuci-toren/{citySlug}/{districtSlug}) -> 410 Gone
      */
     public function cuciTorenDistrict(string $citySlug, string $districtSlug)
     {
-        return $this->renderCuciTorenPage($citySlug, $districtSlug);
+        return response()->view('errors.410', [
+            'title'   => 'Layanan Cuci Toren Telah Dinonaktifkan Permanen',
+            'message' => 'Layanan Cuci Toren & Kuras Tandon Air telah dihentikan secara permanen.',
+        ], 410);
     }
 
     protected function renderCuciTorenPage(string $citySlug, ?string $districtSlug = null)

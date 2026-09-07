@@ -34,9 +34,11 @@ class DatabaseSeeder extends Seeder
             GeoDatabaseSeeder::class,
             KeywordDirectorySeeder::class,
             LampungFullCoverageSeeder::class,
+            ActiveAreasSeeder::class,
             ProjectGallerySeeder::class,
             GallerySeeder::class,
             BlogSeeder::class,
+            ArticleSeeder::class,
             FaqSeeder::class,
             TechnologySeeder::class,
         ]);

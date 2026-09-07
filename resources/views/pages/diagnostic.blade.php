@@ -97,7 +97,7 @@ $webAppSchema = [
             
             cities: [
                 'Jakarta Selatan', 'Jakarta Barat', 'Jakarta Timur', 'Jakarta Pusat', 'Jakarta Utara',
-                'Tangerang Kota', 'Tangsel / BSD', 'Bekasi', 'Depok', 'Bogor', 'Semarang', 'Lampung', 'Kota Lainnya'
+                'Tangerang Kota', 'Tangsel / BSD', 'Bekasi', 'Depok', 'Bogor', 'Semarang', 'Bandar Lampung'
             ],
 
             get totalScore() {

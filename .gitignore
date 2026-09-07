@@ -20,6 +20,8 @@
 /storage/*.key
 /storage/pail
 /vendor
+/scratch/
+/database/database-lama/
 _ide_helper.php
 Homestead.json
 Homestead.yaml

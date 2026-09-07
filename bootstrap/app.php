@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo('/admin/dashboard');
         $middleware->web(prepend: [
             \App\Http\Middleware\EnforceHttpsAndCanonicalDomain::class,
+            \App\Http\Middleware\CheckActiveRegionAndService::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

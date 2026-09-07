@@ -6,35 +6,15 @@
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.sectors') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
         <loc>{{ route('sitemap.cities') }}</loc>
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.districts') }}</loc>
+        <loc>{{ route('sitemap.services') }}</loc>
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
         <loc>{{ route('sitemap.blog') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ route('sitemap.gallery') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ route('sitemap.videos') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ route('sitemap.cuci-toren-cities') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ route('sitemap.cuci-toren-districts') }}</loc>
         <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
 </sitemapindex>

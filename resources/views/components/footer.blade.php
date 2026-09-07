@@ -101,7 +101,6 @@
                     <li><a href="{{ url('/layanan/wastafel-mampet') }}" class="hover:text-white transition duration-150 inline-block">Pipa Kitchen Sink Dapur</a></li>
                     <li><a href="{{ url('/layanan/kamar-mandi-mampet') }}" class="hover:text-white transition duration-150 inline-block">Floor Drain Kamar Mandi</a></li>
                     <li><a href="{{ url('/layanan/got-saluran-pembuangan') }}" class="hover:text-white transition duration-150 inline-block">Talang Hujan &amp; Pipa Rooftop</a></li>
-                    <li><a href="{{ route('services.cuci-toren') }}" class="text-teal-300 font-semibold hover:text-teal-200 transition duration-150 inline-block">Cuci Toren &amp; Tandon Air</a></li>
                     <li><a href="{{ route('diagnostic.index') }}" class="text-emerald-400 font-semibold hover:text-emerald-300 transition duration-150 inline-block">Cek Pipa Mandiri (Diagnosa) →</a></li>
                     <li><a href="{{ url('/sektor-plumbing/restoran-cafe') }}" class="hover:text-white transition duration-150 inline-block">Sedot Lemak (Grease Trap)</a></li>
                     <li><a href="{{ route('property.index') }}" class="text-amber-300 font-semibold hover:text-amber-200 transition duration-150 inline-block">Hub Solusi Properti →</a></li>
@@ -142,20 +141,18 @@
                 </ul>
             </div>
 
-            {{-- KOLOM 5: EKSPANSI LUAR JABODETABEK --}}
+            {{-- KOLOM 5: CABANG UTAMA LAIN --}}
             <div class="space-y-3">
                 <h4 class="font-bold text-white text-xs uppercase tracking-wider border-b border-blue-500/30 pb-2">
-                    EKSPANSI KOTA LAIN
+                    CABANG UTAMA LAIN
                 </h4>
                 <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ url('/jasa-saluran-mampet/bandung') }}" class="hover:text-white transition duration-150 inline-block">Cabang Bandung &amp; Cimahi</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/cirebon') }}" class="hover:text-white transition duration-150 inline-block">Cabang Cirebon &amp; Majalengka</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="hover:text-white transition duration-150 inline-block">Cabang Semarang &amp; Kendal</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/surakarta') }}" class="hover:text-white transition duration-150 inline-block">Cabang Solo / Surakarta Raya</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/yogyakarta') }}" class="hover:text-white transition duration-150 inline-block">Cabang D.I. Yogyakarta &amp; Sleman</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/surabaya') }}" class="hover:text-white transition duration-150 inline-block">Cabang Surabaya &amp; Sidoarjo</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/serang') }}" class="hover:text-white transition duration-150 inline-block">Cabang Serang &amp; Cilegon</a></li>
-                    <li><a href="{{ url('/jasa-saluran-mampet/bandar-lampung') }}" class="hover:text-white transition duration-150 inline-block">Cabang Bandar Lampung</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="hover:text-white transition duration-150 inline-block font-medium">Kota Semarang (Jateng)</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/bandar-lampung') }}" class="hover:text-white transition duration-150 inline-block font-medium">Kota Bandar Lampung (Lampung)</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/kabupaten-bekasi') }}" class="hover:text-white transition duration-150 inline-block font-medium">Kawasan Industri Cikarang</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/tangerang-selatan') }}" class="hover:text-white transition duration-150 inline-block font-medium">Area BSD &amp; Alam Sutera</a></li>
+                    <li><a href="{{ url('/jasa-saluran-mampet/kabupaten-bogor') }}" class="hover:text-white transition duration-150 inline-block font-medium">Area Sentul &amp; Cibinong</a></li>
+                    <li><a href="{{ route('area-layanan') }}" class="text-emerald-400 font-semibold hover:text-emerald-300 transition duration-150 inline-block">Direktori Seluruh Wilayah →</a></li>
                 </ul>
             </div>
 

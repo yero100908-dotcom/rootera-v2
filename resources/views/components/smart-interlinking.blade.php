@@ -90,7 +90,7 @@ $etaOptions = ['15-25 Menit', '20-30 Menit', '25-35 Menit', '30-40 Menit'];
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-                @foreach($siblingDistricts as $idx => $sib)
+                @foreach($siblingDistricts->take(6) as $idx => $sib)
                 <?php
                     $sibName = is_object($sib) ? $sib->name : $sib['name'];
                     $sibSlug = is_object($sib) ? $sib->slug : $sib['slug'];

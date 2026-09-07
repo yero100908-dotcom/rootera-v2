@@ -25,7 +25,7 @@ $directorySchema = [
     [
       "@type" => "CollectionPage",
       "name" => "Pusat Wilayah Operasional Jasa Saluran Pipa Mampet - Rootera Plumbing",
-      "description" => "Direktori resmi wilayah operasional pelancaran pipa mampet di Jabodetabek, Banten, Jawa Barat, Jawa Tengah, DIY, Jawa Timur, dan Lampung.",
+      "description" => "Direktori resmi wilayah operasional pelancaran pipa mampet di Jabodetabek, Semarang, dan Bandar Lampung.",
       "url" => route('area-layanan'),
       "provider" => [
         "@type" => "Plumber",
@@ -85,89 +85,100 @@ $directorySchema = [
     {{-- 2. SILO DIRECTORY GRID SECTION --}}
     <?php
       $mediaService = app(\App\Services\MediaService::class);
+
+      // Extract all active cities across active provinces
+      $allCities = $provinces->flatMap(function($prov) {
+          return $prov->cities;
+      });
+
+      $jabodetabekSlugs = [
+          'jakarta-selatan', 'jakarta-timur', 'jakarta-barat', 'jakarta-pusat', 'jakarta-utara',
+          'bogor', 'kabupaten-bogor', 'depok', 'tangerang', 'tangerang-selatan', 'kabupaten-tangerang',
+          'bekasi', 'kabupaten-bekasi'
+      ];
+
+      $jabodetabekCities = $allCities->filter(fn($c) => in_array($c->slug, $jabodetabekSlugs))->values();
+      $semarangCity = $allCities->firstWhere('slug', 'semarang');
+      $lampungCity = $allCities->firstWhere('slug', 'bandar-lampung');
+      $otherCities = $allCities->reject(fn($c) => in_array($c->slug, $jabodetabekSlugs) || in_array($c->slug, ['semarang', 'bandar-lampung']))->values();
     ?>
     <section class="py-10 sm:py-16 bg-slate-50 relative" aria-labelledby="network-heading">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {{-- Section Title --}}
             <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">CAKUPAN WILAYAH NASIONAL</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">3 TARGET WILAYAH OPERASIONAL</span>
                 <h2 id="network-heading" class="text-xl sm:text-3xl font-bold text-[#0B3B60] tracking-tight mt-1">
                     Jaringan Cabang &amp; Teknisi Terdekat
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
-                    Pilih kota atau kecamatan Anda untuk respon kedatangan teknisi kilat 24 Jam:
+                    Pilih kota atau kecamatan Anda di 3 Master Hub Operasional kami untuk respon kedatangan teknisi kilat 24 Jam:
                 </p>
             </div>
 
-            {{-- Loop Provinces & Cities --}}
             <div class="space-y-8 sm:space-y-12">
-                @foreach($provinces as $provIdx => $prov)
+                
+                {{-- HUB 1: METROPOLITAN JABODETABEK --}}
+                @if($jabodetabekCities->isNotEmpty())
                 <?php
-                    $provHeroImg = $mediaService->getRegionalImage($prov->slug, null, $provIdx);
+                    $jktHeroImg = asset('assets/wilayah/jakarta/jasa-saluran-pipa-mampet-jakarta-indonesia-city-jakarta-rootera-plumbing-6.webp');
                 ?>
                 <div class="province-card-block bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
                     
-                    {{-- 1. Header Visual Banner Provinsi (Linear Mobile Layout) --}}
+                    {{-- Banner Header Hub Jabodetabek --}}
                     <div class="relative min-h-[140px] sm:min-h-[160px] bg-[#0B3B60] overflow-hidden p-4 sm:p-6 flex flex-col justify-center">
-                        <img src="{{ $provHeroImg }}" alt="Jasa Saluran Pipa Mampet Provinsi {{ $prov->name }} - Rootera Plumbing" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35]" loading="lazy" decoding="async">
+                        <img src="{{ $jktHeroImg }}" alt="Jasa Saluran Pipa Mampet Metropolitan Jabodetabek - Rootera Plumbing" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35]" loading="lazy" decoding="async">
                         
                         <div class="relative z-10 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
                             <div class="space-y-1 max-w-xl">
                                 <span class="inline-flex items-center gap-1 bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-bold px-3 py-0.5 rounded-full uppercase">
-                                    📍 Wilayah Provinsi Operasional
+                                    📍 Master Hub 1: Metropolitan Jabodetabek
                                 </span>
                                 <h3 class="text-lg sm:text-2xl font-bold text-white leading-tight">
-                                    <a href="{{ route('area.region', $prov->slug) }}" class="hover:text-emerald-300 transition-colors">
-                                        Jasa Saluran Pipa Mampet Provinsi {{ $prov->name }}
-                                    </a>
+                                    Jasa Saluran Pipa Mampet Jabodetabek
                                 </h3>
                                 <p class="text-xs sm:text-sm text-slate-200 font-medium">
-                                    {{ $prov->cities->count() }} Kota &amp; Kabupaten Tercover SLA Respon 24 Jam
+                                    {{ $jabodetabekCities->count() }} Kota &amp; Kabupaten Tercover SLA Respon Standby 24 Jam
                                 </p>
                             </div>
 
                             <div class="mt-1 sm:mt-0 shrink-0">
-                                <a href="{{ route('area.region', $prov->slug) }}" class="w-full sm:w-auto min-h-[44px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full inline-flex items-center justify-center gap-1.5 transition-colors shadow-xs">
-                                    <span>Lihat Hub {{ $prov->name }}</span>
+                                <a href="{{ route('area.city', 'jakarta-selatan') }}" class="w-full sm:w-auto min-h-[44px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full inline-flex items-center justify-center gap-1.5 transition-colors shadow-xs">
+                                    <span>Pusat Jabodetabek</span>
                                     <span>&rarr;</span>
                                 </a>
                             </div>
                         </div>
                     </div>
 
-                    {{-- 2. Grid Kota (1-Col Mobile, 2-Col Tablet, 3-Col Desktop) --}}
+                    {{-- Grid Kota Jabodetabek --}}
                     <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 bg-slate-50/50">
-                        @foreach($prov->cities as $cIdx => $city)
+                        @foreach($jabodetabekCities as $cIdx => $city)
                         <?php
-                            $cityThumbImg = $mediaService->getRegionalImage($prov->slug, $city->slug, $cIdx + 1);
+                            $provSlug = $city->province ? $city->province->slug : 'jakarta';
+                            $cityThumbImg = $mediaService->getRegionalImage($provSlug, $city->slug, $cIdx + 1);
                         ?>
                         <div class="city-search-item bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs hover:border-emerald-500 transition-all flex flex-col justify-between"
                              data-city-name="{{ strtolower($city->name . ' ' . $city->full_name) }}" 
                              data-districts="{{ strtolower($city->districts->pluck('name')->implode(' ')) }}">
                             
-                            {{-- Mini City Thumbnail --}}
                             <div class="relative h-36 sm:h-40 bg-slate-900 overflow-hidden">
                                 <img src="{{ $cityThumbImg }}" alt="Jasa Saluran Pipa Mampet {{ $city->full_name }} - Rootera Plumbing" class="w-full h-full object-cover" loading="lazy" decoding="async">
                                 
-                                {{-- SLA Arrival Badge --}}
                                 <span class="absolute top-2.5 right-2.5 bg-slate-900/85 text-emerald-400 border border-emerald-500/40 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full shadow-xs">
                                     ⏱️ {{ $city->estimated_arrival ?? '25-40 Mnt' }}
                                 </span>
 
-                                {{-- City Title Badge Overlay --}}
                                 <div class="absolute bottom-2.5 left-3 right-3 text-white text-sm sm:text-base font-bold drop-shadow-md truncate">
                                     📍 {{ $city->full_name }}
                                 </div>
                             </div>
 
-                            {{-- City Content Details --}}
                             <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
                                 <p class="text-xs text-slate-600 leading-relaxed">
                                     Disiagakan di <strong class="text-slate-900">{{ $city->districts->count() }} Kecamatan</strong> untuk respon cepat tanpa bongkar pipa.
                                 </p>
 
-                                {{-- Accordion Collapsible for Districts --}}
                                 <details class="group border-t border-slate-100 pt-2.5">
                                     <summary class="text-xs font-bold text-emerald-600 hover:text-emerald-700 cursor-pointer flex items-center justify-between select-none py-1 min-h-[40px] break-words pr-1">
                                         <span class="pr-2">Lihat {{ $city->districts->count() }} Kecamatan di {{ $city->name }}</span>
@@ -186,7 +197,6 @@ $directorySchema = [
                                     </div>
                                 </details>
 
-                                {{-- Full Width City Action Button (Thumb Ergonomic) --}}
                                 <a href="{{ route('area.city', $city->slug) }}" 
                                    class="w-full min-h-[48px] bg-[#0B3B60] hover:bg-emerald-600 active:bg-emerald-700 text-white font-bold text-xs sm:text-sm py-3 px-4 rounded-xl text-center flex items-center justify-center gap-1.5 transition-colors shadow-xs mt-2">
                                     <span>Landing Page {{ $city->name }}</span>
@@ -199,7 +209,177 @@ $directorySchema = [
                     </div>
 
                 </div>
-                @endforeach
+                @endif
+
+
+                {{-- HUB 2: KOTA SEMARANG & SEKITARNYA --}}
+                @if($semarangCity)
+                <?php
+                    $smgHeroImg = asset('assets/wilayah/jawa-tengah/jasa-saluran-pipa-mampet-kota-lama-semarang-jawa-tengah-rootera-plumbing-16.webp');
+                ?>
+                <div class="province-card-block bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                    
+                    <div class="relative min-h-[160px] sm:min-h-[180px] bg-[#0B3B60] overflow-hidden p-5 sm:p-8 flex flex-col justify-center">
+                        <img src="{{ $smgHeroImg }}" alt="Jasa Saluran Pipa Mampet Kota Semarang - Rootera Plumbing" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35]" loading="lazy" decoding="async">
+                        
+                        <div class="relative z-10 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
+                            <div class="space-y-1.5 max-w-2xl">
+                                <span class="inline-flex items-center gap-1 bg-sky-500/25 border border-sky-400/40 text-sky-300 text-[10px] sm:text-xs font-bold px-3 py-0.5 rounded-full uppercase">
+                                    📍 Master Hub 2: Semarang &amp; Jawa Tengah
+                                </span>
+                                <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight">
+                                    Jasa Saluran Pipa Mampet Kota Semarang
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
+                                    Cabang operasional utama Jawa Tengah. Disiagakan di <strong>{{ $semarangCity->districts->count() }} Kecamatan Utama</strong> (Simpang Lima, Tembalang, Banyumanik, Pedurungan, Gajahmungkur, Semarang Barat, &amp; sekitarnya) dengan armada pelancaran rotary spiral &amp; hydro-jetting.
+                                </p>
+                            </div>
+
+                            <div class="mt-2 md:mt-0 shrink-0">
+                                <a href="{{ route('area.city', $semarangCity->slug) }}" class="w-full md:w-auto min-h-[48px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full inline-flex items-center justify-center gap-2 transition-colors shadow-md">
+                                    <span>Halaman Cabang Semarang</span>
+                                    <span>&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Full-Width District Grid Showcase for Semarang --}}
+                    <div class="city-search-item p-5 sm:p-6 bg-slate-50/50"
+                         data-city-name="{{ strtolower($semarangCity->name . ' ' . $semarangCity->full_name) }}" 
+                         data-districts="{{ strtolower($semarangCity->districts->pluck('name')->implode(' ')) }}">
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-200 pb-3">
+                            <div>
+                                <h4 class="font-bold text-sm sm:text-base text-slate-900">
+                                    Cakupan {{ $semarangCity->districts->count() }} Kecamatan Operasional di {{ $semarangCity->full_name }}
+                                </h4>
+                                <p class="text-xs text-slate-500">Pilih kecamatan untuk estimasi teknisi meluncur 30-90 menit:</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full self-start sm:self-auto">
+                                ⏱️ SLA Respon: {{ $semarangCity->estimated_arrival ?? '30-45 Mnt' }}
+                            </span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto pr-1 scrollbar-thin">
+                            @forelse($semarangCity->districts as $dist)
+                                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/' . $semarangCity->slug . '/' . $dist->slug) }}" 
+                                   class="bg-white hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 rounded-xl px-3 py-1.5 text-xs font-semibold shadow-2xs transition-all flex items-center gap-1.5">
+                                    <span>📍</span> {{ $dist->name }}
+                                </a>
+                            @empty
+                                <span class="text-xs text-slate-400 italic">Seluruh Kecamatan di Kota Semarang</span>
+                            @endforelse
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <span class="text-xs text-slate-600">
+                                💡 Membutuhkan penanganan instan di kawasan rumah, ruko, restoran, atau industri Semarang?
+                            </span>
+                            <a href="{{ route('area.city', $semarangCity->slug) }}" class="w-full sm:w-auto bg-[#0B3B60] hover:bg-emerald-600 text-white font-bold text-xs py-2.5 px-5 rounded-xl text-center transition-colors">
+                                Selengkapnya Cabang Semarang &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                @endif
+
+
+                {{-- HUB 3: KOTA BANDAR LAMPUNG & SEKITARNYA --}}
+                @if($lampungCity)
+                <?php
+                    $lampHeroImg = asset('assets/wilayah/lampung/jasa-saluran-pipa-mampet-menara-siger-lampung-selatan-lampung-rootera-plumbing-6.webp');
+                ?>
+                <div class="province-card-block bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                    
+                    <div class="relative min-h-[160px] sm:min-h-[180px] bg-[#0B3B60] overflow-hidden p-5 sm:p-8 flex flex-col justify-center">
+                        <img src="{{ $lampHeroImg }}" alt="Jasa Saluran Pipa Mampet Kota Bandar Lampung - Rootera Plumbing" class="absolute inset-0 w-full h-full object-cover filter brightness-[0.35]" loading="lazy" decoding="async">
+                        
+                        <div class="relative z-10 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 w-full">
+                            <div class="space-y-1.5 max-w-2xl">
+                                <span class="inline-flex items-center gap-1 bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-[10px] sm:text-xs font-bold px-3 py-0.5 rounded-full uppercase">
+                                    📍 Master Hub 3: Bandar Lampung &amp; Sumatera
+                                </span>
+                                <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight">
+                                    Jasa Saluran Pipa Mampet Kota Bandar Lampung
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">
+                                    Cabang resmi wilayah Sumatera. Disiagakan di <strong>{{ $lampungCity->districts->count() }} Kecamatan Utama</strong> (Kedaton, Rajabasa, Tanjung Karang, Teluk Betung, Way Halim, Sukarame, &amp; sekitarnya) siap meluncur cepat 24 Jam.
+                                </p>
+                            </div>
+
+                            <div class="mt-2 md:mt-0 shrink-0">
+                                <a href="{{ route('area.city', $lampungCity->slug) }}" class="w-full md:w-auto min-h-[48px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full inline-flex items-center justify-center gap-2 transition-colors shadow-md">
+                                    <span>Halaman Cabang Bandar Lampung</span>
+                                    <span>&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Full-Width District Grid Showcase for Bandar Lampung --}}
+                    <div class="city-search-item p-5 sm:p-6 bg-slate-50/50"
+                         data-city-name="{{ strtolower($lampungCity->name . ' ' . $lampungCity->full_name) }}" 
+                         data-districts="{{ strtolower($lampungCity->districts->pluck('name')->implode(' ')) }}">
+                        
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-200 pb-3">
+                            <div>
+                                <h4 class="font-bold text-sm sm:text-base text-slate-900">
+                                    Cakupan {{ $lampungCity->districts->count() }} Kecamatan Operasional di {{ $lampungCity->full_name }}
+                                </h4>
+                                <p class="text-xs text-slate-500">Pilih kecamatan untuk estimasi teknisi meluncur 30-90 menit:</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full self-start sm:self-auto">
+                                ⏱️ SLA Respon: {{ $lampungCity->estimated_arrival ?? '30-45 Mnt' }}
+                            </span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 max-h-60 overflow-y-auto pr-1 scrollbar-thin">
+                            @forelse($lampungCity->districts as $dist)
+                                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/' . $lampungCity->slug . '/' . $dist->slug) }}" 
+                                   class="bg-white hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 rounded-xl px-3 py-1.5 text-xs font-semibold shadow-2xs transition-all flex items-center gap-1.5">
+                                    <span>📍</span> {{ $dist->name }}
+                                </a>
+                            @empty
+                                <span class="text-xs text-slate-400 italic">Seluruh Kecamatan di Kota Bandar Lampung</span>
+                            @endforelse
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <span class="text-xs text-slate-600">
+                                💡 Membutuhkan bantuan darurat pelancaran pipa mampet di Kota Bandar Lampung?
+                            </span>
+                            <a href="{{ route('area.city', $lampungCity->slug) }}" class="w-full sm:w-auto bg-[#0B3B60] hover:bg-emerald-600 text-white font-bold text-xs py-2.5 px-5 rounded-xl text-center transition-colors">
+                                Selengkapnya Cabang Bandar Lampung &rarr;
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                @endif
+
+                {{-- OTHER ACTIVE CITIES (FALLBACK IF ANY) --}}
+                @if($otherCities->isNotEmpty())
+                <div class="province-card-block bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                    <div class="p-4 sm:p-6 bg-[#0B3B60] text-white font-bold text-lg">
+                        📍 Area Cabang Lainnya
+                    </div>
+                    <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 bg-slate-50/50">
+                        @foreach($otherCities as $cIdx => $city)
+                        <div class="city-search-item bg-white rounded-xl border border-slate-200 overflow-hidden p-4 flex flex-col justify-between"
+                             data-city-name="{{ strtolower($city->name . ' ' . $city->full_name) }}" 
+                             data-districts="{{ strtolower($city->districts->pluck('name')->implode(' ')) }}">
+                            <h4 class="font-bold text-sm text-slate-900 mb-2">📍 {{ $city->full_name }}</h4>
+                            <a href="{{ route('area.city', $city->slug) }}" class="bg-[#0B3B60] text-white text-xs font-bold py-2 px-3 rounded-lg text-center">
+                                Landing Page {{ $city->name }} &rarr;
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
             </div>
 
         </div>
@@ -316,7 +496,7 @@ function filterDirectory() {
         const districts = item.getAttribute('data-districts') || '';
 
         if (cityName.includes(filter) || districts.includes(filter)) {
-            item.style.display = 'flex';
+            item.style.display = filter === '' ? '' : 'flex';
             visibleCount++;
         } else {
             item.style.display = 'none';

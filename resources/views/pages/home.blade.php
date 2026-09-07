@@ -9,11 +9,11 @@ $homeSchema = [
       "@type" => ["Plumber", "LocalBusiness"],
       "@id" => url('/') . '#organization',
       "name" => "Rootera Plumbing",
-      "alternateName" => ["Rootera", "Jasa Saluran Pipa Mampet Rootera"],
+      "alternateName" => ["Rootera", "Rootera Plumbing Indonesia", "Jasa Saluran Pipa Mampet Rootera"],
       "url" => url('/'),
       "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
       "image" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-      "description" => "Jasa pelancaran saluran pipa mampet profesional, kuras toren air, dan instalasi pipa tanpa bongkar bergaransi 30 hari di Jabodetabek dan kota besar Indonesia.",
+      "description" => "Layanan profesional spesialis jasa saluran pipa mampet tanpa bongkar, hydro-jetting pipa industri, dan perbaikan pipa tersumbat bergaransi resmi 30 hari dengan SLA ketibaan teknisi di bawah 30 menit.",
       "telephone" => "+6281385404000",
       "priceRange" => "$$",
       "currenciesAccepted" => "IDR",
@@ -60,12 +60,7 @@ $homeSchema = [
         ["@type" => "AdministrativeArea", "name" => "Bekasi"],
         ["@type" => "AdministrativeArea", "name" => "Depok"],
         ["@type" => "AdministrativeArea", "name" => "Bogor"],
-        ["@type" => "AdministrativeArea", "name" => "Serang"],
-        ["@type" => "AdministrativeArea", "name" => "Cilegon"],
-        ["@type" => "AdministrativeArea", "name" => "Bandung"],
         ["@type" => "AdministrativeArea", "name" => "Semarang"],
-        ["@type" => "AdministrativeArea", "name" => "Yogyakarta"],
-        ["@type" => "AdministrativeArea", "name" => "Surabaya"],
         ["@type" => "AdministrativeArea", "name" => "Bandar Lampung"]
       ],
       "sameAs" => [
@@ -82,30 +77,24 @@ $homeSchema = [
       ],
       "hasOfferCatalog" => [
         "@type" => "OfferCatalog",
-        "name" => "Layanan Spesialis Pipa & Sanitasi",
+        "name" => "Layanan Spesialis Pipa & Sanitasi Tanpa Bongkar",
         "itemListElement" => [
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
               "name" => "Jasa Saluran Pipa Mampet Tanpa Bongkar",
-              "description" => "Pelancaran wastafel, kran, floordrain, dan WC mampet menggunakan alat spiral rotary Ridgid."
+              "description" => "Pelancaran wastafel, kran, floor drain, dan WC kloset mampet menggunakan mesin Spiral Rotary Cable Ridgid profesional tanpa membongkar struktur keramik.",
+              "termsOfService" => "Garansi resmi 30 hari tuntas & SLA ketibaan teknisi < 30 menit"
             ]
           ],
           [
             "@type" => "Offer",
             "itemOffered" => [
               "@type" => "Service",
-              "name" => "Jasa Pembersihan Hydro-Jetting Pipa Industri",
-              "description" => "Pembersihan kerak lemak encer dan lumpur keras pipa restoran dan industri dengan tekanan air hingga 300 Bar."
-            ]
-          ],
-          [
-            "@type" => "Offer",
-            "itemOffered" => [
-              "@type" => "Service",
-              "name" => "Jasa Kuras & Sterilisasi Toren Air",
-              "description" => "Pembersihan lumut, endapan lumpur, dan disinfeksi tangki air bersih."
+              "name" => "Jasa Pembersihan Hydro-Jetting Pipa Industri & Restoran",
+              "description" => "Pembersihan kerak minyak encer, sisa lemak membatu, dan lumpur keras pipa restoran dan komersial dengan semprotan air bertekanan tinggi hingga 300 Bar.",
+              "termsOfService" => "Garansi 30 hari dan pembersihan menyeluruh tanpa bahan kimia korosif"
             ]
           ]
         ]
@@ -114,38 +103,47 @@ $homeSchema = [
     [
       "@type" => "Service",
       "serviceType" => "Jasa Saluran Pipa Mampet",
-      "name" => "Jasa Saluran Pipa Mampet & Pelancar Wastafel WC Tersumbat",
+      "name" => "Jasa Saluran Pipa Mampet & Pelancar Wastafel WC Tersumbat - Rootera Plumbing",
       "provider" => [
         "@id" => url('/') . '#organization'
       ],
-      "areaServed" => ["Jabodetabek", "Bandar Lampung", "Jawa Barat", "Jawa Tengah", "Jawa Timur"],
-      "description" => "Layanan jasa pelancaran saluran pipa mampet cepat 24 jam tanpa bongkar keramik bergaransi tuntas 30 hari."
+      "areaServed" => ["Jabodetabek", "Semarang", "Bandar Lampung"],
+      "description" => "Layanan darurat 24 jam pelancaran saluran pipa mampet tanpa bongkar keramik bergaransi tuntas 30 hari dengan peralatan mesin Spiral Rotary Ridgid & Hydro Jetting 300 Bar. Response time teknisi tiba di lokasi kurang dari 30 menit.",
+      "termsOfService" => "Garansi resmi 30 hari. Pengerjaan ulang tanpa biaya jika masalah sumbatan berulang dalam masa garansi."
     ],
     [
       "@type" => "FAQPage",
       "mainEntity" => [
         [
           "@type" => "Question",
-          "name" => "Berapa lama proses pengerjaan jasa saluran pipa mampet Rootera?",
+          "name" => "Berapa lama proses pengerjaan jasa saluran pipa mampet Rootera Plumbing?",
           "acceptedAnswer" => [
             "@type" => "Answer",
-            "text" => "Estimasi waktu pengerjaan pelancar saluran mampet berkisar antara 1 hingga 2 jam saja menggunakan teknologi rotasi mekanis modern tanpa membongkar struktur bangunan."
+            "text" => "Estimasi pengerjaan pelancar saluran mampet oleh teknisi Rootera Plumbing berkisar 1 hingga 2 jam menggunakan teknologi mesin rotasi mekanis Spiral Rotary Rigid tanpa membongkar lantai atau keramik."
           ]
         ],
         [
           "@type" => "Question",
-          "name" => "Apakah metode pembersihan Rootera aman untuk pipa PVC?",
+          "name" => "Berapa SLA ketibaan teknisi Rootera Plumbing ke lokasi pelanggan?",
           "acceptedAnswer" => [
             "@type" => "Answer",
-            "text" => "Sangat aman. Kami menggunakan spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari cairan asam korosif berbahaya."
+            "text" => "Teknisi Rootera Plumbing siap meluncur dengan SLA kedatangan rata-rata di bawah 30 menit untuk area Jabodetabek, Semarang, dan Bandar Lampung setelah pemesanan dikonfirmasi."
           ]
         ],
         [
           "@type" => "Question",
-          "name" => "Apakah ada garansi untuk setiap pekerjaan?",
+          "name" => "Apakah metode pelancaran Rootera Plumbing aman untuk jalur pipa PVC?",
           "acceptedAnswer" => [
             "@type" => "Answer",
-            "text" => "Ya, semua layanan pembersihan pipa dan saluran mampet di Rootera dilengkapi garansi resmi 30 hari. Jika sumbatan berulang dalam masa garansi, teknisi kami mengerjakan ulang tanpa biaya."
+            "text" => "Sangat aman. Rootera Plumbing menggunakan kombinasi fleksibel Spiral Rotary Cable dan Hydro-Jetting air bertekanan tinggi (tanpa kimia asam korosif), sehingga aman 100% dari risiko pipa pecah atau melar."
+          ]
+        ],
+        [
+          "@type" => "Question",
+          "name" => "Bagaimana ketentuan garansi layanan pipa mampet di Rootera Plumbing?",
+          "acceptedAnswer" => [
+            "@type" => "Answer",
+            "text" => "Semua pekerjaan perbaikan saluran mampet di Rootera Plumbing dilindungi garansi resmi 30 hari. Jika pipa mampet kembali dalam masa garansi, teknisi kami akan datang dan mengerjakan ulang tanpa biaya tambahan."
           ]
         ]
       ]

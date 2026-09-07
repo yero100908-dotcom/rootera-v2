@@ -18,22 +18,22 @@
         </div>
         
         {{-- FAQ Accordion List --}}
-        <div class="max-w-3xl mx-auto flex flex-col gap-3 sm:gap-4" id="home-faq-container">
+        <div class="max-w-3xl mx-auto flex flex-col gap-3 sm:gap-4" id="home-faq-container" itemscope itemtype="https://schema.org/FAQPage">
             @forelse($faqs ?? [] as $index => $faq)
-            <div class="faq-item bg-white border border-slate-200/80 rounded-2xl shadow-2xs hover:shadow-md transition-all duration-300 overflow-hidden">
+            <div class="faq-item bg-white border border-slate-200/80 rounded-2xl shadow-2xs hover:shadow-md transition-all duration-300 overflow-hidden" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                 <button type="button" 
                         class="faq-question w-full flex items-center justify-between gap-3 px-4 py-3.5 sm:px-6 sm:py-4 bg-transparent border-none cursor-pointer text-left transition-colors" 
                         aria-expanded="false" 
                         onclick="toggleHomeFaq(this)">
-                    <span class="faq-text text-sm sm:text-base font-bold text-slate-800 transition-colors font-['Plus_Jakarta_Sans',sans-serif]">
+                    <span class="faq-text text-sm sm:text-base font-bold text-slate-800 transition-colors font-['Plus_Jakarta_Sans',sans-serif]" itemprop="name">
                         {{ $faq->question }}
                     </span>
                     <span class="faq-icon-wrapper w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 transition-all duration-300">
                         <svg class="faq-chevron w-4 h-4 transition-transform duration-300 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
                     </span>
                 </button>
-                <div class="faq-answer-wrapper max-h-0 overflow-hidden transition-all duration-300 ease-out opacity-0">
-                    <div class="faq-answer-inner px-4 pb-4 sm:px-6 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100/80 mt-1">
+                <div class="faq-answer-wrapper max-h-0 overflow-hidden transition-all duration-300 ease-out opacity-0" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                    <div class="faq-answer-inner px-4 pb-4 sm:px-6 sm:pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100/80 mt-1" itemprop="text">
                         {!! $faq->answer !!}
                     </div>
                 </div>

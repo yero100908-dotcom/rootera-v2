@@ -88,28 +88,23 @@ $breadcrumbItems = [
   [
     "@type" => "ListItem",
     "position" => 2,
-    "name" => "Layanan",
-    "item" => route('layanan')
-  ],
-  [
-    "@type" => "ListItem",
-    "position" => 3,
-    "name" => $category->name,
-    "item" => route('layanan.show', $category->slug)
-  ],
-  [
-    "@type" => "ListItem",
-    "position" => 4,
-    "name" => $city->name,
-    "item" => url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}")
+    "name" => "Jasa Saluran Mampet " . $city->name,
+    "item" => url("/jasa-saluran-mampet/{$city->slug}")
   ]
 ];
 
 if ($district) {
   $breadcrumbItems[] = [
     "@type" => "ListItem",
-    "position" => 5,
-    "name" => $district->name,
+    "position" => 3,
+    "name" => "Layanan " . $category->name . " " . $district->name,
+    "item" => $canonical
+  ];
+} else {
+  $breadcrumbItems[] = [
+    "@type" => "ListItem",
+    "position" => 3,
+    "name" => "Layanan " . $category->name . " " . $city->name,
     "item" => $canonical
   ];
 }
@@ -413,6 +408,35 @@ $faqSchema = [
                 <p style="color: #6B7280; font-size: 0.95rem; line-height: 1.5;">Harga jujur di awal tanpa biaya tersembunyi. Pembayaran dilakukan setelah pekerjaan terbukti lancar kembali.</p>
             </div>
         @endif
+    </div>
+</section>
+
+<!-- Contextual Reverse Silo Callout Box -->
+<section style="max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem;">
+    <div style="background: linear-gradient(135deg, #F0FDF4 0%, #E0F2FE 100%); border: 1.5px solid #6EE7B7; border-radius: 18px; padding: 1.5rem 1.75rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.08);">
+        <div style="display: flex; align-items: flex-start; gap: 1rem;">
+            <span style="font-size: 1.8rem; line-height: 1; shrink-0;">📍</span>
+            <div>
+                <h4 style="color: #065F46; font-size: 1.1rem; font-weight: 800; margin: 0 0 0.4rem;">
+                    Pusat Layanan Resmi &amp; Jangkauan Operasional {{ $locationShort }}
+                </h4>
+                <p style="color: #1E293B; font-size: 0.95rem; line-height: 1.6; margin: 0;">
+                    Layanan pelancaran pipa mampet tanpa bongkar di {{ $locationName }} ini merupakan bagian integral dari 
+                    <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" style="color: #047857; font-weight: 800; text-decoration: underline;" class="hover:text-emerald-900">
+                        layanan lengkap jasa saluran pipa mampet {{ $city->name }}
+                    </a>. 
+                    @if(in_array($city->slug, ['jakarta-selatan', 'jakarta-timur', 'jakarta-barat', 'jakarta-pusat', 'jakarta-utara', 'bogor', 'kabupaten-bogor', 'depok', 'tangerang', 'tangerang-selatan', 'kabupaten-tangerang', 'bekasi', 'kabupaten-bekasi']))
+                        Tim teknisi kami disiagakan 24 jam nonstop untuk merespon panggilan darurat 
+                        <a href="{{ url('/') }}" style="color: #047857; font-weight: 800; text-decoration: underline;" class="hover:text-emerald-900">
+                            jasa saluran pipa mampet Jabodetabek
+                        </a> 
+                        dengan garansi 30 hari tuntas tanpa merusak ubin atau struktur bangunan Anda.
+                    @else
+                        Tim teknisi disiagakan 24 jam nonstop di pos armada siaga {{ $city->name }} dengan estimasi kedatangan {{ $estimatedArrival }} bergaransi tuntas 30 hari.
+                    @endif
+                </p>
+            </div>
+        </div>
     </div>
 </section>
 

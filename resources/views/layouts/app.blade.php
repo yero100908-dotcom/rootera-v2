@@ -148,14 +148,8 @@
               ],
               "areaServed" => [
                 "Jabodetabek",
-                "Lampung",
-                "Bandung",
-                "Yogyakarta",
                 "Semarang",
-                "Cirebon",
-                "Solo",
-                "Surabaya",
-                "Serang"
+                "Bandar Lampung"
               ],
               "sameAs" => [
                 "https://www.instagram.com/rootera_plumbing/",

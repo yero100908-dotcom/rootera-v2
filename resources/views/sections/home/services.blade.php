@@ -51,15 +51,6 @@
                         'url' => '/layanan/kamar-mandi-mampet',
                     ],
                     [
-                        'icon' => '🚰',
-                        'title' => 'Cuci Toren & Kuras Tandon Air',
-                        'badge' => '✨ Perawatan Higienis',
-                        'desc' => 'Pembersihan kerak lumut membandel, endapan lumpur, dan sterilisasi tangki air bersih rumah tangga & komersial tanpa bahan kimia berbahaya.',
-                        'tags' => ['High-Pressure Jet Cleaner', '100% Bebas Kimia Korosif', 'Air Higienis'],
-                        'url' => route('services.cuci-toren'),
-                        'direct_link' => true,
-                    ],
-                    [
                         'icon' => '🌊',
                         'title' => 'Hydro-Jetting Pelengkap B2B',
                         'badge' => '🔥 Kerak Lemak Ekstrem',
@@ -147,13 +138,13 @@
         {{-- CROSS-SELLING MINI HIGHLIGHT BANNER --}}
         <div class="mt-6 md:mt-10 bg-slate-900 text-white rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md max-w-4xl mx-auto">
             <div class="flex items-center gap-3 text-left">
-                <span class="text-xl sm:text-2xl shrink-0">💡</span>
+                <span class="text-xl sm:text-2xl shrink-0">📷</span>
                 <p class="text-xs sm:text-sm text-slate-300">
-                    <strong class="text-white">Sekalian Perawatan Toren Air?</strong> Kami sediakan layanan kuras &amp; sterilisasi toren bertekanan tinggi saat teknisi standby di lokasi Anda.
+                    <strong class="text-white">Butuh Deteksi Posisi Sumbatan?</strong> Gunakan Inspeksi Kamera CCTV Pipa HD untuk melacak titik mampet &amp; retakan di dalam tembok.
                 </p>
             </div>
-            <a href="{{ route('services.cuci-toren') }}" class="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-full transition-all hover:scale-105 min-h-[40px] md:min-h-[44px] flex items-center justify-center text-decoration-none">
-                Pelajari Jasa Cuci Toren →
+            <a href="{{ url('/layanan/inspeksi-pipa-kamera') }}" class="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs px-4 py-2.5 sm:px-5 sm:py-2.5 rounded-full transition-all hover:scale-105 min-h-[40px] md:min-h-[44px] flex items-center justify-center text-decoration-none">
+                Inspeksi CCTV Pipa →
             </a>
         </div>
 

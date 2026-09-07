@@ -67,7 +67,7 @@
             right: -20px;
             left: auto;
             transform: translateY(10px);
-            width: 820px;
+            width: 700px;
         }
 
         /* Hover & Active States */
@@ -180,14 +180,6 @@
                                     <div>
                                         <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors">Inspeksi Kamera CCTV Pipa</div>
                                         <div class="text-xs text-slate-500 line-clamp-1">Deteksi kebocoran & posisi mampet di dalam dinding</div>
-                                    </div>
-                                </a>
-
-                                <a href="{{ route('services.cuci-toren') }}" class="group/item flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150">
-                                    <div class="w-9 h-9 rounded-lg bg-teal-100/70 text-teal-700 flex items-center justify-center font-bold text-lg group-hover/item:bg-teal-600 group-hover/item:text-white transition-colors shrink-0">🚰</div>
-                                    <div>
-                                        <div class="font-bold text-sm text-slate-900 group-hover/item:text-emerald-600 transition-colors">Cuci Toren &amp; Tandon Air</div>
-                                        <div class="text-xs text-slate-500 line-clamp-1">Pengurasan lumut &amp; lumpur food-grade safety</div>
                                     </div>
                                 </a>
 
@@ -310,63 +302,50 @@
                             <div class="text-sm font-bold text-slate-900">Jangkauan Wilayah Operasional Rootera</div>
                             <div class="text-xs text-slate-500">Teknisi siaga 24 jam dengan waktu tiba cepat ke lokasi</div>
                         </div>
-                        <a href="{{ route('area-layanan') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline flex items-center gap-1">Lihat 50+ Kota & Kecamatan &rarr;</a>
+                        <a href="{{ route('area-layanan') }}" class="text-xs font-bold text-emerald-600 hover:text-emerald-700 hover:underline flex items-center gap-1">Lihat Wilayah Layanan Kami &rarr;</a>
                     </div>
 
-                    <div class="grid grid-cols-4 gap-6">
+                    <div class="grid grid-cols-3 gap-6">
                         {{-- DKI Jakarta --}}
                         <div>
                             <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1">
                                 <span class="text-emerald-600">📍</span> DKI Jakarta
                             </div>
                             <ul class="space-y-1 text-xs">
-                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-barat') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Jakarta Barat</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-selatan') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Jakarta Selatan</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-pusat') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Jakarta Pusat</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-timur') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Jakarta Timur</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-utara') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Jakarta Utara</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-selatan') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Jakarta Selatan</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-timur') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Jakarta Timur</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-barat') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Jakarta Barat</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-pusat') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Jakarta Pusat</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/jakarta-utara') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Jakarta Utara</a></li>
                             </ul>
                         </div>
 
-                        {{-- Banten & Jawa Barat --}}
+                        {{-- Bodetabek --}}
                         <div>
                             <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1">
-                                <span class="text-emerald-600">📍</span> Banten & Jabar
+                                <span class="text-emerald-600">📍</span> Bodetabek
                             </div>
                             <ul class="space-y-1 text-xs">
-                                <li><a href="{{ url('/jasa-saluran-mampet/tangerang') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Tangerang Kota / BSD</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/tangerang-selatan') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Tangerang Selatan</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/bekasi') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Bekasi & Cikarang</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/depok') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Depok & Cinere</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/bogor') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Bogor & Cibubur</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/bandung') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Bandung Raya</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/bogor') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Bogor (Kota &amp; Kab)</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/depok') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Depok &amp; Cinere</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/tangerang') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Tangerang Kota</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/tangerang-selatan') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Tangerang Selatan / BSD</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/bekasi') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Bekasi &amp; Cikarang</a></li>
                             </ul>
                         </div>
 
-                        {{-- Jawa Tengah & DIY --}}
+                        {{-- Semarang & Bandar Lampung --}}
                         <div>
                             <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1">
-                                <span class="text-emerald-600">📍</span> Jateng & DIY
+                                <span class="text-emerald-600">📍</span> Semarang &amp; Lampung
                             </div>
                             <ul class="space-y-1 text-xs">
-                                <li><a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Semarang</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/surakarta') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Solo / Surakarta</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/yogyakarta') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Yogyakarta</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/kabupaten-sleman') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Sleman & Bantul</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Kota Semarang</a></li>
+                                <li><a href="{{ url('/jasa-saluran-mampet/bandar-lampung') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5 font-medium">Kota Bandar Lampung</a></li>
                             </ul>
-                        </div>
-
-                        {{-- Jatim & Sumatra --}}
-                        <div>
-                            <div class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 flex items-center gap-1">
-                                <span class="text-emerald-600">📍</span> Jatim & Sumatra
+                            <div class="mt-4 p-2.5 bg-emerald-50 rounded-xl border border-emerald-100 text-[11px] text-emerald-800 font-semibold leading-snug">
+                                ⏱️ Armada siaga 24 jam di pos terdekat 3 wilayah target utama.
                             </div>
-                            <ul class="space-y-1 text-xs">
-                                <li><a href="{{ url('/jasa-saluran-mampet/surabaya') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Surabaya</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/kabupaten-sidoarjo') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Sidoarjo & Gresik</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/malang') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Malang Raya</a></li>
-                                <li><a href="{{ url('/jasa-saluran-mampet/bandar-lampung') }}" class="hover:text-emerald-600 hover:translate-x-0.5 transition-all text-slate-600 block py-0.5">Bandar Lampung</a></li>
-                            </ul>
                         </div>
                     </div>
                 </div>
@@ -440,9 +419,7 @@
                     <a href="{{ url('/layanan/inspeksi-pipa-kamera') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
                         <span>📷</span> Inspeksi Kamera CCTV Pipa
                     </a>
-                    <a href="{{ route('services.cuci-toren') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
-                        <span>🚰</span> Jasa Cuci Toren &amp; Tandon Air
-                    </a>
+
 
                     <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Komersial & B2B</div>
                     <a href="{{ url('/sektor-plumbing/restoran-cafe') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
@@ -520,22 +497,25 @@
             <div id="mobile-accordion-area" class="mobile-accordion-content pl-4 pr-2 space-y-1 bg-slate-50/80 rounded-xl my-1">
                 <div class="py-2 space-y-1 text-sm">
                     <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-1">DKI Jakarta</div>
-                    <a href="{{ url('/jasa-saluran-mampet/jakarta-barat') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Barat</a>
                     <a href="{{ url('/jasa-saluran-mampet/jakarta-selatan') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Selatan</a>
+                    <a href="{{ url('/jasa-saluran-mampet/jakarta-timur') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Timur</a>
+                    <a href="{{ url('/jasa-saluran-mampet/jakarta-barat') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Barat</a>
                     <a href="{{ url('/jasa-saluran-mampet/jakarta-pusat') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Pusat</a>
+                    <a href="{{ url('/jasa-saluran-mampet/jakarta-utara') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Jakarta Utara</a>
 
-                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Banten & Jawa Barat</div>
-                    <a href="{{ url('/jasa-saluran-mampet/tangerang') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Tangerang & BSD</a>
-                    <a href="{{ url('/jasa-saluran-mampet/bekasi') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Bekasi & Cikarang</a>
-                    <a href="{{ url('/jasa-saluran-mampet/bandung') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Bandung Raya</a>
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Bodetabek</div>
+                    <a href="{{ url('/jasa-saluran-mampet/bogor') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Bogor (Kota &amp; Kab)</a>
+                    <a href="{{ url('/jasa-saluran-mampet/depok') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Depok &amp; Cinere</a>
+                    <a href="{{ url('/jasa-saluran-mampet/tangerang') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Tangerang Kota</a>
+                    <a href="{{ url('/jasa-saluran-mampet/tangerang-selatan') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Tangerang Selatan / BSD</a>
+                    <a href="{{ url('/jasa-saluran-mampet/bekasi') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Bekasi &amp; Cikarang</a>
 
-                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Jateng, DIY & Jatim</div>
-                    <a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Semarang</a>
-                    <a href="{{ url('/jasa-saluran-mampet/yogyakarta') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Yogyakarta</a>
-                    <a href="{{ url('/jasa-saluran-mampet/surabaya') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Surabaya & Sidoarjo</a>
+                    <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mt-3 mb-1">Semarang &amp; Lampung</div>
+                    <a href="{{ url('/jasa-saluran-mampet/semarang') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Kota Semarang</a>
+                    <a href="{{ url('/jasa-saluran-mampet/bandar-lampung') }}" class="block py-1.5 px-3 text-slate-700 hover:text-emerald-600 font-medium">Kota Bandar Lampung</a>
 
                     <a href="{{ route('area-layanan') }}" class="flex items-center justify-between py-2.5 px-3 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-100/80 hover:bg-emerald-100 transition-colors mt-3">
-                        <span>Lihat Semua 50+ Kota</span>
+                        <span>Lihat Wilayah Layanan Kami</span>
                         <span>&rarr;</span>
                     </a>
                 </div>
