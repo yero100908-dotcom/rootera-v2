@@ -17,7 +17,7 @@ if (isset($district) && isset($category)) {
 }
 
 $waLink = "https://wa.me/{$waPhone}?text=" . urlencode($waText);
-$etaText = isset($district) ? ($district->estimated_arrival ?? '25-40 Menit') : (isset($city) ? ($city->estimated_arrival ?? '30-45 Menit') : '24 Jam');
+$etaText = 'Respon Cepat';
 $areaLabel = isset($district) ? $district->name : (isset($city) ? $city->name : 'Lokasi Anda');
 ?>
 
@@ -31,7 +31,7 @@ $areaLabel = isset($district) ? $district->name : (isset($city) ? $city->name : 
             <div class="leading-tight">
                 <div class="text-[11px] font-bold text-white flex items-center gap-1">
                     <span>Teknisi Siaga</span>
-                    <span class="text-emerald-400 font-extrabold">{{ $etaText }}</span>
+                    <span class="text-emerald-400 font-extrabold">Respon Cepat</span>
                 </div>
                 <div class="text-[10px] text-slate-400 truncate max-w-[130px]">
                     📍 Area {{ $areaLabel }}

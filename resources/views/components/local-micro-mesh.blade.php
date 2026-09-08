@@ -1,39 +1,80 @@
 {{-- Dynamic Local Micro-Coverage & Kelurahan Mesh Component --}}
 @props([
-    'locationShort' => 'Wilayah',
-    'locationName' => 'Wilayah Terkait',
-    'estimatedArrival' => '25–40 Menit',
-    'dispatchHub' => 'Pos Hub Armada Utama',
-    'landmarks' => []
+    'locationShort'   => 'Wilayah',
+    'locationName'    => 'Wilayah Terkait',
+    'estimatedArrival'=> 'Teknisi Siaga Hari Ini',
+    'dispatchHub'     => 'Pos Hub Armada Utama',
+    'landmarks'       => [],
+    'districtName'    => '',
+    'whatsappNumber'  => '6281385404000',
 ])
 
 @if(!empty($landmarks) && is_array($landmarks))
-<section class="local-mesh-section" style="background: #F8FAFC; padding: 4rem 1.5rem; border-top: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 2.5rem;">
-            <span style="color: #169F81; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em;">📍 Presisi Jangkauan Mikro</span>
-            <h2 style="color: #0A2E78; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-top: 0.4rem;">Cakupan Area Kelurahan &amp; Titik Lokasi di {{ $locationShort }}</h2>
-            <p style="color: #64748B; font-size: 0.95rem; max-width: 780px; margin: 0.5rem auto 0; line-height: 1.6;">
-                Tim teknisi Rootera disiagakan di <strong>{{ $dispatchHub }}</strong> dengan estimasi waktu tempuh <strong>{{ $estimatedArrival }}</strong> ke kelurahan &amp; perumahan berikut:
+@php
+    $displayDistrict = $districtName ?: $locationShort;
+    $waBase          = 'https://wa.me/' . ltrim($whatsappNumber, '+');
+@endphp
+
+<section class="bg-gradient-to-b from-emerald-50/40 via-white to-white py-14 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto">
+
+        {{-- Section Header --}}
+        <div class="text-center max-w-2xl mx-auto mb-9 md:mb-12">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs uppercase tracking-widest mb-3">
+                📍 Jangkauan Mikro Kelurahan
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                Cakupan Kelurahan & Titik Layanan di {{ $displayDistrict }}
+            </h2>
+            <p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed max-w-xl mx-auto">
+                Armada teknisi Rootera disiagakan di pos siaga terdekat (<strong class="text-slate-800">{{ $dispatchHub }}</strong>), siap meluncur cepat memberikan penanganan pipa mampet ke seluruh kelurahan berikut:
             </p>
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
+        {{-- Kelurahan Card Grid --}}
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             @foreach($landmarks as $lm)
-                <div style="background: #ffffff; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: all 0.2s ease;" class="hover:border-emerald-500 hover:shadow-md">
-                    <div style="display: flex; align-items: center; gap: 0.65rem;">
-                        <span style="width: 32px; height: 32px; border-radius: 8px; background: rgba(22, 159, 129, 0.1); color: #169F81; display: flex; align-items: center; justify-content: center; font-size: 1rem; shrink-0;">📍</span>
-                        <div>
-                            <div style="font-weight: 700; color: #0A2E78; font-size: 0.93rem;">{{ $lm }}</div>
-                            <div style="font-size: 0.75rem; color: #10B981; font-weight: 600;">Teknisi Standby</div>
-                        </div>
-                    </div>
-                    <span style="font-size: 0.75rem; font-weight: 700; color: #64748B; background: #F1F5F9; padding: 0.25rem 0.6rem; border-radius: 6px;">
-                        {{ $estimatedArrival }}
+            @php
+                $waText = urlencode('Halo Rootera, saya butuh teknisi saluran pipa mampet di Kelurahan ' . $lm . ', ' . $displayDistrict . '. Apakah teknisi bisa meluncur hari ini?');
+            @endphp
+            <a href="{{ $waBase }}?text={{ $waText }}"
+               target="_blank"
+               rel="noopener"
+               class="group flex flex-col bg-white border border-slate-200 hover:border-emerald-500 rounded-2xl p-3.5 sm:p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 text-left">
+
+                {{-- Pulsing active dot + pin icon --}}
+                <div class="flex items-center gap-2 mb-2.5">
+                    <span class="relative flex h-2.5 w-2.5 shrink-0">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600">Siaga Aktif</span>
                 </div>
+
+                {{-- Village Name --}}
+                <div class="font-bold text-slate-900 group-hover:text-emerald-700 text-sm sm:text-base leading-snug transition-colors line-clamp-2">
+                    {{ $lm }}
+                </div>
+
+                {{-- Micro CTA --}}
+                <div class="mt-2.5 text-[11px] font-bold text-slate-400 group-hover:text-emerald-600 transition-colors flex items-center gap-1">
+                    <span>Siaga Meluncur</span>
+                    <span class="group-hover:translate-x-0.5 transition-transform duration-150">→</span>
+                </div>
+
+            </a>
             @endforeach
         </div>
+
+        {{-- Callout Jaminan Cakupan Penuh --}}
+        <div class="mt-7 md:mt-9 bg-white border border-slate-200 rounded-2xl px-5 sm:px-6 py-4 flex items-start sm:items-center gap-3 shadow-sm">
+            <span class="text-emerald-500 text-xl shrink-0 mt-0.5 sm:mt-0">🌐</span>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <strong class="text-slate-800">Rumah atau ruko Anda berada di luar titik kelurahan di atas?</strong>
+                Jangan khawatir, seluruh area <strong class="text-slate-800">{{ $displayDistrict }}</strong> dan sekitarnya tetap kami jangkau tanpa biaya tambahan transport.
+            </p>
+        </div>
+
     </div>
 </section>
 @endif

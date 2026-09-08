@@ -88,7 +88,7 @@ $fallbackArticles = [
         'published_at' => '13 Aug 2026',
         'views' => '1.2k',
         'author' => 'Rootera Plumbing',
-        'excerpt' => 'Saluran mampet jangan cuma dilihat dari air yang nggak ngalir—bisa jadi ada masalah besar di dalam pipanya! Lemak, kotoran, dan endapan menumpuk mempersempit jalur pipa.',
+        'excerpt' => 'Saluran mampet jangan cuma dilihat dari air yang tidak mengalir. Bisa jadi ada masalah besar di dalam pipanya! Lemak, kotoran, dan endapan menumpuk mempersempit jalur pipa.',
     ],
     [
         'title' => 'NSIDE THE KAI - Misi Tim Rootera',

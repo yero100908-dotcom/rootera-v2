@@ -17,10 +17,12 @@ use Illuminate\Support\Str;
 class ProgrammaticSeoController extends Controller
 {
     protected SpintaxService $spintaxService;
+    protected \App\Services\DistrictVillageService $villageService;
 
-    public function __construct(SpintaxService $spintaxService)
+    public function __construct(SpintaxService $spintaxService, \App\Services\DistrictVillageService $villageService)
     {
         $this->spintaxService = $spintaxService;
+        $this->villageService = $villageService;
     }
 
     /**
@@ -32,7 +34,7 @@ class ProgrammaticSeoController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
         }
 
-        $cacheKey = "prog_seo_v3_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
+        $cacheKey = "prog_seo_v4_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
         $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
@@ -93,7 +95,7 @@ class ProgrammaticSeoController extends Controller
             $estimatedArrival = $district ? ($district->estimated_arrival ?? "30–45 Menit") : ($city->estimated_arrival ?? "30–45 Menit");
             $dispatchHub = $district ? "Pos Hub Armada Kecamatan {$district->name}" : "Pos Hub Armada Utama {$city->name}";
             $travelTime = $estimatedArrival;
-            $nearbyLandmarks = $siblingDistricts->pluck('name')->filter()->take(6)->values()->toArray();
+            $nearbyLandmarks = $this->villageService->getVillagesForDistrict($district ? $district->slug : null, $city->slug, $locationShort);
 
             $localFaqs = [
                 [
