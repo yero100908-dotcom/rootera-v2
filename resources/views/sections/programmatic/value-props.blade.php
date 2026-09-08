@@ -6,19 +6,19 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 </style>
 
-<section class="bg-white py-14 border-b border-slate-200/80">
+<section class="bg-slate-100/90 py-16 border-y border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Section Header --}}
-        <div class="text-center max-w-2xl mx-auto mb-8 md:mb-10">
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 font-bold text-xs uppercase tracking-widest mb-3">
+        <div class="text-center max-w-4xl mx-auto mb-8 md:mb-10">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-100/80 text-blue-800 font-bold text-xs uppercase tracking-widest mb-3 border border-blue-200/60">
                 🛡️ Standar Layanan Rootera
             </span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 Mengapa Pilihan Utama di {{ $locationShort }}?
             </h2>
             @if(isset($areaTechnicalIntro))
-                <p class="text-sm sm:text-base text-slate-500 mt-3 leading-relaxed max-w-xl mx-auto">{!! $areaTechnicalIntro !!}</p>
+                <p class="text-sm sm:text-base text-slate-700 mt-3.5 leading-relaxed max-w-4xl mx-auto text-center">{!! $areaTechnicalIntro !!}</p>
             @endif
         </div>
 
@@ -30,8 +30,8 @@
 
             {{-- ── Card 1: Tanpa Bongkar Lantai ──────────────────────── --}}
             <div class="w-[82vw] sm:w-[55vw] lg:w-auto shrink-0 lg:shrink snap-center
-                        bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6
-                        shadow-sm hover:shadow-xl hover:border-emerald-500/50 hover:-translate-y-1
+                        bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6
+                        shadow-md hover:shadow-xl hover:border-emerald-500/50 hover:-translate-y-1
                         transition-all duration-300 flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-xl mb-4">
@@ -52,8 +52,8 @@
 
             {{-- ── Card 2: Garansi Resmi 30 Hari ─────────────────────── --}}
             <div class="w-[82vw] sm:w-[55vw] lg:w-auto shrink-0 lg:shrink snap-center
-                        bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6
-                        shadow-sm hover:shadow-xl hover:border-blue-400/50 hover:-translate-y-1
+                        bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6
+                        shadow-md hover:shadow-xl hover:border-blue-400/50 hover:-translate-y-1
                         transition-all duration-300 flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-xl mb-4">
@@ -74,8 +74,8 @@
 
             {{-- ── Card 3: Tanpa Bahan Kimia Berbahaya ────────────────── --}}
             <div class="w-[82vw] sm:w-[55vw] lg:w-auto shrink-0 lg:shrink snap-center
-                        bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6
-                        shadow-sm hover:shadow-xl hover:border-amber-400/50 hover:-translate-y-1
+                        bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6
+                        shadow-md hover:shadow-xl hover:border-amber-400/50 hover:-translate-y-1
                         transition-all duration-300 flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-xl mb-4">
@@ -96,8 +96,8 @@
 
             {{-- ── Card 4: Biaya Transparan ───────────────────────────── --}}
             <div class="w-[82vw] sm:w-[55vw] lg:w-auto shrink-0 lg:shrink snap-center
-                        bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6
-                        shadow-sm hover:shadow-xl hover:border-purple-400/50 hover:-translate-y-1
+                        bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6
+                        shadow-md hover:shadow-xl hover:border-purple-400/50 hover:-translate-y-1
                         transition-all duration-300 flex flex-col justify-between">
                 <div>
                     <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-xl mb-4">

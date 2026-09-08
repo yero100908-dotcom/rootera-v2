@@ -125,15 +125,24 @@ class ProgrammaticSeoController extends Controller
             ];
 
             // Generate Dynamic Transactional SEO Metadata (Strict Bounds: Title <60, Description 130-155)
-            $title = $district
-                ? "Jasa Pipa Mampet {$district->name}, {$city->name} | Rootera"
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
+            $fullTitle = $district
+                ? "Jasa Pipa Mampet {$district->name}, {$city->name} - Tanpa Bongkar | Rootera"
+                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam - Tanpa Bongkar | Rootera";
 
-            if (mb_strlen($title) > 60) {
+            if (mb_strlen($fullTitle) <= 60) {
+                $title = $fullTitle;
+            } else {
                 $title = $district
-                    ? "Jasa Pipa Mampet {$district->name} | Rootera"
-                    : "Jasa Pipa Mampet {$city->name} 24 Jam | Rootera";
+                    ? "Jasa Pipa Mampet {$district->name}, {$city->name} | Rootera"
+                    : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
+
+                if (mb_strlen($title) > 60) {
+                    $title = $district
+                        ? "Jasa Pipa Mampet {$district->name} | Rootera"
+                        : "Jasa Pipa Mampet {$city->name} 24 Jam | Rootera";
+                }
             }
+
             if (mb_strlen($title) > 60) {
                 $title = mb_strimwidth($title, 0, 58, '..');
             }
@@ -147,12 +156,8 @@ class ProgrammaticSeoController extends Controller
             }
 
             if ($district) {
-                // Canonical consolidation: district pages consolidate link equity to parent City Hub or City Category Hub
-                if ($category->slug === 'pipa-mampet') {
-                    $canonical = url("/jasa-saluran-mampet/{$city->slug}");
-                } else {
-                    $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
-                }
+                // Self-referencing canonical for district pages to index district landing pages individually in Google Search
+                $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}");
             } else {
                 if ($category->slug === 'pipa-mampet') {
                     $canonical = url("/jasa-saluran-mampet/{$city->slug}");

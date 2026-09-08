@@ -1,5 +1,5 @@
 <!-- FAQ Accordion Section -->
-<section class="bg-slate-50/60 py-14 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80" id="faq-section" itemscope itemtype="https://schema.org/FAQPage">
+<section class="bg-white py-14 sm:py-16 px-4 sm:px-6 lg:px-8 border-b border-slate-200/80" id="faq-section" itemscope itemtype="https://schema.org/FAQPage">
     <div class="max-w-4xl mx-auto">
         
         <!-- Header Section -->

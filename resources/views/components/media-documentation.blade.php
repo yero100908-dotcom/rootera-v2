@@ -125,7 +125,7 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
 </section>
 
 <!-- Section 2: Gallery Showcase Preview Grid with Lightbox Modal -->
-<section class="py-8 px-4 md:py-[4.5rem] md:px-6 bg-gradient-to-b from-slate-50 to-blue-50/50 border-t border-b border-slate-200"
+<section class="py-8 px-4 md:py-12 md:px-6 bg-slate-100 border-t border-b border-slate-200"
          id="dokumentasi-lapangan"
          x-data="{ openModal: false, modalImg: '', modalTitle: '', modalDesc: '', modalCategory: '', modalLocation: '', modalUrl: '' }">
     <div style="max-width: 1200px; margin: 0 auto;">
@@ -147,7 +147,7 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
         <!-- 4 Curated Real Gallery Cards (Mobile Horizontal Swipe Carousel, Grid on Desktop) -->
         <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-4 lg:gap-6 pb-4 sm:pb-0 mobile-scrollbar touch-pan-x touch-pan-y sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($fourPortfolioItems as $pIdx => $item)
-            <div class="w-[82vw] min-w-[82vw] sm:w-auto sm:min-w-0 shrink-0 snap-center bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between group">
+            <div class="w-[82vw] min-w-[82vw] sm:w-auto sm:min-w-0 shrink-0 snap-center bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-md hover:shadow-xl hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between group">
                 
                 {{-- Image Box with Hover Overlay & Lightbox Click --}}
                 <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-900 cursor-pointer"

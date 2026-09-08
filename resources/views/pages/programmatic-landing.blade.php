@@ -14,7 +14,15 @@ if (isset($city) && $city->has_physical_branch && !empty($city->street_address))
         "alternateName" => ["Rootera " . $city->name, "Jasa Saluran Pipa Mampet " . $city->name],
         "url" => $canonical,
         "telephone" => "+" . ltrim($city->branch_phone ?: ($city->whatsapp_number ?: "6281385404000"), "+"),
-        "priceRange" => "Rp 150.000 - Rp 1.500.000",
+        "priceRange" => "Rp 400.000 - Rp 1.500.000",
+        "openingHoursSpecification" => [
+            [
+                "@type" => "OpeningHoursSpecification",
+                "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                "opens" => "00:00",
+                "closes" => "23:59"
+            ]
+        ],
         "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         "image" => $ogImage,
         "address" => [
@@ -66,6 +74,10 @@ if (isset($city) && $city->has_physical_branch && !empty($city->street_address))
             "itemListElement" => [
                 [
                     "@type" => "Offer",
+                    "price" => "400000",
+                    "priceCurrency" => "IDR",
+                    "priceValidUntil" => date('Y-12-31'),
+                    "availability" => "https://schema.org/InStock",
                     "itemOffered" => [
                         "@type" => "Service",
                         "name" => "Jasa " . $category->name . " " . $locationName,

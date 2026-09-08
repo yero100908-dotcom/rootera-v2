@@ -34,7 +34,7 @@ $etaOptions = ['15-25 Menit', '20-30 Menit', '25-35 Menit', '30-40 Menit'];
 <div id="smart-interlinking-hub">
     
     <!-- 1. Smart Service Matrix Switcher (Pindah Layanan di Area yang Sama) -->
-    <section style="background: #ffffff; padding: 4.5rem 1.5rem; border-top: 1px solid #E2E8F0;">
+    <section class="bg-gradient-to-b from-slate-100 to-slate-200/60 py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-200">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="text-align: center; margin-bottom: 3rem;">
                 <span style="color: #10B981; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; tracking-wider">Pilihan Layanan Terkait</span>
