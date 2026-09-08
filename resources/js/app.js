@@ -1,3 +1,10 @@
+import Alpine from 'alpinejs';
+import collapse from '@alpinejs/collapse';
+
+Alpine.plugin(collapse);
+window.Alpine = Alpine;
+Alpine.start();
+
 // Navbar scroll effect
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -85,3 +92,46 @@ document.querySelectorAll('.faq-question').forEach(button => {
         button.setAttribute('aria-expanded', !expanded);
     });
 });
+
+// Google Maps Facade Dynamic Lazy Loader
+window.loadGoogleMapFacade = function(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container || container.getAttribute('data-map-loaded') === 'true') return;
+    const src = container.getAttribute('data-map-src');
+    if (!src) return;
+
+    const iframe = document.createElement('iframe');
+    iframe.src = src;
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.style.border = '0';
+    iframe.style.minHeight = '100%';
+    iframe.style.display = 'block';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.title = container.getAttribute('data-map-title') || 'Google Maps Profile Bisnis Rootera Plumbing';
+
+    container.innerHTML = '';
+    container.appendChild(iframe);
+    container.setAttribute('data-map-loaded', 'true');
+};
+
+// Intersection Observer for Google Maps Facade
+if ('IntersectionObserver' in window) {
+    const mapObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                if (id) {
+                    window.loadGoogleMapFacade(id);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { rootMargin: '200px 0px' });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-map-src]').forEach(el => mapObserver.observe(el));
+    });
+}

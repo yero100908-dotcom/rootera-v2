@@ -128,7 +128,7 @@
 
             {{-- Slider Track --}}
             <div class="flex gap-3 sm:gap-5 md:gap-6 transition-transform duration-500 ease-out cursor-grab active:cursor-grabbing select-none px-4 sm:px-6" id="mitra-carousel-track" style="touch-action: pan-y;">
-                @foreach($mitraList as $index => $mitra)
+                @foreach(array_slice($mitraList, 0, 8) as $index => $mitra)
                 {{-- Card Item (Refactored aspect ratio & object-cover for clear documentation display) --}}
                 <div class="flex-shrink-0 w-[76vw] max-w-[270px] sm:w-72 md:w-80 bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-2xl hover:border-emerald-400 transition-all duration-300 flex flex-col group">
                     
@@ -138,6 +138,8 @@
                              alt="{{ $mitra['alt'] }}" 
                              loading="lazy" 
                              decoding="async" 
+                             width="320" 
+                             height="240" 
                              class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300">
                         
                         {{-- Category Badge Overlay --}}

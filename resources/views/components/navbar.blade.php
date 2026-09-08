@@ -373,7 +373,7 @@
     {{-- Header Drawer --}}
     <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100 bg-white">
         <a href="{{ route('home') }}" class="flex items-center gap-2">
-            <img src="{{ asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}" alt="Logo Rootera" class="h-9 w-auto object-contain">
+            <img src="{{ asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}" alt="Logo Rootera" class="h-9 w-auto object-contain" width="140" height="36">
         </a>
         <button type="button" id="drawer-close-btn" class="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" aria-label="Tutup menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

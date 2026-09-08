@@ -10,17 +10,28 @@
             <div style="position: relative; z-index: 10;">
                 <div class="reviews-grid" style="display: flex; gap: 2.5rem; align-items: stretch; flex-wrap: wrap;">
                     
-                    <!-- Left: Official Google Maps Embed -->
-                    <div class="map-container" style="flex: 1 1 400px; min-height: 450px; background: #0f172a; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.5128341974773!2d106.8627791!3d-6.3275261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed006e00b8b5%3A0xde36fb02cfc2b7a5!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sid!2sid!4v1787587462755!5m2!1sid!2sid" 
-                            width="100%" 
-                            height="100%" 
-                            style="border:0; min-height: 100%; display: block;" 
-                            allowfullscreen="" 
-                            loading="lazy" 
-                            referrerpolicy="strict-origin-when-cross-origin">
-                        </iframe>
+                    <!-- Left: Official Google Maps Embed Facade -->
+                    <div class="map-container" 
+                         id="reviews-gmap-facade"
+                         data-map-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.5128341974773!2d106.8627791!3d-6.3275261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed006e00b8b5%3A0xde36fb02cfc2b7a5!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sid!2sid!4v1787587462755!5m2!1sid!2sid"
+                         data-map-title="Lokasi Google Maps Rootera Plumbing"
+                         style="flex: 1 1 400px; min-height: 450px; background: #0f172a; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;">
+                        
+                        <!-- Facade Placeholder Content -->
+                        <div style="text-align: center; padding: 2rem; color: #ffffff; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+                            <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(74, 222, 128, 0.15); border: 1px solid rgba(74, 222, 128, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #4ade80;">
+                                📍
+                            </div>
+                            <div>
+                                <h3 style="font-weight: 800; font-size: 1.1rem; color: #ffffff; margin-bottom: 0.25rem;">Rootera Plumbing Official</h3>
+                                <p style="font-size: 0.85rem; color: #94a3b8; margin: 0;">Gg. Mawar No.6B.1, Cijantung, Jakarta Timur</p>
+                            </div>
+                            <button onclick="loadGoogleMapFacade('reviews-gmap-facade')" 
+                                    type="button" 
+                                    style="padding: 0.65rem 1.5rem; border-radius: 50px; background-color: #4ade80; color: #ffffff; font-weight: 800; font-size: 0.85rem; border: none; cursor: pointer; transition: transform 0.2s ease;">
+                                🗺️ Buka Peta Interaktif
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Right: Content & Reviews -->
@@ -220,7 +231,7 @@
                                                 <span style="font-size: 0.7rem; color: #94a3b8;">• {{ $review['timeAgo'] }}</span>
                                             </div>
                                         </div>
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width:18px; height:18px; margin-left:auto;">
+                                        <img src="{{ asset('images/brand/google-g-logo.svg') }}" alt="Google" style="width:18px; height:18px; margin-left:auto;" loading="lazy" decoding="async">
                                     </div>
                                     <p style="color: #334155; font-size: 0.85rem; line-height: 1.5; margin: 0 0 0.5rem; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
                                         "{{ $review['review'] }}"

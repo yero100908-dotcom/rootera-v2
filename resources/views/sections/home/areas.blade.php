@@ -103,7 +103,7 @@
                     
                     {{-- CARD COVER IMAGE HEADER --}}
                     <div class="relative overflow-hidden h-36 sm:h-52">
-                        <img src="{{ $hub['image'] }}" alt="Jasa Saluran Pipa Mampet Cabang {{ $hub['province'] }} Rootera Plumbing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
+                        <img src="{{ $hub['image'] }}" alt="Jasa Saluran Pipa Mampet Cabang {{ $hub['province'] }} Rootera Plumbing" width="600" height="400" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                         
                         {{-- Dark Gradient Overlay --}}
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-black/15"></div>

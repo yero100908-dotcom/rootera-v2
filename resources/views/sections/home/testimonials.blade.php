@@ -38,23 +38,9 @@
         <!-- Map & Rating Container -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-10 max-w-7xl mx-auto">
             
-            <!-- Left: Google Maps Interactive Embed (Compact Height on Mobile) -->
-            <div class="bg-slate-900 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-emerald-900/20 border border-slate-700/50 h-56 sm:h-64 lg:h-full min-h-[220px] sm:min-h-[256px] relative">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.5128341974773!2d106.8627791!3d-6.3275261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ed006e00b8b5%3A0xde36fb02cfc2b7a5!2sRootera%20Plumbing%20-%20Jasa%20Saluran%20Pipa%20Mampet!5e0!3m2!1sid!2sid!4v1787587462755!5m2!1sid!2sid" 
-                    width="100%" 
-                    height="100%" 
-                    style="border:0; width:100%; height:100%; display:block;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    class="w-full h-full min-h-[220px] sm:min-h-[256px] rounded-2xl sm:rounded-3xl">
-                </iframe>
-                <div class="absolute bottom-2.5 left-2.5 z-10">
-                    <a href="https://maps.app.goo.gl/gDmjvDa9RYJ66MvR8" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900/90 backdrop-blur-md text-white text-[11px] sm:text-xs font-bold shadow-lg hover:bg-emerald-600 transition-colors">
-                        📍 Buka Peta Google Maps →
-                    </a>
-                </div>
+            <!-- Left: Google Maps Interactive Facade -->
+            <div class="h-full">
+                <x-google-map-embed />
             </div>
 
             <!-- Right: Rating Overview Card (Compact Light Theme) -->
@@ -222,8 +208,8 @@
                     ]
                 ]
             ];
-            // Repeated arrays to construct smooth continuous loop
-            $doubleReviews = array_merge($realReviews, $realReviews, $realReviews);
+            // Single array loop for fast rendering
+            $doubleReviews = $realReviews;
             @endphp
 
             <!-- Marquee Track -->

@@ -13,6 +13,11 @@ class EnforceHttpsAndCanonicalDomain
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Never enforce redirect in local environment or on local hosts
+        if (app()->environment('local') || in_array($request->getHost(), ['127.0.0.1', 'localhost']) || str_ends_with($request->getHost(), '.test')) {
+            return $next($request);
+        }
+
         $host = strtolower($request->getHost());
 
         // Only enforce on production domains or when domain contains rooteraplumbing.id

@@ -152,7 +152,7 @@ $homeSchema = [
 ];
 ?>
 <script type="application/ld+json">
-{!! json_encode($homeSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+{!! json_encode($homeSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
 </script>
 @endsection
 
@@ -168,7 +168,7 @@ $homeSchema = [
         <picture style="width: 100%; height: 100%; display: block;">
             <source media="(max-width: 767px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" type="image/webp">
             <source media="(min-width: 768px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" type="image/webp">
-            <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Banner Jasa Saluran Pipa Mampet Profesional Rootera Plumbing" loading="eager" fetchpriority="high" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+            <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Banner Jasa Saluran Pipa Mampet Profesional Rootera Plumbing" loading="eager" fetchpriority="high" width="1920" height="960" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
         </picture>
         {{-- High-Contrast Dark Gradient Overlay --}}
         <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 19, 43, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(6, 20, 52, 0.70) 100%);"></div>
@@ -217,7 +217,7 @@ $homeSchema = [
                 <div style="position: relative; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.18); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); background: #0f172a; cursor: pointer;" onclick="openHomeMediaModal('video', '{{ asset('videos/dokumentasi/video-inspeksi-cctv-wastafel.mp4') }}', 'Inspeksi Kamera CCTV Saluran Wastafel Mampet')">
                     <picture>
                         <source srcset="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" type="image/webp">
-                        <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" alt="Teknisi APD Lengkap Rootera Plumbing Penanganan Saluran Sink Mampet" style="width: 100%; height: 380px; object-fit: cover; display: block;" />
+                        <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" alt="Teknisi APD Lengkap Rootera Plumbing Penanganan Saluran Sink Mampet" width="600" height="380" style="width: 100%; height: 380px; object-fit: cover; display: block;" />
                     </picture>
                     <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,20,52,0.85) 0%, rgba(6,20,52,0.3) 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 0.75rem;">

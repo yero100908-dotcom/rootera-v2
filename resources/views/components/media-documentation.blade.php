@@ -6,7 +6,9 @@
     'projectShowcases' => null,
     'relatedArticles' => null,
     'locationName' => null,
-    'locationShort' => null
+    'locationShort' => null,
+    'galleryShowcaseItems' => null,
+    'articlesToDisplay' => null,
 ])
 
 <?php
@@ -15,19 +17,8 @@ $locShort = $locationShort ?? $locationName ?? 'Area Layanan';
 $mediaService = app(\App\Services\MediaService::class);
 $toolkitImages = $mediaService->getToolkitImages();
 
-// Fetch active gallery items (up to 4 items) from the active Gallery model (/galeri-dokumentasi)
-try {
-    $galleryShowcaseItems = \App\Models\Gallery::where('is_active', true)
-        ->orderBy('sort_order', 'asc')
-        ->orderBy('created_at', 'desc')
-        ->take(4)
-        ->get();
-} catch (\Throwable $e) {
-    $galleryShowcaseItems = collect();
-}
-
-// Fallback items if database gallery query is empty
-if (!is_iterable($galleryShowcaseItems) || (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) === 0)) {
+// Resolve gallery items from props or static fallback without DB queries in Blade
+if (empty($galleryShowcaseItems) || (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) === 0)) {
     $galleryShowcaseItems = [
         [
             'title' => 'Pelancaran Pipa Wastafel Dapur & Restoran',
@@ -69,14 +60,7 @@ if (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) > 4) {
     }
 }
 
-// Specific target slugs for Section 3 video blog cards
-$targetVideoSlugs = [
-    'jangan-tunggu-mampet-total-bahaya-endapan-lemak-di-pipa-jasapipamampet-beritaterkini-fypyoutube',
-    'nside-the-kai-misi-tim-rootera-jasapipamampetberitaterkini-fypyoutube-rooteraplumbing',
-    'inspeksi-saluran-mampet-di-kantor-pertamina-sunter-jasapipamampet-fypyoutube-beritaterkini'
-];
-
-// Fallback Video / Article Cards if DB items missing
+// Fallback Video / Article Cards if prop missing/empty
 $fallbackArticles = [
     [
         'title' => 'Jangan Tunggu Mampet Total! Bahaya Endapan Lemak di Pipa🛑',
@@ -116,24 +100,13 @@ $fallbackArticles = [
     ]
 ];
 
-try {
-    $fetchedArticles = \App\Models\Article::whereIn('slug', $targetVideoSlugs)->get()->keyBy('slug');
-    $orderedArticles = collect();
-
-    foreach ($targetVideoSlugs as $slug) {
-        if ($fetchedArticles->has($slug)) {
-            $orderedArticles->push($fetchedArticles->get($slug));
-        } else {
-            $fb = collect($fallbackArticles)->firstWhere('slug', $slug);
-            if ($fb) {
-                $orderedArticles->push($fb);
-            }
-        }
+// Resolve articles to display from props or fallback without DB queries in Blade
+if (empty($articlesToDisplay)) {
+    if (!empty($relatedArticles) && (is_countable($relatedArticles) && count($relatedArticles) > 0)) {
+        $articlesToDisplay = $relatedArticles;
+    } else {
+        $articlesToDisplay = $fallbackArticles;
     }
-
-    $articlesToDisplay = $orderedArticles;
-} catch (\Throwable $e) {
-    $articlesToDisplay = $fallbackArticles;
 }
 ?>
 

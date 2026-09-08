@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="id" class="w-full h-full">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.ga4_id', env('GA4_TRACKING_ID', 'G-DGGQRFGDFL')) }}"></script>
+    <!-- Google tag (gtag.js) - User Interaction Delay for Performance -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', '{{ config('services.ga4_id', env('GA4_TRACKING_ID', 'G-DGGQRFGDFL')) }}');
+      (function() {
+        var gaId = '{{ config('services.ga4_id', env('GA4_TRACKING_ID', 'G-DGGQRFGDFL')) }}';
+        var loaded = false;
+        function loadGA() {
+          if (loaded) return;
+          loaded = true;
+          gtag('config', gaId);
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+          document.head.appendChild(s);
+        }
+        var events = ['scroll', 'pointerdown', 'touchstart', 'mousemove', 'keydown'];
+        events.forEach(function(e) {
+          window.addEventListener(e, loadGA, { once: true, passive: true });
+        });
+        setTimeout(loadGA, 4000);
+      })();
     </script>
 
     <meta charset="UTF-8">
@@ -27,8 +43,8 @@
 
     {{-- LCP Image Preload for Homepage (Responsive Mobile & Desktop) --}}
     @if(request()->routeIs('home') || request()->path() === '/')
-        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" media="(max-width: 767px)" type="image/webp">
-        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" media="(min-width: 768px)" type="image/webp">
+        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" media="(max-width: 767px)" type="image/webp" fetchpriority="high">
+        <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" media="(min-width: 768px)" type="image/webp" fetchpriority="high">
     @endif
 
     {{-- Dynamic SEO Meta Tags --}}
@@ -177,6 +193,8 @@
     @endif
 
     {{-- Fonts --}}
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -184,9 +202,6 @@
     {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
 
-    {{-- Alpine.js & Alpine Collapse Plugin --}}
-    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>[x-cloak] { display: none !important; }</style>
 
     {{-- Styles --}}

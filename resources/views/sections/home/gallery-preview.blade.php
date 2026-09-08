@@ -122,7 +122,7 @@
         <div id="gallery-slider-container"
              class="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-6 no-scrollbar touch-pan-x touch-pan-y sm:grid sm:grid-cols-2 lg:grid-cols-3 mb-8 sm:mb-12 sm:pb-0"
              style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
-            @foreach($hybridGalleries as $item)
+            @foreach($hybridGalleries->take(3) as $item)
             <div class="w-[280px] sm:w-[340px] md:w-auto shrink-0 snap-start bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-2xl hover:border-emerald-400/80 transition-all duration-300 flex flex-col justify-between h-full group hover:-translate-y-1.5">
                 
                 {{-- MEDIA THUMBNAIL CONTAINER --}}
