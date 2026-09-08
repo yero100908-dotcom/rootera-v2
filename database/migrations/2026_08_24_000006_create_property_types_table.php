@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('meta_description')->nullable();
             $table->json('common_issues')->nullable();
             $table->json('fast_solutions')->nullable();
-            $table->string('price_starting_from')->default('Rp 350.000');
+            $table->string('price_starting_from')->default('Rp 400.000');
             $table->string('estimated_time')->default('1-2 Jam Selesai');
             $table->integer('guarantee_days')->default(30);
             $table->integer('sort_order')->default(0);

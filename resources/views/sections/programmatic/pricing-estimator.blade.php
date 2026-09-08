@@ -33,7 +33,7 @@
                     <p class="text-xs text-slate-500 mb-3">Pelancaran bak cuci berlemak beku</p>
                     <div class="mb-4 pb-4 border-b border-slate-100">
                         <span class="text-xs text-slate-400 font-medium block">Estimasi Tarif:</span>
-                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 350rb</span>
+                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 400rb</span>
                     </div>
                     <ul class="space-y-2 text-xs text-slate-600 mb-5">
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Mesin Rotary Spiral Flexible</span></li>
@@ -88,7 +88,7 @@
                     <p class="text-xs text-slate-500 mb-3">Pelancaran WC meluap & tersumbat</p>
                     <div class="mb-4 pb-4 border-b border-slate-100">
                         <span class="text-xs text-slate-400 font-medium block">Estimasi Tarif:</span>
-                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 450rb</span>
+                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 400rb</span>
                     </div>
                     <ul class="space-y-2 text-xs text-slate-600 mb-5">
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Penanganan WC Meluap 24 Jam</span></li>
@@ -114,7 +114,7 @@
                     <p class="text-xs text-slate-500 mb-3">Pelancaran pipa pembuangan utama</p>
                     <div class="mb-4 pb-4 border-b border-slate-100">
                         <span class="text-xs text-slate-400 font-medium block">Estimasi Tarif:</span>
-                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 500rb</span>
+                        <span class="text-xl font-extrabold text-emerald-600">Mulai Rp 400rb</span>
                     </div>
                     <ul class="space-y-2 text-xs text-slate-600 mb-5">
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Mesin Rigid Spiral Jangkauan Panjang</span></li>

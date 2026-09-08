@@ -24,7 +24,7 @@ class ServiceCategorySeeder extends Seeder
                 'is_active'         => true,
                 'meta_title'        => 'Jasa Pelancar Pipa Mampet Tanpa Bongkar 24 Jam | Rootera',
                 'meta_description'  => 'Jasa pelancar pipa mampet profesional tanpa bongkar lantai. Menggunakan rooter spiral cable modern bergaransi tuntas.',
-                'price_home'        => 'Mulai Rp 350.000',
+                'price_home'        => 'Mulai Rp 400.000',
                 'price_corporate'   => 'Hubungi CS',
                 'price_description' => 'Bergaransi tuntas 100% tanpa bongkar paksa',
                 'sub_services'      => [
@@ -61,7 +61,7 @@ class ServiceCategorySeeder extends Seeder
                 'is_active'         => true,
                 'meta_title'        => 'Jasa Saluran Kamar Mandi & Floor Drain Mampet | Rootera',
                 'meta_description'  => 'Solusi floor drain kamar mandi menggenang dan mampet. Pengerjaan cepat tanpa merusak ubin rumah Anda.',
-                'price_home'        => 'Mulai Rp 350.000',
+                'price_home'        => 'Mulai Rp 400.000',
                 'price_corporate'   => 'Hubungi CS',
                 'price_description' => 'Solusi cepat genangan air kamar mandi',
                 'sub_services'      => [

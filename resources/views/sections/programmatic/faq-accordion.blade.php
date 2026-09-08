@@ -27,7 +27,7 @@
                 ],
                 [
                     'q' => "Berapa estimasi biaya jasa saluran mampet di area " . ($district->name ?? $locationShort) . "?",
-                    'a' => "Tarif transparan mulai dari Rp 350.000 untuk wastafel/bak cuci piring. Biaya final diinfokan di awal setelah inspeksi tanpa biaya tersembunyi."
+                    'a' => "Tarif transparan mulai dari Rp 400.000 untuk wastafel/bak cuci piring. Biaya final diinfokan di awal setelah inspeksi tanpa biaya tersembunyi."
                 ],
                 [
                     'q' => "Apa yang dimaksud dengan sistem garansi \"No Fix, No Fee\"?",

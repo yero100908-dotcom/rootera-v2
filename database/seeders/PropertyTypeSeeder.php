@@ -30,7 +30,7 @@ class PropertyTypeSeeder extends Seeder
                     'Teknisi berseragam resmi, terverifikasi identitasnya, & menerapkan protokol kebersihan.',
                     'Garansi resmi 30 hari pengerjaan ulang gratis jika saluran mampet kembali.'
                 ],
-                'price_starting_from' => 'Rp 350.000',
+                'price_starting_from' => 'Rp 400.000',
                 'estimated_time' => '1-2 Jam Selesai',
                 'guarantee_days' => 30,
                 'sort_order' => 1,
@@ -79,7 +79,7 @@ class PropertyTypeSeeder extends Seeder
                     'Pembersihan saringan & leher angsa saluran tuntas hingga ke pipa utama.',
                     'Garansi 30 hari penuh demi kenyamanan usaha tempat tinggal sewa Anda.'
                 ],
-                'price_starting_from' => 'Rp 350.000',
+                'price_starting_from' => 'Rp 400.000',
                 'estimated_time' => '1-2 Jam Selesai',
                 'guarantee_days' => 30,
                 'sort_order' => 3,

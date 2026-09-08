@@ -24,7 +24,7 @@ $propertySchema = [
   ],
   "offers" => [
     "@type" => "Offer",
-    "price" => preg_replace('/[^0-9]/', '', $property->price_starting_from) ?: "350000",
+    "price" => preg_replace('/[^0-9]/', '', $property->price_starting_from) ?: "400000",
     "priceCurrency" => "IDR",
     "availability" => "https://schema.org/InStock",
     "seller" => [
@@ -77,7 +77,7 @@ $propertySchema = [
                 </div>
                 <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 0.6rem 1.2rem; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                     <span>💰 Harga Mulai:</span>
-                    <span style="color: #2dd4bf;">{{ $property->price_starting_from ?? 'Rp 350.000' }}</span>
+                    <span style="color: #2dd4bf;">{{ $property->price_starting_from ?? 'Rp 400.000' }}</span>
                 </div>
                 <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 0.6rem 1.2rem; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 0.4rem;">
                     <span>🛡️ Garansi:</span>

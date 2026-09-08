@@ -17,95 +17,63 @@ $locShort = $locationShort ?? $locationName ?? 'Area Layanan';
 $mediaService = app(\App\Services\MediaService::class);
 $toolkitImages = $mediaService->getToolkitImages();
 
-// Resolve gallery items from props or static fallback without DB queries in Blade
-if (empty($galleryShowcaseItems) || (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) === 0)) {
-    $galleryShowcaseItems = [
-        [
-            'title' => 'Pelancaran Pipa Wastafel Dapur & Restoran',
-            'category_label' => 'Restoran & Kafe',
-            'display_thumbnail' => $toolkitImages['hydro_jetting']['url'],
-            'slug' => null,
-            'badge' => 'Restoran',
-        ],
-        [
-            'title' => 'Pembersihan Floor Drain Kamar Mandi Mampet',
-            'category_label' => 'Rumah Tinggal',
-            'display_thumbnail' => $toolkitImages['ridgid_k50']['url'],
-            'slug' => null,
-            'badge' => 'Rumah Tinggal',
-        ],
-        [
-            'title' => 'Pelancaran Saluran Pembuangan Kloset & WC',
-            'category_label' => 'Gedung & Publik',
-            'display_thumbnail' => asset('images/wc-mampet.jpg'),
-            'slug' => null,
-            'badge' => 'Gedung',
-        ],
-        [
-            'title' => 'Inspeksi Kamera CCTV Pipa Pembuangan Utilitas',
-            'category_label' => 'Inspeksi CCTV',
-            'display_thumbnail' => $toolkitImages['cctv_camera']['url'],
-            'slug' => null,
-            'badge' => 'Inspeksi CCTV',
-        ]
-    ];
-}
-
-// Limit showcase items to max 4 items
-if (is_countable($galleryShowcaseItems) && count($galleryShowcaseItems) > 4) {
-    if ($galleryShowcaseItems instanceof \Illuminate\Support\Collection) {
-        $galleryShowcaseItems = $galleryShowcaseItems->take(4);
-    } else if (is_array($galleryShowcaseItems)) {
-        $galleryShowcaseItems = array_slice($galleryShowcaseItems, 0, 4);
-    }
-}
-
-// Fallback Video / Article Cards if prop missing/empty
-$fallbackArticles = [
+// 4 Curated Real Portfolio Items with official /galeri-dokumentasi/{slug} URL structure
+$fourPortfolioItems = [
     [
-        'title' => 'Jangan Tunggu Mampet Total! Bahaya Endapan Lemak di Pipa🛑',
-        'slug' => 'jangan-tunggu-mampet-total-bahaya-endapan-lemak-di-pipa-jasapipamampet-beritaterkini-fypyoutube',
-        'category' => 'EDUKASI & VIDEO PANDUAN',
-        'thumbnail' => 'https://i.ytimg.com/vi/dkbZNoaIT9w/hqdefault.jpg',
-        'duration' => '⏱ 1 mnt',
-        'youtube_id' => 'dkbZNoaIT9w',
-        'published_at' => '13 Aug 2026',
-        'views' => '1.2k',
-        'author' => 'Rootera Plumbing',
-        'excerpt' => 'Saluran mampet jangan cuma dilihat dari air yang tidak mengalir. Bisa jadi ada masalah besar di dalam pipanya! Lemak, kotoran, dan endapan menumpuk mempersempit jalur pipa.',
+        'title'       => 'Pelancaran Drainase Kitchen Soichiro Japanese Steakhouse',
+        'slug'        => 'pelancaran-drainase-kitchen-soichiro-japanese-steakhouse',
+        'category'    => 'Restoran & Kafe',
+        'location'    => 'Jakarta',
+        'description' => 'Penanganan sumbatan pembekuan lemak pada saluran drainase dapur komersial restoran Soichiro Japanese Steakhouse menggunakan mesin spiral rotary tanpa merusak keramik.',
+        'image'       => asset('images/dokumentasi/pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp'),
+        'url'         => url('/galeri-dokumentasi/pelancaran-drainase-kitchen-soichiro-japanese-steakhouse'),
+        'width'       => 600,
+        'height'      => 375,
     ],
     [
-        'title' => 'NSIDE THE KAI - Misi Tim Rootera',
-        'slug' => 'nside-the-kai-misi-tim-rootera-jasapipamampetberitaterkini-fypyoutube-rooteraplumbing',
-        'category' => 'EDUKASI & VIDEO PANDUAN',
-        'thumbnail' => 'https://i.ytimg.com/vi/2NN31lF2O40/hqdefault.jpg',
-        'duration' => '⏱ 2 mnt',
-        'youtube_id' => '2NN31lF2O40',
-        'published_at' => '14 Aug 2026',
-        'views' => '2.5k',
-        'author' => 'Rootera Plumbing',
-        'excerpt' => 'Pernah penasaran bagaimana perawatan fasilitas publik berjalan di balik sibuknya jadwal stasiun kereta api? Di video recap short movie ini, tim Rooterin membawa Anda melihat langsung prosesnya.',
+        'title'       => 'Pelancaran Floor Drain Kamar Mandi Rumah Tinggal',
+        'slug'        => 'pelancaran-floor-drain-kamar-mandi-rumah-tinggal',
+        'category'    => 'Rumah Tinggal',
+        'location'    => 'Jakarta',
+        'description' => 'Proses pengerjaan pelancaran saringan dan pipa floor drain kamar mandi perumahan secara cepat tanpa membongkar ubin.',
+        'image'       => asset('images/dokumentasi/pelancar-floor-drain-kamar-mandi-rumah.webp'),
+        'url'         => url('/galeri-dokumentasi/pelancaran-floor-drain-kamar-mandi-rumah-tinggal'),
+        'width'       => 600,
+        'height'      => 375,
     ],
     [
-        'title' => 'Inspeksi SALURAN MAMPET di Kantor Pertamina Sunter 🏢🎥',
-        'slug' => 'inspeksi-saluran-mampet-di-kantor-pertamina-sunter-jasapipamampet-fypyoutube-beritaterkini',
-        'category' => 'EDUKASI & VIDEO PANDUAN',
-        'thumbnail' => 'https://i.ytimg.com/vi/yvzZqMV6PKY/hqdefault.jpg',
-        'duration' => '⏱ 1 mnt',
-        'youtube_id' => 'yvzZqMV6PKY',
-        'published_at' => '12 Aug 2026',
-        'views' => '3.1k',
-        'author' => 'Rootera Plumbing',
-        'excerpt' => 'Kali ini tim Rootera dipercaya melakukan pengerjaan di Kantor Pertamina Sunter. Sebelum dieksekusi, teknisi kami melakukan inspeksi menggunakan Drain Camera (CCTV Pipa).',
-    ]
+        'title'       => 'Inspeksi Kamera CCTV Pipa Tersumbat Lemak',
+        'slug'        => 'inspeksi-kamera-cctv-pipa-tersumbat-lemak',
+        'category'    => 'Inspeksi CCTV',
+        'location'    => 'Jabodetabek',
+        'description' => 'Tampilan monitor kamera CCTV yang menampilkan akumulasi lemak membatu di dinding dalam pipa pembuangan.',
+        'image'       => asset('images/dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat.webp'),
+        'url'         => url('/galeri-dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat-lemak'),
+        'width'       => 600,
+        'height'      => 375,
+    ],
+    [
+        'title'       => 'Proyek Pelancaran Saluran Mall Banjarmasin (Part 1)',
+        'slug'        => 'proyek-pelancaran-saluran-mall-banjarmasin-part-1',
+        'category'    => 'Gedung & Pabrik',
+        'location'    => 'Banjarmasin, Kalsel',
+        'description' => 'Ekspansi layanan nasional Rootera Plumbing menangani proyek pelancaran saluran pembuangan utama Mall Banjarmasin.',
+        'image'       => asset('images/dokumentasi/pelancaran-saluran-mampet-mall-banjarmasin-1.webp'),
+        'url'         => url('/galeri-dokumentasi/proyek-pelancaran-saluran-mall-banjarmasin-part-1'),
+        'width'       => 600,
+        'height'      => 375,
+    ],
 ];
 
-// Resolve articles to display from props or fallback without DB queries in Blade
-if (empty($articlesToDisplay)) {
+// Resolve articles to display from props or query DB directly
+if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($articlesToDisplay) === 0)) {
     if (!empty($relatedArticles) && (is_countable($relatedArticles) && count($relatedArticles) > 0)) {
         $articlesToDisplay = $relatedArticles;
     } else {
-        $articlesToDisplay = $fallbackArticles;
+        $articlesToDisplay = \App\Models\Article::published()
+            ->latest('published_at')
+            ->take(3)
+            ->get();
     }
 }
 ?>
@@ -130,7 +98,7 @@ if (empty($articlesToDisplay)) {
             @foreach($toolkitImages as $key => $tool)
             <div class="w-[82vw] min-w-[82vw] sm:min-w-[280px] snap-center shrink-0 md:w-auto md:min-w-0 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-sm transition hover:-translate-y-1.5 hover:border-emerald-400 flex flex-col justify-between">
                 <div class="h-[150px] md:h-[180px] bg-slate-100 overflow-hidden relative flex items-center justify-center p-2 md:p-0">
-                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" class="w-full h-full object-contain md:object-cover rounded-lg md:rounded-none" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+                    <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }} - {{ $locName }}" width="400" height="250" class="w-full h-full object-contain md:object-cover rounded-lg md:rounded-none" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                     <span class="absolute top-2 right-2 md:top-2.5 md:right-2.5 bg-emerald-600/90 text-white text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-2.5 md:py-1 rounded-full uppercase z-10">
                         ✓ Alat Resmi
                     </span>
@@ -156,12 +124,14 @@ if (empty($articlesToDisplay)) {
     </div>
 </section>
 
-<!-- Section 2: Gallery Showcase Preview Grid -->
-<section class="py-8 px-4 md:py-[4.5rem] md:px-6 bg-gradient-to-b from-slate-50 to-blue-50/50 border-t border-b border-slate-200" id="dokumentasi-lapangan">
+<!-- Section 2: Gallery Showcase Preview Grid with Lightbox Modal -->
+<section class="py-8 px-4 md:py-[4.5rem] md:px-6 bg-gradient-to-b from-slate-50 to-blue-50/50 border-t border-b border-slate-200"
+         id="dokumentasi-lapangan"
+         x-data="{ openModal: false, modalImg: '', modalTitle: '', modalDesc: '', modalCategory: '', modalLocation: '', modalUrl: '' }">
     <div style="max-width: 1200px; margin: 0 auto;">
         
         <!-- Section Header -->
-        <div class="text-center mb-6 md:mb-14">
+        <div class="text-center mb-6 md:mb-12">
             <div class="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[11px] md:text-[0.85rem] font-extrabold uppercase tracking-wider mb-1.5">
                 <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm"></span>
                 PORTFOLIO &amp; DOKUMENTASI
@@ -174,53 +144,64 @@ if (empty($articlesToDisplay)) {
             </p>
         </div>
 
-        <!-- Gallery Showcase Preview Carousel/Grid -->
-        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-3 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-6" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
-            @foreach($galleryShowcaseItems as $gItem)
-            @php
-                $gTitle = is_object($gItem) ? $gItem->title : ($gItem['title'] ?? 'Dokumentasi Pengerjaan Pipa');
-                $gThumb = is_object($gItem) ? $gItem->display_thumbnail : ($gItem['display_thumbnail'] ?? asset('images/JnJ.jpeg'));
-                $gCategory = is_object($gItem) ? $gItem->category_label : ($gItem['category_label'] ?? $gItem['badge'] ?? 'Portofolio');
-                $gSlug = is_object($gItem) ? $gItem->slug : ($gItem['slug'] ?? null);
-                $gUrl = $gSlug ? route('galeri.show', $gSlug) : route('galeri');
-                $gMedia = is_object($gItem) ? $gItem->display_media : $gThumb;
-                $gMediaType = is_object($gItem) ? $gItem->media_type : 'photo';
-                $gBeforeImg = is_object($gItem) ? $gItem->display_before_image : null;
-            @endphp
-            <div class="w-[82vw] min-w-[82vw] sm:min-w-[260px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-lg hover:border-emerald-400/50 group flex flex-col justify-between">
-                <!-- Image Container with Job Type Badge -->
-                <div class="relative h-[150px] md:h-[210px] bg-slate-900 overflow-hidden cursor-pointer flex items-center justify-center" onclick="openMediaModal('{{ $gMediaType }}', '{{ $gMedia }}', '{{ addslashes($gTitle) }}', '{{ $gBeforeImg }}', '{{ urlencode($gTitle) }}')">
-                    <img src="{{ $gThumb }}" alt="{{ $gTitle }} - Rootera Plumbing" class="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async" onerror="this.src='/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'">
+        <!-- 4 Curated Real Gallery Cards (Mobile Horizontal Swipe Carousel, Grid on Desktop) -->
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-3 sm:gap-4 lg:gap-6 pb-4 sm:pb-0 mobile-scrollbar touch-pan-x touch-pan-y sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
+            @foreach($fourPortfolioItems as $pIdx => $item)
+            <div class="w-[82vw] min-w-[82vw] sm:w-auto sm:min-w-0 shrink-0 snap-center bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between group">
+                
+                {{-- Image Box with Hover Overlay & Lightbox Click --}}
+                <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-900 cursor-pointer"
+                     @click="openModal = true; modalImg = '{{ $item['image'] }}'; modalTitle = '{{ addslashes($item['title']) }}'; modalDesc = '{{ addslashes($item['description']) }}'; modalCategory = '{{ $item['category'] }}'; modalLocation = '{{ $item['location'] }}'; modalUrl = '{{ $item['url'] }}'">
                     
-                    <!-- Job Type Badge Overlay -->
-                    <span class="absolute top-2 left-2 md:top-3 md:left-3 bg-slate-900/85 text-emerald-400 border border-emerald-500/30 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 md:px-3 md:py-1 rounded-full backdrop-blur-sm uppercase z-10">
-                        🏷️ {{ $gCategory }}
+                    <img src="{{ $item['image'] }}"
+                         alt="{{ $item['title'] }} - Rootera Plumbing {{ $locName }}"
+                         loading="lazy"
+                         decoding="async"
+                         width="{{ $item['width'] }}"
+                         height="{{ $item['height'] }}"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                         onerror="this.onerror=null;this.src='/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp';">
+
+                    {{-- Badges --}}
+                    <span class="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 bg-slate-900/90 text-emerald-400 border border-emerald-500/30 text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm uppercase z-10 shadow-sm">
+                        🏷️ {{ $item['category'] }}
+                    </span>
+                    <span class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 bg-emerald-600/90 text-white text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm z-10 shadow-sm">
+                        📍 {{ $item['location'] }}
                     </span>
 
-                    <!-- Visual Zoom Icon Overlay -->
-                    <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
-                        <span class="bg-emerald-500 text-white w-8 h-8 md:w-11 md:h-11 rounded-full flex items-center justify-center shadow-md text-xs md:text-base">
-                            🔍
+                    {{-- Hover Overlay & Eye Icon Button --}}
+                    <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                        <span class="bg-emerald-500 hover:bg-emerald-400 text-white px-3 py-1.5 rounded-full font-extrabold text-xs flex items-center gap-1.5 shadow-lg transform group-hover:scale-105 transition-all">
+                            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                            <span>Pratinjau Foto</span>
                         </span>
                     </div>
                 </div>
 
-                <!-- Showcase Item Details -->
-                <div class="p-3 md:p-[1.25rem] flex flex-col justify-between flex-grow">
+                {{-- Card Content Body --}}
+                <div class="p-3.5 sm:p-4 flex-grow flex flex-col justify-between">
                     <div>
-                        <h3 class="text-xs md:text-[1.05rem] font-extrabold text-slate-900 mb-1 md:mb-2 leading-snug group-hover:text-emerald-600 transition-colors line-clamp-2">
-                            <a href="{{ $gUrl }}" class="text-inherit text-decoration-none">
-                                {{ $gTitle }}
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors line-clamp-2">
+                            <a href="{{ $item['url'] }}" class="text-inherit no-underline">
+                                {{ $item['title'] }}
                             </a>
                         </h3>
+                        <p class="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
+                            {{ $item['description'] }}
+                        </p>
                     </div>
 
-                    <div class="flex items-center justify-between border-t border-slate-100 pt-2 md:pt-3 mt-2 md:mt-3 text-[11px] md:text-[0.8rem]">
-                        <span class="text-emerald-600 font-bold flex items-center gap-1">
-                            ✓ Tanpa Bongkar
-                        </span>
-                        <a href="{{ $gUrl }}" class="text-sky-600 font-extrabold text-decoration-none hover:underline">
-                            Detail →
+                    {{-- Card Footer Action Buttons --}}
+                    <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between gap-2">
+                        <a href="{{ $item['url'] }}" class="text-xs font-bold text-slate-700 hover:text-emerald-600 transition-colors no-underline flex items-center gap-1">
+                            <span>Studi Kasus</span><span>→</span>
+                        </a>
+                        <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin konsultasi penanganan seperti ' . $item['title'] . ' di area ' . $locName) }}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="bg-emerald-100 hover:bg-emerald-500 text-emerald-800 hover:text-white text-xs font-bold px-2.5 py-1 rounded-full transition-all duration-200 no-underline shrink-0 flex items-center gap-1 shadow-sm">
+                            <span>💬 Konsultasi</span>
                         </a>
                     </div>
                 </div>
@@ -228,20 +209,74 @@ if (empty($articlesToDisplay)) {
             </div>
             @endforeach
         </div>
-        <!-- Mobile Visual Scroll Indicator -->
-        <div class="md:hidden flex items-center justify-center gap-1.5 mt-2">
+
+        {{-- Mobile Visual Scroll Indicator --}}
+        <div class="sm:hidden flex items-center justify-center gap-1.5 mt-3 select-none">
             <span class="w-6 h-1.5 rounded-full bg-emerald-500"></span>
             <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
             <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
             <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
         </div>
 
-        <!-- Call-To-Action Button to Main Gallery Page -->
-        <div class="text-center mt-6 md:mt-12">
-            <a href="{{ route('galeri') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white px-5 py-3 md:px-9 md:py-3.5 rounded-full font-extrabold text-xs md:text-[0.95rem] text-decoration-none shadow-md transition-all">
+        {{-- Call-To-Action Button to Main Gallery Page --}}
+        <div class="text-center mt-6 md:mt-10">
+            <a href="{{ route('galeri') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-emerald-600 text-white px-6 py-3 rounded-full font-extrabold text-xs md:text-sm text-decoration-none shadow-md transition-all">
                 <span>Lihat Portofolio &amp; Dokumentasi Lengkap di Galeri Kami →</span>
             </a>
         </div>
+
+        {{-- Lightbox Modal Container (Alpine.js Responsive Overlay) --}}
+        <div x-show="openModal" 
+             x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @keydown.escape.window="openModal = false"
+             class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
+            
+            <div @click.away="openModal = false" 
+                 class="relative bg-white rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl border border-slate-200 transform transition-all my-8">
+                
+                {{-- Close Button X --}}
+                <button @click="openModal = false" 
+                        class="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white font-bold text-lg flex items-center justify-center transition-transform hover:scale-110 active:scale-95 shadow-md">
+                    ✕
+                </button>
+
+                {{-- Modal Image Container --}}
+                <div class="relative aspect-video w-full bg-slate-950 overflow-hidden flex items-center justify-center">
+                    <img :src="modalImg" :alt="modalTitle" class="w-full h-full object-contain">
+                    
+                    <div class="absolute top-4 left-4 flex items-center gap-2">
+                        <span class="bg-slate-900/90 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold px-3 py-1 rounded-full uppercase shadow-md" x-text="'🏷️ ' + modalCategory"></span>
+                        <span class="bg-emerald-600/90 text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-md" x-text="'📍 ' + modalLocation"></span>
+                    </div>
+                </div>
+
+                {{-- Modal Content Body --}}
+                <div class="p-6 md:p-8 bg-white">
+                    <h3 class="text-lg md:text-2xl font-extrabold text-slate-900 leading-tight" x-text="modalTitle"></h3>
+                    <p class="text-xs md:text-sm text-slate-600 mt-3 leading-relaxed" x-text="modalDesc"></p>
+
+                    <div class="mt-6 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <a :href="modalUrl" class="text-xs md:text-sm font-bold text-slate-700 hover:text-emerald-600 underline">
+                            Lihat Halaman Detail Portofolio →
+                        </a>
+                        <a :href="'https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text=' + encodeURIComponent('Halo Rootera, saya ingin konsultasi penanganan seperti ' + modalTitle + ' di area {{ $locName }}')" 
+                           target="_blank"
+                           rel="noopener noreferrer" 
+                           class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs md:text-sm px-6 py-3 rounded-full shadow-md text-center transition-transform active:scale-95 flex items-center justify-center gap-2 no-underline">
+                            <span>💬 Konsultasi Sekarang via WA</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -253,7 +288,7 @@ if (empty($articlesToDisplay)) {
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 md:mb-10">
             <div>
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-950 font-bold text-xs uppercase tracking-wider mb-2">
-                    🎬 EDUKASI & VIDEO PANDUAN
+                    🎬 EDUKASI &amp; VIDEO PANDUAN
                 </span>
                 <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
                     Lihat Aksi Teknisi Rootera Melancarkan Pipa
@@ -263,7 +298,7 @@ if (empty($articlesToDisplay)) {
                 </p>
             </div>
             <div>
-                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya ingin pesan layanan pipa mampet untuk area ' . $locName) }}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-[#0B192C] hover:bg-blue-900 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition-all duration-200">
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin pesan layanan pipa mampet untuk area ' . $locName) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-[#0B192C] hover:bg-blue-900 text-white font-bold text-sm px-5 py-3 rounded-xl shadow-md transition-all duration-200 no-underline">
                     <span>📞 Panggil Teknisi (24 Jam)</span>
                 </a>
             </div>
@@ -273,31 +308,32 @@ if (empty($articlesToDisplay)) {
         <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 mobile-scrollbar touch-pan-x touch-pan-y px-4 -mx-4 md:grid md:grid-cols-3 md:gap-6 md:pb-0 md:px-0 md:mx-0" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
             @foreach($articlesToDisplay as $artIdx => $art)
             <?php
-                $artTitle = is_object($art) ? $art->title : ($art['title'] ?? '');
-                $artSlug = is_object($art) ? $art->slug : ($art['slug'] ?? '#');
-                $artCategory = 'EDUKASI & VIDEO PANDUAN';
-                $artUrl = ($artSlug !== '#') ? url('/blog/' . $artSlug) : route('blog');
+                $isArtObj = is_object($art);
+                $artTitle = $isArtObj ? ($art->clean_title ?: $art->title) : ($art['title'] ?? '');
+                $artSlug = $isArtObj ? $art->slug : ($art['slug'] ?? '#');
+                $artCategory = $isArtObj ? (strtoupper($art->category ?? 'EDUKASI & VIDEO PANDUAN')) : ($art['category'] ?? 'EDUKASI & VIDEO PANDUAN');
+                $artUrl = ($artSlug && $artSlug !== '#') ? url('/blog/' . $artSlug) : route('blog');
                 
-                if (is_object($art)) {
-                    $artThumb = $art->thumbnail ?: ($art->thumbnail_url ?: $toolkitImages['ridgid_k50']['url']);
-                    $artDuration = $art->read_time ? ('⏱ ' . $art->read_time . ' mnt') : '⏱ 1 mnt';
+                if ($isArtObj) {
+                    $artThumb = $art->thumbnail_url;
+                    $artDuration = '⏱ ' . ($art->reading_time ?? 1) . ' mnt';
                     $artDate = $art->published_at ? $art->published_at->format('d M Y') : 'Terbaru';
                     $artViews = number_format($art->views ?? 1250);
                     $artAuthor = $art->author ?: 'Rootera Plumbing';
-                    $artExcerpt = $art->excerpt ?: 'Klik untuk menonton video panduan penanganan pipa mampet teknisi Rootera di lapangan.';
+                    $artExcerpt = $art->excerpt ?: 'Klik untuk membaca artikel panduan penanganan pipa mampet teknisi Rootera di lapangan.';
                 } else {
                     $artThumb = $art['thumbnail'] ?? $toolkitImages['ridgid_k50']['url'];
                     $artDuration = $art['duration'] ?? '⏱ 1 mnt';
                     $artDate = $art['published_at'] ?? 'Terbaru';
                     $artViews = $art['views'] ?? '1.2k';
                     $artAuthor = $art['author'] ?? 'Rootera Plumbing';
-                    $artExcerpt = $art['excerpt'] ?? 'Klik untuk menonton video panduan penanganan pipa mampet teknisi Rootera di lapangan.';
+                    $artExcerpt = $art['excerpt'] ?? 'Klik untuk membaca artikel panduan penanganan pipa mampet teknisi Rootera di lapangan.';
                 }
             ?>
             <a href="{{ $artUrl }}" class="w-[82vw] max-w-[320px] flex-shrink-0 snap-center md:w-auto bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-100 overflow-hidden flex flex-col justify-between transition-all duration-300 group block text-left text-slate-800 no-underline">
                 <!-- Thumbnail Container -->
                 <div class="relative aspect-video w-full overflow-hidden bg-slate-100">
-                    <img src="{{ $artThumb }}" alt="{{ $artTitle }} - Rootera Plumbing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+                    <img src="{{ $artThumb }}" alt="{{ $artTitle }} - Rootera Plumbing" width="480" height="270" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
                     
                     <!-- Category Badge Top-Left -->
                     <span class="absolute top-3 left-3 bg-[#0B192C] text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-sm z-10">
@@ -354,7 +390,7 @@ if (empty($articlesToDisplay)) {
         </div>
 
         <div class="text-center mt-10 md:mt-12">
-            <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 bg-white hover:bg-slate-100 hover:border-slate-400 px-6 py-3 rounded-full font-bold text-sm shadow-sm transition-all duration-200">
+            <a href="{{ route('blog') }}" class="inline-flex items-center gap-2 border border-slate-300 text-slate-700 bg-white hover:bg-slate-100 hover:border-slate-400 px-6 py-3 rounded-full font-bold text-sm shadow-sm transition-all duration-200 no-underline">
                 <span>Lihat Semua Video &amp; Panduan Pengetahuan Lengkap →</span>
             </a>
         </div>

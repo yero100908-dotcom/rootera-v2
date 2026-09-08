@@ -10,9 +10,9 @@ $formattedPriceCorporate = is_numeric($category->price_corporate)
     ? 'Rp ' . number_format((float) $category->price_corporate, 0, ',', '.') 
     : ($category->price_corporate ?: 'Hubungi CS');
 
-$numericLowPrice = (int) preg_replace('/[^0-9]/', '', (string) ($category->price_home ?? '350000'));
+$numericLowPrice = (int) preg_replace('/[^0-9]/', '', (string) ($category->price_home ?? '400000'));
 if ($numericLowPrice <= 0) {
-    $numericLowPrice = 350000;
+    $numericLowPrice = 400000;
 }
 
 $serviceSchema = [

@@ -78,9 +78,21 @@ class ProgrammaticSeoController extends Controller
                 ->where(function ($q) use ($city) {
                     $q->where('city_id', $city->id)->orWhereNull('city_id');
                 })
-                ->with(['district', 'city'])
-                ->take(6)
+                ->with(['district', 'city', 'serviceCategory'])
+                ->latest()
+                ->take(4)
                 ->get();
+
+            if ($projectShowcases->count() < 4) {
+                $existingIds = $projectShowcases->pluck('id')->toArray();
+                $moreShowcases = ProjectGallery::where('is_active', true)
+                    ->whereNotIn('id', $existingIds)
+                    ->with(['district', 'city', 'serviceCategory'])
+                    ->latest()
+                    ->take(4 - $projectShowcases->count())
+                    ->get();
+                $projectShowcases = $projectShowcases->concat($moreShowcases);
+            }
 
             $relatedArticles = \App\Models\Article::published()
                 ->latest('published_at')

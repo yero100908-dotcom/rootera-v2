@@ -28,7 +28,7 @@ class ProblemHubController extends Controller
                     'name' => 'Floor Drain Kamar Mandi Menggenang',
                     'category_slug' => 'kamar-mandi-mampet',
                     'description' => 'Pembersihan rontokan rambut, kerak sabun, dan kapur pada saringan floor drain kamar mandi.',
-                    'price_home' => 'Rp 350.000',
+                    'price_home' => 'Rp 400.000',
                     'price_corporate' => 'Hubungi CS',
                 ],
                 'kloset-wc-meluap' => [
@@ -67,7 +67,7 @@ class ProblemHubController extends Controller
                 'name' => Str::title(str_replace('-', ' ', $problemSlug)),
                 'category_slug' => 'pipa-mampet',
                 'description' => 'Solusi pelancaran pipa mampet profesional 24 jam tanpa merusak struktur bangunan.',
-                'price_home' => 'Rp 350.000',
+                'price_home' => 'Rp 400.000',
                 'price_corporate' => 'Hubungi CS',
             ];
 
