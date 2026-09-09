@@ -153,88 +153,90 @@
     {{-- Schema Markup: Dynamic structured data --}}
     @hasSection('structured_data')
         @yield('structured_data')
-    @elseifHasSection('schema-markup')
-        @yield('schema-markup')
     @else
-        <?php
-        $fallbackSchema = [
-          "@context" => "https://schema.org",
-          "@graph" => [
-            [
-              "@type" => ["LocalBusiness", "Plumber", "HomeAndConstructionBusiness"],
-              "name" => "Rootera Plumbing",
-              "alternateName" => ["Rootera", "Rootera Indonesia", "J&J Group Plumbing Division"],
-              "description" => "Layanan profesional jasa saluran pipa mampet, wastafel tersumbat, kran air, dan plumbing service B2C & B2B oleh Rootera Plumbing (J&J Group).",
-              "@id" => url('/') . "#organization",
-              "url" => url('/'),
-              "telephone" => "+6281385404000",
-              "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-              "image" => asset('images/JnJ.webp'),
-              "priceRange" => "$$",
-              "parentOrganization" => [
-                "@type" => "Organization",
-                "name" => "J&J GROUP",
-                "url" => url('/')
-              ],
-              "knowsAbout" => [
-                "Pelancaran Pipa Mampet Tanpa Bongkar",
-                "B2B Preventive Plumbing Maintenance",
-                "Hydro Jetting Industrial System",
-                "CCTV Pipe Inspection",
-                "Residential Door-to-Door Plumbing Service"
-              ],
-              "address" => [
-                "@type" => "PostalAddress",
-                "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
-                "addressLocality" => "Jakarta Timur",
-                "addressRegion" => "DKI Jakarta",
-                "postalCode" => "13770",
-                "addressCountry" => "ID"
-              ],
-              "geo" => [
-                "@type" => "GeoCoordinates",
-                "latitude" => -6.3275975,
-                "longitude" => 106.8627125
-              ],
-              "openingHoursSpecification" => [
-                "@type" => "OpeningHoursSpecification",
-                "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                "opens" => "00:00",
-                "closes" => "23:59"
-              ],
-              "aggregateRating" => [
-                "@type" => "AggregateRating",
-                "ratingValue" => "4.9",
-                "reviewCount" => "2300"
-              ],
-              "areaServed" => [
-                "Jabodetabek",
-                "Semarang",
-                "Bandar Lampung"
-              ],
-              "sameAs" => [
-                "https://www.instagram.com/rootera_plumbing/",
-                "https://www.facebook.com/Rootera.id",
-                "https://www.tiktok.com/@rootera_plumbing"
+        @hasSection('schema-markup')
+            @yield('schema-markup')
+        @else
+            <?php
+            $fallbackSchema = [
+              "@context" => "https://schema.org",
+              "@graph" => [
+                [
+                  "@type" => ["LocalBusiness", "Plumber", "HomeAndConstructionBusiness"],
+                  "name" => "Rootera Plumbing",
+                  "alternateName" => ["Rootera", "Rootera Indonesia", "J&J Group Plumbing Division"],
+                  "description" => "Layanan profesional jasa saluran pipa mampet, wastafel tersumbat, kran air, dan plumbing service B2C & B2B oleh Rootera Plumbing (J&J Group).",
+                  "@id" => url('/') . "#organization",
+                  "url" => url('/'),
+                  "telephone" => "+6281385404000",
+                  "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+                  "image" => asset('images/JnJ.webp'),
+                  "priceRange" => "$$",
+                  "parentOrganization" => [
+                    "@type" => "Organization",
+                    "name" => "J&J GROUP",
+                    "url" => url('/')
+                  ],
+                  "knowsAbout" => [
+                    "Pelancaran Pipa Mampet Tanpa Bongkar",
+                    "B2B Preventive Plumbing Maintenance",
+                    "Hydro Jetting Industrial System",
+                    "CCTV Pipe Inspection",
+                    "Residential Door-to-Door Plumbing Service"
+                  ],
+                  "address" => [
+                    "@type" => "PostalAddress",
+                    "streetAddress" => "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo",
+                    "addressLocality" => "Jakarta Timur",
+                    "addressRegion" => "DKI Jakarta",
+                    "postalCode" => "13770",
+                    "addressCountry" => "ID"
+                  ],
+                  "geo" => [
+                    "@type" => "GeoCoordinates",
+                    "latitude" => -6.3275975,
+                    "longitude" => 106.8627125
+                  ],
+                  "openingHoursSpecification" => [
+                    "@type" => "OpeningHoursSpecification",
+                    "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                    "opens" => "00:00",
+                    "closes" => "23:59"
+                  ],
+                  "aggregateRating" => [
+                    "@type" => "AggregateRating",
+                    "ratingValue" => "4.9",
+                    "reviewCount" => "2300"
+                  ],
+                  "areaServed" => [
+                    "Jabodetabek",
+                    "Semarang",
+                    "Bandar Lampung"
+                  ],
+                  "sameAs" => [
+                    "https://www.instagram.com/rootera_plumbing/",
+                    "https://www.facebook.com/Rootera.id",
+                    "https://www.tiktok.com/@rootera_plumbing"
+                  ]
+                ],
+                [
+                  "@type" => "Service",
+                  "serviceType" => "Jasa Saluran Pipa Mampet",
+                  "provider" => [
+                    "@id" => url('/') . "#organization"
+                  ],
+                  "areaServed" => [
+                    "@type" => "State",
+                    "name" => "Jabodetabek"
+                  ]
+                ]
               ]
-            ],
-            [
-              "@type" => "Service",
-              "serviceType" => "Jasa Saluran Pipa Mampet",
-              "provider" => [
-                "@id" => url('/') . "#organization"
-              ],
-              "areaServed" => [
-                "@type" => "State",
-                "name" => "Jabodetabek"
-              ]
-            ]
-          ]
-        ];
-        ?>
-        <script type="application/ld+json">
-        {!! json_encode($fallbackSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-        </script>
+            ];
+            ?>
+            <script type="application/ld+json">
+            {!! json_encode($fallbackSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+            </script>
+        @endif
     @endif
 
     {{-- Fonts --}}
