@@ -237,39 +237,53 @@
                 <div class="dropdown-menu-box dropdown-menu-tentang text-slate-800">
                     <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 px-2">Informasi & Kredibilitas</div>
                     <div class="space-y-1">
-                        <a href="{{ route('tentang-kami.profil') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                        <a href="{{ route('tentang-kami.holding-jj-group') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
                             <span class="text-base">🏢</span>
                             <div>
-                                <div>Profil Perusahaan & K3</div>
-                                <div class="text-xs font-normal text-slate-500">Legalitas & komitmen keselamatan</div>
+                                <div>Profil Holding J&amp;J Group</div>
+                                <div class="text-xs font-normal text-slate-500">Struktur holding &amp; legalitas</div>
                             </div>
                         </a>
-                        <a href="{{ route('tentang-kami.peralatan-teknologi') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                        <a href="{{ route('tentang-kami.sop-sanitasi-k3') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                            <span class="text-base">🦺</span>
+                            <div>
+                                <div>SOP &amp; Protokol Sanitasi K3</div>
+                                <div class="text-xs font-normal text-slate-500">APD &amp; sterilisasi pengerjaan</div>
+                            </div>
+                        </a>
+                        <a href="{{ route('tentang-kami.profil') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                            <span class="text-base">📋</span>
+                            <div>
+                                <div>Profil Perusahaan &amp; K3</div>
+                                <div class="text-xs font-normal text-slate-500">Legalitas &amp; komitmen keselamatan</div>
+                            </div>
+                        </a>
+                        <a href="{{ route('tentang-kami.peralatan-teknologi') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
                             <span class="text-base">⚙️</span>
                             <div>
-                                <div>Peralatan & Teknologi</div>
-                                <div class="text-xs font-normal text-slate-500">Mesin Ridgid & Hydro Jetting</div>
+                                <div>Peralatan &amp; Teknologi</div>
+                                <div class="text-xs font-normal text-slate-500">Mesin Ridgid &amp; Hydro Jetting</div>
                             </div>
                         </a>
-                        <a href="{{ route('tentang-kami.portofolio-klien') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                        <a href="{{ route('tentang-kami.portofolio-klien') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
                             <span class="text-base">📁</span>
                             <div>
-                                <div>Klien & Portofolio B2B</div>
-                                <div class="text-xs font-normal text-slate-500">Proyek gedung & industri</div>
+                                <div>Klien &amp; Portofolio B2B</div>
+                                <div class="text-xs font-normal text-slate-500">Proyek gedung &amp; industri</div>
                             </div>
                         </a>
-                        <a href="{{ route('tentang-kami.garansi-layanan') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                        <a href="{{ route('garansi') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
                             <span class="text-base">🛡️</span>
                             <div>
-                                <div>Garansi Pengerjaan</div>
+                                <div>Ketentuan Garansi 30 Hari</div>
                                 <div class="text-xs font-normal text-slate-500">Jaminan tuntas 30 hari</div>
                             </div>
                         </a>
-                        <a href="{{ route('faq.index') }}" class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
+                        <a href="{{ route('faq.index') }}" class="flex items-center gap-3 p-2 rounded-xl hover:bg-emerald-50/60 hover:translate-x-1 transition-all duration-150 text-sm font-semibold text-slate-800 hover:text-emerald-600">
                             <span class="text-base">❓</span>
                             <div>
                                 <div>FAQ / Pusat Bantuan</div>
-                                <div class="text-xs font-normal text-slate-500">Pertanyaan umum & estimasi biaya</div>
+                                <div class="text-xs font-normal text-slate-500">Pertanyaan umum &amp; estimasi biaya</div>
                             </div>
                         </a>
                     </div>
@@ -431,6 +445,12 @@
                     <a href="{{ url('/sektor-plumbing/pabrik-industri') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
                         <span>🏭</span> Pabrik & Industri
                     </a>
+                    <a href="{{ route('b2b.faktur-pajak') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>📊</span> Permintaan Faktur Pajak
+                    </a>
+                    <a href="{{ route('b2b.licensing') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>📜</span> Licensing &amp; Kontrak Maintenance
+                    </a>
                     <a href="{{ route('b2b.index') }}" class="flex items-center justify-between py-2.5 px-3 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-100/80 hover:bg-emerald-100 transition-colors mt-2">
                         <span>Lihat Layanan B2B & Komersial</span>
                         <span>&rarr;</span>
@@ -452,17 +472,23 @@
             </button>
             <div id="mobile-accordion-tentang" class="mobile-accordion-content pl-4 pr-2 space-y-1 bg-slate-50/80 rounded-xl my-1">
                 <div class="py-2 space-y-1">
+                    <a href="{{ route('tentang-kami.holding-jj-group') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>🏢</span> Profil Holding J&amp;J Group
+                    </a>
+                    <a href="{{ route('tentang-kami.sop-sanitasi-k3') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>🦺</span> SOP &amp; Protokol Sanitasi K3
+                    </a>
                     <a href="{{ route('tentang-kami.profil') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
-                        <span>🏢</span> Profil Perusahaan & K3
+                        <span>📋</span> Profil Perusahaan &amp; K3
                     </a>
                     <a href="{{ route('tentang-kami.peralatan-teknologi') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
-                        <span>⚙️</span> Peralatan & Teknologi
+                        <span>⚙️</span> Peralatan &amp; Teknologi
                     </a>
                     <a href="{{ route('tentang-kami.portofolio-klien') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
-                        <span>📁</span> Klien & Portofolio B2B
+                        <span>📁</span> Klien &amp; Portofolio B2B
                     </a>
-                    <a href="{{ route('tentang-kami.garansi-layanan') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
-                        <span>🛡️</span> Garansi Pengerjaan
+                    <a href="{{ route('garansi') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
+                        <span>🛡️</span> Ketentuan Garansi 30 Hari
                     </a>
                     <a href="{{ route('faq.index') }}" class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:text-emerald-600 hover:bg-white transition-colors font-medium">
                         <span>❓</span> FAQ / Pusat Bantuan

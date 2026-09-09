@@ -1,7 +1,6 @@
 User-agent: *
+Allow: /
 Disallow: /admin/
-Disallow: /login
+Disallow: /api/
 
 Sitemap: https://rooteraplumbing.id/sitemap.xml
-Sitemap: https://rooteraplumbing.id/sitemap-blog.xml
-Sitemap: https://rooteraplumbing.id/sitemap-pages.xml

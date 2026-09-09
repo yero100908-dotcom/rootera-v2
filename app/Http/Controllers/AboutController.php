@@ -609,12 +609,39 @@ class AboutController extends Controller
     public function garansiLayanan()
     {
         $seo = [
-            'title'       => 'Garansi Pengerjaan Saluran Mampet 30 Hari | Kebijakan Service Resmi Rootera',
-            'description' => 'Komitmen kepuasan Rootera Plumbing: Garansi pelancaran pipa mampet hingga 30 hari, skema tuntas baru bayar, invoice digital resmi, dan bebas biaya kunjungan ulang.',
-            'canonical'   => url('/tentang-kami/garansi-layanan'),
+            'title'       => 'Ketentuan Garansi 30 Hari Saluran Lancar & Tuntas | Rootera Plumbing',
+            'description' => 'Pelajari prosedur klaim garansi 30 hari pelancaran pipa mampet Rootera Plumbing. Respons klaim cepat < 24 jam via WhatsApp tanpa biaya tambahan.',
+            'keywords'    => 'garansi pelancaran saluran, garansi pipa mampet jakarta, jaminan tuntas saluran air, klaim garansi rootera plumbing',
+            'canonical'   => url('/garansi'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.about.garansi-layanan', compact('seo'));
+    }
+
+    public function holdingJnjGroup()
+    {
+        $seo = [
+            'title'       => 'Profil Holding J&J Group & Divisi Sanitasi Rootera Plumbing',
+            'description' => 'Mengenal J&J Group sebagai induk holding Rootera Plumbing. Komitmen transparansi harga, standarisasi armada modern, dan kredibilitas legalitas usaha.',
+            'keywords'    => 'profil jj group, holding rootera plumbing, legalitas pt sanitasi jakarta timur, bengkel pipa cijantung',
+            'canonical'   => url('/tentang-kami/holding-jj-group'),
+            'og_image'    => asset('images/JnJ.webp'),
+        ];
+
+        return view('pages.about.holding-jj-group', compact('seo'));
+    }
+
+    public function sopSanitasiK3()
+    {
+        $seo = [
+            'title'       => 'Standar SOP & Protokol K3 Pengerjaan Pipa Tanpa Bongkar | Rootera',
+            'description' => 'Standar operasional prosedur teknisi Rootera Plumbing: APD lengkap, sterilisasi mesin hydro jetting, tanpa zat kimia berbahaya, dan kebersihan pasca kerja.',
+            'keywords'    => 'sop pelancaran pipa mampet, k3 teknisi plumbing, keselamatan kerja sanitasi, hydro jetting ramah lingkungan',
+            'canonical'   => url('/tentang-kami/sop-sanitasi-k3'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.about.sop-sanitasi-k3', compact('seo'));
     }
 }

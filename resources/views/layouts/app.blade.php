@@ -41,6 +41,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
+    {{-- Global GEO Meta Tags (Headquarters: Cijantung, Jakarta Timur) --}}
+    <meta name="geo.region" content="ID-JK" />
+    <meta name="geo.placename" content="Jakarta Timur" />
+    <meta name="geo.position" content="-6.3228;106.8624" />
+    <meta name="ICBM" content="-6.3228, 106.8624" />
+    <meta name="author" content="Rootera Plumbing (J&J Group)" />
+
     {{-- LCP Image Preload for Homepage (Responsive Mobile & Desktop) --}}
     @if(request()->routeIs('home') || request()->path() === '/')
         <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" media="(max-width: 767px)" type="image/webp" fetchpriority="high">
@@ -48,16 +55,33 @@
     @endif
 
     {{-- Dynamic SEO Meta Tags --}}
-    @if(isset($seo['title']) && !empty($seo['title']))
+    @hasSection('meta_title')
+        <title>@yield('meta_title')</title>
+    @elseif(isset($seo['title']) && !empty($seo['title']))
         <title>{{ $seo['title'] }}</title>
     @elseif(request()->routeIs('home') || request()->path() === '/')
         <title>Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera</title>
     @else
         <title>{{ $title ?? 'Jasa Saluran Pipa Mampet 24 Jam - Rootera Plumbing' }}</title>
     @endif
-    <meta name="description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
-    <meta name="keywords" content="jasa saluran pipa mampet, jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera">
-    <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
+
+    @hasSection('meta_description')
+        <meta name="description" content="@yield('meta_description')">
+    @else
+        <meta name="description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+    @endif
+
+    @hasSection('meta_keywords')
+        <meta name="keywords" content="@yield('meta_keywords')">
+    @else
+        <meta name="keywords" content="{{ $seo['keywords'] ?? 'jasa saluran pipa mampet, jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera' }}">
+    @endif
+
+    @hasSection('canonical')
+        <link rel="canonical" href="@yield('canonical')">
+    @else
+        <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
+    @endif
     
     @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
         <meta name="robots" content="noindex, follow">
@@ -67,15 +91,27 @@
 
     {{-- Open Graph --}}
     <meta property="og:type"        content="{{ $seo['og_type'] ?? 'website' }}">
-    <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
-    @if(isset($seo['title']) && !empty($seo['title']))
+    @hasSection('canonical')
+        <meta property="og:url"         content="@yield('canonical')">
+    @else
+        <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
+    @endif
+
+    @hasSection('meta_title')
+        <meta property="og:title"   content="@yield('meta_title')">
+    @elseif(isset($seo['title']) && !empty($seo['title']))
         <meta property="og:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
         <meta property="og:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
     @else
         <meta property="og:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
-    <meta property="og:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+
+    @hasSection('meta_description')
+        <meta property="og:description" content="@yield('meta_description')">
+    @else
+        <meta property="og:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+    @endif
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
     <meta property="og:see_also"    content="https://www.instagram.com/rootera_plumbing/">
@@ -97,18 +133,27 @@
 
     {{-- Twitter Card --}}
     <meta name="twitter:card"        content="summary_large_image">
-    @if(isset($seo['title']) && !empty($seo['title']))
+    @hasSection('meta_title')
+        <meta name="twitter:title"   content="@yield('meta_title')">
+    @elseif(isset($seo['title']) && !empty($seo['title']))
         <meta name="twitter:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
         <meta name="twitter:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
     @else
         <meta name="twitter:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
-    <meta name="twitter:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+
+    @hasSection('meta_description')
+        <meta name="twitter:description" content="@yield('meta_description')">
+    @else
+        <meta name="twitter:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
+    @endif
     <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
-    @hasSection('schema-markup')
+    @hasSection('structured_data')
+        @yield('structured_data')
+    @elseifHasSection('schema-markup')
         @yield('schema-markup')
     @else
         <?php

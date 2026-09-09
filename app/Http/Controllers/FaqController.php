@@ -28,6 +28,11 @@ class FaqController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $allFaqs = Faq::where('is_active', true)
+            ->with('category')
+            ->orderBy('sort_order')
+            ->get();
+
         $searchResults = collect();
         if (!empty($searchQuery)) {
             $searchResults = Faq::where('is_active', true)
@@ -41,13 +46,14 @@ class FaqController extends Controller
         }
 
         $seo = [
-            'title'       => 'Pusat Bantuan & FAQ Saluran Mampet | Rootera Plumbing',
-            'description' => 'Jawaban lengkap seputar estimasi biaya pelancaran pipa tersumbat, teknologi alat spiral & hydro-jetting, garansi 30 hari, dan layanan darurat 24 jam.',
+            'title'       => 'Pusat Bantuan & FAQ Saluran Mampet Tanpa Bongkar | Rootera Plumbing',
+            'description' => 'Tanya jawab komprehensif seputar solusi pipa mampet, estimasi biaya, keamanan pipa PVC, metode spiral & hydro jetting, serta garansi 30 hari.',
+            'keywords'    => 'faq pipa mampet, solusi saluran mampet, biaya pelancaran pipa, alat hydro jetting aman, pipa kitchen sink mampet',
             'canonical'   => route('faq.index'),
             'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
-        return view('pages.faq.index', compact('categories', 'featuredFaqs', 'searchResults', 'searchQuery', 'seo'));
+        return view('pages.faq.index', compact('categories', 'featuredFaqs', 'allFaqs', 'searchResults', 'searchQuery', 'seo'));
     }
 
     /**

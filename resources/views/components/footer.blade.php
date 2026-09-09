@@ -162,14 +162,14 @@
                     PERUSAHAAN &amp; LEGALITAS
                 </h4>
                 <ul class="space-y-2 text-xs text-slate-300">
-                    <li><a href="{{ route('tentang-kami') }}" class="hover:text-white transition duration-150 inline-block">Profil Holding J&amp;J Group</a></li>
-                    <li><a href="{{ route('tentang-kami') }}" class="hover:text-white transition duration-150 inline-block">SOP &amp; Protokol Sanitasi</a></li>
-                    <li><a href="{{ route('tentang-kami') }}" class="hover:text-white transition duration-150 inline-block">Ketentuan Garansi 30 Hari</a></li>
+                    <li><a href="{{ route('tentang-kami.holding-jj-group') }}" class="hover:text-white transition duration-150 inline-block">Profil Holding J&amp;J Group</a></li>
+                    <li><a href="{{ route('tentang-kami.sop-sanitasi-k3') }}" class="hover:text-white transition duration-150 inline-block">SOP &amp; Protokol Sanitasi K3</a></li>
+                    <li><a href="{{ route('garansi') }}" class="hover:text-white transition duration-150 inline-block">Ketentuan Garansi 30 Hari</a></li>
+                    <li><a href="{{ route('b2b.faktur-pajak') }}" class="hover:text-white transition duration-150 inline-block">Permintaan Faktur Pajak B2B</a></li>
+                    <li><a href="{{ route('b2b.licensing') }}" class="hover:text-white transition duration-150 inline-block">Licensing &amp; Maintenance</a></li>
                     <li><a href="{{ route('galeri') }}" class="hover:text-white transition duration-150 inline-block">Portofolio &amp; Galeri Proyek</a></li>
                     <li><a href="{{ route('blog') }}" class="hover:text-white transition duration-150 inline-block">Blog &amp; Edukasi Plumbing</a></li>
-                    <li><a href="{{ route('faq.index') }}" class="hover:text-white transition duration-150 inline-block">FAQ Seputar Pipa Mampet</a></li>
-                    <li><a href="{{ route('kontak') }}" class="hover:text-white transition duration-150 inline-block">Syarat &amp; Kebijakan Privasi</a></li>
-                    <li><a href="{{ route('kontak') }}" class="hover:text-white transition duration-150 inline-block">Permintaan Faktur Pajak</a></li>
+                    <li><a href="{{ route('faq.index') }}" class="hover:text-white transition duration-150 inline-block">FAQ / Pusat Bantuan</a></li>
                 </ul>
             </div>
 
@@ -182,10 +182,10 @@
                 <span class="text-[11px] text-slate-500">Seluruh pengerjaan pelancaran pipa menggunakan peralatan bebas kimia ramah lingkungan &amp; sesuai standar sanitasi kesehatan.</span>
             </p>
             <div class="flex items-center gap-6 text-xs flex-wrap justify-center">
-                <a href="{{ route('tentang-kami') }}" class="hover:text-white transition-colors">Privacy Policy</a>
-                <a href="{{ route('kontak') }}" class="hover:text-white transition-colors">Terms of Service</a>
-                <a href="{{ route('b2b.index') }}" class="hover:text-white transition-colors">B2B Licensing</a>
-                <a href="{{ route('faq.index') }}" class="hover:text-white transition-colors">Help Center</a>
+                <a href="{{ route('privacy-policy') }}" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="{{ route('terms-of-service') }}" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="{{ route('b2b.licensing') }}" class="hover:text-white transition-colors">B2B Licensing</a>
+                <a href="{{ route('faq.index') }}" class="hover:text-white transition-colors">Pusat Bantuan</a>
             </div>
         </div>
 

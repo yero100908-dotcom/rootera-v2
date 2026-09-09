@@ -175,4 +175,55 @@ class CommercialSectorController extends Controller
 
         return response($html);
     }
+
+    /**
+     * B2B Tax Invoice Request (/layanan-b2b/faktur-pajak)
+     */
+    public function fakturPajak()
+    {
+        $seo = [
+            'title'       => 'Layanan Pipa Mampet dengan Faktur Pajak PPN 11% | Rootera B2B',
+            'description' => 'Jasa pelancaran pipa mampet berbadan hukum resmi dengan e-Faktur Pajak PPN 11%. Khusus kebutuhan korporat, resto, hotel, dan pengelola properti.',
+            'keywords'    => 'jasa pipa mampet faktur pajak, plumbing berbadan hukum, invoice pipa b2b, sertifikat faktur ppn sanitasi',
+            'canonical'   => url('/layanan-b2b/faktur-pajak'),
+            'og_image'    => asset('images/JnJ.webp'),
+        ];
+
+        return view('pages.b2b.faktur-pajak', compact('seo'));
+    }
+
+    /**
+     * Handle B2B Tax Invoice Request Submission
+     */
+    public function submitFakturPajak(Request $request)
+    {
+        $request->validate([
+            'company_name' => 'required|string|max:255',
+            'npwp_number'  => 'required|string|max:50',
+            'tax_address'  => 'required|string',
+            'finance_email'=> 'required|email|max:255',
+            'phone'        => 'required|string|max:30',
+            'invoice_no'   => 'nullable|string|max:100',
+        ]);
+
+        return back()->with('success', 'Permintaan Faktur Pajak berhasil dikirim. Tim finance kami akan memproses e-Faktur ke email finance Anda dalam 1x24 jam kerja.');
+    }
+
+    /**
+     * B2B Licensing & Preventive Maintenance Contract Hub (/layanan-b2b/licensing)
+     */
+    public function licensing()
+    {
+        $sectors = ServiceSector::where('is_active', true)->orderBy('sort_order')->get();
+
+        $seo = [
+            'title'       => 'Kontrak Perawatan Saluran Pipa Restoran & Gedung | Rootera B2B',
+            'description' => 'Program preventive maintenance plumbing berkala untuk restoran, mall, hotel, dan kawasan industri di Jabodetabek & sekitarnya. Bebas mampet darurat.',
+            'keywords'    => 'kontrak perawatan plumbing, preventive maintenance grease trap, jasa saluran mampet restoran b2b, pembersihan pipa gedung bertingkat',
+            'canonical'   => url('/layanan-b2b/licensing'),
+            'og_image'    => asset('images/JnJ.webp'),
+        ];
+
+        return view('pages.b2b.licensing', compact('sectors', 'seo'));
+    }
 }

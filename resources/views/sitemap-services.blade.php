@@ -1,15 +1,6 @@
 {!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
-{!! '<' . '?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?' . '>' !!}
+{!! '<' . '?xml-stylesheet type="text/xsl" href="' . url('/sitemap.xsl') . '"?' . '>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {{-- City Hub Pages --}}
-    @foreach ($cities as $city)
-    <url>
-        <loc>{{ url("/jasa-saluran-mampet/{$city->slug}") }}</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.92</priority>
-    </url>
-    @endforeach
-
     {{-- Service Category Landing Pages --}}
     @foreach ($categories as $category)
     <url>
@@ -31,37 +22,19 @@
         @endforeach
     @endforeach
 
-    {{-- Property Types Landing Pages --}}
-    @if(isset($propertyTypes))
-    @foreach ($propertyTypes as $prop)
-    <url>
-        <loc>{{ url("/solusi-properti/{$prop->slug}") }}</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.92</priority>
-    </url>
-        @foreach ($cities as $city)
-        <url>
-            <loc>{{ url("/solusi-properti/{$prop->slug}/{$city->slug}") }}</loc>
-            <changefreq>weekly</changefreq>
-            <priority>0.88</priority>
-        </url>
-        @endforeach
-    @endforeach
-    @endif
-
     {{-- B2B Commercial Sector Landing Pages --}}
     @if(isset($sectors))
     @foreach ($sectors as $sec)
     <url>
         <loc>{{ url("/sektor-plumbing/{$sec->slug}") }}</loc>
         <changefreq>weekly</changefreq>
-        <priority>0.92</priority>
+        <priority>0.90</priority>
     </url>
         @foreach ($cities as $city)
         <url>
             <loc>{{ url("/sektor-plumbing/{$sec->slug}/{$city->slug}") }}</loc>
             <changefreq>weekly</changefreq>
-            <priority>0.88</priority>
+            <priority>0.85</priority>
         </url>
         @endforeach
     @endforeach

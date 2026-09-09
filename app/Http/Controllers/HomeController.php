@@ -109,4 +109,28 @@ class HomeController extends Controller
 
         return response($html);
     }
+
+    public function termsOfService()
+    {
+        $seo = [
+            'title'       => 'Terms of Service & Ketentuan Layanan — Rootera Plumbing',
+            'description' => 'Ketentuan operasional, booking, penetapan harga, garansi, & regulasi pembatalan order jasa pelancaran pipa mampet Rootera Plumbing (J&J Group).',
+            'canonical'   => url('/terms-of-service'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.terms-of-service', compact('seo'));
+    }
+
+    public function privacyPolicy()
+    {
+        $seo = [
+            'title'       => 'Privacy Policy & Kebijakan Privasi Data — Rootera Plumbing',
+            'description' => 'Kebijakan perlindungan data pribadi & privasi pelanggan Rootera Plumbing sesuai UU PDP Indonesia (UU No. 27/2022) & standar kerahasiaan data.',
+            'canonical'   => url('/privacy-policy'),
+            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+        ];
+
+        return view('pages.privacy-policy', compact('seo'));
+    }
 }

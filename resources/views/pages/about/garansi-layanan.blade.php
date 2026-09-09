@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('meta_title', 'Ketentuan Garansi 30 Hari Saluran Lancar & Tuntas | Rootera Plumbing')
+@section('meta_description', 'Pelajari prosedur klaim garansi 30 hari pelancaran pipa mampet Rootera Plumbing. Respons klaim cepat < 24 jam via WhatsApp tanpa biaya tambahan.')
+@section('meta_keywords', 'garansi pelancaran saluran, garansi pipa mampet jakarta, jaminan tuntas saluran air, klaim garansi rootera plumbing')
+@section('canonical', url('/garansi'))
+
 @section('schema-markup')
 <?php
 $schemaData = [
@@ -7,30 +12,32 @@ $schemaData = [
     '@graph' => [
         [
             '@type' => 'WebPage',
-            '@id' => url('/tentang-kami/garansi-layanan') . '#webpage',
-            'url' => url('/tentang-kami/garansi-layanan'),
-            'name' => $seo['title'] ?? 'Garansi Pengerjaan Saluran Mampet 30 Hari | Kebijakan Service Resmi Rootera',
-            'description' => $seo['description'] ?? '',
+            '@id' => url('/garansi') . '#webpage',
+            'url' => url('/garansi'),
+            'name' => 'Ketentuan Garansi 30 Hari Saluran Lancar & Tuntas | Rootera Plumbing',
+            'description' => 'Pelajari prosedur klaim garansi 30 hari pelancaran pipa mampet Rootera Plumbing. Respons klaim cepat < 24 jam via WhatsApp tanpa biaya tambahan.',
+            'serviceType' => 'Garansi Pengerjaan Pipa Saluran 30 Hari',
             'breadcrumb' => [
                 '@type' => 'BreadcrumbList',
                 'itemListElement' => [
                     ['@type' => 'ListItem', 'position' => 1, 'name' => 'Beranda', 'item' => url('/')],
                     ['@type' => 'ListItem', 'position' => 2, 'name' => 'Tentang Kami', 'item' => url('/tentang-kami')],
-                    ['@type' => 'ListItem', 'position' => 3, 'name' => 'Garansi & Kebijakan Service', 'item' => url('/tentang-kami/garansi-layanan')]
+                    ['@type' => 'ListItem', 'position' => 3, 'name' => 'Garansi & Kebijakan Service', 'item' => url('/garansi')]
                 ]
             ]
         ],
         [
             '@type' => 'Service',
-            '@id' => url('/tentang-kami/garansi-layanan') . '#service',
+            '@id' => url('/garansi') . '#service',
             'name' => 'Jaminan & Kebijakan Garansi Pelancaran Pipa Rootera Plumbing',
+            'serviceType' => 'Garansi Pengerjaan Pipa Saluran 30 Hari',
             'provider' => [
                 '@type' => 'LocalBusiness',
                 'name' => 'Rootera Plumbing',
                 'url' => url('/'),
                 'telephone' => '+6281385404000'
             ],
-            'termsOfService' => url('/tentang-kami/garansi-layanan'),
+            'termsOfService' => url('/garansi'),
             'hasOfferCatalog' => [
                 '@type' => 'OfferCatalog',
                 'name' => 'Katalog Proteksi & Garansi Service',

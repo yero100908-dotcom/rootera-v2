@@ -1,5 +1,5 @@
 {!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
-{!! '<' . '?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?' . '>' !!}
+{!! '<' . '?xml-stylesheet type="text/xsl" href="' . url('/sitemap.xsl') . '"?' . '>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
@@ -38,4 +38,23 @@
         @endif
     </url>
     @endforeach
+
+    {{-- Gallery Documentation --}}
+    <url>
+        <loc>{{ url('/galeri-dokumentasi') }}</loc>
+        <changefreq>weekly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    @if(isset($galleries))
+    @foreach ($galleries as $gal)
+    <url>
+        <loc>{{ route('galeri.show', $gal->slug) }}</loc>
+        @if($gal->updated_at)
+        <lastmod>{{ $gal->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        @endif
+        <changefreq>monthly</changefreq>
+        <priority>0.75</priority>
+    </url>
+    @endforeach
+    @endif
 </urlset>

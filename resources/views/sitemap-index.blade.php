@@ -1,20 +1,20 @@
 {!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
-{!! '<' . '?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?' . '>' !!}
+{!! '<' . '?xml-stylesheet type="text/xsl" href="' . url('/sitemap.xsl') . '"?' . '>' !!}
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <sitemap>
-        <loc>{{ route('sitemap.pages') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <loc>{{ url('/sitemap-pages.xml') }}</loc>
+        <lastmod>{{ $lastmodNow ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.cities') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <loc>{{ url('/sitemap-services.xml') }}</loc>
+        <lastmod>{{ $lastmodNow ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.services') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <loc>{{ url('/sitemap-cities.xml') }}</loc>
+        <lastmod>{{ $lastmodNow ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ route('sitemap.blog') }}</loc>
-        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        <loc>{{ url('/sitemap-blog.xml') }}</loc>
+        <lastmod>{{ $lastmodBlog ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
 </sitemapindex>

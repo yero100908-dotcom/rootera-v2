@@ -34,7 +34,8 @@ use App\Http\Controllers\DiagnosticController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-Route::redirect('/sitemap-main.xml', '/sitemap.xml', 301);
+Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
+Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
 Route::get('/sitemap-sectors.xml', [SitemapController::class, 'sectors'])->name('sitemap.sectors');
 Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('sitemap.cities');
@@ -65,6 +66,9 @@ Route::get('/layanan-b2b-komersial', [App\Http\Controllers\CommercialSectorContr
 Route::get('/sektor-plumbing/{sectorSlug}', [App\Http\Controllers\CommercialSectorController::class, 'showSector'])->name('b2b.sector');
 Route::get('/sektor-plumbing/{sectorSlug}/{citySlug}', [App\Http\Controllers\CommercialSectorController::class, 'showSectorCity'])->name('b2b.sector.city');
 Route::get('/kontrak-maintenance-saluran/{sectorSlug}', [App\Http\Controllers\CommercialSectorController::class, 'maintenanceContract'])->name('b2b.contract');
+Route::get('/layanan-b2b/faktur-pajak', [App\Http\Controllers\CommercialSectorController::class, 'fakturPajak'])->name('b2b.faktur-pajak');
+Route::post('/layanan-b2b/faktur-pajak', [App\Http\Controllers\CommercialSectorController::class, 'submitFakturPajak'])->name('b2b.faktur-pajak.submit');
+Route::get('/layanan-b2b/licensing', [App\Http\Controllers\CommercialSectorController::class, 'licensing'])->name('b2b.licensing');
 
 // Public Property Category Direct-to-Consumer Routes
 Route::get('/kategori-properti', [App\Http\Controllers\PropertyTypeController::class, 'index'])->name('property.index');
@@ -80,6 +84,8 @@ Route::redirect('/layanan/{categorySlug}/{citySlug}/{districtSlug}', '/layanan-p
 Route::redirect('/jasa-saluran-mampet/solo', '/jasa-saluran-mampet/surakarta', 301);
 
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');
+Route::get('/tentang-kami/holding-jj-group', [AboutController::class, 'holdingJnjGroup'])->name('tentang-kami.holding-jj-group');
+Route::get('/tentang-kami/sop-sanitasi-k3', [AboutController::class, 'sopSanitasiK3'])->name('tentang-kami.sop-sanitasi-k3');
 Route::get('/tentang-kami/tim/{slug}', [AboutController::class, 'showTeamMember'])->name('tentang-kami.team-member');
 Route::get('/tentang-kami/profil', [AboutController::class, 'profil'])->name('tentang-kami.profil');
 Route::get('/tentang-kami/peralatan-teknologi', [AboutController::class, 'peralatanTeknologi'])->name('tentang-kami.peralatan-teknologi');
@@ -88,8 +94,11 @@ Route::get('/tentang-kami/peralatan-teknologi/{slug}', [AboutController::class, 
 Route::get('/tentang-kami/portofolio-klien', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.portofolio-klien');
 Route::get('/tentang-kami/kemitraan', [AboutController::class, 'portofolioKlien'])->name('tentang-kami.kemitraan');
 Route::get('/tentang-kami/garansi-layanan', [AboutController::class, 'garansiLayanan'])->name('tentang-kami.garansi-layanan');
+Route::get('/garansi', [AboutController::class, 'garansiLayanan'])->name('garansi');
+
 Route::redirect('/tentang-kami/faq', '/faq', 301)->name('tentang-kami.faq');
 Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index'])->name('faq.index');
+Route::get('/pusat-bantuan', [App\Http\Controllers\FaqController::class, 'index'])->name('pusat-bantuan');
 Route::get('/faq/kategori/{categorySlug}', [App\Http\Controllers\FaqController::class, 'category'])->name('faq.category');
 Route::get('/faq/{faqSlug}', [App\Http\Controllers\FaqController::class, 'show'])->name('faq.show');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
@@ -99,6 +108,10 @@ Route::get('/galeri-dokumentasi/{slug}', [App\Http\Controllers\GalleryController
 Route::redirect('/galeri', '/galeri-dokumentasi', 301);
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
 Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
+
+// Legal & Terms Routes
+Route::get('/terms-of-service', [HomeController::class, 'termsOfService'])->name('terms-of-service');
+Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy-policy');
 
 /*
 |--------------------------------------------------------------------------
