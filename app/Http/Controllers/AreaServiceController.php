@@ -122,14 +122,14 @@ class AreaServiceController extends Controller
 
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(4)->get();
 
-            // Priority Custom DB Meta Tags with Dynamic Fallback
+            // Priority Custom DB Meta Tags with Dynamic Fallback (City Hub Standard)
             $title = !empty($city->meta_title)
                 ? $city->meta_title
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
+                : "Jasa Saluran Pipa Mampet {$city->name} Tanpa Bongkar — Rootera Plumbing";
 
             $description = !empty($city->meta_description)
                 ? $city->meta_description
-                : "Solusi perbaikan pipa mampet, wastafel, & WC tersumbat di {$city->full_name}. Pengerjaan cepat tanpa bongkar ({$city->estimated_arrival}) & bergaransi. CS 24 Jam!";
+                : "Pusat layanan pelancaran pipa mampet di {$city->name}. Menggunakan mesin spiral Ridgid & hydro-jetting tanpa bongkar ubin. Bergaransi 30 hari & tuntas baru bayar.";
 
             $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 

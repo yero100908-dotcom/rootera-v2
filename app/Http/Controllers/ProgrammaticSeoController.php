@@ -124,36 +124,14 @@ class ProgrammaticSeoController extends Controller
                 ]
             ];
 
-            // Generate Dynamic Transactional SEO Metadata (Strict Bounds: Title <60, Description 130-155)
-            $fullTitle = $district
-                ? "Jasa Pipa Mampet {$district->name}, {$city->name} - Tanpa Bongkar | Rootera"
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam - Tanpa Bongkar | Rootera";
-
-            if (mb_strlen($fullTitle) <= 60) {
-                $title = $fullTitle;
-            } else {
-                $title = $district
-                    ? "Jasa Pipa Mampet {$district->name}, {$city->name} | Rootera"
-                    : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam | Rootera";
-
-                if (mb_strlen($title) > 60) {
-                    $title = $district
-                        ? "Jasa Pipa Mampet {$district->name} | Rootera"
-                        : "Jasa Pipa Mampet {$city->name} 24 Jam | Rootera";
-                }
-            }
-
-            if (mb_strlen($title) > 60) {
-                $title = mb_strimwidth($title, 0, 58, '..');
-            }
+            // Generate Dynamic Transactional SEO Metadata (City vs District Differentiation)
+            $title = $district
+                ? "Jasa Pipa Mampet {$district->name}, {$city->name} (Respon 15-30 Menit) | Rootera"
+                : "Jasa Saluran Pipa Mampet {$city->name} Tanpa Bongkar — Rootera Plumbing";
 
             $description = $district
-                ? "Jasa {$category->name} di {$district->name}, {$city->name}. Tanpa bongkar pipa, respon cepat ({$travelTime}), & garansi 30 hari. WA 24 Jam!"
-                : "Spesialis jasa {$category->name} terpercaya di {$city->name}. Respon cepat ({$travelTime}), tanpa bongkar paksa, & bergaransi 30 hari. WA 24 Jam!";
-
-            if (mb_strlen($description) > 155) {
-                $description = mb_strimwidth($description, 0, 152, '...');
-            }
+                ? "Saluran wastafel, kloset, atau got mampet di {$district->name}, {$city->name}? Teknisi posko siaga terdekat meluncur cepat 24 jam tanpa bongkar keramik. Garansi tuntas 30 hari."
+                : "Pusat layanan pelancaran pipa mampet di {$city->name}. Menggunakan mesin spiral Ridgid & hydro-jetting tanpa bongkar ubin. Bergaransi 30 hari & tuntas baru bayar.";
 
             if ($district) {
                 // Self-referencing canonical for district pages to index district landing pages individually in Google Search

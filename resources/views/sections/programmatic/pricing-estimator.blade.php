@@ -136,6 +136,15 @@
             <span>←</span><span>Geser untuk melihat semua paket harga</span><span>→</span>
         </div>
 
+        {{-- Micro-Guarantee Badge --}}
+        <div class="mt-8 text-center text-xs sm:text-sm text-slate-600 font-medium bg-slate-50 p-4 rounded-2xl border border-slate-200/80 max-w-2xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+            <span>✓ Biaya transparan di awal</span>
+            <span>•</span>
+            <span>Tuntas baru bayar (No Result No Pay)</span>
+            <span>•</span>
+            <span>Garansi resmi 30 hari</span>
+        </div>
+
         {{-- Bottom Callout --}}
         <div class="mt-7 md:mt-9 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div class="space-y-1.5 text-xs md:text-sm text-slate-600">

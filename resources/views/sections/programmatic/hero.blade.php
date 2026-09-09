@@ -24,11 +24,7 @@
         <nav class="flex items-center flex-wrap gap-2 text-xs sm:text-sm text-slate-300 mb-6 font-medium" aria-label="Breadcrumb">
             <a href="{{ url('/') }}" class="hover:text-emerald-400 transition-colors">Beranda</a>
             <span class="text-slate-500">›</span>
-            <a href="{{ route('layanan') }}" class="hover:text-emerald-400 transition-colors">Layanan</a>
-            <span class="text-slate-500">›</span>
-            <a href="{{ route('layanan.show', $category->slug) }}" class="hover:text-emerald-400 transition-colors">{{ $category->name }}</a>
-            <span class="text-slate-500">›</span>
-            <a href="{{ url('/layanan-pipa-mampet/' . $category->slug . '/' . $city->slug) }}" class="hover:text-emerald-400 transition-colors">{{ $city->name }}</a>
+            <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" class="hover:text-emerald-400 transition-colors">Jasa Saluran Mampet {{ $city->name }}</a>
             @if($district)
                 <span class="text-slate-500">›</span>
                 <span class="text-white font-bold">{{ $district->name }}</span>
@@ -80,7 +76,7 @@
 
         <!-- Bottom Hero: Dynamic Local Context Dispatch Box / Pos Hub Siaga Terdekat -->
         @if(isset($dispatchHub))
-        <div class="mt-8 lg:mt-10 rounded-xl bg-slate-900/70 border border-white/15 p-4 sm:p-5 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="mt-8 lg:mt-10 rounded-2xl bg-slate-900/80 border border-emerald-500/30 p-4 sm:p-5 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
             <div class="flex items-center gap-3.5">
                 <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-lg shrink-0">
                     📍
@@ -88,9 +84,18 @@
                 <div>
                     <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Pos Hub Siaga Terdekat</div>
                     <div class="text-sm sm:text-base font-extrabold text-white">{{ $dispatchHub }}</div>
+                    @if($district)
+                    <div class="text-xs text-slate-300 mt-0.5">
+                        Posko teknisi {{ $district->name }} merupakan bagian resmi dari armada Rootera Plumbing Regional {{ $city->name }}.
+                    </div>
+                    @endif
                 </div>
             </div>
-            @if(!empty($nearbyLandmarks))
+            @if($district)
+            <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" class="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline bg-white/10 px-3.5 py-2 rounded-xl border border-white/15 backdrop-blur-sm transition-all">
+                <span>Lihat ringkasan posko &amp; layanan Rootera se-{{ $city->name }} →</span>
+            </a>
+            @elseif(!empty($nearbyLandmarks))
             <div class="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-1.5">
                 <span class="font-bold text-sky-400 shrink-0">Cakupan Sekitar:</span>
                 @foreach($nearbyLandmarks as $lm)

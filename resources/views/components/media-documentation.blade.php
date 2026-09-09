@@ -137,7 +137,7 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
                 PORTFOLIO &amp; DOKUMENTASI
             </div>
             <h2 class="text-[18px] sm:text-[20px] md:text-[2.5rem] font-extrabold text-slate-900 leading-tight mt-1">
-                Hasil Kerja Teknisi Rootera
+                Dokumentasi Pekerjaan Terverifikasi di {{ $locName }} &amp; Sekitarnya
             </h2>
             <p class="text-xs md:text-[1.05rem] text-slate-500 max-w-2xl md:max-w-[780px] mx-auto mt-1 md:mt-2 leading-relaxed md:leading-[1.6]">
                 Cuplikan pengerjaan nyata pelancaran saluran air, wastafel, kloset, dan got tanpa bongkar menggunakan mesin rotary spiral modern.
@@ -291,7 +291,7 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
                     🎬 EDUKASI &amp; VIDEO PANDUAN
                 </span>
                 <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
-                    Lihat Aksi Teknisi Rootera Melancarkan Pipa
+                    Edukasi &amp; Solusi Perawatan Saluran untuk Warga {{ $locName }}
                 </h2>
                 <p class="text-slate-600 text-sm md:text-base max-w-2xl mt-2 leading-relaxed">
                     Video penanganan pengerjaan pipa tersumbat lemak beku &amp; kerak menggunakan mesin fleksibel Ridgid &amp; Hydro Jetting di {{ $locName }}.

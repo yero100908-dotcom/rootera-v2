@@ -324,6 +324,9 @@ $faqSchema = [
 {{-- 2. Estimasi Tarif: 4 pricing cards --}}
 @include('sections.programmatic.pricing-estimator')
 
+{{-- 2.5. Multi-Sektor Properti --}}
+<x-multi-sector-grid :locationName="$district->name ?? $locationShort" :whatsappNumber="$city->whatsapp_number ?? '6281385404000'" />
+
 {{-- 3. Cakupan Area Mikro / Kelurahan Mesh --}}
 @include('sections.programmatic.local-coverage')
 

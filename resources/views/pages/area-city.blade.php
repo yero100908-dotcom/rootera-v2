@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
-@section('schema-markup')
+@section('structured_data')
 <?php
 $citySlug = (isset($city) && is_object($city) && isset($city->slug)) ? $city->slug : '';
 $cityName = (isset($city) && is_object($city)) ? ($city->full_name ?? $city->name ?? 'Kota') : 'Kota';
+$cityNameClean = (isset($city) && is_object($city)) ? ($city->name ?? $cityName) : $cityName;
 $cityCanonical = url("/jasa-saluran-mampet/{$citySlug}");
 $cityPhone = (isset($city) && is_object($city) && !empty($city->whatsapp_number)) ? $city->whatsapp_number : "6281385404000";
 $cityProvName = (isset($city) && is_object($city) && isset($city->province) && is_object($city->province)) ? ($city->province->name ?? "Indonesia") : "Indonesia";
@@ -54,6 +55,60 @@ $cityBusinessSchema = [
     "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     "opens" => "00:00",
     "closes" => "23:59"
+  ],
+  "hasOfferCatalog" => [
+    "@type" => "OfferCatalog",
+    "name" => "Katalog Layanan Pipa Mampet " . $cityNameClean,
+    "itemListElement" => [
+      [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Wastafel & Kitchen Sink " . $cityNameClean,
+          "description" => "Pelancaran kerak lemak jenuh dapur tanpa membongkar meja keramik."
+        ]
+      ],
+      [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Kloset WC & Toilet " . $cityNameClean,
+          "description" => "Penanganan WC meluap tersumbat tanpa sedot tinja."
+        ]
+      ],
+      [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Floor Drain Kamar Mandi " . $cityNameClean,
+          "description" => "Pembersihan rontokan rambut, gumpalan sabun & endapan pasir ubin."
+        ]
+      ],
+      [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Pelancaran Pipa Utama, Got & Talang Air " . $cityNameClean,
+          "description" => "Pembersihan pipa pembuangan utama, saluran got luar, serta talang air atap dari endapan lumpur, pasir, sampah, dan daun kering tanpa bongkar saluran."
+        ]
+      ]
+    ]
   ]
 ];
 
@@ -101,320 +156,750 @@ $cityBreadcrumbs = [
 @section('content')
 
 {{-- ========================================================================= --}}
-{{-- ZONA 1: HERO SECTION (Responsive Background Banner Resmi)                 --}}
+{{-- 1. HERO SECTION (SPLIT MODERN & FLOATING TRUST BADGES)                     --}}
 {{-- ========================================================================= --}}
-<style>
-.area-hero-banner-bg {
-    background-image: linear-gradient(180deg, rgba(11, 25, 44, 0.88) 0%, rgba(11, 25, 44, 0.78) 100%), url("{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-@media (min-width: 768px) {
-    .area-hero-banner-bg {
-        background-image: linear-gradient(180deg, rgba(11, 25, 44, 0.88) 0%, rgba(11, 25, 44, 0.78) 100%), url("{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}");
-    }
-}
-.mobile-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #10B981 #E2E8F0;
-}
-.mobile-scrollbar::-webkit-scrollbar {
-    height: 4px;
-}
-.mobile-scrollbar::-webkit-scrollbar-track {
-    background: #E2E8F0;
-    border-radius: 10px;
-}
-.mobile-scrollbar::-webkit-scrollbar-thumb {
-    background: #10B981;
-    border-radius: 10px;
-}
-</style>
+<section class="relative bg-gradient-to-b from-[#0A2E78] via-[#0B2545] to-slate-900 text-white pt-24 pb-20 overflow-hidden border-b-4 border-[#169F81]">
+    {{-- Radial glow effect --}}
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#169F81]/20 blur-[130px] rounded-full pointer-events-none"></div>
 
-<section class="area-hero-banner-bg py-6 px-4 md:py-[4.5rem] md:px-6 border-b-4 border-[#1FAF5A] relative text-white">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        <div style="max-width: 850px;">
-            <div class="mb-2 md:mb-4">
-                <x-breadcrumbs :items="[
-                    ['name' => 'Beranda', 'url' => url('/')],
-                    ['name' => 'Area Layanan', 'url' => route('area-layanan')],
-                    ['name' => $cityName, 'url' => '']
-                ]" />
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="mb-4">
+            <x-breadcrumbs :items="[
+                ['name' => 'Beranda', 'url' => url('/')],
+                ['name' => 'Area Layanan', 'url' => route('area-layanan')],
+                ['name' => $cityName, 'url' => '']
+            ]" />
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {{-- Left Column: Copywriting & CTA --}}
+            <div class="lg:col-span-7">
+                <div class="inline-flex items-center gap-2 bg-[#169F81]/20 border border-[#169F81]/40 text-emerald-300 px-4 py-1.5 rounded-full text-xs font-bold mb-5 backdrop-blur-md shadow-lg shadow-emerald-950/30">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>📍 Pusat Layanan &amp; Komando Armada Kota {{ $cityNameClean }}</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight mb-4 text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    {!! $heroHeadline ?? ("Jasa Saluran Pipa Mampet <span class='text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200'>" . $cityName . "</span> 24 Jam") !!}
+                </h1>
+
+                <p class="text-slate-200 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 max-w-2xl">
+                    {!! $heroSubtitle ?? ("Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>" . $cityName . "</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.") !!}
+                </p>
+
+                {{-- Quick Metrics Bar --}}
+                <div class="grid grid-cols-3 gap-3 mb-8 max-w-xl">
+                    <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
+                        <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">10+ Posko</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300">Siaga Se-{{ $cityNameClean }}</div>
+                    </div>
+                    <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
+                        <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">30-45 Mnt</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300">Respon Kecamatan</div>
+                    </div>
+                    <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
+                        <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">30 Hari</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300">Garansi Resmi</div>
+                    </div>
+                </div>
+
+                {{-- CTA Group --}}
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . $cityName . '. Bisa panggil teknisi?') }}" 
+                       target="_blank" rel="noopener" 
+                       class="inline-flex items-center justify-center gap-3 bg-[#169F81] hover:bg-emerald-600 text-white font-bold text-sm sm:text-base px-8 py-4 rounded-2xl shadow-xl shadow-emerald-900/40 transition-all hover:scale-[1.02] active:scale-95 text-decoration-none">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                        <span>Panggil Teknisi {{ $cityNameClean }} (24 Jam)</span>
+                    </a>
+
+                    <a href="#estimasi-biaya" 
+                       class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm sm:text-base px-6 py-4 rounded-2xl border border-white/20 backdrop-blur-md transition-all text-decoration-none">
+                        <span>Jelajahi Estimasi &amp; Posko Armada ↓</span>
+                    </a>
+                </div>
             </div>
 
-            <div class="inline-flex items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 px-3 py-1.5 md:px-4 md:py-1.5 rounded-full text-[11px] sm:text-xs md:text-[0.85rem] font-bold mb-3 md:mb-6 backdrop-blur-sm">
-                <span>📍 Pusat Layanan Area {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</span>
-                <span>•</span>
-                <span>⏱️ Response {{ $city->estimated_arrival ?? '25-40 Menit' }}</span>
-            </div>
+            {{-- Right Column: Visual Showcase & Floating Glassmorphism Badges --}}
+            <div class="lg:col-span-5 relative mt-6 lg:mt-0">
+                <div class="relative rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl shadow-slate-950/50 group">
+                    <img src="{{ asset('images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp') }}" 
+                         alt="Teknisi Rootera Plumbing {{ $cityName }}" 
+                         class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition-transform duration-700">
 
-            <h1 class="text-[22px] sm:text-2xl md:text-[3.2rem] font-extrabold leading-tight md:leading-[1.2] mb-2.5 md:mb-4 text-white drop-shadow-md">
-                {!! $heroHeadline ?? ("Jasa Saluran Pipa Mampet " . ($city->full_name ?? $city->name ?? 'Wilayah Terkait')) !!}
-            </h1>
-            <p class="text-xs sm:text-sm md:text-[1.12rem] text-slate-100/90 leading-normal md:leading-[1.6] max-w-3xl md:max-w-[800px] mb-4 md:mb-8 drop-shadow-sm">
-                {!! $heroSubtitle ?? ("Solusi profesional terpercaya untuk pelancaran wastafel, floor drain kamar mandi, kloset WC, &amp; pipa industri di <strong>" . ($city->full_name ?? $city->name ?? 'Wilayah Terkait') . "</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing (J&amp;J Group)</strong> bergaransi resmi tuntas 100%.") !!}
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+
+                    {{-- Floating Glassmorphism Badge 1 (Kiri Atas) --}}
+                    <div class="absolute top-5 left-5 bg-slate-900/80 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-2xl text-xs font-semibold text-white shadow-xl flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>⚡ Respon Cepat {{ $cityNameClean }}: {{ $city->estimated_arrival ?? '15–30 Menit Tiba' }}</span>
+                    </div>
+
+                    {{-- Floating Glassmorphism Badge 2 (Kanan Bawah) --}}
+                    <div class="absolute bottom-5 right-5 bg-slate-900/85 backdrop-blur-md border border-white/20 p-4 rounded-2xl text-white shadow-2xl">
+                        <div class="flex items-center gap-2">
+                            <span class="text-amber-400 text-sm">⭐⭐⭐⭐⭐</span>
+                            <span class="font-bold text-xs">4.9 / 5.0</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-medium mt-0.5">500+ Proyek {{ $cityNameClean }} Bergaransi</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ========================================================================= --}}
+{{-- 2. ESTIMASI BIAYA & POPULAR HIGHLIGHT (PURE WHITE #FFFFFF)                --}}
+{{-- ========================================================================= --}}
+<section class="py-16 sm:py-24 bg-white border-b border-slate-200" id="estimasi-biaya">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-[#169F81] font-bold text-xs tracking-widest uppercase bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">ESTIMASI BIAYA TRANSPARAN</span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
+                Daftar Biaya &amp; Estimasi Layanan {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-2">
+                Estimasi biaya pelancaran pipa tersumbat di {{ $cityNameClean }}. Tanpa biaya tersembunyi, sistem No Result No Pay (Tuntas Baru Bayar).
             </p>
+        </div>
 
-            <div class="flex flex-wrap gap-3">
-                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . ($city->full_name ?? 'Wilayah Terkait') . '. Bisa panggil teknisi?') }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#1FAF5A] hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm md:text-[1.05rem] px-5 py-3 md:px-8 md:py-3.5 rounded-full shadow-lg transition-transform active:scale-95 text-decoration-none">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-                    <span>Panggil Teknisi {{ $city->name ?? 'Wilayah Terkait' }} (24 Jam)</span>
+        {{-- 4 Pricing Cards with Popular Highlight --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {{-- Card 1: Wastafel / Kitchen Sink (POPULAR HIGHLIGHT) --}}
+            <div class="bg-emerald-50/40 rounded-3xl p-6 border-2 border-[#169F81] shadow-xl relative flex flex-col justify-between scale-[1.02] group hover:shadow-2xl transition-all">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#169F81] text-white text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                    🔥 Paling Sering Dipesan
+                </div>
+                <div>
+                    <div class="text-2xl mb-2">🍽️</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg font-['Plus_Jakarta_Sans',sans-serif]">Wastafel &amp; Kitchen Sink</h3>
+                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">Pelancaran kerak lemak jenuh dapur tanpa membongkar meja keramik.</p>
+                    <div class="mt-4 pt-4 border-t border-emerald-200">
+                        <div class="text-xs text-slate-500 font-medium">Mulai dari</div>
+                        <div class="text-2xl font-extrabold text-[#169F81]">Rp 400.000-an</div>
+                    </div>
+                </div>
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya mau tanya estimasi biaya pelancaran Wastafel mampet di ' . $cityNameClean) }}" 
+                   target="_blank" rel="noopener" 
+                   class="mt-6 w-full py-3 bg-[#169F81] text-white font-bold text-xs rounded-xl text-center shadow-md hover:bg-emerald-600 transition-colors">
+                    Order Wastafel {{ $cityNameClean }}
                 </a>
+            </div>
+
+            {{-- Card 2: Kloset WC & Toilet (POPULAR HIGHLIGHT) --}}
+            <div class="bg-emerald-50/40 rounded-3xl p-6 border-2 border-[#169F81] shadow-xl relative flex flex-col justify-between group hover:shadow-2xl transition-all">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+                    ⚡ Respon Cepat 24 Jam
+                </div>
+                <div>
+                    <div class="text-2xl mb-2">🚽</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg font-['Plus_Jakarta_Sans',sans-serif]">Kloset WC &amp; Toilet</h3>
+                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">Penanganan WC meluap / tersumbat pembalut &amp; tisu tanpa sedot tinja.</p>
+                    <div class="mt-4 pt-4 border-t border-emerald-200">
+                        <div class="text-xs text-slate-500 font-medium">Mulai dari</div>
+                        <div class="text-2xl font-extrabold text-[#169F81]">Rp 400.000-an</div>
+                    </div>
+                </div>
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya mau tanya estimasi biaya pelancaran Kloset WC mampet di ' . $cityNameClean) }}" 
+                   target="_blank" rel="noopener" 
+                   class="mt-6 w-full py-3 bg-[#169F81] text-white font-bold text-xs rounded-xl text-center shadow-md hover:bg-emerald-600 transition-colors">
+                    Order WC {{ $cityNameClean }}
+                </a>
+            </div>
+
+            {{-- Card 3: Floor Drain Kamar Mandi --}}
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md relative flex flex-col justify-between hover:border-emerald-400 hover:shadow-xl transition-all">
+                <div>
+                    <div class="text-2xl mb-2">🚿</div>
+                    <h3 class="font-extrabold text-slate-900 text-lg font-['Plus_Jakarta_Sans',sans-serif]">Floor Drain Kamar Mandi</h3>
+                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">Pembersihan rontokan rambut, gumpalan sabun, &amp; endapan pasir ubin.</p>
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <div class="text-xs text-slate-500 font-medium">Mulai dari</div>
+                        <div class="text-2xl font-extrabold text-slate-900">Rp 400.000-an</div>
+                    </div>
+                </div>
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya mau tanya estimasi biaya Floor Drain kamar mandi mampet di ' . $cityNameClean) }}" 
+                   target="_blank" rel="noopener" 
+                   class="mt-6 w-full py-3 bg-slate-900 text-white font-bold text-xs rounded-xl text-center shadow-md hover:bg-[#169F81] transition-colors">
+                    Order Kamar Mandi
+                </a>
+            </div>
+
+            {{-- Card 4: Pipa Utama, Got & Talang --}}
+            <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md relative flex flex-col justify-between hover:border-emerald-400 hover:shadow-xl transition-all">
+                <div>
+                    <div class="w-11 h-11 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-[#169F81] flex items-center justify-center mb-3 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16M4 5v4a2 2 0 002 2h12a2 2 0 002-2V5M9 11v8a2 2 0 002 2h2a2 2 0 002-2v-8"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-extrabold text-slate-900 text-lg font-['Plus_Jakarta_Sans',sans-serif]">Pipa Utama, Got &amp; Talang</h3>
+                    <p class="text-xs text-slate-600 mt-1 leading-relaxed">Pembersihan pipa pembuangan utama, saluran got luar, serta talang air atap dari endapan lumpur, pasir, sampah, dan daun kering tanpa bongkar saluran.</p>
+                    <div class="mt-4 pt-4 border-t border-slate-100">
+                        <div class="text-xs text-slate-500 font-medium">Mulai dari</div>
+                        <div class="text-2xl font-extrabold text-slate-900">Rp 400.000-an</div>
+                    </div>
+                </div>
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera Plumbing, saya ingin konsultasi dan pesan layanan pelancaran Pipa Utama / Got / Talang air mampet di ' . $cityNameClean) }}" 
+                   target="_blank" rel="noopener" 
+                   class="mt-6 w-full py-3 bg-slate-900 text-white font-bold text-xs rounded-xl text-center shadow-md hover:bg-[#169F81] transition-colors">
+                    Order Pipa Utama &amp; Talang
+                </a>
+            </div>
+        </div>
+
+        {{-- Jaminan Teks Mikro --}}
+        <div class="mt-10 text-center text-xs sm:text-sm text-slate-600 font-medium bg-slate-50 p-4 rounded-2xl border border-slate-200/80 max-w-2xl mx-auto flex items-center justify-center gap-2 flex-wrap">
+            <span>✓ Biaya transparan di awal</span>
+            <span>•</span>
+            <span>Tuntas baru bayar (No Result No Pay)</span>
+            <span>•</span>
+            <span>Garansi resmi 30 hari</span>
+        </div>
+    </div>
+</section>
+
+{{-- ========================================================================= --}}
+{{-- 2.5. SEKSI MULTI-SEKTOR PROPERTI                                         --}}
+{{-- ========================================================================= --}}
+<x-multi-sector-grid :locationName="$cityNameClean" :whatsappNumber="$city->whatsapp_number ?? '6281385404000'" />
+
+{{-- ========================================================================= --}}
+{{-- 3. MENGAPA PILIH ROOTERA (COMPACT 2x2 MOBILE GRID & DUAL-TONE SVG)       --}}
+{{-- ========================================================================= --}}
+<section class="py-12 sm:py-20 bg-[#F8FAFC] border-b border-slate-200" id="keunggulan-utama">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        {{-- Section Header --}}
+        <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#169F81] font-bold text-xs tracking-widest uppercase border border-emerald-200 mb-2.5 shadow-xs">
+                ✨ KEUNGGULAN UTAMA
+            </span>
+            <h2 class="text-xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                Mengapa Warga {{ $cityNameClean }} Memilih Rootera Plumbing?
+            </h2>
+            <p class="text-slate-600 text-xs sm:text-sm md:text-base mt-2 leading-relaxed max-w-2xl mx-auto">
+                Standar kerja profesional bergaransi resmi dengan jaminan keamanan struktur bangunan tanpa membongkar lantai keramik.
+            </p>
+        </div>
+
+        {{-- 4 Core Pillars Grid (2x2 on Mobile, 4-col on Desktop) --}}
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-6">
+            {{-- Card 1: 100% Non-Bongkar --}}
+            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="bg-teal-50 text-[#169F81] rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 mb-3 sm:mb-4 group-hover:scale-110 group-hover:bg-[#169F81] group-hover:text-white transition-all duration-300 border border-teal-200/60 shadow-xs">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 mb-1.5 font-['Plus_Jakarta_Sans',sans-serif] leading-snug">
+                        100% Non-Bongkar
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-snug">
+                        Metode kabel spiral fleksibel meluncur ikuti belokan pipa tanpa merusak ubin keramik.
+                    </p>
+                </div>
+                <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-100 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#169F81] shrink-0"></span>
+                    <span class="text-[10px] sm:text-xs font-bold text-[#169F81] uppercase tracking-wider">Tanpa Merusak Ubin</span>
+                </div>
+            </div>
+
+            {{-- Card 2: Garansi Resmi 30 Hari --}}
+            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="bg-blue-50 text-[#0A2E78] rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 mb-3 sm:mb-4 group-hover:scale-110 group-hover:bg-[#0A2E78] group-hover:text-white transition-all duration-300 border border-blue-200/60 shadow-xs">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 mb-1.5 font-['Plus_Jakarta_Sans',sans-serif] leading-snug">
+                        Garansi 30 Hari
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-snug">
+                        Jaminan tuntas 30 hari kalender. Jika mampet berulang pada titik sama, teknisi servis gratis.
+                    </p>
+                </div>
+                <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-100 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#0A2E78] shrink-0"></span>
+                    <span class="text-[10px] sm:text-xs font-bold text-[#0A2E78] uppercase tracking-wider">Garansi Resmi 30 Hari</span>
+                </div>
+            </div>
+
+            {{-- Card 3: Respon 20–35 Menit --}}
+            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="bg-amber-50 text-amber-600 rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 mb-3 sm:mb-4 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300 border border-amber-200/60 shadow-xs">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 mb-1.5 font-['Plus_Jakarta_Sans',sans-serif] leading-snug">
+                        Respon Cepat
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-snug">
+                        Armada posko siaga terdekat di wilayah {{ $cityNameClean }} siap meluncur 24 jam nonstop.
+                    </p>
+                </div>
+                <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-100 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-500 shrink-0"></span>
+                    <span class="text-[10px] sm:text-xs font-bold text-amber-600 uppercase tracking-wider">Armada Siaga 24 Jam</span>
+                </div>
+            </div>
+
+            {{-- Card 4: Bebas Soda Api --}}
+            <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="bg-emerald-50 text-emerald-600 rounded-2xl w-11 h-11 flex items-center justify-center flex-shrink-0 mb-3 sm:mb-4 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 border border-emerald-200/60 shadow-xs">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 fill-none stroke-current stroke-2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.4 19 2c1 2 2 4.1 2 7 0 4.4-3.6 8-8 8-1.2 0-2.3-.3-3.3-.9L11 20z"></path>
+                            <path d="M12 10a6 6 0 0 0-4 5"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-sm sm:text-base text-slate-900 mb-1.5 font-['Plus_Jakarta_Sans',sans-serif] leading-snug">
+                        0% Kimia Korosif
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-snug">
+                        Tanpa soda api atau zat kimia berbahaya yang melunakkan dan merusak sambungan pipa PVC.
+                    </p>
+                </div>
+                <div class="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-slate-100 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                    <span class="text-[10px] sm:text-xs font-bold text-emerald-600 uppercase tracking-wider">100% Aman Untuk Pipa</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 {{-- ========================================================================= --}}
-{{-- ZONA 2: CORE SERVICES & PROPERTY SPECIALIZATION (Real Local Images)        --}}
+{{-- 4. KATALOG MESIN BENTO GRID (DARK INDUSTRIAL THEME #071C4D)               --}}
 {{-- ========================================================================= --}}
-<?php
-  $mediaService = app(\App\Services\MediaService::class);
-  $propertyVisuals = $mediaService->getPropertyImages();
-  $cityNameClean = $city->name ?? 'Wilayah Terkait';
-  
-  $coreProblemCards = [
-      [
-          'title' => 'Wastafel & Sink Dapur',
-          'desc' => 'Pelancaran lemak beku, sisa makanan, & bau tak sedap pada sink dapur tanpa bongkar.',
-          'image' => asset('assets/jenis-bangunan/wastafel-rooteraplumbing.jpg'),
-          'url' => url('/layanan-pipa-mampet/wastafel-mampet/' . ($city->slug ?? 'wilayah')),
-          'badge' => 'Paling Populer'
-      ],
-      [
-          'title' => 'Kloset WC & Toilet',
-          'desc' => 'Atasi kloset meluap & tersumbat tisue/benda asing dengan mesin pendorong hening.',
-          'image' => asset('assets/jenis-bangunan/kloset-rootera-plumbing.jpg'),
-          'url' => url('/layanan-pipa-mampet/wc-toilet-mampet/' . ($city->slug ?? 'wilayah')),
-          'badge' => 'Respon Cepat'
-      ],
-      [
-          'title' => 'Floor Drain Kamar Mandi',
-          'desc' => 'Pembersihan pipa kamar mandi dari sumbatan rambut, kerak sabun, & rontokan ubin.',
-          'image' => asset('assets/jenis-bangunan/floor-drain-kamarmandi-rooteraplumbing.jpg'),
-          'url' => url('/layanan-pipa-mampet/kamar-mandi-mampet/' . ($city->slug ?? 'wilayah')),
-          'badge' => 'Bebas Bau'
-      ],
-      [
-          'title' => 'Talang Air & Got Utama',
-          'desc' => 'Penanganan pipa saluran pembuangan luar, got mampet, & talang air hujan gedung.',
-          'image' => asset('assets/jenis-bangunan/saluran-pembuangan-got-rumahan-dan-industri-rooteraplumbing.jpg'),
-          'url' => url('/layanan-pipa-mampet/pipa-mampet/' . ($city->slug ?? 'wilayah')),
-          'badge' => 'Skala Besar'
-      ]
-  ];
-?>
-<section class="py-8 px-4 md:py-[4rem] md:px-6 bg-slate-50 border-b border-slate-200" id="layanan-utama">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        
-        <!-- Header Zona 2 -->
-        <div class="text-center mb-6 md:mb-12">
-            <span class="text-emerald-600 font-extrabold text-[11px] md:text-[0.85rem] uppercase tracking-wider">⚡ LAYANAN &amp; SPESIALISASI PROPERTI</span>
-            <h2 class="text-[18px] sm:text-[20px] md:text-[2.3rem] font-extrabold text-slate-900 mt-1 leading-tight">Solusi Masalah Pipa &amp; Jenis Bangunan di {{ $cityNameClean }}</h2>
-            <p class="text-xs md:text-[0.98rem] text-slate-500 max-w-2xl md:max-w-[760px] mx-auto mt-1 leading-relaxed md:leading-[1.6]">Pilih masalah saluran mampet Anda atau kategori properti di bawah ini untuk penanganan presisi 24 jam tanpa bongkar keramik.</p>
+<section class="py-16 sm:py-24 bg-[#071C4D] text-white relative overflow-hidden border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-emerald-400 font-bold text-xs tracking-widest uppercase bg-white/10 px-3.5 py-1.5 rounded-full border border-white/20 backdrop-blur-md">ALAT &amp; TEKNOLOGI MODERN</span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
+                Armada &amp; Mesin Spesialis Plumbing di {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base mt-2">
+                Peralatan standar industri Amerika dan Eropa yang menjamin kekuatan pelancaran tanpa pembongkaran pipa.
+            </p>
         </div>
 
-        <!-- Baris 1: 4 Masalah Utama (Horizontal Snap Carousel with Peek Effect on Mobile) -->
-        <div class="mb-8 md:mb-10">
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-3.5 pb-3.5 mobile-scrollbar touch-pan-x touch-pan-y md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible md:pb-0 md:gap-5" style="touch-action: pan-x pan-y; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;">
-                @foreach($coreProblemCards as $card)
-                <a href="{{ $card['url'] }}" class="w-[82vw] min-w-[82vw] sm:min-w-[240px] snap-center shrink-0 md:w-auto md:min-w-0 bg-white rounded-2xl border border-slate-200 overflow-hidden text-decoration-none flex flex-col justify-between shadow-sm transition hover:-translate-y-1 hover:border-emerald-500 hover:shadow-lg group">
-                    <div>
-                        <div class="relative h-[110px] md:h-[130px] bg-slate-900 overflow-hidden flex items-center justify-center p-0.5">
-                            <img src="{{ $card['image'] }}" alt="{{ $card['title'] }} {{ $cityNameClean }}" class="w-full h-full object-contain md:object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
-                            <span class="absolute top-2 right-2 md:top-2.5 md:right-2.5 bg-slate-900/85 text-emerald-400 border border-emerald-500/40 text-[10px] md:text-[0.72rem] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm">
-                                {{ $card['badge'] }}
-                            </span>
+        {{-- Bento Grid Layout --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {{-- Bento 1: Kartu Besar / Hero Equipment (Span 2 Kolom) --}}
+            <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 p-8 rounded-3xl relative overflow-hidden group hover:border-[#169F81]/50 transition-all flex flex-col justify-between">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                    <span class="text-xs font-bold bg-[#169F81] text-white px-3 py-1 rounded-full uppercase tracking-wider">⚡ Sorotan Tekanan Tinggi</span>
+                    <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">Tanpa Bongkar Keramik</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white mb-3 font-['Plus_Jakarta_Sans',sans-serif]">Mesin Hydro-Jetting High-Pressure (300 Bar)</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl mb-6">
+                        Penyemprotan jet air bertekanan ultra-tinggi hingga 300 Bar yang mampu mengikis kerak lemak jenuh membatu, endapan sedimen semen, dan lumpur pekat di pipa drainase restoran &amp; pabrik {{ $cityNameClean }}.
+                    </p>
+                    <div class="grid grid-cols-3 gap-4 pt-4 border-t border-slate-800 text-center">
+                        <div class="p-3 bg-slate-800/60 rounded-2xl">
+                            <div class="text-lg font-bold text-emerald-400">300 Bar</div>
+                            <div class="text-[10px] text-slate-400">Tekanan Air</div>
                         </div>
-                        <div class="p-3 md:p-5">
-                            <h3 class="text-sm md:text-[1.05rem] font-extrabold text-slate-900 mb-1 group-hover:text-emerald-600 transition">
-                                {{ $card['title'] }}
-                            </h3>
-                            <p class="text-xs md:text-[0.82rem] text-slate-500 leading-snug md:leading-[1.4] margin-0 line-clamp-2 md:line-clamp-none">
-                                {{ $card['desc'] }}
-                            </p>
+                        <div class="p-3 bg-slate-800/60 rounded-2xl">
+                            <div class="text-lg font-bold text-emerald-400">50 Meter</div>
+                            <div class="text-[10px] text-slate-400">Jangkauan Selang</div>
+                        </div>
+                        <div class="p-3 bg-slate-800/60 rounded-2xl">
+                            <div class="text-lg font-bold text-emerald-400">100% Clean</div>
+                            <div class="text-[10px] text-slate-400">Pengikis Lemak</div>
                         </div>
                     </div>
-                    <div class="px-3 pb-3 md:px-5 md:pb-4 text-emerald-600 font-extrabold text-xs md:text-[0.85rem] flex items-center gap-1">
-                        Solusi {{ $cityNameClean }} →
-                    </div>
-                </a>
-                @endforeach
+                </div>
             </div>
-            <!-- Visual Scroll Hint Indicator for Mobile -->
-            <div class="flex items-center justify-center gap-1.5 mt-2 md:hidden">
-                <span class="w-6 h-1 bg-emerald-500 rounded-full"></span>
-                <span class="w-2 h-1 bg-slate-300 rounded-full"></span>
-                <span class="w-2 h-1 bg-slate-300 rounded-full"></span>
+
+            {{-- Bento 2: Mesin Ridgid --}}
+            <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between hover:border-[#169F81]/50 transition-all">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl">🌀</span>
+                        <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30">Tanpa Bongkar</span>
+                    </div>
+                    <h3 class="font-extrabold text-white text-lg mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Mesin Cable Spiral Ridgid USA</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Kabel baja fleksibel Ridgid K-50/K-60 yang berotasi kecepatan tinggi menembus lekukan pipa P-Trap &amp; menghancurkan sumbatan rambut/kain.
+                    </p>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-emerald-400 font-semibold">
+                    ✓ Rotasi Presisi Anti-Pecah Pipa
+                </div>
+            </div>
+
+            {{-- Bento 3: Kamera CCTV Endoskopi --}}
+            <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between hover:border-[#169F81]/50 transition-all">
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-2xl">📷</span>
+                        <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30">Tanpa Bongkar</span>
+                    </div>
+                    <h3 class="font-extrabold text-white text-lg mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Kamera CCTV Pipeline 1080p</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Endoskopi mikro waterproof berlampu LED melacak lokasi pasti titik sumbatan &amp; keretakan pipa secara real-time di layar monitor.
+                    </p>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] text-emerald-400 font-semibold">
+                    ✓ Visual Deteksi Presisi 99.9%
+                </div>
+            </div>
+
+            {{-- Bento 4: Floor Protection Kit (Span 2 Kolom) --}}
+            <div class="lg:col-span-2 bg-slate-900/90 border border-slate-800 p-6 rounded-3xl flex flex-col justify-between hover:border-[#169F81]/50 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">🛡️</span>
+                        <h3 class="font-extrabold text-white text-lg font-['Plus_Jakarta_Sans',sans-serif]">Floor Protection &amp; Anti-Spill Kit</h3>
+                    </div>
+                    <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30">Garansi Kebersihan</span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                    Setiap teknisi dilengkapi pelindung alas sepatu (footwear covers), terpal penahan cipratan air limbah, serta cairan karbol antiseptik agar area kerja kembali bersih &amp; harum pasca-kerja.
+                </p>
+                <div class="text-[11px] text-slate-400 flex items-center gap-3 border-t border-slate-800 pt-3">
+                    <span>• Footwear Boots Protect</span>
+                    <span>• Terpal Splash Shield</span>
+                    <span>• Karbol Sanitasi</span>
+                </div>
             </div>
         </div>
-
-        <!-- Baris 2: Sub-kategori Tipe Properti (Compact 2-Column Grid on Mobile) -->
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 md:p-[1.75rem] shadow-sm">
-            <div class="mb-4 md:mb-6 text-center">
-                <h3 class="text-sm sm:text-base md:text-[1.2rem] font-extrabold text-slate-900">🏢 Spesialisasi Tipe Properti &amp; Bangunan {{ $cityNameClean }}</h3>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 md:gap-5">
-                @foreach($propertyVisuals as $pKey => $pVisual)
-                <a href="{{ route('property.show', $pVisual['slug']) }}" class="bg-white rounded-xl border border-slate-200 overflow-hidden text-decoration-none flex flex-col justify-between shadow-sm transition hover:-translate-y-1 hover:border-emerald-500 hover:shadow-md group">
-                    <div>
-                        <div class="relative h-[95px] md:h-[130px] bg-slate-900 overflow-hidden flex items-center justify-center p-0.5">
-                            <img src="{{ $pVisual['url'] }}" alt="{{ $pVisual['name'] }} di {{ $cityNameClean }}" class="w-full h-full object-contain md:object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
-                            <span class="absolute top-1.5 right-1.5 md:top-2.5 md:right-2.5 bg-slate-900/85 text-emerald-400 border border-emerald-500/40 text-[9px] md:text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full backdrop-blur-sm">
-                                ⏱️ {{ $pVisual['badge'] }}
-                            </span>
-                            <span class="absolute bottom-1.5 left-2 text-base md:text-xl">
-                                {{ $pVisual['icon'] }}
-                            </span>
-                        </div>
-                        <div class="p-2.5 md:p-[1rem_1.25rem]">
-                            <h3 class="text-xs md:text-[0.98rem] font-extrabold text-slate-900 group-hover:text-emerald-600 transition leading-snug margin-0">
-                                {{ $pVisual['name'] }}
-                            </h3>
-                            <p class="text-[11px] md:text-[0.8rem] text-slate-500 leading-tight md:leading-[1.4] margin-0 line-clamp-2 hidden sm:block mt-1">
-                                Layanan pelancaran pipa tersumbat profesional di {{ $cityNameClean }} tanpa bongkar.
-                            </p>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
-        </div>
-
     </div>
 </section>
 
 {{-- ========================================================================= --}}
-{{-- ZONA 3: SOCIAL PROOF & ARSENAL (Peralatan + Galeri + Video)                --}}
+{{-- 5. INTERACTIVE BEFORE / AFTER SHOWCASE                                    --}}
 {{-- ========================================================================= --}}
-@include('components.media-documentation', [
-    'projectShowcases' => $projectShowcases ?? null,
-    'relatedArticles' => $relatedArticles ?? collect(),
-    'locationName' => $city->full_name ?? $city->name ?? 'Wilayah Terkait',
-    'locationShort' => $city->name ?? 'Wilayah Terkait'
-])
-
-{{-- ========================================================================= --}}
-{{-- ZONA 4: COVERAGE HUB & B2B CALLOUT (Penggabungan)                         --}}
-{{-- ========================================================================= --}}
-<section class="py-8 px-4 md:py-[4rem] md:px-6 bg-white border-t border-b border-slate-200" id="jangkauan-area">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        
-        <div class="text-center mb-6 md:mb-10">
-            <span class="text-emerald-600 font-extrabold text-[11px] md:text-[0.85rem] uppercase tracking-wider">📍 JANGKAUAN KECAMATAN &amp; LAYANAN KOMERSIAL</span>
-            <h2 class="text-[18px] sm:text-[20px] md:text-[2rem] font-extrabold text-slate-900 mt-1 leading-tight">Cakupan Area Presisi di {{ $city->full_name ?? $city->name ?? 'Wilayah Terkait' }}</h2>
-            <p class="text-xs md:text-[0.95rem] text-slate-500 max-w-2xl mx-auto mt-1 leading-relaxed">Armada teknisi Rootera standby di seluruh kecamatan {{ $city->name ?? 'Wilayah Terkait' }} &amp; melayani kontrak maintenance komersial B2B.</p>
+<section class="py-16 sm:py-24 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-[#169F81] font-bold text-xs tracking-widest uppercase bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">BUKTI PENGERJAAN NYATA</span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
+                Hasil Pengerjaan Sebelum vs Sesudah Hydro-Jetting
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-2">
+                Visual komparasi nyata pipa tersumbat kerak lemak jenuh yang kembali bersih lancar 100%.
+            </p>
         </div>
 
-        <!-- Grid Kecamatan Kompak -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {{-- BEFORE Card --}}
+            <div class="bg-rose-50/50 p-6 rounded-3xl border-2 border-rose-200 relative group overflow-hidden">
+                <div class="inline-flex items-center gap-2 bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-md">
+                    <span>⚠️ Kondisi Awal (Mampet Total)</span>
+                </div>
+                <div class="rounded-2xl overflow-hidden mb-4 border border-rose-200">
+                    <img src="{{ asset('images/dokumentasi/sebelum-pipa-mampet-lemak.webp') }}" 
+                         alt="Sebelum Hydro Jetting Rootera Plumbing" 
+                         class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-1">Pipa Jenuh Kerak Lemak &amp; Endapan</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Air buangan meluap ke lantai wastafel &amp; timbul aroma menyengat akibat tumpukan minyak membatu.</p>
+            </div>
+
+            {{-- AFTER Card --}}
+            <div class="bg-emerald-50/50 p-6 rounded-3xl border-2 border-[#169F81] relative group overflow-hidden shadow-xl">
+                <div class="inline-flex items-center gap-2 bg-[#169F81] text-white text-xs font-bold px-3 py-1 rounded-full mb-4 shadow-md">
+                    <span>✨ Hasil Akhir (Lancar 100%)</span>
+                </div>
+                <div class="rounded-2xl overflow-hidden mb-4 border border-emerald-200">
+                    <img src="{{ asset('images/dokumentasi/after-gutter-resto-bersih-rootera.webp') }}" 
+                         alt="Sesudah Hydro Jetting Rootera Plumbing" 
+                         class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                </div>
+                <h3 class="font-bold text-slate-900 text-base mb-1">Pipa Plong &amp; Dinding Pipa Clean</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">Kerak lemak terkikis habis oleh semprotan Hydro-jetting 300 Bar. Air mengalir deras tanpa hambatan.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ========================================================================= --}}
+{{-- 5.2. KOMPARASI VISUAL (ROOTERA VS TUKANG PIPA TRADISIONAL)                --}}
+{{-- ========================================================================= --}}
+<section class="py-16 sm:py-24 bg-slate-900 text-white relative overflow-hidden border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <span class="text-emerald-400 font-bold text-xs tracking-widest uppercase bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20">KOMPARASI KUALITAS</span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
+                Rootera Plumbing vs Tukang Saluran Tradisional
+            </h2>
+            <p class="text-slate-300 text-xs sm:text-sm mt-2">
+                Mengapa ratusan pemilik rumah, resto, &amp; gedung di {{ $cityNameClean }} memilih standar profesional Rootera.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {{-- Rootera Column --}}
+            <div class="bg-slate-800/90 border-2 border-[#169F81] rounded-3xl p-6 sm:p-8 shadow-2xl relative">
+                <div class="inline-flex items-center gap-2 bg-[#169F81] text-white text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider">
+                    ✨ STANDAR ROOTERA PLUMBING
+                </div>
+                <ul class="space-y-4 text-xs sm:text-sm">
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">✓</span>
+                        <div>
+                            <strong class="text-white">100% Tanpa Bongkar Keramik:</strong>
+                            <span class="text-slate-300 block">Kabel spiral Ridgid USA meluncur ikuti P-Trap tanpa merusak ubin.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">✓</span>
+                        <div>
+                            <strong class="text-white">Garansi Resmi 30 Hari:</strong>
+                            <span class="text-slate-300 block">Gratis perbaikan ulang jika mampet kembali dalam masa garansi.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">✓</span>
+                        <div>
+                            <strong class="text-white">Alat Heavy-Duty Hydro Jetting:</strong>
+                            <span class="text-slate-300 block">Tekanan 300 Bar merontokkan kerak lemak jenuh hingga bersih 100%.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">✓</span>
+                        <div>
+                            <strong class="text-white">0% Soda Api (Pipa PVC Safe):</strong>
+                            <span class="text-slate-300 block">Tanpa bahan kimia korosif yang melunakkan &amp; memecahkan pipa.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shrink-0">✓</span>
+                        <div>
+                            <strong class="text-white">Transparan &amp; Faktur PPN 11%:</strong>
+                            <span class="text-slate-300 block">Sistem No Result No Pay &amp; kuitansi resmi untuk perumahan maupun B2B.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            {{-- Traditional Column --}}
+            <div class="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8">
+                <div class="inline-flex items-center gap-2 bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider">
+                    ⚠️ TUKANG KONVENSIONAL
+                </div>
+                <ul class="space-y-4 text-xs sm:text-sm text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0">✕</span>
+                        <div>
+                            <strong class="text-slate-300">Sering Membongkar Keramik:</strong>
+                            <span class="block">Biaya perbaikan keramik mahal &amp; merusak estetika kamar mandi.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0">✕</span>
+                        <div>
+                            <strong class="text-slate-300">Tanpa Garansi Tertulis:</strong>
+                            <span class="block">Mampet ulang beberapa hari kemudian dikenakan biaya full dari awal.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0">✕</span>
+                        <div>
+                            <strong class="text-slate-300">Alat Manual Seadanya:</strong>
+                            <span class="block">Kawat biasa / bambu tidak mampu mengikis lemak jenuh membatu.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0">✕</span>
+                        <div>
+                            <strong class="text-slate-300">Sering Memakai Soda Api:</strong>
+                            <span class="block">Risiko pipa PVC melengkung, bocor ke plafon, atau tersumbat parah.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold shrink-0">✕</span>
+                        <div>
+                            <strong class="text-slate-300">Tarif Berubah di Lapangan:</strong>
+                            <span class="block">Harga awal murah namun membengkak tanpa nota resmi PT.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ========================================================================= --}}
+{{-- 5.5. DOKUMENTASI PROYEK & BLOG EDUKASI LOKAL                              --}}
+{{-- ========================================================================= --}}
+<div class="bg-slate-100 py-16 border-b border-slate-200">
+    <x-media-documentation :articles="$articles ?? collect()" :projectShowcases="$projectShowcases ?? collect()" :locationName="$cityNameClean" />
+</div>
+
+{{-- ========================================================================= --}}
+{{-- 6. PENATAAN CAKUPAN AREA (INTERACTIVE CHIPS & PULSING DOT)                --}}
+{{-- ========================================================================= --}}
+<section class="py-16 sm:py-24 bg-[#F8FAFC] border-b border-slate-200" id="jangkauan-area">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold mb-3 border border-emerald-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Teknisi Siaga Hari Ini di {{ $cityNameClean }}</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
+                Cakupan Area &amp; Kecamatan di {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base mt-2">
+                Pilih kelurahan/kecamatan terdekat Anda untuk pemanggilan armada teknisi siaga 24 jam:
+            </p>
+        </div>
+
+        {{-- Interactive Chips --}}
         @if(isset($city->districts) && $city->districts->isNotEmpty())
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-[0.85rem] mb-8 md:mb-10">
+        <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-12">
             @foreach($city->districts as $district)
-                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/' . ($city->slug ?? 'wilayah') . '/' . $district->slug) }}" class="bg-slate-50 border border-slate-200 rounded-xl py-2 px-3 md:py-[0.85rem] md:px-[1.1rem] text-decoration-none text-slate-900 font-bold text-xs md:text-[0.9rem] flex justify-between items-center transition hover:border-emerald-500 hover:bg-emerald-50/30">
-                    <span class="truncate">📍 {{ $district->name }}</span>
-                    <span class="text-emerald-600 font-bold ml-1 md:text-[0.85rem]">→</span>
+                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/' . ($city->slug ?? 'wilayah') . '/' . $district->slug) }}" 
+                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
+                    <span>📍 {{ $district->name }}</span>
+                    <span class="text-emerald-600">→</span>
                 </a>
             @endforeach
         </div>
         @endif
 
-        <!-- Banner / Callout Box Ringkas B2B Komersial & Area Penyangga -->
-        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl p-5 md:p-[2rem_2.5rem] text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 md:gap-6 shadow-xl">
+        {{-- B2B Callout Box --}}
+        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-8 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl border border-slate-700">
             <div>
-                <div class="inline-flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] md:text-[0.75rem] font-bold px-2.5 py-1 rounded-full uppercase mb-2">
-                    🏢 Layanan Komersial &amp; B2B Maintenance
-                </div>
-                <h3 class="text-sm sm:text-base md:text-[1.35rem] font-extrabold text-white mb-1 leading-snug">
-                    Butuh Kontrak Perawatan Pipa Berkala untuk Bisnis / Gedung di {{ $city->name }}?
+                <span class="text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30">🏢 Corporate &amp; B2B Contract</span>
+                <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-2 mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
+                    Butuh Kontrak Maintenance Pipa Restoran / Gedung di {{ $cityNameClean }}?
                 </h3>
-                <p class="text-slate-300 text-xs md:text-[0.92rem] max-w-2xl leading-relaxed md:leading-[1.5] margin-0">
-                    Sistem Hydro Jetting &amp; kamera endoskopi CCTV siap menangani limbah resto, ruko, hotel, &amp; pabrik di {{ $city->full_name }}.
+                <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                    Sistem Hydro Jetting &amp; e-Faktur Pajak PPN 11% resmi untuk kebutuhan perawatan saluran rutin restoran, mall, hotel, &amp; pabrik.
                 </p>
             </div>
-            <div class="flex flex-wrap gap-2 shrink-0">
-                <a href="{{ route('b2b.index') }}" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs md:text-[0.9rem] px-4 py-2.5 md:px-6 md:py-3 rounded-full text-decoration-none inline-flex items-center gap-1 shadow-md">
-                    Konsultasi B2B Komersial →
-                </a>
-            </div>
+            <a href="{{ route('b2b.index') }}" 
+               class="shrink-0 px-6 py-3.5 bg-[#169F81] hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-all text-decoration-none shadow-lg">
+                Konsultasi B2B {{ $cityNameClean }} →
+            </a>
         </div>
-
     </div>
 </section>
 
 {{-- ========================================================================= --}}
-{{-- ZONA 5: EDUKASI RINGKAS & FAQ LOKAL (Interactive Alpine.js Accordion)    --}}
+{{-- 7. FAQ & EDUKASI LOKAL (MODERN & MOBILE-FIRST ACCORDION)                  --}}
 {{-- ========================================================================= --}}
 <?php
   $cityFaqs = [
       [
           'question' => 'Berapa lama estimasi teknisi tiba di lokasi ' . $cityNameClean . '?',
-          'answer' => 'Teknisi Rootera disiapgajikan di pos respon armada ' . $cityNameClean . ' dengan estimasi kedatangan ' . ($city->estimated_arrival ?? '25-40 Menit') . ' setelah pemesanan dikonfirmasi via WhatsApp CS 24 jam.'
+          'answer' => 'Teknisi Rootera disiapgajikan di pos respon armada <strong>' . $cityNameClean . '</strong> dengan estimasi kedatangan <strong>' . ($city->estimated_arrival ?? '15-30 Menit') . '</strong> setelah pemesanan dikonfirmasi via WhatsApp CS 24 jam.'
       ],
       [
           'question' => 'Apakah pengerjaan benar-benar 100% tanpa bongkar ubin/keramik?',
-          'answer' => 'Ya. Kami menggunakan mesin rotary spiral baja Ridgid &amp; pemotong khusus yang fleksibel mengikuti lekukan pipa (P-Trap/S-Trap), memancarkan kerak lemak &amp; sumbatan tanpa perlu membongkar lantai keramik rumah Anda.'
+          'answer' => 'Ya, <strong>100% tanpa bongkar keramik</strong>. Kami menggunakan mesin rotary spiral baja Ridgid fleksibel buatan USA &amp; pemotong khusus yang mampu menembus lekukan pipa (P-Trap/S-Trap), mengikis kerak lemak jenuh tanpa merusak ubin lantai rumah Anda.'
       ],
       [
-          'question' => 'Bagaimana ketentuan garansi 30 hari Rootera?',
-          'answer' => 'Setiap penanganan dilengkapi nota garansi resmi 30 hari. Jika dalam masa garansi saluran yang sama kembali mampet, teknisi kami akan meluncur ulang dan mengerjakannya 100% GRATIS tanpa biaya tambahan.'
+          'question' => 'Bagaimana ketentuan Garansi Resmi 30 Hari Rootera?',
+          'answer' => 'Setiap pengerjaan dilengkapi nota garansi resmi. Jika dalam kurun waktu <strong>30 Hari Garansi</strong> saluran pada titik yang sama kembali tersumbat, teknisi kami meluncur ulang dan memperbaikinya <strong>100% GRATIS</strong>.'
       ],
       [
-          'question' => 'Bagaimana sistem pembayaran setelah pekerjaan selesai?',
-          'answer' => 'Sistem pembayaran berlaku <strong>No Flow No Pay</strong> (Hanya Bayar Jika Saluran Lancar). Pembayaran dapat dilakukan via transfer bank atau tunai setelah Anda menguji kelancaran air secara langsung.'
+          'question' => 'Bagaimana sistem pembayaran setelah pengerjaan selesai?',
+          'answer' => 'Sistem pembayaran menerapkan <strong>No Result No Pay (Tuntas Baru Bayar)</strong>. Anda hanya membayar jika air saluran sudah mengalir lancar kembali secara teruji. Pembayaran dapat dilakukan via Cash atau Transfer Bank.'
+      ],
+      [
+          'question' => 'Apakah Rootera melayani komersial, restoran, & pabrik di ' . $cityNameClean . '?',
+          'answer' => 'Tentu saja. Kami melayani perumahan residensial, resto/cafe (pembersihan <i>grease trap</i> &amp; lemak jenuh), apartemen, gedung perkantoran, hingga pabrik industri menggunakan teknologi <strong>Hydro-Jetting 300 Bar</strong> dengan fasilitas <strong>Faktur Pajak PPN 11%</strong>.'
       ]
   ];
 ?>
-<section class="py-8 px-4 md:py-[4rem] md:px-6 bg-slate-50 border-b border-slate-200" id="faq-edukasi">
-    <div style="max-width: 1200px; margin: 0 auto;">
-        
-        <div class="text-center mb-6 md:mb-10">
-            <span class="text-emerald-600 font-extrabold text-[11px] md:text-[0.85rem] uppercase tracking-wider">❓ PERTANYAAN UMUM &amp; EDUKASI</span>
-            <h2 class="text-[18px] sm:text-[20px] md:text-[2rem] font-extrabold text-slate-900 mt-1 leading-tight">Pertanyaan Sering Diajukan di {{ $cityNameClean }}</h2>
-            <p class="text-xs md:text-[0.95rem] text-slate-500 max-w-2xl mx-auto mt-1 leading-relaxed">Informasi esensial garansi, waktu respon teknisi, dan metode kerja tanpa pembongkaran lantai.</p>
+<section class="py-16 sm:py-24 bg-white border-b border-slate-200" id="faq-edukasi">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Header FAQ --}}
+        <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#169F81] font-bold text-xs tracking-widest uppercase border border-emerald-200 mb-3 shadow-xs">
+                💡 BANTUAN &amp; JAWABAN CEPAT
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
+                FAQ Pelancaran Pipa Mampet {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-600 text-xs sm:text-sm mt-2.5 leading-relaxed">
+                Pertanyaan yang paling sering diajukan pelanggan sebelum memesan teknisi di <strong>{{ $cityNameClean }}</strong>.
+            </p>
         </div>
 
-        <!-- Section 4: Interactive Accordion (Vertical Stack 1 Column) -->
-        <div x-data="{ activeFaq: 0 }" class="max-w-[1000px] mx-auto flex flex-col gap-3">
+        {{-- Accordion Container --}}
+        <div x-data="{ activeFaq: 0 }" class="space-y-3.5">
             @foreach($cityFaqs as $index => $faq)
-            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all">
+            <div 
+                class="bg-white border transition-all duration-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md"
+                :class="activeFaq === {{ $index }} ? 'border-l-4 border-l-[#169F81] border-emerald-500/80 bg-emerald-50/20 shadow-md' : 'border-slate-200/80 hover:border-slate-300'"
+            >
                 <button 
                     @click="activeFaq = (activeFaq === {{ $index }} ? null : {{ $index }})" 
-                    class="w-full text-left p-4 md:p-[1.25rem_1.5rem] flex items-center justify-between gap-3 bg-white hover:bg-slate-50 transition-colors focus:outline-none cursor-pointer"
+                    class="w-full text-left px-4 py-4 sm:px-6 sm:py-5 min-h-[52px] flex items-center justify-between gap-4 transition-colors focus:outline-none cursor-pointer select-none"
+                    :class="activeFaq === {{ $index }} ? 'bg-slate-50/70' : 'hover:bg-slate-50/50'"
                     :aria-expanded="activeFaq === {{ $index }} ? 'true' : 'false'">
-                    <h3 class="text-xs sm:text-sm md:text-[1.05rem] font-extrabold text-slate-900 flex items-center gap-2 margin-0 leading-snug">
-                        <span>⏱️ {{ $faq['question'] }}</span>
-                    </h3>
-                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 transition-transform duration-200" :class="activeFaq === {{ $index }} ? 'rotate-180 bg-emerald-100 text-emerald-700' : ''">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                    
+                    <div class="flex items-center gap-3 sm:gap-4 pr-2">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 flex items-center justify-center font-extrabold text-xs transition-all shadow-xs"
+                              :class="activeFaq === {{ $index }} ? 'bg-[#169F81] text-white ring-2 ring-emerald-200' : 'bg-teal-50 text-[#169F81] border border-teal-200/60'">
+                            0{{ $index + 1 }}
+                        </span>
+                        <h3 class="text-sm sm:text-base font-bold text-slate-900 leading-snug font-['Plus_Jakarta_Sans',sans-serif]">
+                            {{ $faq['question'] }}
+                        </h3>
+                    </div>
+                    
+                    <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 transition-transform duration-300 border border-slate-200/80" 
+                          :class="activeFaq === {{ $index }} ? 'rotate-180 bg-emerald-100 text-emerald-700 border-emerald-300' : ''">
+                        <svg class="w-4 h-4 fill-current transition-transform" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
                     </span>
                 </button>
-                <div x-show="activeFaq === {{ $index }}" x-collapse x-cloak class="px-4 pb-4 md:px-[1.5rem] md:pb-[1.25rem] text-xs md:text-[0.9rem] text-slate-600 leading-relaxed md:leading-[1.6] border-t border-slate-100 pt-3">
-                    <p class="margin-0">{!! $faq['answer'] !!}</p>
+                
+                <div x-show="activeFaq === {{ $index }}" x-collapse x-cloak class="px-4 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3.5 bg-white/70">
+                    <p>{!! $faq['answer'] !!}</p>
                 </div>
             </div>
             @endforeach
         </div>
 
+        {{-- Micro-CTA Box di Bawah FAQ --}}
+        <div class="mt-10 sm:mt-12 bg-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-800">
+            <div class="text-center md:text-left">
+                <span class="inline-block text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 mb-2">💬 KONSULTASI GRATIS 24 JAM</span>
+                <h3 class="text-base sm:text-xl font-extrabold text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    Masih punya pertanyaan lain seputar kondisi pipa Anda di {{ $cityNameClean }}?
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                    Tim teknisi &amp; CS kami siap memberikan analisis &amp; estimasi biaya gratis secara langsung via WhatsApp.
+                </p>
+            </div>
+            <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ada pertanyaan seputar kondisi pipa mampet di area ' . $cityNameClean) }}" 
+               target="_blank" rel="noopener" 
+               class="shrink-0 inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-900/30 transition-all hover:scale-105 active:scale-95 text-decoration-none min-h-[44px]">
+                <span>Tanya Teknisi Langsung via WhatsApp →</span>
+            </a>
+        </div>
     </div>
 </section>
 
 {{-- ========================================================================= --}}
-{{-- ZONA 6: SEO SILO & REGIONAL INTERLINKING                                  --}}
+{{-- 8. SEO SILO & REGIONAL INTERLINKING                                       --}}
 {{-- ========================================================================= --}}
 @php
     $uniqueSiblingCities = isset($siblingCities) ? $siblingCities->unique('slug') : collect();
 @endphp
 
 @if($uniqueSiblingCities->isNotEmpty())
-<section class="py-6 px-4 md:py-[3.5rem] md:px-6 max-w-6xl mx-auto mb-4" id="area-sekitar">
-    <div class="border-t border-slate-200 pt-6">
-        <h3 class="text-sm sm:text-base md:text-[1.25rem] font-extrabold text-slate-900 mb-1">📍 Layanan Pipa Mampet di Kota Sekitar {{ $city->name ?? 'Wilayah Terkait' }}</h3>
-        <p class="text-xs md:text-[0.88rem] text-slate-500 mb-3 md:mb-5">Teknisi Rootera juga melayani wilayah tetangga di provinsi {{ $city->province->name ?? 'Jabodetabek & Java' }}:</p>
+<section class="py-12 bg-slate-50 border-b border-slate-200" id="area-sekitar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h3 class="text-base font-extrabold text-slate-900 mb-2 font-['Plus_Jakarta_Sans',sans-serif]">📍 Layanan Pipa Mampet di Kota Sekitar {{ $cityNameClean }}</h3>
+        <p class="text-xs text-slate-500 mb-4">Teknisi Rootera juga melayani wilayah tetangga di provinsi {{ $city->province->name ?? 'Jabodetabek & Java' }}:</p>
 
-        <div class="flex flex-wrap gap-1.5 md:gap-2.5">
+        <div class="flex flex-wrap gap-2">
             @foreach($uniqueSiblingCities as $sib)
-                <a href="{{ url('/jasa-saluran-mampet/' . $sib->slug) }}" class="bg-slate-50 border border-slate-300 hover:border-emerald-500 hover:bg-emerald-50/50 py-1.5 px-3 md:py-[0.45rem] md:px-[1rem] rounded-full text-xs md:text-[0.85rem] font-semibold md:font-bold text-slate-800 text-decoration-none transition inline-flex items-center gap-1">
+                <a href="{{ url('/jasa-saluran-mampet/' . $sib->slug) }}" 
+                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 py-2 px-3.5 rounded-full text-xs font-semibold text-slate-800 text-decoration-none transition inline-flex items-center gap-1 shadow-sm">
                     <span>📍 Jasa Pipa {{ $sib->name }}</span>
                 </a>
             @endforeach
@@ -422,5 +907,23 @@ $cityBreadcrumbs = [
     </div>
 </section>
 @endif
-@endsection
 
+{{-- ========================================================================= --}}
+{{-- 9. FLOATING MOBILE CTA BAR (SMARTPHONE PERFECTION)                       --}}
+{{-- ========================================================================= --}}
+<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-800 flex items-center justify-between gap-3 shadow-2xl">
+    <div class="flex items-center gap-2 pl-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <div class="text-[11px] font-bold text-white leading-tight">
+            <div>Siaga {{ $cityNameClean }}</div>
+            <div class="text-[10px] text-emerald-400 font-normal">Garansi 30 Hari</div>
+        </div>
+    </div>
+    <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . $cityNameClean) }}" 
+       target="_blank" rel="noopener" 
+       class="px-5 py-2.5 bg-[#169F81] text-white text-xs font-bold rounded-xl shadow-lg flex items-center gap-2 text-decoration-none min-h-[44px]">
+        <span>💬 WA CS 24 Jam</span>
+    </a>
+</div>
+
+@endsection
