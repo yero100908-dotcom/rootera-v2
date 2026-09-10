@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\District;
+use App\Models\Gallery;
 use App\Models\ServiceCategory;
 use App\Models\Article;
-use App\Models\ProjectGallery;
+use App\Services\MediaService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -13,7 +15,7 @@ class ProblemHubController extends Controller
 {
     public function show(string $problemSlug, ?string $citySlug = null)
     {
-        $cacheKey = "problem_hub_v3_{$problemSlug}_" . ($citySlug ?? 'all');
+        $cacheKey = "problem_hub_v5_{$problemSlug}_" . ($citySlug ?? 'all');
 
         $html = Cache::remember($cacheKey, 86400, function () use ($problemSlug, $citySlug) {
             $problems = [
@@ -63,20 +65,6 @@ class ProblemHubController extends Controller
 
             $isPredefinedProblem = isset($problems[$problemSlug]);
 
-            $problemInfo = $isPredefinedProblem ? $problems[$problemSlug] : [
-                'name' => Str::title(str_replace('-', ' ', $problemSlug)),
-                'category_slug' => 'pipa-mampet',
-                'description' => 'Solusi pelancaran pipa mampet profesional 24 jam tanpa merusak struktur bangunan.',
-                'price_home' => 'Rp 400.000',
-                'price_corporate' => 'Hubungi CS',
-            ];
-
-            $category = ServiceCategory::where('slug', $problemInfo['category_slug'])
-                ->with(['services' => function ($q) {
-                    $q->where('is_active', true)->orderBy('sort_order');
-                }])
-                ->first();
-
             $city = null;
             if ($citySlug) {
                 $city = City::where('slug', $citySlug)
@@ -84,6 +72,88 @@ class ProblemHubController extends Controller
                     ->with(['province', 'districts'])
                     ->first();
             }
+
+            // Detect if $problemSlug contains a district name
+            $matchedDistrict = null;
+            $rawProblemTitle = Str::title(str_replace('-', ' ', $problemSlug));
+
+            if ($city && $city->districts) {
+                foreach ($city->districts as $d) {
+                    $dSlug = Str::slug($d->name);
+                    if (Str::endsWith(strtolower($problemSlug), '-' . $dSlug) || strtolower($problemSlug) === $dSlug) {
+                        $matchedDistrict = $d;
+                        break;
+                    }
+                }
+            }
+
+            if (!$matchedDistrict) {
+                $districts = District::all();
+                foreach ($districts as $d) {
+                    $dSlug = Str::slug($d->name);
+                    if (Str::endsWith(strtolower($problemSlug), '-' . $dSlug)) {
+                        $matchedDistrict = $d;
+                        if (!$city && $d->city_id) {
+                            $city = City::where('id', $d->city_id)->with(['province', 'districts'])->first();
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // Sanitize title & location extraction
+            $cleanName = $isPredefinedProblem ? $problems[$problemSlug]['name'] : $rawProblemTitle;
+            $districtName = $matchedDistrict ? $matchedDistrict->name : null;
+
+            if ($matchedDistrict) {
+                $cleanName = preg_replace('/\b' . preg_quote($matchedDistrict->name, '/') . '\b/i', '', $cleanName);
+            }
+            if ($city) {
+                $cleanName = preg_replace('/\b' . preg_quote($city->name, '/') . '\b/i', '', $cleanName);
+                $cleanName = preg_replace('/\b' . preg_quote($city->type, '/') . '\b/i', '', $cleanName);
+            }
+
+            $cleanName = preg_replace('/^(solusi|jasa|pelancar|tukang|service)\s+/i', '', trim($cleanName));
+            $cleanName = trim(preg_replace('/\s+/', ' ', $cleanName));
+
+            if (empty($cleanName)) {
+                $sanitizedTitle = 'Jasa Pipa Mampet';
+            } else {
+                $sanitizedTitle = 'Jasa ' . Str::title($cleanName);
+            }
+
+            $problemInfo = $isPredefinedProblem ? $problems[$problemSlug] : [
+                'name' => $sanitizedTitle,
+                'category_slug' => 'pipa-mampet',
+                'description' => 'Solusi pelancaran pipa mampet profesional 24 jam tanpa merusak struktur bangunan.',
+                'price_home' => 'Rp 400.000',
+                'price_corporate' => 'Hubungi CS',
+            ];
+
+            $problemInfo['name'] = $sanitizedTitle;
+
+            $category = ServiceCategory::where('slug', $problemInfo['category_slug'])
+                ->with(['services' => function ($q) {
+                    $q->where('is_active', true)->orderBy('sort_order');
+                }])
+                ->first();
+
+            // Neighbor / Sibling Districts
+            $neighborDistricts = collect();
+            if ($city && $city->districts) {
+                if ($matchedDistrict) {
+                    $neighborDistricts = $city->districts->where('id', '!=', $matchedDistrict->id)->take(12);
+                } else {
+                    $neighborDistricts = $city->districts->take(12);
+                }
+            }
+
+            // Data Enrichment: 8 Gallery Items, 3 Articles, Toolkit Images
+            $galleries = Gallery::where('is_active', true)->latest()->take(8)->get();
+            $relatedArticles = Article::published()->latest('published_at')->take(3)->get();
+            
+            $mediaService = app(MediaService::class);
+            $toolkitImages = $mediaService->getToolkitImages();
 
             $allCities = City::where('is_active', true)
                 ->with('province')
@@ -94,27 +164,12 @@ class ProblemHubController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            $articles = Article::published()
-                ->latest('published_at')
-                ->take(3)
-                ->get();
+            $locationLabel = $matchedDistrict 
+                ? "{$matchedDistrict->name}, {$city->full_name}" 
+                : ($city ? $city->full_name : 'Jabodetabek & Indonesia');
 
-            $showcases = ProjectGallery::where('is_active', true)
-                ->with(['district', 'city'])
-                ->take(6)
-                ->get();
-
-            $cityName = $city ? $city->full_name : 'Jabodetabek, Bandung, Semarang & Indonesia';
-
-            // Clean up name by removing repetitive prefixes ("Jasa", "Pelancar", etc.)
-            $cleanName = preg_replace('/^(jasa|pelancar|tukang|service)\s+/i', '', $problemInfo['name']);
-            if ($city && Str::endsWith(strtolower($cleanName), strtolower($city->name))) {
-                $cleanName = trim(substr($cleanName, 0, -strlen($city->name)));
-            }
-
-            $title = "Solusi " . (str_starts_with(strtolower($cleanName), 'jasa') ? $cleanName : "Jasa " . $cleanName) . " Terdekat di {$cityName} - Rootera";
-            $metaDescription = "Solusi {$cleanName} di {$cityName}. Garansi tuntas 100% tanpa bongkar ubin oleh teknisi bersertifikat Rootera (J&J Group). Hubungi 24 Jam!";
-            // Canonical consolidation: pointing problem hub city pages to single source of truth City Pillar Page
+            $title = "Solusi {$sanitizedTitle} Terdekat di {$locationLabel} - Rootera";
+            $metaDescription = "Solusi {$sanitizedTitle} di {$locationLabel}. Garansi tuntas 100% tanpa bongkar ubin oleh teknisi bersertifikat Rootera (J&J Group). Hubungi 24 Jam!";
             $canonical = $city 
                 ? url('/jasa-saluran-mampet/' . $city->slug)
                 : url('/solusi/' . $problemSlug);
@@ -124,18 +179,24 @@ class ProblemHubController extends Controller
                 'description'  => $metaDescription,
                 'canonical'    => $canonical,
                 'og_image'     => asset('images/JnJ.webp'),
-                'is_indexable' => $isPredefinedProblem, // Safe fallback: auto-generated dynamic tag URLs use noindex
+                'is_indexable' => $isPredefinedProblem,
             ];
 
             return view('pages.problem-hub', compact(
                 'problemSlug',
                 'problemInfo',
+                'sanitizedTitle',
+                'districtName',
                 'category',
                 'city',
+                'matchedDistrict',
+                'neighborDistricts',
                 'allCities',
                 'allCategories',
-                'articles',
-                'showcases',
+                'galleries',
+                'relatedArticles',
+                'toolkitImages',
+                'locationLabel',
                 'title',
                 'metaDescription',
                 'canonical',

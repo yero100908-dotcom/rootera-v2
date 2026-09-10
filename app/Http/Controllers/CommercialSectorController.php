@@ -6,6 +6,7 @@ use App\Models\ServiceSector;
 use App\Models\City;
 use App\Models\ServiceCategory;
 use App\Models\ProjectGallery;
+use App\Models\Gallery;
 use App\Models\Article;
 use App\Models\Faq;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class CommercialSectorController extends Controller
      */
     public function index()
     {
-        $html = Cache::remember('b2b_sectors_index_v3', 86400, function () {
+        $html = Cache::remember('b2b_sectors_index_v4', 86400, function () {
             $sectors = ServiceSector::where('is_active', true)
                 ->orderBy('sort_order')
                 ->get();
@@ -50,7 +51,7 @@ class CommercialSectorController extends Controller
      */
     public function showSector(string $sectorSlug)
     {
-        $html = Cache::remember("b2b_sector_v3_{$sectorSlug}", 86400, function () use ($sectorSlug) {
+        $html = Cache::remember("b2b_sector_v5_{$sectorSlug}", 86400, function () use ($sectorSlug) {
             $sector = ServiceSector::where('slug', $sectorSlug)
                 ->where('is_active', true)
                 ->firstOrFail();
@@ -73,6 +74,13 @@ class CommercialSectorController extends Controller
                 ->take(6)
                 ->get();
 
+            $galleries = Gallery::where('is_active', true)->latest('created_at')->take(8)->get();
+
+            $relatedArticles = Article::published()
+                ->latest('published_at')
+                ->take(3)
+                ->get();
+
             $faqs = Faq::where('is_active', true)->take(4)->get();
 
             $seo = [
@@ -88,6 +96,8 @@ class CommercialSectorController extends Controller
                 'allCities',
                 'allCategories',
                 'showcases',
+                'galleries',
+                'relatedArticles',
                 'faqs',
                 'seo'
             ))->render();
@@ -101,7 +111,7 @@ class CommercialSectorController extends Controller
      */
     public function showSectorCity(string $sectorSlug, string $citySlug)
     {
-        $cacheKey = "sector_city_v3_{$sectorSlug}_{$citySlug}";
+        $cacheKey = "sector_city_v5_{$sectorSlug}_{$citySlug}";
 
         $html = Cache::remember($cacheKey, 86400, function () use ($sectorSlug, $citySlug) {
             $sector = ServiceSector::where('slug', $sectorSlug)
@@ -128,6 +138,13 @@ class CommercialSectorController extends Controller
                 ->take(6)
                 ->get();
 
+            $galleries = Gallery::where('is_active', true)->latest('created_at')->take(8)->get();
+
+            $relatedArticles = Article::published()
+                ->latest('published_at')
+                ->take(3)
+                ->get();
+
             $faqs = Faq::where('is_active', true)->take(4)->get();
 
             $seo = [
@@ -143,6 +160,8 @@ class CommercialSectorController extends Controller
                 'siblingCities',
                 'allCategories',
                 'showcases',
+                'galleries',
+                'relatedArticles',
                 'faqs',
                 'seo'
             ))->render();

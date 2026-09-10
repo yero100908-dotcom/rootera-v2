@@ -6,6 +6,7 @@ use App\Models\PropertyType;
 use App\Models\City;
 use App\Models\ServiceCategory;
 use App\Models\ProjectGallery;
+use App\Models\Gallery;
 use App\Models\Article;
 use App\Models\Faq;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PropertyTypeController extends Controller
      */
     public function index()
     {
-        $html = Cache::remember('property_index_v3', 86400, function () {
+        $html = Cache::remember('property_index_v4', 86400, function () {
             $properties = PropertyType::where('is_active', true)
                 ->orderBy('sort_order')
                 ->get();
@@ -44,7 +45,7 @@ class PropertyTypeController extends Controller
      */
     public function show(string $slug)
     {
-        $html = Cache::remember("property_show_v3_{$slug}", 86400, function () use ($slug) {
+        $html = Cache::remember("property_show_v5_{$slug}", 86400, function () use ($slug) {
             $property = PropertyType::where('slug', $slug)
                 ->where('is_active', true)
                 ->firstOrFail();
@@ -72,6 +73,8 @@ class PropertyTypeController extends Controller
                 ->take(6)
                 ->get();
 
+            $galleries = Gallery::where('is_active', true)->latest('created_at')->take(8)->get();
+
             $faqs = Faq::where('is_active', true)->take(4)->get();
 
             $seo = [
@@ -88,6 +91,7 @@ class PropertyTypeController extends Controller
                 'allCategories',
                 'relatedArticles',
                 'showcases',
+                'galleries',
                 'faqs',
                 'seo'
             ))->render();
@@ -101,7 +105,7 @@ class PropertyTypeController extends Controller
      */
     public function showCity(string $slug, string $citySlug)
     {
-        $html = Cache::remember("property_city_v3_{$slug}_{$citySlug}", 86400, function () use ($slug, $citySlug) {
+        $html = Cache::remember("property_city_v5_{$slug}_{$citySlug}", 86400, function () use ($slug, $citySlug) {
             $property = PropertyType::where('slug', $slug)
                 ->where('is_active', true)
                 ->firstOrFail();
@@ -131,6 +135,8 @@ class PropertyTypeController extends Controller
                 ->take(6)
                 ->get();
 
+            $galleries = Gallery::where('is_active', true)->latest('created_at')->take(8)->get();
+
             $relatedArticles = Article::published()
                 ->latest('published_at')
                 ->take(3)
@@ -152,6 +158,7 @@ class PropertyTypeController extends Controller
                 'allProperties',
                 'allCategories',
                 'showcases',
+                'galleries',
                 'relatedArticles',
                 'faqs',
                 'seo'
