@@ -10,4 +10,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('youtube:sync-feed')->hourly();
+Schedule::command('sitemap:generate')->dailyAt('02:00');
 

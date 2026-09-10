@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(prepend: [
             \App\Http\Middleware\EnforceHttpsAndCanonicalDomain::class,
             \App\Http\Middleware\CheckActiveRegionAndService::class,
+            \App\Http\Middleware\LogSearchEngineBots::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -37,15 +37,15 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
 Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
-Route::get('/sitemap-sectors.xml', [SitemapController::class, 'sectors'])->name('sitemap.sectors');
+Route::redirect('/sitemap-sectors.xml', '/sitemap-services.xml', 301);
 Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('sitemap.cities');
-Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');
+Route::redirect('/sitemap-districts.xml', '/sitemap-cities.xml', 301);
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
 Route::get('/sitemap-gallery.xml', [SitemapController::class, 'gallery'])->name('sitemap.gallery');
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
-Route::get('/sitemap-cuci-toren-cities.xml', [SitemapController::class, 'cuciTorenCities'])->name('sitemap.cuci-toren-cities');
-Route::get('/sitemap-cuci-toren-districts.xml', [SitemapController::class, 'cuciTorenDistricts'])->name('sitemap.cuci-toren-districts');
+Route::redirect('/sitemap-cuci-toren-cities.xml', '/sitemap.xml', 301);
+Route::redirect('/sitemap-cuci-toren-districts.xml', '/sitemap.xml', 301);
 
 Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/jasa-cuci-toren-air', [ServiceController::class, 'cuciToren'])->name('services.cuci-toren');

@@ -20,7 +20,7 @@ class SitemapController extends Controller
      */
     public function index(): Response
     {
-        $content = Cache::remember('sitemap_index_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_index_xml_v4', 86400, function () {
             $latestArticle = Article::published()->latest('updated_at')->first();
             $lastmodBlog = $latestArticle ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString() : now()->tz('UTC')->toAtomString();
             $lastmodNow = now()->tz('UTC')->toAtomString();
@@ -36,7 +36,7 @@ class SitemapController extends Controller
      */
     public function pages(): Response
     {
-        $content = Cache::remember('sitemap_pages_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_pages_xml_v4', 86400, function () {
             $faqCategories = FaqCategory::where('is_active', true)->get();
             $technologies = Technology::where('is_active', true)->get();
             return view('sitemap-pages', compact('faqCategories', 'technologies'))->render();
@@ -50,7 +50,7 @@ class SitemapController extends Controller
      */
     public function services(): Response
     {
-        $content = Cache::remember('sitemap_services_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_services_xml_v4', 86400, function () {
             $categories = ServiceCategory::where('is_active', true)->get();
             $cities = City::where('is_active', true)->get();
             $sectors = ServiceSector::where('is_active', true)->get();
@@ -66,7 +66,7 @@ class SitemapController extends Controller
      */
     public function cities(): Response
     {
-        $content = Cache::remember('sitemap_cities_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_cities_xml_v4', 86400, function () {
             $cities = City::where('is_active', true)->get();
             $propertyTypes = PropertyType::where('is_active', true)->get();
             return view('sitemap-cities', compact('cities', 'propertyTypes'))->render();
@@ -80,7 +80,7 @@ class SitemapController extends Controller
      */
     public function blog(): Response
     {
-        $content = Cache::remember('sitemap_blog_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_blog_xml_v4', 86400, function () {
             $articles = Article::published()->latest('published_at')->get();
             $categories = Article::CATEGORIES;
             $galleries = Gallery::where('is_active', true)->latest('created_at')->get();
@@ -96,7 +96,7 @@ class SitemapController extends Controller
      */
     public function gallery(): Response
     {
-        $content = Cache::remember('sitemap_gallery_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_gallery_xml_v4', 86400, function () {
             $galleries = Gallery::where('is_active', true)->latest('created_at')->get();
             return view('sitemap-gallery', compact('galleries'))->render();
         });
@@ -109,7 +109,7 @@ class SitemapController extends Controller
      */
     public function videos(): Response
     {
-        $content = Cache::remember('sitemap_videos_xml_v3', 86400, function () {
+        $content = Cache::remember('sitemap_videos_xml_v4', 86400, function () {
             $videos = Gallery::where('is_active', true)
                 ->where('media_type', 'video')
                 ->latest('created_at')
@@ -127,38 +127,5 @@ class SitemapController extends Controller
     {
         $content = view('sitemap-xsl')->render();
         return response(trim($content), 200)->header('Content-Type', 'text/xsl; charset=utf-8');
-    }
-
-    /**
-     * Programmatic Category x City x District sitemap (/sitemap-districts.xml - Pruned 410 Gone)
-     */
-    public function districts(): Response
-    {
-        return response(view('errors.410', [
-            'title'   => 'Sitemap Tidak Tersedia (410 Gone)',
-            'message' => 'Sitemap rincian kecamatan telah dipangkas (pruned) untuk konsolidasi SEO ke Halaman Hub Kota.',
-        ]), 410)->header('Content-Type', 'text/html; charset=utf-8');
-    }
-
-    /**
-     * Cuci Toren City Hubs sitemap (/sitemap-cuci-toren-cities.xml - Permanently Removed 410)
-     */
-    public function cuciTorenCities(): Response
-    {
-        return response(view('errors.410', [
-            'title'   => 'Sitemap Tidak Tersedia (410 Gone)',
-            'message' => 'Sitemap Layanan Cuci Toren telah dinonaktifkan secara permanen.',
-        ]), 410)->header('Content-Type', 'text/html; charset=utf-8');
-    }
-
-    /**
-     * Cuci Toren District Spokes sitemap (/sitemap-cuci-toren-districts.xml - Permanently Removed 410)
-     */
-    public function cuciTorenDistricts(): Response
-    {
-        return response(view('errors.410', [
-            'title'   => 'Sitemap Tidak Tersedia (410 Gone)',
-            'message' => 'Sitemap Layanan Cuci Toren telah dinonaktifkan secara permanen.',
-        ]), 410)->header('Content-Type', 'text/html; charset=utf-8');
     }
 }

@@ -2,5 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
+Disallow: /*?*category=
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*page=
 
+# Sitemaps
 Sitemap: https://rooteraplumbing.id/sitemap.xml

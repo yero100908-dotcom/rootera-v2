@@ -1,174 +1,178 @@
 @extends('layouts.app')
 
 {{-- Advanced JSON-LD Structured Data --}}
+{{-- Advanced Enterprise Nested JSON-LD Structured Data (@graph) --}}
 @section('schema-markup')
 <?php
-// Dynamic Multi-Branch Schema Logic
-if (isset($city) && $city->has_physical_branch && !empty($city->street_address)) {
-    // 1. Schema LocalBusiness / Plumber untuk Cabang Fisik Riil (cth: Semarang, Tegal, Surabaya, Bandar Lampung, Jakarta Timur)
-    $serviceSchema = [
-        "@context" => "https://schema.org",
-        "@type" => ["Plumber", "LocalBusiness"],
-        "@id" => $canonical . "#localbusiness",
-        "name" => "Rootera Plumbing Cabang " . $city->name,
-        "alternateName" => ["Rootera " . $city->name, "Jasa Saluran Pipa Mampet " . $city->name],
-        "url" => $canonical,
-        "telephone" => "+" . ltrim($city->branch_phone ?: ($city->whatsapp_number ?: "6281385404000"), "+"),
-        "priceRange" => "Rp 400.000 - Rp 1.500.000",
-        "openingHoursSpecification" => [
-            [
-                "@type" => "OpeningHoursSpecification",
-                "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-                "opens" => "00:00",
-                "closes" => "23:59"
-            ]
-        ],
-        "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-        "image" => $ogImage,
-        "address" => [
-            "@type" => "PostalAddress",
-            "streetAddress" => $city->street_address,
-            "addressLocality" => $city->district_locality ?: $city->name,
-            "addressRegion" => $city->province->name ?? "Indonesia",
-            "postalCode" => $city->postal_code ?: "13770",
-            "addressCountry" => "ID"
-        ],
-        "geo" => [
-            "@type" => "GeoCoordinates",
-            "latitude" => (float) ($city->latitude ?: -6.3275975),
-            "longitude" => (float) ($city->longitude ?: 106.8627125)
-        ],
-        "aggregateRating" => [
-            "@type" => "AggregateRating",
-            "ratingValue" => (string) ($city->rating_value ?: 4.9),
-            "reviewCount" => (string) ($city->review_count ?: 85),
-            "bestRating" => "5",
-            "worstRating" => "1"
-        ],
-        "areaServed" => array_values(array_unique(array_merge([$locationName], isset($siblingDistricts) ? $siblingDistricts->pluck('name')->toArray() : [])))
-    ];
-} else {
-    // 2. Schema Service (Service Area Business - SAB untuk area tanpa cabang fisik riil)
-    $serviceSchema = [
-        "@context" => "https://schema.org",
-        "@type" => "Service",
-        "@id" => $canonical . "#service",
-        "name" => "Jasa " . $category->name . " " . $locationName,
-        "serviceType" => "Plumbing & Drain Cleaning Service",
-        "description" => $description,
-        "url" => $canonical,
-        "provider" => [
-            "@type" => "Organization",
-            "name" => "Rootera Plumbing Indonesia",
-            "url" => url('/'),
-            "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-            "telephone" => "+" . ltrim(($city->whatsapp_number ?? "6281385404000"), "+")
-        ],
-        "areaServed" => [
-            "@type" => "AdministrativeArea",
-            "name" => $locationName
-        ],
-        "hasOfferCatalog" => [
-            "@type" => "OfferCatalog",
-            "name" => "Layanan " . $category->name . " " . $locationName,
-            "itemListElement" => [
-                [
-                    "@type" => "Offer",
-                    "price" => "400000",
-                    "priceCurrency" => "IDR",
-                    "priceValidUntil" => date('Y-12-31'),
-                    "availability" => "https://schema.org/InStock",
-                    "itemOffered" => [
-                        "@type" => "Service",
-                        "name" => "Jasa " . $category->name . " " . $locationName,
-                        "description" => "Layanan mampet tanpa bongkar garansi tuntas 24 jam."
-                    ]
-                ]
-            ]
+$serviceOffers = [
+    [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+            "@type" => "Service",
+            "name" => "Jasa Wastafel & Cuci Piring Mampet " . $locationShort,
+            "description" => "Pelancaran saluran cuci piring tersumbat lemak & sisa makanan tanpa bongkar pipa."
         ]
-    ];
-}
+    ],
+    [
+        "@type" => "Offer",
+        "price" => "450000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+            "@type" => "Service",
+            "name" => "Jasa WC & Kloset Tersumbat " . $locationShort,
+            "description" => "Pelancaran kloset duduk/jongkok mampet 24 jam dengan Ridgid Cable Machine tanpa perusak ubin."
+        ]
+    ],
+    [
+        "@type" => "Offer",
+        "price" => "500000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+            "@type" => "Service",
+            "name" => "Jasa Floor Drain & Got Mampet " . $locationShort,
+            "description" => "Pembersihan pipa pembuangan kamar mandi & got mampet teknologi Hydro Jetting."
+        ]
+    ]
+];
 
-// 2. BreadcrumbList Schema
+$mainEntity = [
+    "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
+    "@id" => $canonical . "#organization",
+    "name" => "Rootera Plumbing " . $locationShort,
+    "alternateName" => ["Rootera " . $locationShort, "Jasa Saluran Pipa Mampet " . $locationShort],
+    "url" => $canonical,
+    "telephone" => "+" . ltrim(($city->branch_phone ?: ($city->whatsapp_number ?: "6281385404000")), "+"),
+    "priceRange" => "Rp 400.000 - Rp 1.500.000",
+    "image" => $ogImage,
+    "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+    "description" => $description,
+    "address" => [
+        "@type" => "PostalAddress",
+        "streetAddress" => $city->street_address ?: "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung",
+        "addressLocality" => $city->district_locality ?: $city->name,
+        "addressRegion" => $city->province->name ?? "DKI Jakarta",
+        "postalCode" => $city->postal_code ?: "13770",
+        "addressCountry" => "ID"
+    ],
+    "geo" => [
+        "@type" => "GeoCoordinates",
+        "latitude" => (float) ($city->latitude ?: -6.3275975),
+        "longitude" => (float) ($city->longitude ?: 106.8627125)
+    ],
+    "openingHoursSpecification" => [
+        [
+            "@type" => "OpeningHoursSpecification",
+            "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens" => "00:00",
+            "closes" => "23:59"
+        ]
+    ],
+    "aggregateRating" => [
+        "@type" => "AggregateRating",
+        "ratingValue" => (string) ($city->rating_value ?: 4.9),
+        "reviewCount" => (string) ($city->review_count ?: 120),
+        "bestRating" => "5",
+        "worstRating" => "1"
+    ],
+    "areaServed" => [
+        "@type" => "AdministrativeArea",
+        "name" => $locationName
+    ],
+    "hasOfferCatalog" => [
+        "@type" => "OfferCatalog",
+        "name" => "Katalog Layanan Pelancaran Saluran Mampet " . $locationShort,
+        "itemListElement" => $serviceOffers
+    ]
+];
+
+// Breadcrumbs
 $breadcrumbItems = [
-  [
-    "@type" => "ListItem",
-    "position" => 1,
-    "name" => "Beranda",
-    "item" => url('/')
-  ],
-  [
-    "@type" => "ListItem",
-    "position" => 2,
-    "name" => "Jasa Saluran Mampet " . $city->name,
-    "item" => url("/jasa-saluran-mampet/{$city->slug}")
-  ]
+    [
+        "@type" => "ListItem",
+        "position" => 1,
+        "name" => "Beranda",
+        "item" => url('/')
+    ],
+    [
+        "@type" => "ListItem",
+        "position" => 2,
+        "name" => "Jasa Saluran Mampet " . $city->name,
+        "item" => url("/jasa-saluran-mampet/{$city->slug}")
+    ]
 ];
 
 if ($district) {
-  $breadcrumbItems[] = [
-    "@type" => "ListItem",
-    "position" => 3,
-    "name" => "Layanan " . $category->name . " " . $district->name,
-    "item" => $canonical
-  ];
-} else {
-  $breadcrumbItems[] = [
-    "@type" => "ListItem",
-    "position" => 3,
-    "name" => "Layanan " . $category->name . " " . $city->name,
-    "item" => $canonical
-  ];
-}
-
-$breadcrumbSchema = [
-  "@context" => "https://schema.org",
-  "@type" => "BreadcrumbList",
-  "itemListElement" => $breadcrumbItems
-];
-
-// 3. FAQPage Schema
-$faqItems = [];
-
-if (isset($localFaqs) && is_array($localFaqs)) {
-  foreach ($localFaqs as $lfaq) {
-    $faqItems[] = [
-      "@type" => "Question",
-      "name" => $lfaq['question'],
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => $lfaq['answer']
-      ]
+    $breadcrumbItems[] = [
+        "@type" => "ListItem",
+        "position" => 3,
+        "name" => "Layanan " . $category->name . " " . $district->name,
+        "item" => $canonical
     ];
-  }
+} else {
+    $breadcrumbItems[] = [
+        "@type" => "ListItem",
+        "position" => 3,
+        "name" => "Layanan " . $category->name . " " . $city->name,
+        "item" => $canonical
+    ];
 }
 
-foreach ($faqs as $faq) {
-  $faqItems[] = [
-    "@type" => "Question",
-    "name" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->question),
-    "acceptedAnswer" => [
-      "@type" => "Answer",
-      "text" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->answer)
+// FAQs
+$faqItems = [];
+if (isset($localFaqs) && is_array($localFaqs)) {
+    foreach ($localFaqs as $lfaq) {
+        $faqItems[] = [
+            "@type" => "Question",
+            "name" => $lfaq['question'],
+            "acceptedAnswer" => [
+                "@type" => "Answer",
+                "text" => $lfaq['answer']
+            ]
+        ];
+    }
+}
+
+if (isset($faqs)) {
+    foreach ($faqs->take(5) as $faq) {
+        $faqItems[] = [
+            "@type" => "Question",
+            "name" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->question),
+            "acceptedAnswer" => [
+                "@type" => "Answer",
+                "text" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->answer)
+            ]
+        ];
+    }
+}
+
+$graphSchema = [
+    "@context" => "https://schema.org",
+    "@graph" => [
+        $mainEntity,
+        [
+            "@type" => "BreadcrumbList",
+            "@id" => $canonical . "#breadcrumb",
+            "itemListElement" => $breadcrumbItems
+        ],
+        [
+            "@type" => "FAQPage",
+            "@id" => $canonical . "#faq",
+            "mainEntity" => $faqItems
+        ]
     ]
-  ];
-}
-
-$faqSchema = [
-  "@context" => "https://schema.org",
-  "@type" => "FAQPage",
-  "mainEntity" => $faqItems
 ];
 ?>
 
 <script type="application/ld+json">
-{!! json_encode($serviceSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-</script>
-<script type="application/ld+json">
-{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-</script>
-<script type="application/ld+json">
-{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($graphSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
