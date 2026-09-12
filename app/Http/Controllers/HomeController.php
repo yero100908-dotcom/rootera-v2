@@ -86,7 +86,7 @@ class HomeController extends Controller
                 ->get();
 
             $seo = [
-                'title'       => 'Jasa Saluran Mampet Jakarta & Jabodetabek 24 Jam | Rootera',
+                'title'       => 'Rootera Plumbing — Jasa Saluran Pipa Mampet Jakarta & Jabodetabek 24 Jam',
                 'description' => 'Spesialis jasa saluran mampet & tukang perbaikan pipa tersumbat di Jakarta & Jabodetabek. Tanpa bongkar, garansi 30 hari, & respon cepat. Hubungi WA 24 jam!',
                 'canonical'   => url('/'),
                 'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),

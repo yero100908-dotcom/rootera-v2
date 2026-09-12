@@ -27,11 +27,6 @@
         <priority>0.80</priority>
     </url>
     <url>
-        <loc>{{ url('/tentang-kami/garansi-layanan') }}</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.80</priority>
-    </url>
-    <url>
         <loc>{{ url('/layanan-b2b-komersial') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.80</priority>
@@ -73,11 +68,6 @@
     </url>
     <url>
         <loc>{{ url('/tentang-kami/portofolio-klien') }}</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.80</priority>
-    </url>
-    <url>
-        <loc>{{ url('/pusat-bantuan') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.80</priority>
     </url>

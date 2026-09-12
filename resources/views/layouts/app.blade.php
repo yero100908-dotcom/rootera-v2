@@ -44,8 +44,8 @@
     {{-- Global GEO Meta Tags (Headquarters: Cijantung, Jakarta Timur) --}}
     <meta name="geo.region" content="ID-JK" />
     <meta name="geo.placename" content="Jakarta Timur" />
-    <meta name="geo.position" content="-6.3228;106.8624" />
-    <meta name="ICBM" content="-6.3228, 106.8624" />
+    <meta name="geo.position" content="-6.3275278;106.8627778" />
+    <meta name="ICBM" content="-6.3275278, 106.8627778" />
     <meta name="author" content="Rootera Plumbing (J&J Group)" />
 
     {{-- LCP Image Preload for Homepage (Responsive Mobile & Desktop) --}}
@@ -60,7 +60,7 @@
     @elseif(isset($seo['title']) && !empty($seo['title']))
         <title>{{ $seo['title'] }}</title>
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <title>Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera</title>
+        <title>Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar</title>
     @else
         <title>{{ $title ?? 'Jasa Saluran Pipa Mampet 24 Jam - Rootera Plumbing' }}</title>
     @endif
@@ -102,7 +102,7 @@
     @elseif(isset($seo['title']) && !empty($seo['title']))
         <meta property="og:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta property="og:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
+        <meta property="og:title"   content="Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar">
     @else
         <meta property="og:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
     @endif
@@ -114,9 +114,14 @@
     @endif
     <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
     <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
+    <meta property="og:see_also"    content="https://www.youtube.com/@RooteraPlumbing">
     <meta property="og:see_also"    content="https://www.instagram.com/rootera_plumbing/">
-    <meta property="og:see_also"    content="https://www.facebook.com/Rootera.id">
-    <meta property="og:see_also"    content="https://www.tiktok.com/@rootera_plumbing">
+    <meta property="og:see_also"    content="https://www.tiktok.com/@rooteraplumbing.id">
+    <meta property="og:see_also"    content="https://x.com/RooteraPlumbing">
+    <meta property="og:see_also"    content="https://www.linkedin.com/in/rooteraplumbing/">
+    <meta property="og:see_also"    content="https://id.pinterest.com/rooteraplumbing/">
+    <meta property="og:see_also"    content="https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/">
+    <meta property="og:see_also"    content="https://maps.google.com/?cid=16012437648585635749">
     <meta property="og:locale"      content="id_ID">
 
     @if(isset($seo['og_type']) && $seo['og_type'] === 'article')
@@ -138,7 +143,7 @@
     @elseif(isset($seo['title']) && !empty($seo['title']))
         <meta name="twitter:title"   content="{{ $seo['title'] }}">
     @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta name="twitter:title"   content="Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar – Rootera">
+        <meta name="twitter:title"   content="Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar">
     @else
         <meta name="twitter:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
     @endif
@@ -194,8 +199,8 @@
                   ],
                   "geo" => [
                     "@type" => "GeoCoordinates",
-                    "latitude" => -6.3275975,
-                    "longitude" => 106.8627125
+                    "latitude" => -6.3275278,
+                    "longitude" => 106.8627778
                   ],
                   "openingHoursSpecification" => [
                     "@type" => "OpeningHoursSpecification",
@@ -214,9 +219,14 @@
                     "Bandar Lampung"
                   ],
                   "sameAs" => [
+                    "https://www.youtube.com/@RooteraPlumbing",
                     "https://www.instagram.com/rootera_plumbing/",
-                    "https://www.facebook.com/Rootera.id",
-                    "https://www.tiktok.com/@rootera_plumbing"
+                    "https://www.tiktok.com/@rooteraplumbing.id",
+                    "https://x.com/RooteraPlumbing",
+                    "https://www.linkedin.com/in/rooteraplumbing/",
+                    "https://id.pinterest.com/rooteraplumbing/",
+                    "https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/",
+                    "https://maps.google.com/?cid=16012437648585635749"
                   ]
                 ],
                 [

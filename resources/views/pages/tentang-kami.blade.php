@@ -81,9 +81,14 @@ $organizationSchema = [
     "hoursAvailable" => "Mo-Su 00:00-24:00"
   ],
   "sameAs" => [
+    "https://www.youtube.com/@RooteraPlumbing",
     "https://www.instagram.com/rootera_plumbing/",
-    "https://www.facebook.com/Rootera.id",
-    "https://www.tiktok.com/@rootera_plumbing"
+    "https://www.tiktok.com/@rooteraplumbing.id",
+    "https://x.com/RooteraPlumbing",
+    "https://www.linkedin.com/in/rooteraplumbing/",
+    "https://id.pinterest.com/rooteraplumbing/",
+    "https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/",
+    "https://maps.google.com/?cid=16012437648585635749"
   ]
 ];
 
@@ -344,18 +349,18 @@ $aboutPageSchema = [
                         </a>
 
                         {{-- 4. TikTok --}}
-                        <a href="https://www.tiktok.com/@rootera_plumbing" 
+                        <a href="https://www.tiktok.com/@rooteraplumbing.id" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-cyan-950/60 border border-slate-700/80 hover:border-cyan-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">
                                 🎵
                             </div>
                             <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">TikTok</span>
-                            <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate w-full mt-0.5">@rootera_plumbing</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-cyan-300 truncate w-full mt-0.5">@rooteraplumbing.id</span>
                         </a>
 
                         {{-- 5. Facebook --}}
-                        <a href="https://www.facebook.com/Rootera.id" 
+                        <a href="https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-blue-950/60 border border-slate-700/80 hover:border-blue-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">
@@ -366,14 +371,14 @@ $aboutPageSchema = [
                         </a>
 
                         {{-- 6. YouTube --}}
-                        <a href="https://youtube.com/@rooteraplumbing" 
+                        <a href="https://www.youtube.com/@RooteraPlumbing" 
                            target="_blank" rel="noopener noreferrer" 
                            class="group bg-[#07172B] hover:bg-red-950/60 border border-slate-700/80 hover:border-red-400/60 p-3 sm:p-3.5 rounded-xl transition-all duration-300 text-center flex flex-col items-center justify-center">
                             <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-base mb-1.5 group-hover:scale-110 transition-transform">
                                 ▶️
                             </div>
                             <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">YouTube</span>
-                            <span class="text-xs font-bold text-slate-200 group-hover:text-red-300 truncate w-full mt-0.5">Rootera Plumbing</span>
+                            <span class="text-xs font-bold text-slate-200 group-hover:text-red-300 truncate w-full mt-0.5">@RooteraPlumbing</span>
                         </a>
                     </div>
                 </div>

@@ -58,9 +58,14 @@ $contactSchema = [
                 'availableLanguage' => ['Indonesian']
             ],
             'sameAs' => [
+                'https://www.youtube.com/@RooteraPlumbing',
                 'https://www.instagram.com/rootera_plumbing/',
-                'https://www.facebook.com/Rootera.id',
-                'https://www.tiktok.com/@rootera_plumbing'
+                'https://www.tiktok.com/@rooteraplumbing.id',
+                'https://x.com/RooteraPlumbing',
+                'https://www.linkedin.com/in/rooteraplumbing/',
+                'https://id.pinterest.com/rooteraplumbing/',
+                'https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/',
+                'https://maps.google.com/?cid=16012437648585635749'
             ]
         ]
     ]
