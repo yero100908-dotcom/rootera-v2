@@ -1,4 +1,71 @@
 @extends('layouts.app')
+
+@section('schema-markup')
+<?php
+$blogItemList = [];
+if (isset($articles) && $articles->count() > 0) {
+    foreach ($articles as $index => $art) {
+        $blogItemList[] = [
+            "@type" => "BlogPosting",
+            "position" => $index + 1,
+            "headline" => $art->clean_title,
+            "description" => Str::limit($art->excerpt ?? '', 150),
+            "url" => route('blog.show', $art->slug),
+            "datePublished" => $art->published_at?->toIso8601String() ?: now()->toIso8601String(),
+            "image" => [$art->thumbnail_url],
+            "author" => [
+                "@type" => "Organization",
+                "name" => "Rootera Plumbing"
+            ]
+        ];
+    }
+}
+
+$blogSchema = [
+    "@context" => "https://schema.org",
+    "@graph" => [
+        [
+            "@type" => ["CollectionPage", "Blog"],
+            "@id" => url()->current() . "#blog",
+            "url" => url()->current(),
+            "name" => $seo['title'] ?? "Portal Berita & Panduan Plumbing Indonesia | Rootera Plumbing",
+            "description" => $seo['description'] ?? "Portal berita plumbing modern, artikel teknis sanitasi rumah & komersial B2B, komparasi material, serta video tutorial dari teknisi profesional Rootera.",
+            "publisher" => [
+                "@type" => "Organization",
+                "name" => "Rootera Plumbing",
+                "url" => url('/'),
+                "logo" => [
+                    "@type" => "ImageObject",
+                    "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
+                ]
+            ],
+            "blogPost" => $blogItemList
+        ],
+        [
+            "@type" => "BreadcrumbList",
+            "itemListElement" => [
+                [
+                    "@type" => "ListItem",
+                    "position" => 1,
+                    "name" => "Beranda",
+                    "item" => url('/')
+                ],
+                [
+                    "@type" => "ListItem",
+                    "position" => 2,
+                    "name" => "Rootera News & Tech",
+                    "item" => route('blog')
+                ]
+            ]
+        ]
+    ]
+];
+?>
+<script type="application/ld+json">
+{!! json_encode($blogSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endsection
+
 @section('content')
 
 {{-- PORTAL MEDIA HERO SECTION (DARK GLASSMORPHISM 60:40) --}}

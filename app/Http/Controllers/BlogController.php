@@ -125,11 +125,30 @@ class BlogController extends Controller
         $featuredSpotlight = $headline;
         $filter = $filterType;
 
+        $seoTitle = 'Portal Berita & Panduan Plumbing Indonesia | Rootera Plumbing';
+        $seoDesc  = 'Portal berita plumbing modern, artikel teknis sanitasi rumah & komersial B2B, komparasi material, serta video tutorial dari teknisi profesional Rootera.';
+
+        if ($filterCategory !== 'all' && isset($categories[$filterCategory])) {
+            $seoTitle = "Panduan & Artikel {$categories[$filterCategory]} | Rootera Plumbing";
+            $seoDesc  = "Kumpulan artikel & panduan teknis seputar {$categories[$filterCategory]} oleh tim ahli Rootera Plumbing Indonesia.";
+        } elseif ($filterType === 'video') {
+            $seoTitle = 'Video Tutorial & Demo Lapangan Plumbing | Rootera TV';
+            $seoDesc  = 'Tonton video tutorial pelancaran saluran pipa mampet, inspek CCTV pipa, dan demonstrasi peralatan teknis dari teknisi Rootera.';
+        } elseif (!empty($search)) {
+            $seoTitle = "Hasil Pencarian: {$search} | Rootera News";
+            $seoDesc  = "Menampilkan artikel & panduan teknis plumbing terkait kata kunci {$search} di Rootera Plumbing.";
+        }
+
+        $page = $request->query('page');
+        if ($page && (int)$page > 1) {
+            $seoTitle .= " - Halaman {$page}";
+        }
+
         $seo = [
-            'title'       => 'Rootera News & Tech – Portal Berita Plumbing & Panduan Teknis Modern',
-            'description' => 'Portal berita plumbing modern, artikel teknis sanitasi rumah & komersial B2B, komparasi material, serta video tutorial dari teknisi profesional Rootera.',
-            'canonical'   => url('/blog'),
-            'og_image'    => $headline ? $headline->thumbnail_url : asset('images/JnJ.jpeg'),
+            'title'       => $seoTitle,
+            'description' => $seoDesc,
+            'canonical'   => $request->url() . ($page && (int)$page > 1 ? '?page=' . $page : ''),
+            'og_image'    => $headline ? $headline->thumbnail_url : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.blog', compact(

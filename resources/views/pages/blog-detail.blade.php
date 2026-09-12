@@ -3,12 +3,14 @@
 @section('schema-markup')
 <?php
 $wordCount = str_word_count(strip_tags($article->content));
+$articleUrl = url('/blog/' . $article->slug);
 $articleSchema = [
   "@context" => "https://schema.org",
-  "@type" => "TechArticle",
+  "@type" => ["BlogPosting", "TechArticle"],
+  "@id" => $articleUrl . "#article",
   "headline" => $article->clean_title,
   "description" => $article->meta_description ?? $article->excerpt,
-  "image" => [$article->thumbnail_url ?: asset('images/JnJ.jpeg')],
+  "image" => [$article->thumbnail_url ?: asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')],
   "wordCount" => $wordCount,
   "inLanguage" => "id-ID",
   "author" => [
@@ -17,7 +19,8 @@ $articleSchema = [
     "jobTitle" => "Master Plumbing Specialist",
     "worksFor" => [
       "@type" => "Organization",
-      "name" => "Rootera Plumbing Indonesia"
+      "name" => "Rootera Plumbing Indonesia",
+      "url" => url('/')
     ]
   ],
   "publisher" => [
@@ -26,14 +29,52 @@ $articleSchema = [
     "url" => url('/'),
     "logo" => [
       "@type" => "ImageObject",
-      "url" => asset('images/JnJ.jpeg')
+      "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
     ]
+  ],
+  "provider" => [
+    "@type" => "PlumbingService",
+    "name" => "Rootera Plumbing",
+    "url" => url('/'),
+    "telephone" => "+6281385404000",
+    "areaServed" => ["Jabodetabek", "Semarang", "Bandar Lampung"]
   ],
   "datePublished" => $article->published_at?->toIso8601String() ?: now()->toIso8601String(),
   "dateModified" => $article->updated_at->toIso8601String(),
   "mainEntityOfPage" => [
     "@type" => "WebPage",
-    "@id" => url()->current()
+    "@id" => $articleUrl
+  ]
+];
+
+$breadcrumbSchema = [
+  "@context" => "https://schema.org",
+  "@type" => "BreadcrumbList",
+  "itemListElement" => [
+    [
+      "@type" => "ListItem",
+      "position" => 1,
+      "name" => "Beranda",
+      "item" => url('/')
+    ],
+    [
+      "@type" => "ListItem",
+      "position" => 2,
+      "name" => "Rootera News",
+      "item" => route('blog')
+    ],
+    [
+      "@type" => "ListItem",
+      "position" => 3,
+      "name" => $article->category ?? 'Tips Rumah',
+      "item" => route('blog', ['category' => $article->category ?? 'all'])
+    ],
+    [
+      "@type" => "ListItem",
+      "position" => 4,
+      "name" => $article->clean_title,
+      "item" => $articleUrl
+    ]
   ]
 ];
 
@@ -65,6 +106,9 @@ if (!empty($faqMatches)) {
 ?>
 <script type="application/ld+json">
 {!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @if($faqSchema)
 <script type="application/ld+json">
@@ -416,6 +460,18 @@ if (!empty($faqMatches)) {
             <main class="lg:col-span-8">
                 <article class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
                     
+                    {{-- FEATURED SNIPPET HOOK / EXECUTIVE SUMMARY LEAD BLOCK --}}
+                    @if($article->excerpt)
+                    <div class="bg-gradient-to-r from-emerald-50/90 via-teal-50/50 to-slate-50 border-l-4 border-emerald-500 rounded-r-2xl p-4 sm:p-5 mb-8 shadow-2xs">
+                        <div class="flex items-center gap-2 text-[11px] font-black text-emerald-800 uppercase tracking-wider mb-1.5">
+                            <span>💡 Ringkasan Panduan &amp; Fact Sheet</span>
+                        </div>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed m-0 italic">
+                            "{{ $article->excerpt }}"
+                        </p>
+                    </div>
+                    @endif
+
                     {{-- MODERN COLLAPSIBLE TABLE OF CONTENTS (TOC) --}}
                     <div id="tableOfContents" class="toc-box hidden bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 mb-8 transition-all">
                         <div class="flex items-center justify-between font-extrabold text-slate-900 text-sm pb-2.5 border-b border-slate-200/80">
@@ -455,11 +511,11 @@ if (!empty($faqMatches)) {
                             </div>
 
                             <h3 class="text-xl sm:text-2xl font-extrabold text-white mb-3 leading-snug">
-                                Butuh Solusi Pipa Mampet atau Maintenance Berkala?
+                                Mengalami Masalah Pipa Serupa di Rumah atau Kantor Anda?
                             </h3>
                             
                             <p class="text-xs sm:text-sm text-slate-300 mb-6 max-w-2xl leading-relaxed">
-                                Tim teknisi master Rootera Plumbing (holding J&amp;J Group) siap membantu penanganan darurat rumah tangga 24 jam serta kontrak perawatan rutin tempat usaha (Restoran, Mall, Hotel, Pabrik) dengan Faktur Pajak PPN Resmi.
+                                Tim teknisi master Rootera Plumbing (holding J&amp;J Group) siap membantu penanganan darurat rumah tangga 24 jam serta kontrak perawatan rutin tempat usaha (Restoran, Mall, Hotel, Pabrik) dengan Garansi 30 Hari &amp; Tanpa Bongkar.
                             </p>
 
                             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -478,12 +534,19 @@ if (!empty($faqMatches)) {
                         </div>
                     </div>
 
-                    {{-- DYNAMIC CITY HUB SPOKE LINKS (COMPACT MOBILE GRID) --}}
-                    @if(isset($cities) && $cities->isNotEmpty())
+                    {{-- DYNAMIC CITY HUB SPOKE LINKS & SERVICE LINKS --}}
                     <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 sm:p-6 my-8">
-                        <h4 class="text-sm font-extrabold text-slate-900 mb-1">📍 Navigator Layanan Pipa Mampet Terdekat</h4>
-                        <p class="text-xs text-slate-500 mb-4">Pilih kota operasional terdekat untuk reservasi armada teknisi Rootera:</p>
-                        <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 max-h-64 sm:max-h-none overflow-y-auto pr-1">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 border-b border-slate-200/80 pb-3">
+                            <div>
+                                <h4 class="text-sm font-extrabold text-slate-900 m-0">📍 Area Jangkauan Service &amp; Pipa Mampet Terdekat</h4>
+                                <p class="text-xs text-slate-500 m-0 mt-0.5">Reservasi armada teknisi profesional Rootera di kota operasional Anda:</p>
+                            </div>
+                            <a href="{{ route('area-layanan') }}" class="text-xs font-extrabold text-emerald-600 hover:text-emerald-700 text-decoration-none shrink-0">
+                                Lihat Semua Kota &rarr;
+                            </a>
+                        </div>
+                        @if(isset($cities) && $cities->isNotEmpty())
+                        <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 max-h-64 sm:max-h-none overflow-y-auto pr-1 mb-4">
                             @foreach($cities as $c)
                                 <a href="{{ url('/jasa-saluran-mampet/' . $c->slug) }}" class="bg-white border border-slate-300 text-slate-700 hover:border-emerald-600 hover:text-emerald-700 py-2 px-2.5 rounded-xl text-xs font-bold transition text-decoration-none shadow-2xs text-center truncate flex items-center justify-center gap-1">
                                     <span>📍</span>
@@ -491,8 +554,25 @@ if (!empty($faqMatches)) {
                                 </a>
                             @endforeach
                         </div>
+                        @endif
+
+                        {{-- CONTEXTUAL INTERNAL SERVICE PAGE LINKS --}}
+                        <div class="pt-3 border-t border-slate-200/80 flex flex-wrap items-center gap-2 text-xs">
+                            <span class="font-extrabold text-slate-700">Layanan Populer:</span>
+                            <a href="{{ route('area-layanan') }}" class="bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 px-2.5 py-1 rounded-lg font-bold text-decoration-none shadow-2xs">
+                                🔧 Jasa Pipa Mampet
+                            </a>
+                            <a href="{{ route('services.cuci-toren') }}" class="bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 px-2.5 py-1 rounded-lg font-bold text-decoration-none shadow-2xs">
+                                🚰 Jasa Cuci Toren Air
+                            </a>
+                            <a href="{{ route('b2b.index') }}" class="bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 px-2.5 py-1 rounded-lg font-bold text-decoration-none shadow-2xs">
+                                🏢 Layanan B2B Komersial
+                            </a>
+                            <a href="{{ route('diagnostic.index') }}" class="bg-white border border-slate-200 text-slate-700 hover:text-emerald-600 px-2.5 py-1 rounded-lg font-bold text-decoration-none shadow-2xs">
+                                🔍 Cek Kondisi Pipa (Diagnostik)
+                            </a>
+                        </div>
                     </div>
-                    @endif
 
                 </article>
 
