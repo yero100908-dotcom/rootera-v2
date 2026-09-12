@@ -14,6 +14,10 @@
         <lastmod>{{ $lastmodNow ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>
     <sitemap>
+        <loc>{{ url('/sitemap-districts.xml') }}</loc>
+        <lastmod>{{ $lastmodNow ?? now()->tz('UTC')->toAtomString() }}</lastmod>
+    </sitemap>
+    <sitemap>
         <loc>{{ url('/sitemap-blog.xml') }}</loc>
         <lastmod>{{ $lastmodBlog ?? now()->tz('UTC')->toAtomString() }}</lastmod>
     </sitemap>

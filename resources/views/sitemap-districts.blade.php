@@ -1,33 +1,27 @@
 {!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
-{!! '<' . '?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?' . '>' !!}
+{!! '<' . '?xml-stylesheet type="text/xsl" href="' . url('/sitemap.xsl') . '"?' . '>' !!}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {{-- Service Category Landing Pages --}}
-    @foreach ($categories as $category)
-    <url>
-        <loc>{{ route('layanan.show', $category->slug) }}</loc>
-        @if($category->updated_at)
-        <lastmod>{{ $category->updated_at->tz('UTC')->toAtomString() }}</lastmod>
-        @endif
-        <changefreq>weekly</changefreq>
-        <priority>0.95</priority>
-    </url>
-
-        {{-- Programmatic Category x City Landing Pages --}}
-        @foreach ($cities as $city)
-        <url>
-            <loc>{{ $category->slug === 'pipa-mampet' ? url("/jasa-saluran-mampet/{$city->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}") }}</loc>
-            <changefreq>weekly</changefreq>
-            <priority>0.80</priority>
-        </url>
-
-            {{-- Programmatic Category x City x District Landing Pages --}}
-            @foreach ($city->districts as $district)
+    @foreach ($cities as $city)
+        @foreach ($city->districts as $district)
+            {{-- Primary Pipa Mampet District Landing Page --}}
             <url>
-                <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") }}</loc>
-                <changefreq>monthly</changefreq>
-                <priority>0.50</priority>
+                <loc>{{ url("/layanan-pipa-mampet/pipa-mampet/{$city->slug}/{$district->slug}") }}</loc>
+                <changefreq>weekly</changefreq>
+                <priority>0.70</priority>
             </url>
-            @endforeach
+
+            {{-- Other Active Service Category District Pages --}}
+            @if(isset($categories))
+                @foreach($categories as $category)
+                    @if($category->slug !== 'pipa-mampet')
+                    <url>
+                        <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") }}</loc>
+                        <changefreq>weekly</changefreq>
+                        <priority>0.70</priority>
+                    </url>
+                    @endif
+                @endforeach
+            @endif
         @endforeach
     @endforeach
 </urlset>

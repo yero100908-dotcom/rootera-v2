@@ -107,12 +107,35 @@ class DistrictVillageService
         'gajahmungkur' => ['Sampangan', 'Bendan Ngisor', 'Bendan Duwur', 'Gajahmungkur', 'Karangrejo', 'Petompon', 'Lempongsari'],
 
         // === BANDAR LAMPUNG ===
-        'kedaton' => ['Kedaton', 'Penengahan', 'Sukamenanti', 'Surabaya', 'Tegalsari', 'Kampung Baru'],
-        'rajabasa' => ['Rajabasa', 'Rajabasa Indah', 'Rajabasa Jaya', 'Rajabasa Pemuka', 'Rajabasa Raya'],
-        'tanjung-karang-pusat' => ['Durian Payung', 'Gotong Royong', 'Kaliawi', 'Palapa', 'Pasir Gintung', 'Pelita'],
-        'tanjung-karang-timur' => ['Kelapa Tiga', 'Kota Baru', 'Sawah Brebes', 'Sawah Lama', 'Tebing Tinggi'],
-        'sukarame' => ['Sukarame', 'Sukarame Baru', 'Way Dadi', 'Way Dadi Baru', 'Korpri Jaya', 'Korpri Raya'],
-        'enggal' => ['Enggal', 'Pelita', 'Rawa Laut', 'Tanjung Karang', 'Gunung Sari']
+        'kedaton' => ['Kedaton', 'Penengahan', 'Sukamenanti', 'Surabaya', 'Jl. Danau Towuti No. 9 (Workshop Rootera)', 'Tegalsari', 'Kampung Baru', 'Mall Boemi Kedaton (MBK)', 'Jl. ZA Pagar Alam'],
+        'rajabasa' => ['Rajabasa', 'Rajabasa Indah', 'Rajabasa Jaya', 'Rajabasa Pemuka', 'Rajabasa Raya', 'Terminal Rajabasa', 'Polinela', 'Bypass Soekarno-Hatta'],
+        'tanjung-karang-pusat' => ['Durian Payung', 'Gotong Royong', 'Kaliawi', 'Palapa', 'Pasir Gintung', 'Pelita', 'Jl. Raden Intan', 'Pusat Kota Bandar Lampung'],
+        'tanjung-karang-timur' => ['Kelapa Tiga', 'Kota Baru', 'Sawah Brebes', 'Sawah Lama', 'Tebing Tinggi', 'Jl. Teuku Umar'],
+        'tanjung-karang-barat' => ['Gedong Air', 'Sukajawa', 'Sukajawa Baru', 'Susunan Baru', 'Kelapa Tiga Permai'],
+        'sukarame' => ['Sukarame', 'Sukarame Baru', 'Way Dadi', 'Way Dadi Baru', 'Korpri Jaya', 'Korpri Raya', 'UIN Raden Intan', 'Exit Tol Itera'],
+        'enggal' => ['Enggal', 'Pelita', 'Rawa Laut', 'Tanjung Karang', 'Gunung Sari', 'Tugu Adipura', 'Jl. Rasuna Said'],
+        'bumi-waras' => ['Bumi Waras', 'Bumi Raya', 'Garuntang', 'Kangkung', 'Sukaraja'],
+        'kedamaian' => ['Kedamaian', 'Tanjung Agung Raya', 'Tanjung Gading', 'Tanjung Raya', 'Bumi Kedamaian'],
+        'kemiling' => ['Beringin Jaya', 'Beringin Raya', 'Kedaung', 'Kemiling Permai', 'Kemiling Raya', 'Pinang Jaya', 'Sumber Agung', 'Sumber Rejo'],
+        'labuhan-ratu' => ['Labuhan Ratu', 'Labuhan Ratu Raya', 'Sepang Jaya', 'Kampung Baru Raya', 'Kotasepang', 'Stasiun Labuhan Ratu'],
+        'langkapura' => ['Bilabong Jaya', 'Gunung Terang', 'Langkapura', 'Langkapura Baru', 'Gunung Agung'],
+        'panjang' => ['Karang Maritim', 'Ketapang', 'Ketapang Kuala', 'Panjang Selatan', 'Panjang Utara', 'Srengsem', 'Way Lunik', 'Kawasan Pelabuhan Panjang'],
+        'sukabumi' => ['Campang Raya', 'Pematang Wangi', 'Sukabumi', 'Sukabumi Indah', 'Way Gubak'],
+        'tanjung-senang' => ['Pematang Wangi', 'Perum Way Kandis', 'Tanjung Senang', 'Way Kandis', 'Labuhan Dalam'],
+        'teluk-betung-barat' => ['Batu Putuk', 'Kuripan', 'Negeri Olok Gading', 'Sukarame II'],
+        'teluk-betung-selatan' => ['Gudang Lelang', 'Pesawahan', 'Talang', 'Teluk Betung', 'Sumur Putri'],
+        'teluk-betung-timur' => ['Keteguhan', 'Kota Karang', 'Kota Karang Raya', 'Permai', 'Sukamaju'],
+        'teluk-betung-utara' => ['Gulak Galik', 'Kupang Kota', 'Kupang Raya', 'Kupang Teba', 'Pengajaran', 'Sumur Batu', 'Kantor Gubernur Lampung'],
+        'way-halim' => ['Gunung Sulah', 'Perum Way Halim', 'Way Halim Permai', 'Jagabaya I', 'Jagabaya II', 'Jagabaya III', 'Stadion Pahoman'],
+
+        // === LAMPUNG SELATAN ===
+        'natar' => ['Natar', 'Hajimena', 'Branti Raya', 'Candi Mas', 'Merak Batin', 'Pemanggilan', 'Sidosari', 'Bandara Radin Inten II', 'Gate Tol Natar'],
+        'jati-agung' => ['Jati Agung', 'Fajar Baru', 'Karang Anyar', 'Marga Kaya', 'Rejomulyo', 'Way Hui', 'Kawasan Kota Baru Lampung', 'Kampus Itera'],
+        'kalianda' => ['Kalianda', 'Bumi Agung', 'Canggu', 'Kedaton Kalianda', 'Palapas', 'Way Urang', 'Menara Siger', 'Pemda Lampung Selatan'],
+        'tanjung-bintang' => ['Tanjung Bintang', 'Batu Limau', 'Jatibaru', 'Serdang', 'Sindang Anom', 'Kawasan Industri Tanjung Bintang'],
+        'katibung' => ['Katibung', 'Kranggan', 'Pardasuka', 'Rangai Tri Tunggal', 'Tarahan', 'Tanjungan'],
+        'sidomulyo' => ['Sidomulyo', 'Campang Tiga', 'Seloretno', 'Sidodadi', 'Sidorejo', 'Sukamaju'],
+        'bakauheni' => ['Bakauheni', 'Hatta', 'Kelawi', 'Semanak', 'Pelabuhan Bakauheni']
     ];
 
     /**

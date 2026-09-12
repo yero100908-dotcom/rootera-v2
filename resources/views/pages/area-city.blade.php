@@ -9,52 +9,86 @@ $cityCanonical = url("/jasa-saluran-mampet/{$citySlug}");
 $cityPhone = (isset($city) && is_object($city) && !empty($city->whatsapp_number)) ? $city->whatsapp_number : "6281385404000";
 $cityProvName = (isset($city) && is_object($city) && isset($city->province) && is_object($city->province)) ? ($city->province->name ?? "Indonesia") : "Indonesia";
 
+$isLampungArea = ($citySlug === 'bandar-lampung' || (isset($city->province) && str_contains(strtolower($city->province->slug ?? ''), 'lampung')));
+$isSemarangArea = ($citySlug === 'semarang' || (isset($city->province) && str_contains(strtolower($city->province->slug ?? ''), 'jawa-tengah')));
+
+if ($isLampungArea) {
+    $fallbackStreet = "Jl. Danau Towuti No. 9";
+    $fallbackLocality = "Kedaton, Surabaya, Kota Bandar Lampung";
+    $fallbackPostal = "35148";
+    $fallbackLat = -5.388639;
+    $fallbackLng = 105.265417;
+} elseif ($isSemarangArea) {
+    $fallbackStreet = "Jl. Simpang Lima No. 1";
+    $fallbackLocality = "Semarang Tengah, Kota Semarang";
+    $fallbackPostal = "50134";
+    $fallbackLat = -6.9902958;
+    $fallbackLng = 110.4227318;
+} else {
+    // Default Jabodetabek / HQ
+    $fallbackStreet = "Jl. Gongseng Raya No. 9";
+    $fallbackLocality = "Cijantung, Pasar Rebo, Kota Jakarta Timur";
+    $fallbackPostal = "13770";
+    $fallbackLat = -6.3275975;
+    $fallbackLng = 106.8627125;
+}
+
 $cityAddress = [
   "@type" => "PostalAddress",
-  "addressLocality" => (isset($city) && is_object($city)) ? ($city->district_locality ?: $city->name ?: $cityName) : $cityName,
+  "streetAddress" => (isset($city) && !empty($city->street_address)) ? $city->street_address : $fallbackStreet,
+  "addressLocality" => (isset($city) && !empty($city->district_locality)) ? $city->district_locality : $fallbackLocality,
   "addressRegion" => $cityProvName,
+  "postalCode" => (isset($city) && !empty($city->postal_code)) ? $city->postal_code : $fallbackPostal,
   "addressCountry" => "ID"
 ];
 
-if (isset($city) && $city->has_physical_branch && !empty($city->street_address)) {
-  $cityAddress["streetAddress"] = $city->street_address;
-  if (!empty($city->postal_code)) {
-    $cityAddress["postalCode"] = $city->postal_code;
+$areaServedList = [
+  [
+    "@type" => "City",
+    "name" => $cityNameClean
+  ]
+];
+if (isset($city) && is_object($city) && isset($city->districts) && count($city->districts) > 0) {
+  foreach ($city->districts as $dst) {
+    $areaServedList[] = [
+      "@type" => "AdministrativeArea",
+      "name" => $dst->name
+    ];
   }
 }
 
 $cityBusinessSchema = [
-  "@context" => "https://schema.org",
-  "@type" => ["LocalBusiness", "Plumber", "HomeAndConstructionBusiness"],
-  "name" => "Rootera Plumbing - " . $cityName,
-  "alternateName" => ["Rootera " . $cityName, "Jasa Pipa Mampet " . $cityName],
-  "description" => $seo['description'] ?? "Jasa pelancar saluran pipa mampet di {$cityName} 24 jam bergaransi resmi.",
+  "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
   "@id" => $cityCanonical . "#organization",
+  "name" => "Rootera Plumbing " . $cityNameClean,
+  "alternateName" => ["Rootera " . $cityNameClean, "Jasa Saluran Pipa Mampet " . $cityNameClean, "Tukang Pipa Mampet " . $cityNameClean],
+  "description" => $seo['description'] ?? "Pusat layanan pelancaran saluran pipa mampet 24 jam di {$cityNameClean} bergaransi resmi.",
   "url" => $cityCanonical,
   "telephone" => "+" . (isset($city) && !empty($city->branch_phone) ? $city->branch_phone : $cityPhone),
   "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   "image" => $seo['og_image'] ?? asset('images/JnJ.webp'),
-  "priceRange" => "$$",
+  "priceRange" => "Rp 400.000 - Rp 1.500.000",
   "parentOrganization" => [
     "@type" => "Organization",
     "name" => "J&J GROUP",
     "url" => url('/')
   ],
   "address" => $cityAddress,
-  "areaServed" => [
-    "@type" => "City",
-    "name" => $cityName
-  ],
+  "areaServed" => $areaServedList,
   "aggregateRating" => [
     "@type" => "AggregateRating",
     "ratingValue" => (string) ($city->rating_value ?? 4.9),
-    "reviewCount" => (string) ($city->review_count ?? 85)
+    "reviewCount" => (string) ($city->review_count ?? 85),
+    "bestRating" => "5",
+    "worstRating" => "1"
   ],
   "openingHoursSpecification" => [
-    "@type" => "OpeningHoursSpecification",
-    "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    "opens" => "00:00",
-    "closes" => "23:59"
+    [
+      "@type" => "OpeningHoursSpecification",
+      "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens" => "00:00",
+      "closes" => "23:59"
+    ]
   ],
   "hasOfferCatalog" => [
     "@type" => "OfferCatalog",
@@ -68,7 +102,7 @@ $cityBusinessSchema = [
         "availability" => "https://schema.org/InStock",
         "itemOffered" => [
           "@type" => "Service",
-          "name" => "Wastafel & Kitchen Sink " . $cityNameClean,
+          "name" => "Jasa Wastafel & Kitchen Sink Mampet " . $cityNameClean,
           "description" => "Pelancaran kerak lemak jenuh dapur tanpa membongkar meja keramik."
         ]
       ],
@@ -80,7 +114,7 @@ $cityBusinessSchema = [
         "availability" => "https://schema.org/InStock",
         "itemOffered" => [
           "@type" => "Service",
-          "name" => "Kloset WC & Toilet " . $cityNameClean,
+          "name" => "Jasa Kloset WC & Toilet Tersumbat " . $cityNameClean,
           "description" => "Penanganan WC meluap tersumbat tanpa sedot tinja."
         ]
       ],
@@ -92,7 +126,7 @@ $cityBusinessSchema = [
         "availability" => "https://schema.org/InStock",
         "itemOffered" => [
           "@type" => "Service",
-          "name" => "Floor Drain Kamar Mandi " . $cityNameClean,
+          "name" => "Jasa Floor Drain Kamar Mandi " . $cityNameClean,
           "description" => "Pembersihan rontokan rambut, gumpalan sabun & endapan pasir ubin."
         ]
       ],
@@ -104,25 +138,27 @@ $cityBusinessSchema = [
         "availability" => "https://schema.org/InStock",
         "itemOffered" => [
           "@type" => "Service",
-          "name" => "Pelancaran Pipa Utama, Got & Talang Air " . $cityNameClean,
-          "description" => "Pembersihan pipa pembuangan utama, saluran got luar, serta talang air atap dari endapan lumpur, pasir, sampah, dan daun kering tanpa bongkar saluran."
+          "name" => "Jasa Pelancaran Pipa Utama, Got & Talang Air " . $cityNameClean,
+          "description" => "Pembersihan pipa pembuangan utama, saluran got luar, serta talang air atap tanpa bongkar saluran."
         ]
       ]
     ]
   ]
 ];
 
-if (!empty($city->latitude) && !empty($city->longitude)) {
-  $cityBusinessSchema["geo"] = [
-    "@type" => "GeoCoordinates",
-    "latitude" => (float) $city->latitude,
-    "longitude" => (float) $city->longitude
-  ];
-}
+$latVal = (isset($city) && !empty($city->latitude)) ? (float)$city->latitude : $fallbackLat;
+$lngVal = (isset($city) && !empty($city->longitude)) ? (float)$city->longitude : $fallbackLng;
+
+$cityBusinessSchema["geo"] = [
+  "@type" => "GeoCoordinates",
+  "latitude" => $latVal,
+  "longitude" => $lngVal
+];
+$cityBusinessSchema["hasMap"] = "https://www.google.com/maps?q={$latVal},{$lngVal}";
 
 $cityBreadcrumbs = [
-  "@context" => "https://schema.org",
   "@type" => "BreadcrumbList",
+  "@id" => $cityCanonical . "#breadcrumb",
   "itemListElement" => [
     [
       "@type" => "ListItem",
@@ -139,17 +175,22 @@ $cityBreadcrumbs = [
     [
       "@type" => "ListItem",
       "position" => 3,
-      "name" => $cityName,
+      "name" => $cityNameClean,
       "item" => $cityCanonical
     ]
   ]
 ];
+
+$graphSchema = [
+  "@context" => "https://schema.org",
+  "@graph" => [
+    $cityBusinessSchema,
+    $cityBreadcrumbs
+  ]
+];
 ?>
 <script type="application/ld+json">
-{!! json_encode($cityBusinessSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-</script>
-<script type="application/ld+json">
-{!! json_encode($cityBreadcrumbs, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($graphSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endsection
 
@@ -247,6 +288,10 @@ $cityBreadcrumbs = [
         </div>
     </div>
 </section>
+
+@if((isset($city) && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung'))
+    <x-workshop-posko-bandar-lampung :city="$city" />
+@endif
 
 {{-- ========================================================================= --}}
 {{-- 2. ESTIMASI BIAYA & POPULAR HIGHLIGHT (PURE WHITE #FFFFFF)                --}}

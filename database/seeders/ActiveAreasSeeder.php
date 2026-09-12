@@ -88,11 +88,11 @@ class ActiveAreasSeeder extends Seeder
 
         City::where('slug', 'bandar-lampung')->update([
             'has_physical_branch' => true,
-            'street_address'      => 'Jl. Raden Intan No. 54, Enggal, Kec. Enggal',
-            'district_locality'   => 'Enggal',
-            'postal_code'         => '35118',
-            'latitude'            => -5.4285813,
-            'longitude'           => 105.2600214
+            'street_address'      => 'Jl. Danau Towuti No. 9',
+            'district_locality'   => 'Kedaton, Surabaya, Kota Bandar Lampung',
+            'postal_code'         => '35148',
+            'latitude'            => -5.388639,
+            'longitude'           => 105.265417
         ]);
 
         // 5. Soft-deactivate Cuci Toren Services, Categories & Articles

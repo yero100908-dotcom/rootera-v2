@@ -76,6 +76,25 @@ class SitemapController extends Controller
     }
 
     /**
+     * District Spoke Landing Pages Sub-Sitemap (/sitemap-districts.xml)
+     */
+    public function districts(): Response
+    {
+        $content = Cache::remember('sitemap_districts_xml_v4', 86400, function () {
+            $cities = City::where('is_active', true)
+                ->with(['districts' => function ($q) {
+                    $q->where('is_active', true)->orderBy('name');
+                }])
+                ->get();
+            $categories = ServiceCategory::where('is_active', true)->get();
+
+            return view('sitemap-districts', compact('cities', 'categories'))->render();
+        });
+
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
+    }
+
+    /**
      * Articles & Educational Blog Sub-Sitemap (/sitemap-blog.xml)
      */
     public function blog(): Response

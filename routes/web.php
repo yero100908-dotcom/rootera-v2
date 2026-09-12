@@ -39,7 +39,7 @@ Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
 Route::redirect('/sitemap-sectors.xml', '/sitemap-services.xml', 301);
 Route::get('/sitemap-cities.xml', [SitemapController::class, 'cities'])->name('sitemap.cities');
-Route::redirect('/sitemap-districts.xml', '/sitemap-cities.xml', 301);
+Route::get('/sitemap-districts.xml', [SitemapController::class, 'districts'])->name('sitemap.districts');
 Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->name('sitemap.services');
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
 Route::get('/sitemap-gallery.xml', [SitemapController::class, 'gallery'])->name('sitemap.gallery');

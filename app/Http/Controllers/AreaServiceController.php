@@ -125,11 +125,11 @@ class AreaServiceController extends Controller
             // Priority Custom DB Meta Tags with Dynamic Fallback (City Hub Standard)
             $title = !empty($city->meta_title)
                 ? $city->meta_title
-                : "Jasa Saluran Pipa Mampet {$city->name} Tanpa Bongkar — Rootera Plumbing";
+                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam Tanpa Bongkar — Rootera";
 
             $description = !empty($city->meta_description)
                 ? $city->meta_description
-                : "Pusat layanan pelancaran pipa mampet di {$city->name}. Menggunakan mesin spiral Ridgid & hydro-jetting tanpa bongkar ubin. Bergaransi 30 hari & tuntas baru bayar.";
+                : "Pusat layanan pelancaran saluran pipa mampet 24 jam di {$city->name}. Atasi wastafel, kloset WC, floor drain & got tersumbat tanpa bongkar lantai. Bergaransi 30 hari.";
 
             $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 

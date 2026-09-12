@@ -43,6 +43,19 @@ $serviceOffers = [
     ]
 ];
 
+$addressSchema = [
+    "@type" => "PostalAddress",
+    "addressLocality" => $city->district_locality ?: ($district ? "{$district->name}, {$city->name}" : $city->name),
+    "addressRegion" => $city->province->name ?? "Indonesia",
+    "addressCountry" => "ID"
+];
+if (!empty($city->street_address)) {
+    $addressSchema["streetAddress"] = $city->street_address;
+}
+if (!empty($city->postal_code)) {
+    $addressSchema["postalCode"] = $city->postal_code;
+}
+
 $mainEntity = [
     "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
     "@id" => $canonical . "#organization",
@@ -54,19 +67,7 @@ $mainEntity = [
     "image" => $ogImage,
     "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
     "description" => $description,
-    "address" => [
-        "@type" => "PostalAddress",
-        "streetAddress" => $city->street_address ?: "Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung",
-        "addressLocality" => $city->district_locality ?: $city->name,
-        "addressRegion" => $city->province->name ?? "DKI Jakarta",
-        "postalCode" => $city->postal_code ?: "13770",
-        "addressCountry" => "ID"
-    ],
-    "geo" => [
-        "@type" => "GeoCoordinates",
-        "latitude" => (float) ($city->latitude ?: -6.3275975),
-        "longitude" => (float) ($city->longitude ?: 106.8627125)
-    ],
+    "address" => $addressSchema,
     "openingHoursSpecification" => [
         [
             "@type" => "OpeningHoursSpecification",
@@ -92,6 +93,15 @@ $mainEntity = [
         "itemListElement" => $serviceOffers
     ]
 ];
+
+if (!empty($city->latitude) && !empty($city->longitude)) {
+    $mainEntity["geo"] = [
+        "@type" => "GeoCoordinates",
+        "latitude" => (float) $city->latitude,
+        "longitude" => (float) $city->longitude
+    ];
+    $mainEntity["hasMap"] = "https://www.google.com/maps?q={$city->latitude},{$city->longitude}";
+}
 
 // Breadcrumbs
 $breadcrumbItems = [
@@ -324,6 +334,10 @@ $graphSchema = [
 
 {{-- 1. Hero: Headline, Live Badge, CTAs, Pos Hub --}}
 @include('sections.programmatic.hero')
+
+@if(($city && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung') || ($district && $district->slug === 'kedaton'))
+    <x-workshop-posko-bandar-lampung :city="$city" :district="$district" />
+@endif
 
 {{-- 2. Estimasi Tarif: 4 pricing cards --}}
 @include('sections.programmatic.pricing-estimator')

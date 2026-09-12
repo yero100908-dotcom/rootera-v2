@@ -19,11 +19,6 @@
         <changefreq>weekly</changefreq>
         <priority>0.90</priority>
     </url>
-    <url>
-        <loc>{{ url("/jasa-cuci-toren/{$city->slug}") }}</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.85</priority>
-    </url>
     @endforeach
 
     {{-- Property Types Landing Pages --}}
