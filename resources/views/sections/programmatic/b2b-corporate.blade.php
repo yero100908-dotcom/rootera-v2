@@ -15,7 +15,7 @@
         </div>
 
         <!-- Right: CTA Button -->
-        <a href="https://wa.me/{{ $city->whatsapp_number }}?text={{ urlencode('Halo Rootera B2B, saya ingin konsultasi layanan plumbing komersial di ' . $locationName) }}"
+        <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera B2B, saya ingin konsultasi layanan plumbing komersial di ' . $locationName) }}"
            target="_blank"
            class="shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all duration-200 whitespace-nowrap">
             📞 Konsultasi B2B

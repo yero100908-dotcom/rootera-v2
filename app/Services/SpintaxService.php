@@ -51,7 +51,7 @@ class SpintaxService
      */
     public function generateHeroSubtitle(string $categoryName, string $locationName, string $estimatedArrival, string $seedKey): string
     {
-        $pattern = "{Solusi terpercaya|Layanan darurat terdepan|Pilihan utama|Penanganan profesional} untuk masalah {saluran air mampet|wastafel tersumbat|pipa pembuangan bermasalah|kloset & drain mampet} di kawasan <strong>{locationName}</strong>. {Dikerjakan secara mekanis tanpa bongkar paksa|Menggunakan teknologi modern rigid spiral & hydro jetting|Ditangani teknisi berpengalaman bersertifikat|Didukung garansi pengerjaan tuntas 100%} dengan estimasi tiba teknisi <strong>{estimatedArrival}</strong>.";
+        $pattern = "{Solusi terpercaya|Layanan darurat terdepan|Pilihan utama|Penanganan profesional} untuk masalah {saluran air mampet|wastafel tersumbat|pipa pembuangan bermasalah|kloset & drain mampet} di kawasan <strong>{locationName}</strong>. {Dikerjakan secara mekanis tanpa bongkar paksa|Menggunakan teknologi modern rigid spiral & hydro jetting|Ditangani teknisi berpengalaman bersertifikat|Didukung garansi pengerjaan tuntas 100%} dengan estimasi waktu tiba teknisi <strong>{estimatedArrival}</strong>.";
 
         $text = str_replace(
             ['{categoryName}', '{locationName}', '{estimatedArrival}'],
@@ -88,15 +88,17 @@ class SpintaxService
     }
 
     /**
-     * Generate dynamic Area Technical Intro paragraph.
+     * Generate dynamic Area Technical Intro paragraph with Landmark Mesh integration.
      */
-    public function generateAreaTechnicalIntro(string $categoryName, string $locationName, string $seedKey): string
+    public function generateAreaTechnicalIntro(string $categoryName, string $locationName, string $seedKey, array $landmarks = []): string
     {
-        $pattern = "Kawasan <strong>{locationName}</strong> memiliki tingkat kepadatan hunian dan aktivitas bisnis yang tinggi. Masalah {categoryName} umumnya disebabkan oleh {penumpukan gumpalan lemak minyak beku|endapan sisa sabun dan rontokan rambut|sedimen pasir dan lumpur di bak kontrol|masuknya benda asing ke dalam saringan drain}. Tim teknisi Rootera menyiagakan peralatan {rigid spiral drain cleaner|hydro jetting tekanan tinggi|kamera inspeksi CCTV} untuk mengatasi mampet secara tuntas di area <strong>{locationName}</strong>.";
+        $landmarkText = !empty($landmarks) ? "meliputi kawasan " . implode(', ', array_slice($landmarks, 0, 4)) : "sekitar area " . $locationName;
+
+        $pattern = "Kawasan <strong>{locationName}</strong> ({landmarkText}) memiliki tingkat kepadatan hunian dan aktivitas bisnis yang tinggi. Masalah {categoryName} umumnya disebabkan oleh {penumpukan gumpalan lemak minyak beku|endapan sisa sabun dan rontokan rambut|sedimen pasir dan lumpur di bak kontrol|masuknya benda asing ke dalam saringan drain}. Tim teknisi Rootera menyiagakan peralatan {rigid spiral drain cleaner|hydro jetting tekanan tinggi|kamera inspeksi CCTV} untuk mengatasi mampet secara tuntas di area <strong>{locationName}</strong>.";
 
         $text = str_replace(
-            ['{categoryName}', '{locationName}'],
-            [$categoryName, $locationName],
+            ['{categoryName}', '{locationName}', '{landmarkText}'],
+            [$categoryName, $locationName, $landmarkText],
             $pattern
         );
 

@@ -30,11 +30,28 @@ class ProgrammaticSeoController extends Controller
      */
     public function show(string $categorySlug, string $citySlug, ?string $districtSlug = null)
     {
+        $aliasMap = [
+            'tangerang-kota'   => 'tangerang',
+            'kab-tangerang'    => 'kabupaten-tangerang',
+            'cikarang'         => 'kabupaten-bekasi',
+            'karawang'         => 'kabupaten-karawang',
+            'sleman'           => 'kabupaten-sleman',
+            'sidoarjo'         => 'kabupaten-sidoarjo',
+            'gresik'           => 'surabaya',
+        ];
+
+        if (isset($aliasMap[$citySlug])) {
+            $targetUrl = $districtSlug
+                ? url("/layanan-pipa-mampet/{$categorySlug}/{$aliasMap[$citySlug]}/{$districtSlug}")
+                : url("/layanan-pipa-mampet/{$categorySlug}/{$aliasMap[$citySlug]}");
+            return redirect($targetUrl, 301);
+        }
+
         if (!$districtSlug && $categorySlug === 'pipa-mampet') {
             return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
         }
 
-        $cacheKey = "prog_seo_v4_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
+        $cacheKey = "prog_seo_v5_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
         $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
@@ -68,11 +85,13 @@ class ProgrammaticSeoController extends Controller
                 ->where('is_active', true)
                 ->get();
 
-            // All active service categories for cross-service linking
-            $allCategories = ServiceCategory::where('is_active', true)
-                ->where('id', '!=', $category->id)
-                ->orderBy('sort_order')
-                ->get();
+            // All active service categories for cross-service linking (Sub-cached to prevent DB stampede)
+            $allCategories = Cache::remember("prog_global_categories_{$category->id}", 86400, function () use ($category) {
+                return ServiceCategory::where('is_active', true)
+                    ->where('id', '!=', $category->id)
+                    ->orderBy('sort_order')
+                    ->get();
+            });
 
             $projectShowcases = ProjectGallery::where('is_active', true)
                 ->where(function ($q) use ($city) {
@@ -94,13 +113,20 @@ class ProgrammaticSeoController extends Controller
                 $projectShowcases = $projectShowcases->concat($moreShowcases);
             }
 
-            $relatedArticles = \App\Models\Article::published()
-                ->latest('published_at')
-                ->take(3)
-                ->get();
+            $relatedArticles = Cache::remember('prog_global_articles', 86400, function () {
+                return Article::published()
+                    ->latest('published_at')
+                    ->take(3)
+                    ->get();
+            });
 
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
-            $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
+            $faqs = Cache::remember('prog_global_faqs', 86400, function () {
+                return Faq::where('is_active', true)->orderBy('sort_order')->get();
+            });
+
+            $technologies = Cache::remember('prog_global_technologies', 86400, function () {
+                return Technology::where('is_active', true)->orderBy('sort_order')->get();
+            });
 
             $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
             $locationShort = $district ? $district->name : $city->name;
@@ -124,10 +150,10 @@ class ProgrammaticSeoController extends Controller
                 ]
             ];
 
-            // Generate Dynamic Transactional SEO Metadata (City vs District Differentiation)
+            // Generate Dynamic Transactional SEO Metadata (City vs District Differentiation - Max 58 Chars for SERP)
             $title = $district
-                ? "Jasa Pipa Mampet {$district->name}, {$city->name} (Respon 15-30 Menit) | Rootera"
-                : "Jasa Saluran Pipa Mampet {$city->name} Tanpa Bongkar — Rootera Plumbing";
+                ? "Jasa Pipa Mampet {$district->name} 24 Jam Tanpa Bongkar - Rootera"
+                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam - Rootera";
 
             $description = $district
                 ? "Saluran wastafel, kloset, atau got mampet di {$district->name}, {$city->name}? Teknisi posko siaga terdekat meluncur cepat 24 jam tanpa bongkar keramik. Garansi tuntas 30 hari."
@@ -158,7 +184,7 @@ class ProgrammaticSeoController extends Controller
             $heroHeadline = $this->spintaxService->generateHeroHeadline($category->name, $locationName, $seedKey);
             $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $locationName, $estimatedArrival, $seedKey);
             $valueProps = $this->spintaxService->generateValueProps($locationShort, $seedKey);
-            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey);
+            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey, $nearbyLandmarks);
 
             return view('pages.programmatic-landing', compact(
                 'category',

@@ -32,7 +32,7 @@ class BranchOfficeSeeder extends Seeder
             'review_count'        => 120,
         ]);
 
-        // Cabang Fisik Satelit Jabodetabek (Menginduk ke Workshop Utama Cijantung)
+        // Area Layanan Mobile / Service Area Business (SAB) Satelit (Armada Siaga Menginduk Hub Utama Cijantung)
         $jabodetabekSlugs = [
             'jakarta-selatan', 'jakarta-barat', 'jakarta-pusat', 'jakarta-utara',
             'bogor', 'depok', 'tangerang', 'tangerang-selatan', 'bekasi', 'kabupaten-bekasi'
@@ -40,13 +40,13 @@ class BranchOfficeSeeder extends Seeder
 
         foreach ($jabodetabekSlugs as $slug) {
             City::where('slug', $slug)->update([
-                'has_physical_branch' => true,
-                'street_address'      => 'Gg. Mawar No.6B.1, RT.7/RW.1, Cijantung, Kec. Ps. Rebo',
-                'district_locality'   => 'Jakarta Timur (Hub Utama Jabodetabek)',
-                'postal_code'         => '13770',
+                'has_physical_branch' => false,
+                'street_address'      => null,
+                'district_locality'   => null,
+                'postal_code'         => null,
                 'branch_phone'        => '6281385404000',
-                'latitude'            => -6.3275975,
-                'longitude'           => 106.8627125,
+                'latitude'            => null,
+                'longitude'           => null,
                 'rating_value'        => 4.95,
                 'review_count'        => 95,
             ]);

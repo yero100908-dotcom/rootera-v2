@@ -41,7 +41,7 @@
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Garansi Pengerjaan 30 Hari</span></li>
                     </ul>
                 </div>
-                <a href="https://wa.me/{{ $city->whatsapp_number }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Wastafel / Bak Cuci Piring di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Wastafel / Bak Cuci Piring di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
                    target="_blank"
                    class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs py-3 px-4 rounded-xl text-center transition-colors duration-200 flex items-center justify-center gap-2">
                     <span>Pesan Jasa Ini</span><span class="text-emerald-400 group-hover:text-white">→</span>
@@ -70,7 +70,7 @@
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Garansi Pengerjaan 30 Hari</span></li>
                     </ul>
                 </div>
-                <a href="https://wa.me/{{ $city->whatsapp_number }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Floor Drain Kamar Mandi di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Floor Drain Kamar Mandi di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
                    target="_blank"
                    class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs py-3 px-4 rounded-xl text-center transition-colors duration-200 flex items-center justify-center gap-2">
                     <span>Pesan Jasa Ini</span><span class="text-emerald-400 group-hover:text-white">→</span>
@@ -96,7 +96,7 @@
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Garansi Pengerjaan 30 Hari</span></li>
                     </ul>
                 </div>
-                <a href="https://wa.me/{{ $city->whatsapp_number }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Kloset / WC Tersumbat di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Kloset / WC Tersumbat di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
                    target="_blank"
                    class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs py-3 px-4 rounded-xl text-center transition-colors duration-200 flex items-center justify-center gap-2">
                     <span>Pesan Jasa Ini</span><span class="text-emerald-400 group-hover:text-white">→</span>
@@ -122,7 +122,7 @@
                         <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span><span>Garansi Pengerjaan 30 Hari</span></li>
                     </ul>
                 </div>
-                <a href="https://wa.me/{{ $city->whatsapp_number }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Pipa Utama / Got / Talang di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
+                <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya ingin pesan penanganan Pipa Utama / Got / Talang di area ' . ($district->name ?? $locationShort) . '. Berapa estimasi totalnya?') }}"
                    target="_blank"
                    class="w-full bg-slate-900 hover:bg-emerald-600 text-white font-bold text-xs py-3 px-4 rounded-xl text-center transition-colors duration-200 flex items-center justify-center gap-2">
                     <span>Pesan Jasa Ini</span><span class="text-emerald-400 group-hover:text-white">→</span>

@@ -53,6 +53,7 @@
         <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" media="(max-width: 767px)" type="image/webp" fetchpriority="high">
         <link rel="preload" as="image" href="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" media="(min-width: 768px)" type="image/webp" fetchpriority="high">
     @endif
+    @stack('preloads')
 
     {{-- Dynamic SEO Meta Tags --}}
     @hasSection('meta_title')
@@ -207,11 +208,6 @@
                     "dayOfWeek" => ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                     "opens" => "00:00",
                     "closes" => "23:59"
-                  ],
-                  "aggregateRating" => [
-                    "@type" => "AggregateRating",
-                    "ratingValue" => "4.9",
-                    "reviewCount" => "2300"
                   ],
                   "areaServed" => [
                     "Jabodetabek",

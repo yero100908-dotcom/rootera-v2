@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@push('preloads')
+@if(!empty($ogImage))
+    <link rel="preload" as="image" href="{{ $ogImage }}" fetchpriority="high">
+@endif
+@endpush
+
 {{-- Advanced JSON-LD Structured Data --}}
 {{-- Advanced Enterprise Nested JSON-LD Structured Data (@graph) --}}
 @section('schema-markup')
@@ -56,8 +62,12 @@ if (!empty($city->postal_code)) {
     $addressSchema["postalCode"] = $city->postal_code;
 }
 
+$serviceTypes = (!empty($city->street_address) && $city->has_physical_branch)
+    ? ["PlumbingService", "LocalBusiness", "EmergencyService"]
+    : ["PlumbingService", "EmergencyService"];
+
 $mainEntity = [
-    "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
+    "@type" => $serviceTypes,
     "@id" => $canonical . "#organization",
     "name" => "Rootera Plumbing " . $locationShort,
     "alternateName" => ["Rootera " . $locationShort, "Jasa Saluran Pipa Mampet " . $locationShort],
@@ -75,13 +85,6 @@ $mainEntity = [
             "opens" => "00:00",
             "closes" => "23:59"
         ]
-    ],
-    "aggregateRating" => [
-        "@type" => "AggregateRating",
-        "ratingValue" => (string) ($city->rating_value ?: 4.9),
-        "reviewCount" => (string) ($city->review_count ?: 120),
-        "bestRating" => "5",
-        "worstRating" => "1"
     ],
     "areaServed" => [
         "@type" => "AdministrativeArea",
@@ -353,6 +356,23 @@ $graphSchema = [
 
 {{-- 5. Bukti Pengerjaan: Media Showcase --}}
 @include('sections.programmatic.media-showcase')
+
+{{-- 5.5. Ulasan Asli Google Maps (Elfsight Live Widget) --}}
+<section class="bg-slate-50 py-12 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs uppercase tracking-wider mb-2">
+                ⭐ Ulasan Asli Google Maps
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Ulasan & Rating Pelanggan Rootera Plumbing di {{ $locationShort }}
+            </h2>
+        </div>
+        <!-- Elfsight Google Reviews -->
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div class="elfsight-app-d736a051-79f5-4dc0-847d-0633b20dc8f5" data-elfsight-app-lazy></div>
+    </div>
+</section>
 
 {{-- 6. Tabel Komparasi Rootera vs Konvensional --}}
 @include('sections.programmatic.comparison-table')
