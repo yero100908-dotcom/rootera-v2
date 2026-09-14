@@ -140,29 +140,45 @@ if ($district) {
 
 // FAQs
 $faqItems = [];
-if (isset($localFaqs) && is_array($localFaqs)) {
+if (!empty($localFaqs) && (is_array($localFaqs) || is_object($localFaqs))) {
     foreach ($localFaqs as $lfaq) {
-        $faqItems[] = [
-            "@type" => "Question",
-            "name" => $lfaq['question'],
-            "acceptedAnswer" => [
-                "@type" => "Answer",
-                "text" => $lfaq['answer']
-            ]
-        ];
+        $qText = is_array($lfaq) ? ($lfaq['question'] ?? '') : ($lfaq->question ?? '');
+        $aText = is_array($lfaq) ? ($lfaq['answer'] ?? '') : ($lfaq->answer ?? '');
+        if (!empty($qText)) {
+            $faqItems[] = [
+                "@type" => "Question",
+                "name" => $qText,
+                "acceptedAnswer" => [
+                    "@type" => "Answer",
+                    "text" => $aText
+                ]
+            ];
+        }
     }
 }
 
-if (isset($faqs)) {
-    foreach ($faqs->take(5) as $faq) {
-        $faqItems[] = [
-            "@type" => "Question",
-            "name" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->question),
-            "acceptedAnswer" => [
-                "@type" => "Answer",
-                "text" => str_replace(['[Kota]', '[Area]'], $locationShort, $faq->answer)
-            ]
-        ];
+if (!empty($faqs) && (is_object($faqs) || is_array($faqs))) {
+    try {
+        $faqList = (is_object($faqs) && method_exists($faqs, 'take'))
+            ? $faqs->take(5)
+            : (is_array($faqs) ? array_slice($faqs, 0, 5) : []);
+
+        foreach ($faqList as $faq) {
+            $qName = is_object($faq) ? ($faq->question ?? '') : ($faq['question'] ?? '');
+            $aText = is_object($faq) ? ($faq->answer ?? '') : ($faq['answer'] ?? '');
+            if (!empty($qName)) {
+                $faqItems[] = [
+                    "@type" => "Question",
+                    "name" => str_replace(['[Kota]', '[Area]'], $locationShort, $qName),
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => str_replace(['[Kota]', '[Area]'], $locationShort, $aText)
+                    ]
+                ];
+            }
+        }
+    } catch (\Throwable $e) {
+        // Safe fallback exception handling
     }
 }
 

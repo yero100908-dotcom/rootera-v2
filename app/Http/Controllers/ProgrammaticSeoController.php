@@ -85,13 +85,11 @@ class ProgrammaticSeoController extends Controller
                 ->where('is_active', true)
                 ->get();
 
-            // All active service categories for cross-service linking (Sub-cached to prevent DB stampede)
-            $allCategories = Cache::remember("prog_global_categories_{$category->id}", 86400, function () use ($category) {
-                return ServiceCategory::where('is_active', true)
-                    ->where('id', '!=', $category->id)
-                    ->orderBy('sort_order')
-                    ->get();
-            });
+            // All active service categories for cross-service linking
+            $allCategories = ServiceCategory::where('is_active', true)
+                ->where('id', '!=', $category->id)
+                ->orderBy('sort_order')
+                ->get();
 
             $projectShowcases = ProjectGallery::where('is_active', true)
                 ->where(function ($q) use ($city) {
@@ -113,20 +111,13 @@ class ProgrammaticSeoController extends Controller
                 $projectShowcases = $projectShowcases->concat($moreShowcases);
             }
 
-            $relatedArticles = Cache::remember('prog_global_articles', 86400, function () {
-                return Article::published()
-                    ->latest('published_at')
-                    ->take(3)
-                    ->get();
-            });
+            $relatedArticles = \App\Models\Article::published()
+                ->latest('published_at')
+                ->take(3)
+                ->get();
 
-            $faqs = Cache::remember('prog_global_faqs', 86400, function () {
-                return Faq::where('is_active', true)->orderBy('sort_order')->get();
-            });
-
-            $technologies = Cache::remember('prog_global_technologies', 86400, function () {
-                return Technology::where('is_active', true)->orderBy('sort_order')->get();
-            });
+            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
+            $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
 
             $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
             $locationShort = $district ? $district->name : $city->name;
