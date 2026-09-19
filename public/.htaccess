@@ -5,9 +5,13 @@
 
     RewriteEngine On
 
-    # Enforce 1-Hop 301 Redirect for HTTP to HTTPS and WWW to Non-WWW
+    # Enforce 1-Hop 301 Canonical Redirect (HTTP -> HTTPS, WWW/Aliases -> https://rooteraplumbing.id)
+    RewriteCond %{HTTP_HOST} !^127\.0\.0\.1 [NC]
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !\.test$ [NC]
+    RewriteCond %{HTTP_HOST} !\.local$ [NC]
     RewriteCond %{HTTPS} off [OR]
-    RewriteCond %{HTTP_HOST} ^www\.rooteraplumbing\.id$ [NC]
+    RewriteCond %{HTTP_HOST} !^rooteraplumbing\.id$ [NC]
     RewriteRule ^(.*)$ https://rooteraplumbing.id/$1 [L,R=301]
 
     # Handle Authorization Header
