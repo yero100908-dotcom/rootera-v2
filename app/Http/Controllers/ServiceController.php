@@ -80,8 +80,18 @@ class ServiceController extends Controller
             ->take(6)
             ->get();
 
-        $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
-        $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+        $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv') 
+               || str_contains(strtolower($category->slug ?? ''), 'inspeksi') 
+               || str_contains(strtolower($category->slug ?? ''), 'deteksi');
+
+        if ($isCctv) {
+            $title = "Jasa Inspeksi Kamera Pipa CCTV & Pelacak Saluran Air | Rootera";
+            $description = "Layanan inspeksi visual kamera pipa CCTV, deteksi pipa bocor/pecah & pelacak letak septic tank tersembunyi tanpa bongkar. Bukti rekaman video HD.";
+        } else {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+        }
+
         $canonical = url('/layanan/' . $category->slug);
         $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.jpeg');
 

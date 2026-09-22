@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="w-full h-full">
+<html lang="id" class="w-full h-full overflow-x-hidden">
 <head>
     <!-- Google tag (gtag.js) - User Interaction Delay for Performance -->
     <script>
@@ -261,12 +261,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
-<body class="min-h-screen w-full bg-white text-slate-800 antialiased overflow-x-hidden m-0 p-0">
+<body class="min-h-screen w-full max-w-full bg-white text-slate-800 antialiased overflow-x-hidden relative m-0 p-0">
     {{-- Navbar --}}
     @include('components.navbar')
 
     {{-- Main Content --}}
-    <main id="main-content" class="w-full min-h-screen pb-20 md:pb-0">
+    <main id="main-content" class="w-full max-w-full overflow-hidden min-h-screen pb-20 md:pb-0">
         @yield('content')
     </main>
 

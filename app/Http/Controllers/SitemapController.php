@@ -16,11 +16,25 @@ use Illuminate\Support\Facades\Cache;
 class SitemapController extends Controller
 {
     /**
+     * List of city slugs that are alias 301 redirects and must be excluded from sitemaps.
+     */
+    protected array $aliasSlugs = [
+        'tangerang-kota',
+        'kab-tangerang',
+        'cikarang',
+        'karawang',
+        'sleman',
+        'sidoarjo',
+        'gresik',
+        'solo'
+    ];
+
+    /**
      * Master Sitemap Index File (/sitemap.xml)
      */
     public function index(): Response
     {
-        $content = Cache::remember('sitemap_index_xml_v4', 86400, function () {
+        $content = Cache::remember('sitemap_index_xml_v5', 86400, function () {
             $latestArticle = Article::published()->latest('updated_at')->first();
             $lastmodBlog = $latestArticle ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString() : now()->tz('UTC')->toAtomString();
             $lastmodNow = now()->tz('UTC')->toAtomString();
@@ -36,7 +50,7 @@ class SitemapController extends Controller
      */
     public function pages(): Response
     {
-        $content = Cache::remember('sitemap_pages_xml_v4', 86400, function () {
+        $content = Cache::remember('sitemap_pages_xml_v5', 86400, function () {
             $faqCategories = FaqCategory::where('is_active', true)->get();
             $technologies = Technology::where('is_active', true)->get();
             return view('sitemap-pages', compact('faqCategories', 'technologies'))->render();
@@ -50,9 +64,9 @@ class SitemapController extends Controller
      */
     public function services(): Response
     {
-        $content = Cache::remember('sitemap_services_xml_v4', 86400, function () {
+        $content = Cache::remember('sitemap_services_xml_v5', 86400, function () {
             $categories = ServiceCategory::where('is_active', true)->get();
-            $cities = City::where('is_active', true)->get();
+            $cities = City::where('is_active', true)->whereNotIn('slug', $this->aliasSlugs)->get();
             $sectors = ServiceSector::where('is_active', true)->get();
 
             return view('sitemap-services', compact('categories', 'cities', 'sectors'))->render();
@@ -66,8 +80,8 @@ class SitemapController extends Controller
      */
     public function cities(): Response
     {
-        $content = Cache::remember('sitemap_cities_xml_v4', 86400, function () {
-            $cities = City::where('is_active', true)->get();
+        $content = Cache::remember('sitemap_cities_xml_v5', 86400, function () {
+            $cities = City::where('is_active', true)->whereNotIn('slug', $this->aliasSlugs)->orderBy('sort_order')->orderBy('name')->get();
             $propertyTypes = PropertyType::where('is_active', true)->get();
             return view('sitemap-cities', compact('cities', 'propertyTypes'))->render();
         });
@@ -80,8 +94,9 @@ class SitemapController extends Controller
      */
     public function districts(): Response
     {
-        $content = Cache::remember('sitemap_districts_xml_v4', 86400, function () {
+        $content = Cache::remember('sitemap_districts_xml_v5', 86400, function () {
             $cities = City::where('is_active', true)
+                ->whereNotIn('slug', $this->aliasSlugs)
                 ->with(['districts' => function ($q) {
                     $q->where('is_active', true)->orderBy('name');
                 }])

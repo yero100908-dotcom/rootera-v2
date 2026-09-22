@@ -10,6 +10,8 @@
 {{-- Advanced Enterprise Nested JSON-LD Structured Data (@graph) --}}
 @section('schema-markup')
 <?php
+$activeCategoryName = $category->name ?? "Saluran Pipa Mampet";
+
 $serviceOffers = [
     [
         "@type" => "Offer",
@@ -19,35 +21,29 @@ $serviceOffers = [
         "availability" => "https://schema.org/InStock",
         "itemOffered" => [
             "@type" => "Service",
-            "name" => "Jasa Wastafel & Cuci Piring Mampet " . $locationShort,
-            "description" => "Pelancaran saluran cuci piring tersumbat lemak & sisa makanan tanpa bongkar pipa."
-        ]
-    ],
-    [
-        "@type" => "Offer",
-        "price" => "450000",
-        "priceCurrency" => "IDR",
-        "priceValidUntil" => date('Y-12-31'),
-        "availability" => "https://schema.org/InStock",
-        "itemOffered" => [
-            "@type" => "Service",
-            "name" => "Jasa WC & Kloset Tersumbat " . $locationShort,
-            "description" => "Pelancaran kloset duduk/jongkok mampet 24 jam dengan Ridgid Cable Machine tanpa perusak ubin."
-        ]
-    ],
-    [
-        "@type" => "Offer",
-        "price" => "500000",
-        "priceCurrency" => "IDR",
-        "priceValidUntil" => date('Y-12-31'),
-        "availability" => "https://schema.org/InStock",
-        "itemOffered" => [
-            "@type" => "Service",
-            "name" => "Jasa Floor Drain & Got Mampet " . $locationShort,
-            "description" => "Pembersihan pipa pembuangan kamar mandi & got mampet teknologi Hydro Jetting."
+            "name" => "Jasa " . $activeCategoryName . " " . $locationShort,
+            "serviceType" => $activeCategoryName,
+            "description" => "Pelancaran saluran " . strtolower($activeCategoryName) . " tersumbat di area " . $locationShort . " tanpa bongkar pipa."
         ]
     ]
 ];
+
+// Area Served Mesh (District + Kelurahan Mesh)
+$areaServedList = [
+    [
+        "@type" => "AdministrativeArea",
+        "name" => $locationName
+    ]
+];
+
+if (!empty($nearbyLandmarks) && is_array($nearbyLandmarks)) {
+    foreach ($nearbyLandmarks as $landmark) {
+        $areaServedList[] = [
+            "@type" => "AdministrativeArea",
+            "name" => "Kelurahan " . $landmark . ", " . $locationShort
+        ];
+    }
+}
 
 $addressSchema = [
     "@type" => "PostalAddress",
@@ -86,27 +82,27 @@ $mainEntity = [
             "closes" => "23:59"
         ]
     ],
-    "areaServed" => [
-        "@type" => "AdministrativeArea",
-        "name" => $locationName
-    ],
+    "areaServed" => $areaServedList,
     "hasOfferCatalog" => [
         "@type" => "OfferCatalog",
-        "name" => "Katalog Layanan Pelancaran Saluran Mampet " . $locationShort,
+        "name" => "Katalog Layanan Pelancaran " . $activeCategoryName . " " . $locationShort,
         "itemListElement" => $serviceOffers
     ]
 ];
 
-if (!empty($city->latitude) && !empty($city->longitude)) {
+$geoLat = !empty($district->latitude) ? (float) $district->latitude : (!empty($city->latitude) ? (float) $city->latitude : null);
+$geoLng = !empty($district->longitude) ? (float) $district->longitude : (!empty($city->longitude) ? (float) $city->longitude : null);
+
+if ($geoLat && $geoLng) {
     $mainEntity["geo"] = [
         "@type" => "GeoCoordinates",
-        "latitude" => (float) $city->latitude,
-        "longitude" => (float) $city->longitude
+        "latitude" => $geoLat,
+        "longitude" => $geoLng
     ];
-    $mainEntity["hasMap"] = "https://www.google.com/maps?q={$city->latitude},{$city->longitude}";
+    $mainEntity["hasMap"] = "https://www.google.com/maps?q={$geoLat},{$geoLng}";
 }
 
-// Breadcrumbs
+// Breadcrumbs (4-Level Silo Hierarchy)
 $breadcrumbItems = [
     [
         "@type" => "ListItem",
@@ -126,6 +122,12 @@ if ($district) {
     $breadcrumbItems[] = [
         "@type" => "ListItem",
         "position" => 3,
+        "name" => "Layanan " . $category->name . " " . $city->name,
+        "item" => url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}")
+    ];
+    $breadcrumbItems[] = [
+        "@type" => "ListItem",
+        "position" => 4,
         "name" => "Layanan " . $category->name . " " . $district->name,
         "item" => $canonical
     ];
@@ -351,58 +353,113 @@ $graphSchema = [
 
 @section('content')
 
-{{-- 1. Hero: Headline, Live Badge, CTAs, Pos Hub --}}
-@include('sections.programmatic.hero')
+@php
+$orderList = $sectionOrder ?? [
+    'hero',
+    'technical-context',
+    'pricing-estimator',
+    'multi-sector',
+    'local-coverage',
+    'value-props',
+    'media-showcase',
+    'comparison-table',
+    'b2b-corporate',
+    'faq-accordion',
+    'interlinking',
+    'emergency-cta'
+];
+@endphp
 
-@if(($city && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung') || ($district && $district->slug === 'kedaton'))
-    <x-workshop-posko-bandar-lampung :city="$city" :district="$district" />
-@endif
+@foreach($orderList as $sectionKey)
+    @switch($sectionKey)
+        @case('hero')
+            {{-- 1. Hero: Headline, Live Badge, CTAs, Pos Hub --}}
+            @include('sections.programmatic.hero')
 
-{{-- 2. Estimasi Tarif: 4 pricing cards --}}
-@include('sections.programmatic.pricing-estimator')
+            @if(($city && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung') || ($district && $district->slug === 'kedaton'))
+                <x-workshop-posko-bandar-lampung :city="$city" :district="$district" />
+            @endif
+            @break
 
-{{-- 2.5. Multi-Sektor Properti --}}
-<x-multi-sector-grid :locationName="$district->name ?? $locationShort" :whatsappNumber="$city->whatsapp_number ?? '6281385404000'" />
+        @case('technical-context')
+            {{-- 1.5. Analisis Teknis & Solusi Spesifik Kategori --}}
+            @include('sections.programmatic.technical-context')
 
-{{-- 3. Cakupan Area Mikro / Kelurahan Mesh --}}
-@include('sections.programmatic.local-coverage')
+            @if(isset($category) && (str_contains(strtolower($category->slug ?? ''), 'cctv') || str_contains(strtolower($category->slug ?? ''), 'inspeksi') || str_contains(strtolower($category->slug ?? ''), 'deteksi')))
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    @include('sections.cctv.use-cases')
+                    @include('sections.cctv.tech-specs-deliverables')
+                </div>
+            @endif
+            @break
 
-{{-- 4. Standar Garansi & Keunggulan Layanan --}}
-@include('sections.programmatic.value-props')
+        @case('pricing-estimator')
+            {{-- 2. Estimasi Tarif: 4 pricing cards --}}
+            @include('sections.programmatic.pricing-estimator')
+            @break
 
-{{-- 5. Bukti Pengerjaan: Media Showcase --}}
-@include('sections.programmatic.media-showcase')
+        @case('multi-sector')
+            {{-- 2.5. Multi-Sektor Properti --}}
+            <x-multi-sector-grid :locationName="$district->name ?? $locationShort" :whatsappNumber="$city->whatsapp_number ?? '6281385404000'" />
+            @break
 
-{{-- 5.5. Ulasan Asli Google Maps (Elfsight Live Widget) --}}
-<section class="bg-slate-50 py-12 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-8">
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs uppercase tracking-wider mb-2">
-                ⭐ Ulasan Asli Google Maps
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Ulasan & Rating Pelanggan Rootera Plumbing di {{ $locationShort }}
-            </h2>
-        </div>
-        <!-- Elfsight Google Reviews -->
-        <script src="https://elfsightcdn.com/platform.js" async></script>
-        <div class="elfsight-app-d736a051-79f5-4dc0-847d-0633b20dc8f5" data-elfsight-app-lazy></div>
-    </div>
-</section>
+        @case('local-coverage')
+            {{-- 3. Cakupan Area Mikro / Kelurahan Mesh --}}
+            @include('sections.programmatic.local-coverage')
+            @break
 
-{{-- 6. Tabel Komparasi Rootera vs Konvensional --}}
-@include('sections.programmatic.comparison-table')
+        @case('value-props')
+            {{-- 4. Standar Garansi & Keunggulan Layanan --}}
+            @include('sections.programmatic.value-props')
+            @break
 
-{{-- 7. B2B Commercial & Industrial Banner --}}
-@include('sections.programmatic.b2b-corporate')
+        @case('media-showcase')
+            {{-- 5. Bukti Pengerjaan: Media Showcase --}}
+            @include('sections.programmatic.media-showcase')
 
-{{-- 8. FAQ Akordion (5 pertanyaan kurasi) --}}
-@include('sections.programmatic.faq-accordion')
+            {{-- 5.5. Ulasan Asli Google Maps (Elfsight Live Widget) --}}
+            <section class="bg-slate-50 py-12 border-b border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-8">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-xs uppercase tracking-wider mb-2">
+                            ⭐ Ulasan Asli Google Maps
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                            Ulasan &amp; Rating Pelanggan Rootera Plumbing di {{ $locationShort }}
+                        </h2>
+                    </div>
+                    <!-- Elfsight Google Reviews -->
+                    <script src="https://elfsightcdn.com/platform.js" async></script>
+                    <div class="elfsight-app-d736a051-79f5-4dc0-847d-0633b20dc8f5" data-elfsight-app-lazy></div>
+                </div>
+            </section>
+            @break
 
-{{-- 9. Smart Interlinking + Tag Cloud --}}
-@include('sections.programmatic.interlinking')
+        @case('comparison-table')
+            {{-- 6. Tabel Komparasi Rootera vs Konvensional --}}
+            @include('sections.programmatic.comparison-table')
+            @break
 
-{{-- 10. Emergency CTA Banner --}}
-@include('sections.programmatic.emergency-cta')
+        @case('b2b-corporate')
+            {{-- 7. B2B Commercial & Industrial Banner --}}
+            @include('sections.programmatic.b2b-corporate')
+            @break
+
+        @case('faq-accordion')
+            {{-- 8. FAQ Akordion (5 pertanyaan kurasi) --}}
+            @include('sections.programmatic.faq-accordion')
+            @break
+
+        @case('interlinking')
+            {{-- 9. Smart Interlinking + Tag Cloud --}}
+            @include('sections.programmatic.interlinking')
+            @break
+
+        @case('emergency-cta')
+            {{-- 10. Emergency CTA Banner --}}
+            @include('sections.programmatic.emergency-cta')
+            @break
+    @endswitch
+@endforeach
 
 @endsection

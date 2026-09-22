@@ -20,7 +20,7 @@ class PushGoogleIndexing extends Command
      *
      * @var string
      */
-    protected $signature = 'seo:push-index {--limit=100 : Maximum number of URLs to push (default 100)} {--type=URL_UPDATED : Action type: URL_UPDATED or URL_DELETED}';
+    protected $signature = 'seo:push-index {--limit=100 : Maximum number of URLs to push (default 100)} {--type=URL_UPDATED : Action type: URL_UPDATED or URL_DELETED} {--dry-run : Simulate URL collection without calling API}';
 
     /**
      * The console command description.
@@ -38,13 +38,39 @@ class PushGoogleIndexing extends Command
     {
         $limit = (int) $this->option('limit');
         $type = strtoupper($this->option('type'));
+        $dryRun = (bool) $this->option('dry-run');
 
         if (!in_array($type, ['URL_UPDATED', 'URL_DELETED'])) {
             $this->error("Invalid action type '{$type}'. Allowed values: URL_UPDATED, URL_DELETED");
             return 1;
         }
 
-        $this->info("🚀 Starting Google Indexing API Push (Action: {$type}, Limit: {$limit})...");
+        $this->info("🚀 Starting Google Indexing API Push (Action: {$type}, Limit: {$limit}" . ($dryRun ? ", DRY RUN" : "") . ")...");
+
+        // Gather Active Target URLs
+        $urls = $this->collectTargetUrls($limit);
+        $totalCount = count($urls);
+
+        if ($totalCount === 0) {
+            $this->warn("⚠️ No active URLs found to submit.");
+            return 0;
+        }
+
+        if ($dryRun) {
+            $this->newLine();
+            $this->info("🧪 DRY RUN MODE: Gathered {$totalCount} active URLs ready for Google Indexing API submission:");
+            $displayTable = [];
+            foreach (array_slice($urls, 0, 15) as $i => $u) {
+                $displayTable[] = ['#' => $i + 1, 'URL' => $u, 'Status' => 'DRY_RUN_OK'];
+            }
+            $this->table(['#', 'Canonical URL', 'Simulated Status'], $displayTable);
+            if ($totalCount > 15) {
+                $this->line("... and " . ($totalCount - 15) . " more URLs collected.");
+            }
+            $this->newLine();
+            $this->info("✅ Dry Run Completed Successfully! No API calls were made.");
+            return 0;
+        }
 
         // 1. Locate Credentials File
         $keyPath = storage_path('app/google-indexing-key.json');
@@ -58,6 +84,7 @@ class PushGoogleIndexing extends Command
         if (!file_exists($keyPath)) {
             $this->error("❌ Google Indexing credentials file not found at: {$keyPath}");
             $this->error("Please place your Service Account JSON file in storage/app/google-indexing-key.json");
+            $this->line("Tip: Run with '--dry-run' option to test URL collection without credentials.");
             return 1;
         }
 
@@ -183,9 +210,16 @@ class PushGoogleIndexing extends Command
         $urls[] = "{$baseUrl}/blog";
 
         // 2. City & District Landing Pages
-        $cities = City::where('is_active', true)->with(['districts' => function ($q) {
-            $q->where('is_active', true);
-        }])->get();
+        $aliasSlugs = [
+            'tangerang-kota', 'kab-tangerang', 'cikarang', 'karawang',
+            'sleman', 'sidoarjo', 'gresik', 'solo'
+        ];
+
+        $cities = City::where('is_active', true)
+            ->whereNotIn('slug', $aliasSlugs)
+            ->with(['districts' => function ($q) {
+                $q->where('is_active', true);
+            }])->get();
 
         foreach ($cities as $city) {
             $urls[] = "{$baseUrl}/jasa-saluran-mampet/{$city->slug}";

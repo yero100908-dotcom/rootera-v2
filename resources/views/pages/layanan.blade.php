@@ -1,57 +1,75 @@
 @extends('layouts.app')
 @section('content')
 
-{{-- 1. HERO HEADER SECTION (Dark Theme with Ambient Glow & Metrics) --}}
-<div class="relative bg-[#070F1E] text-white py-12 sm:py-20 lg:py-24 overflow-hidden border-b border-slate-800" aria-labelledby="page-title">
-    {{-- Ambient Gradient Glow Orbs --}}
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[200px] sm:h-[350px] bg-emerald-500/15 blur-[80px] sm:blur-[120px] rounded-full pointer-events-none"></div>
-    <div class="absolute -bottom-10 right-10 w-[250px] sm:w-[400px] h-[150px] sm:h-[250px] bg-cyan-500/10 blur-[70px] sm:blur-[100px] rounded-full pointer-events-none"></div>
+{{-- 1. HERO HEADER SECTION (Responsive Banner with High-Contrast Overlay & Glass Metrics) --}}
+<div class="relative bg-slate-950 text-white py-14 sm:py-20 lg:py-24 overflow-hidden border-b border-slate-800/80" aria-labelledby="page-title">
+    {{-- Responsive Background Image using <picture> --}}
+    <picture class="absolute inset-0 w-full h-full pointer-events-none select-none">
+        <source media="(max-width: 639px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}">
+        <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Rootera Plumbing Jasa Saluran Mampet Profesional" class="w-full h-full object-cover object-center transform scale-105 filter blur-[0.5px]">
+    </picture>
 
-    {{-- Subtle Grid Background Pattern --}}
-    <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px); background-size: 24px 24px;"></div>
+    {{-- Dark Gradient Overlay for Maximum Text Contrast --}}
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/95 via-slate-950/85 to-slate-950/95 sm:bg-gradient-to-r sm:from-slate-950/95 sm:via-slate-950/90 sm:to-slate-950/80 pointer-events-none"></div>
+
+    {{-- Ambient Glow Accents --}}
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[600px] h-[200px] sm:h-[350px] bg-emerald-500/15 blur-[90px] rounded-full pointer-events-none"></div>
+    <div class="absolute -bottom-10 right-10 w-[250px] sm:w-[400px] h-[150px] sm:h-[250px] bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-        {{-- Badge Pill --}}
-        <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-bold tracking-wide mb-5 backdrop-blur-md shadow-xs">
-            <span class="animate-pulse">⭐</span>
+        {{-- Glassmorphism Status Badge Pill --}}
+        <div class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-bold tracking-wide mb-6 backdrop-blur-md shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             <span>SOLUSI TUNTAS TANPA BONGKAR</span>
-            <span class="text-emerald-500/50 hidden sm:inline">•</span>
-            <span class="text-slate-300 hidden sm:inline">GARANSI 30 HARI</span>
+            <span class="text-emerald-500/60 hidden sm:inline">•</span>
+            <span class="text-slate-200 hidden sm:inline">GARANSI 30 HARI</span>
         </div>
 
         {{-- Headline --}}
-        <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
+        <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif] drop-shadow-md">
             Katalog Layanan Spesialis Pelancaran <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Pipa & Saluran Mampet</span>
         </h1>
 
         {{-- Subheadline --}}
-        <p class="mt-4 text-xs sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal px-2">
+        <p class="mt-4 text-xs sm:text-base text-slate-200 max-w-2xl mx-auto leading-relaxed font-medium px-2 drop-shadow-sm">
             Penanganan cepat 24 jam untuk wastafel, kamar mandi, kloset, dan saluran limbah gedung. Dikerjakan oleh teknisi ahli menggunakan mesin Ridgid & kamera CCTV presisi tinggi.
         </p>
 
+        {{-- Call To Action Quick Buttons in Hero --}}
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya ingin konsultasi layanan saluran mampet.') }}" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm py-2.5 px-5 rounded-full inline-flex items-center gap-2 transition-all shadow-md hover:-translate-y-0.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>Konsultasi WA 24 Jam</span>
+            </a>
+            <a href="#service-cats-heading" class="bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700/80 font-bold text-xs sm:text-sm py-2.5 px-5 rounded-full inline-flex items-center gap-1.5 transition-all backdrop-blur-sm">
+                <span>Pilih Layanan</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </a>
+        </div>
+
         {{-- Trust Indicators Bar --}}
-        <div class="mt-7 pt-6 sm:pt-8 border-t border-slate-800/80 max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
-            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+        <div class="mt-8 pt-6 sm:pt-8 border-t border-slate-800/70 max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
+            <div class="p-3 bg-slate-900/70 backdrop-blur-md rounded-2xl border border-slate-800/80 shadow-xs">
                 <span class="block text-emerald-400 font-extrabold text-base sm:text-xl">100%</span>
-                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Tanpa Bongkar Keramik</span>
+                <span class="text-[10px] sm:text-xs text-slate-300 font-medium">Tanpa Bongkar Keramik</span>
             </div>
-            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+            <div class="p-3 bg-slate-900/70 backdrop-blur-md rounded-2xl border border-slate-800/80 shadow-xs">
                 <span class="block text-cyan-400 font-extrabold text-base sm:text-xl">30 Hari</span>
-                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Garansi Resmi Written</span>
+                <span class="text-[10px] sm:text-xs text-slate-300 font-medium">Garansi Resmi Written</span>
             </div>
-            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+            <div class="p-3 bg-slate-900/70 backdrop-blur-md rounded-2xl border border-slate-800/80 shadow-xs">
                 <span class="block text-teal-400 font-extrabold text-base sm:text-xl">&lt; 30 Mnt</span>
-                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Respon Teknisi Standby</span>
+                <span class="text-[10px] sm:text-xs text-slate-300 font-medium">Respon Teknisi Standby</span>
             </div>
-            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+            <div class="p-3 bg-slate-900/70 backdrop-blur-md rounded-2xl border border-slate-800/80 shadow-xs">
                 <span class="block text-emerald-400 font-extrabold text-base sm:text-xl">HD 1080p</span>
-                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Inspeksi Kamera CCTV</span>
+                <span class="text-[10px] sm:text-xs text-slate-300 font-medium">Inspeksi Kamera CCTV</span>
             </div>
         </div>
     </div>
 </div>
 
-{{-- 2. SECTION KATALOG UTAMA (Pilihan Layanan Spesialis - TEPAT SETELAH HERO) --}}
+{{-- 2. SECTION KATALOG UTAMA (Pilihan Layanan Spesialis) --}}
 <section class="py-12 sm:py-20 lg:py-24 bg-white" aria-labelledby="service-cats-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -68,8 +86,8 @@
             </p>
 
             {{-- Interactive Category Filter Tabs (Horizontal Scrollable on Mobile) --}}
-            <div class="mt-6 sm:mt-8 flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 px-1 scrollbar-none" id="service-filter-tabs">
-                <button type="button" data-filter="all" class="js-filter-btn active whitespace-nowrap shrink-0 bg-slate-900 text-white text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-full transition-all shadow-xs">
+            <div class="mt-6 sm:mt-8 flex items-center justify-start sm:justify-center gap-2 sm:gap-3 overflow-x-auto pb-2 px-1 scrollbar-none" id="service-filter-tabs">
+                <button type="button" data-filter="all" class="js-filter-btn active whitespace-nowrap shrink-0 bg-slate-900 text-white text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-full transition-all shadow-sm">
                     Semua Layanan
                 </button>
                 <button type="button" data-filter="residensial" class="js-filter-btn whitespace-nowrap shrink-0 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold px-4 sm:px-5 py-2.5 rounded-full transition-all">
@@ -132,9 +150,15 @@
                             {{ $category->name }}
                         </a>
                     </h3>
-                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5">
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
                         {{ $category->description }}
                     </p>
+
+                    {{-- Price Tag Badge --}}
+                    <div class="mb-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50/90 border border-emerald-200/80 text-emerald-800 text-xs font-bold w-fit shadow-2xs">
+                        <span>🏷️ {{ $category->price_home }}</span>
+                        <span class="text-[10px] text-emerald-700 font-medium">({{ $category->slug === 'pipa-industri-pabrik' ? 'Komersial' : 'Rumah Hunian' }})</span>
+                    </div>
 
                     {{-- Feature Checkmarks List --}}
                     <div class="mt-auto space-y-2 pt-4 border-t border-slate-100">
@@ -163,7 +187,7 @@
     </div>
 </section>
 
-{{-- 3. SECTION ARMADA PERALATAN & TEKNOLOGY MODERN (DURANTE LAYANAN & MEKANISME) --}}
+{{-- 3. SECTION ARMADA PERALATAN & TEKNOLOGI MODERN --}}
 <section class="py-12 sm:py-16 lg:py-20 bg-slate-50 border-y border-slate-200/80" aria-labelledby="tools-heading">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
@@ -183,66 +207,80 @@
     </div>
 </section>
 
-{{-- 4. SECTION NILAI TAMBAH & KEUNGGULAN LAYANAN (4 Pilar Keunggulan) --}}
-<section class="py-12 sm:py-16 bg-slate-900 text-white relative overflow-hidden">
+{{-- 4. SECTION NILAI TAMBAH & KEUNGGULAN LAYANAN (4 Pilar Keunggulan - Carousel Horizontal di Mobile) --}}
+<section class="py-14 sm:py-20 bg-slate-900 text-white relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-            <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider">Komitmen Kualitas Rootera</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1 font-['Plus_Jakarta_Sans',sans-serif]">
+        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+            <span class="text-emerald-400 font-bold text-xs uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                Komitmen Kualitas Rootera
+            </span>
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mt-3 font-['Plus_Jakarta_Sans',sans-serif]">
                 Mengapa Memilih Jasa Pelancar Pipa Rootera?
             </h2>
+            <p class="text-[11px] text-slate-400 mt-2.5 sm:hidden flex items-center justify-center gap-1">
+                <span>👈</span> <span>Geser ke samping untuk melihat keunggulan</span> <span>👉</span>
+            </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {{-- Horizontal Carousel on Mobile (flex overflow-x-auto snap-x), Grid 4-Cols on Tablet/Desktop --}}
+        <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 pt-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 md:grid-cols-4 sm:gap-6 sm:overflow-visible scrollbar-none">
             {{-- Pilar 1 --}}
-            <div class="bg-slate-800/60 p-5 sm:p-6 rounded-2xl border border-slate-700/60 hover:border-emerald-500/50 transition-all duration-300">
-                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-xl mb-3.5">
-                    ⚡
+            <div class="w-[82%] sm:w-auto shrink-0 snap-center bg-slate-800/60 p-6 rounded-2xl border border-slate-700/60 hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </div>
+                    <h3 class="font-extrabold text-base sm:text-lg text-white mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Tanpa Bongkar Keramik</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        Pengerjaan mekanis fleksibel meliuk di alur PVC tanpa merusak lantai, keramik, atau dinding rumah Anda.
+                    </p>
                 </div>
-                <h4 class="font-bold text-base text-white mb-1">Tanpa Bongkar Keramik</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Pengerjaan mekanis fleksibel meliuk di alur PVC tanpa merusak lantai, keramik, atau dinding rumah Anda.
-                </p>
             </div>
 
             {{-- Pilar 2 --}}
-            <div class="bg-slate-800/60 p-5 sm:p-6 rounded-2xl border border-slate-700/60 hover:border-cyan-500/50 transition-all duration-300">
-                <div class="w-11 h-11 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center font-bold text-xl mb-3.5">
-                    📜
+            <div class="w-[82%] sm:w-auto shrink-0 snap-center bg-slate-800/60 p-6 rounded-2xl border border-slate-700/60 hover:border-cyan-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 11 12 14 22 4"/></svg>
+                    </div>
+                    <h3 class="font-extrabold text-base sm:text-lg text-white mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Garansi Tuntas 30 Hari</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        Jaminan garansi tertulis resmi. Jika pipa tersumbat kembali dalam masa garansi, teknisi datang tanpa biaya tambahan.
+                    </p>
                 </div>
-                <h4 class="font-bold text-base text-white mb-1">Garansi Tuntas 30 Hari</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Jaminan garansi tertulis resmi. Jika pipa tersumbat kembali dalam masa garansi, teknisi datang tanpa biaya tambahan.
-                </p>
             </div>
 
             {{-- Pilar 3 --}}
-            <div class="bg-slate-800/60 p-5 sm:p-6 rounded-2xl border border-slate-700/60 hover:border-teal-500/50 transition-all duration-300">
-                <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center font-bold text-xl mb-3.5">
-                    ⏱️
+            <div class="w-[82%] sm:w-auto shrink-0 snap-center bg-slate-800/60 p-6 rounded-2xl border border-slate-700/60 hover:border-teal-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3 class="font-extrabold text-base sm:text-lg text-white mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Respon Cepat &lt; 30 Menit</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        Armada teknisi profesional standby terdekat di Jabodetabek, Bandung, Semarang, Jogja, Solo, & Lampung.
+                    </p>
                 </div>
-                <h4 class="font-bold text-base text-white mb-1">Respon Cepat &lt; 30 Menit</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Armada teknisi profesional standby terdekat di Jabodetabek, Bandung, Semarang, Jogja, Solo, & Lampung.
-                </p>
             </div>
 
             {{-- Pilar 4 --}}
-            <div class="bg-slate-800/60 p-5 sm:p-6 rounded-2xl border border-slate-700/60 hover:border-emerald-500/50 transition-all duration-300">
-                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-xl mb-3.5">
-                    🏷️
+            <div class="w-[82%] sm:w-auto shrink-0 snap-center bg-slate-800/60 p-6 rounded-2xl border border-slate-700/60 hover:border-emerald-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                    </div>
+                    <h3 class="font-extrabold text-base sm:text-lg text-white mb-2 font-['Plus_Jakarta_Sans',sans-serif]">Harga Transparan Clear</h3>
+                    <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                        Estimasi harga diinformasikan transparan di awal pengerjaan. Tanpa biaya tersembunyi atau tambahan tidak jelas.
+                    </p>
                 </div>
-                <h4 class="font-bold text-base text-white mb-1">Harga Transparan Clear</h4>
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Estimasi harga diinformasikan transparan di awal pengerjaan. Tanpa biaya tersembunyi atau tambahan tidak jelas.
-                </p>
             </div>
         </div>
     </div>
 </section>
 
 {{-- 5. BOTTOM CALL-TO-ACTION (High-Conversion Banner) --}}
-<section class="py-14 sm:py-20 bg-gradient-to-br from-slate-900 via-[#0A2E78] to-slate-950 text-white relative overflow-hidden">
+<section class="py-14 sm:py-20 bg-gradient-to-br from-slate-950 via-[#0A2E78] to-slate-950 text-white relative overflow-hidden border-t border-slate-800/80">
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#20b2aa 1.5px, transparent 1.5px); background-size: 32px 32px;"></div>
 
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -302,8 +340,8 @@
                         <h4 class="font-bold text-slate-800 text-lg sm:text-xl">Rumah Hunian</h4>
                     </div>
                     <div class="mt-auto">
-                        <p class="text-xs sm:text-sm text-slate-500 font-medium mb-1 uppercase tracking-widest">Mulai dari</p>
-                        <p id="pm-home" class="text-3xl sm:text-4xl font-extrabold text-[#0A2E78] tracking-tight">Rp -</p>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium mb-1 uppercase tracking-widest">Khusus Hunian Rumah</p>
+                        <p id="pm-home" class="text-2xl sm:text-3xl font-extrabold text-[#0A2E78] tracking-tight">Mulai Rp 400.000</p>
                     </div>
                 </div>
 
@@ -317,36 +355,39 @@
                         <h4 class="font-bold text-slate-800 text-lg sm:text-xl">Komersial / Gedung</h4>
                     </div>
                     <div class="mt-auto relative z-10">
-                        <p class="text-xs sm:text-sm text-slate-500 font-medium mb-1 uppercase tracking-widest">Estimasi Biaya</p>
-                        <p id="pm-corporate" class="text-3xl sm:text-4xl font-extrabold text-[#0A2E78] tracking-tight">Rp -</p>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium mb-1 uppercase tracking-widest">Tempat Usaha / Resto / Ruko</p>
+                        <p id="pm-corporate" class="text-2xl sm:text-3xl font-extrabold text-[#0A2E78] tracking-tight">Wajib Survey / Hubungi CS</p>
                     </div>
                 </div>
 
             </div>
 
             {{-- Services & Note Area --}}
-            <div class="mt-auto bg-slate-50 rounded-[20px] sm:rounded-[24px] p-6 sm:p-8 border border-slate-100">
+            <div class="mt-auto bg-amber-50/70 rounded-[20px] sm:rounded-[24px] p-6 sm:p-8 border border-amber-200/80">
                 <div class="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
                     <div class="flex-1 w-full">
-                        <h5 class="text-sm sm:text-base font-bold text-slate-700 mb-3 sm:mb-4 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-[#169F81]"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <h5 class="text-sm sm:text-base font-bold text-slate-800 mb-3 sm:mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-emerald-600"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                             Layanan Termasuk:
                         </h5>
                         <div id="pm-services" class="flex flex-wrap gap-2 sm:gap-3">
                             {{-- Injected via JS --}}
                         </div>
                     </div>
-                    <div class="lg:w-1/3 w-full border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-8 mt-4 lg:mt-0">
-                        <p id="pm-desc" class="text-sm text-slate-500 italic leading-relaxed">
-                            *Harga dapat berubah sesuai tingkat keparahan.
-                        </p>
+                    <div class="lg:w-1/2 w-full border-t lg:border-t-0 lg:border-l border-amber-200/90 pt-4 lg:pt-0 lg:pl-6 mt-4 lg:mt-0">
+                        <div class="flex items-start gap-2">
+                            <span class="text-amber-600 text-base shrink-0 mt-0.5">ℹ️</span>
+                            <p id="pm-desc" class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                                Untuk tempat usaha, resto, ruko, kantor, atau gedung komersial, biaya disesuaikan dan wajib hubungi CS / melalui survey lokasi terlebih dahulu.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- CTA Button --}}
             <div class="mt-8 flex justify-center">
-                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya ingin pesan layanan pipa mampet.') }}" target="_blank" class="w-full sm:w-auto min-h-[48px] bg-[#25D366] hover:bg-[#1EBE5A] text-white font-bold text-base sm:text-lg py-4 px-8 sm:px-10 rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_12px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1">
+                <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya ingin konsultasi dan tanya estimasi harga layanan saluran mampet.') }}" target="_blank" class="w-full sm:w-auto min-h-[48px] bg-[#25D366] hover:bg-[#1EBE5A] text-white font-bold text-base sm:text-lg py-4 px-8 sm:px-10 rounded-full flex items-center justify-center gap-3 transition-all duration-300 shadow-[0_8px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_12px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     <span>Konsultasi Gratis via WhatsApp</span>
                 </a>
@@ -381,11 +422,11 @@
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 filterBtns.forEach(b => {
-                    b.classList.remove('active', 'bg-slate-900', 'text-white');
+                    b.classList.remove('active', 'bg-slate-900', 'text-white', 'shadow-sm');
                     b.classList.add('bg-slate-100', 'text-slate-700');
                 });
 
-                this.classList.add('active', 'bg-slate-900', 'text-white');
+                this.classList.add('active', 'bg-slate-900', 'text-white', 'shadow-sm');
                 this.classList.remove('bg-slate-100', 'text-slate-700');
 
                 const filter = this.getAttribute('data-filter');
@@ -404,11 +445,11 @@
 
     function openPriceModal(title, home, corporate, desc, services) {
         document.getElementById('pm-title').textContent = title;
-        document.getElementById('pm-home').textContent = home ? 'Rp ' + home : 'Hubungi Kami';
-        document.getElementById('pm-corporate').textContent = corporate ? 'Rp ' + corporate : 'Hubungi Kami';
+        document.getElementById('pm-home').textContent = home ? home : 'Mulai Rp 400.000';
+        document.getElementById('pm-corporate').textContent = corporate ? corporate : 'Wajib Survey / Hubungi CS';
         
         const descEl = document.getElementById('pm-desc');
-        descEl.textContent = desc ? '*' + desc : '*Harga dapat menyesuaikan tingkat kesulitan';
+        descEl.textContent = desc ? desc : 'Untuk tempat usaha, resto, ruko, kantor, atau gedung komersial, biaya disesuaikan dan wajib hubungi CS / melalui survey lokasi terlebih dahulu.';
         
         const servicesContainer = document.getElementById('pm-services');
         servicesContainer.innerHTML = '';

@@ -2,6 +2,10 @@
 
 @section('schema-markup')
 <?php
+$isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv') 
+       || str_contains(strtolower($category->slug ?? ''), 'inspeksi') 
+       || str_contains(strtolower($category->slug ?? ''), 'deteksi');
+
 $formattedPriceHome = is_numeric($category->price_home) 
     ? 'Rp ' . number_format((float) $category->price_home, 0, ',', '.') 
     : ($category->price_home ?: 'Hubungi CS');
@@ -18,7 +22,8 @@ if ($numericLowPrice <= 0) {
 $serviceSchema = [
   "@context" => "https://schema.org",
   "@type" => "Service",
-  "name" => $category->name,
+  "name" => $isCctv ? "Jasa Inspeksi Kamera Pipa CCTV & Pemetaan Saluran" : $category->name,
+  "serviceType" => $isCctv ? ["CCTV Pipe Inspection", "Underground Pipe Locating", "Septic Tank Detector", "Non-Destructive Plumbing Diagnostic"] : ["Drain Cleaning", "Plumbing Service"],
   "description" => $category->description,
   "provider" => [
     "@type" => "LocalBusiness",
@@ -40,7 +45,32 @@ $serviceSchema = [
 $faqSchema = [
   "@context" => "https://schema.org",
   "@type" => "FAQPage",
-  "mainEntity" => [
+  "mainEntity" => $isCctv ? [
+    [
+      "@type" => "Question",
+      "name" => "Bagaimana cara kerja pelacakan septic tank & bak kontrol tersembunyi dengan Sonde 512Hz?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Kepala kamera CCTV memancarkan frekuensi sinyal 512Hz dari dalam pipa di bawah tanah. Teknisi menggunakan alat receiver pemindai permukaan untuk melacak gelombang sinyal persis di atas ubin/lantai, sehingga titik lokasi dan kedalaman septic tank/manhole dapat ditemukan tanpa membongkar keramik acak."
+      ]
+    ],
+    [
+      "@type" => "Question",
+      "name" => "Apakah pelanggan akan mendapatkan bukti file rekaman video CCTV hasil inspeksi?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Ya, 100% transparan. Setiap pelanggan berhak mendapatkan file rekaman video resolusi tinggi Full HD (format MP4) yang diserahkan langsung via Flashdisk, Cloud Drive, atau WhatsApp, lengkap dengan lembar rekomendasi audit teknis perbaikan."
+      ]
+    ],
+    [
+      "@type" => "Question",
+      "name" => "Berapa biaya jasa inspeksi pipa kamera CCTV di Rootera?",
+      "acceptedAnswer" => [
+        "@type" => "Answer",
+        "text" => "Biaya jasa inspeksi kamera CCTV terjangkau dan transparan mulai dari " . $formattedPriceHome . " untuk kategori hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori gedung corporate/industri. Sangat hemat dibanding risiko pembongkaran ubin secara tebak-tebakan."
+      ]
+    ]
+  ] : [
     [
       "@type" => "Question",
       "name" => "Berapa lama proses pengerjaan pelancar pipa mampet Rootera?",
@@ -67,6 +97,16 @@ $faqSchema = [
     ]
   ]
 ];
+
+$videoSchema = $isCctv ? [
+  "@context" => "https://schema.org",
+  "@type" => "VideoObject",
+  "name" => "Video Inspeksi Kamera CCTV Pipa Saluran Air Rootera",
+  "description" => "Rekaman visual HD kamera endoscope saluran pipa yang tersumbat lemak & retakan pipa di bawah lantai.",
+  "thumbnailUrl" => [asset('images/dokumentasi/inspeksi-cctv-floor-drain-pertamina-sunter.webp')],
+  "uploadDate" => "2026-01-15T08:00:00+07:00",
+  "contentUrl" => asset('storage/videos/video-inspeksi-cctv-wastafel.mp4')
+] : null;
 ?>
 <script type="application/ld+json">
 {!! json_encode($serviceSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
@@ -74,14 +114,25 @@ $faqSchema = [
 <script type="application/ld+json">
 {!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
+@if($videoSchema)
+<script type="application/ld+json">
+{!! json_encode($videoSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endif
 @endsection
 
 @section('content')
+@php
+$isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv') 
+       || str_contains(strtolower($category->slug ?? ''), 'inspeksi') 
+       || str_contains(strtolower($category->slug ?? ''), 'deteksi');
+@endphp
+
 {{-- 1. HERO HEADER SECTION (Mobile-First with Safe Spacing & Ambient Glow) --}}
 <div class="relative bg-gradient-to-b from-slate-900 via-[#070F1E] to-slate-900 text-white pt-20 pb-12 sm:pt-28 sm:pb-16 overflow-hidden border-b border-slate-800" aria-labelledby="page-title">
     {{-- Ambient Glow Orbs --}}
-    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[500px] h-[180px] sm:h-[300px] bg-emerald-500/15 blur-[70px] sm:blur-[110px] rounded-full pointer-events-none"></div>
-    <div class="absolute bottom-0 right-5 w-[200px] sm:w-[350px] h-[120px] sm:h-[200px] bg-cyan-500/10 blur-[60px] sm:blur-[90px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] sm:w-[500px] h-[180px] sm:h-[300px] bg-cyan-500/15 blur-[70px] sm:blur-[110px] rounded-full pointer-events-none"></div>
+    <div class="absolute bottom-0 right-5 w-[200px] sm:w-[350px] h-[120px] sm:h-[200px] bg-emerald-500/10 blur-[60px] sm:blur-[90px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {{-- Breadcrumb Navigation --}}
@@ -90,10 +141,53 @@ $faqSchema = [
             <span class="text-slate-600">/</span>
             <a href="{{ route('layanan') }}" class="hover:text-emerald-400 transition-colors">Layanan</a>
             <span class="text-slate-600">/</span>
-            <span class="text-emerald-400 font-semibold truncate max-w-[200px] sm:max-w-none">{{ $category->name }}</span>
+            <span class="text-cyan-400 font-semibold truncate max-w-[200px] sm:max-w-none">{{ $category->name }}</span>
         </nav>
 
-        {{-- Badge Pill --}}
+        @if($isCctv)
+        {{-- Badge Pill CCTV --}}
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-slate-900/80 border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-bold tracking-wide mb-4 backdrop-blur-md shadow-lg">
+            <span class="inline-flex items-center gap-1 text-cyan-400">
+                <span class="animate-pulse">📹</span>
+                <span>Industrial Inspection Technology</span>
+            </span>
+            <span class="text-cyan-500/50 hidden sm:inline">•</span>
+            <span class="text-slate-300 hidden sm:inline">Non-Destructive Sonde 512Hz</span>
+            <span class="text-cyan-500/50 hidden sm:inline">•</span>
+            <span class="text-emerald-400 hidden sm:inline">IP68 Certified</span>
+        </div>
+
+        {{-- Main Headline CCTV --}}
+        <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
+            Jasa Inspeksi Kamera Pipa CCTV &amp; <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Pemetaan Jalur Saluran Tanpa Bongkar</span>
+        </h1>
+
+        {{-- Subheadline CCTV --}}
+        <p class="mt-3 sm:mt-4 text-xs sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal px-2">
+            Solusi canggih diagnostik visual resolusi tinggi, pelacakan posisi pipa akurat 98% dengan Sonde Locator 512Hz, pencarian letak septic tank hilang, dan inspeksi sebelum renovasi bangunan tanpa membongkar keramik lantai.
+        </p>
+
+        {{-- Trust Indicators Bar CCTV --}}
+        <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-800/80 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
+            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+                <span class="block text-cyan-400 font-extrabold text-sm sm:text-xl">98% Presisi</span>
+                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Akurasi Titik Lokasi</span>
+            </div>
+            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+                <span class="block text-emerald-400 font-extrabold text-sm sm:text-xl">IP68 HD</span>
+                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Kamera Endoscope</span>
+            </div>
+            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+                <span class="block text-indigo-400 font-extrabold text-sm sm:text-xl">Digital LCD</span>
+                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Meter Counter Distance</span>
+            </div>
+            <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
+                <span class="block text-amber-400 font-extrabold text-sm sm:text-xl">512Hz Sonde</span>
+                <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Transmitter Locator</span>
+            </div>
+        </div>
+        @else
+        {{-- Badge Pill Standard --}}
         <div class="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-bold tracking-wide mb-4 backdrop-blur-md shadow-xs">
             <span class="animate-pulse">🚰</span>
             <span>SOLUSI TUNTAS TANPA BONGKAR</span>
@@ -101,17 +195,17 @@ $faqSchema = [
             <span class="text-slate-300 hidden sm:inline">GARANSI 30 HARI</span>
         </div>
 
-        {{-- Main Headline --}}
+        {{-- Main Headline Standard --}}
         <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
-            Jasa {{ $category->name }} <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Profesional & Bergaransi</span>
+            Jasa {{ $category->name }} <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Profesional &amp; Bergaransi</span>
         </h1>
 
-        {{-- Subheadline --}}
+        {{-- Subheadline Standard --}}
         <p class="mt-3 sm:mt-4 text-xs sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal px-2">
             Solusi cerdas melancarkan saluran mampet menggunakan alat mekanis non-destruktif tanpa merusak keramik atau struktur bangunan.
         </p>
 
-        {{-- Trust Indicators Bar --}}
+        {{-- Trust Indicators Bar Standard --}}
         <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-800/80 max-w-3xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
             <div class="p-2.5 sm:p-3 bg-slate-900/60 rounded-xl border border-slate-800/60">
                 <span class="block text-emerald-400 font-extrabold text-sm sm:text-xl">100%</span>
@@ -130,6 +224,7 @@ $faqSchema = [
                 <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Panggilan Darurat</span>
             </div>
         </div>
+        @endif
     </div>
 </div>
 
@@ -139,19 +234,34 @@ $faqSchema = [
         <div class="max-w-4xl mx-auto space-y-8 sm:space-y-12">
             
             {{-- Direct Answer (GEO & AI Overview Optimization) --}}
-            <div class="bg-emerald-50/80 border-l-4 border-emerald-500 p-4 sm:p-6 rounded-r-2xl shadow-xs">
+            <div class="{{ $isCctv ? 'bg-cyan-50/80 border-l-4 border-cyan-500' : 'bg-emerald-50/80 border-l-4 border-emerald-500' }} p-4 sm:p-6 rounded-r-2xl shadow-xs">
                 <p class="text-xs sm:text-base text-slate-900 leading-relaxed font-medium">
+                    @if($isCctv)
+                    <strong class="text-cyan-800 font-bold">Direct Answer:</strong> Jasa Inspeksi Pipa Kamera CCTV dari Rootera menghadirkan solusi diagnostik visual presisi non-destruktif untuk melacak titik retak, pipa amblas, pemetaan alur pembuangan, dan lokasi septic tank tersembunyi menggunakan kamera waterproof IP68, meteran kedalaman digital, serta transmitter Sonde 512Hz bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
+                    @else
                     <strong class="text-emerald-800 font-bold">Direct Answer:</strong> Jasa {{ $category->name }} dari Rootera menawarkan solusi pembersihan pipa mampet tanpa bongkar menggunakan teknologi spiral cable mekanis dan hydro-jetting ramah lingkungan (100% bebas asam kimia korosif) yang dijamin membersihkan lemak serta kerak pipa hingga 98% bersih total bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
+                    @endif
                 </p>
             </div>
+
+            @if($isCctv)
+            {{-- 3 SPECIALIZED CCTV SECTIONS --}}
+            @include('sections.cctv.use-cases')
+            @include('sections.cctv.tech-specs-deliverables')
+            @include('sections.cctv.comparison-table')
+            @endif
 
             {{-- 3. MENGAPA MEMILIH ROOTERA (4 Value Pillars) --}}
             <div>
                 <h2 id="detail-heading" class="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-['Plus_Jakarta_Sans',sans-serif] mb-3 sm:mb-4">
-                    Solusi Pembersihan Saluran Air & Pipa Mampet yang Efektif
+                    {{ $isCctv ? 'Keunggulan Diagnostik Visual Kamera CCTV Rootera' : 'Solusi Pembersihan Saluran Air & Pipa Mampet yang Efektif' }}
                 </h2>
                 <p class="text-xs sm:text-base text-slate-600 leading-relaxed mb-6 sm:mb-8">
+                    @if($isCctv)
+                    Memperbaiki pipa tanpa mengetahui letak titik masalah secara pasti seperti berjalan dalam kegelapan. Dengan teknologi kamera endoscope CCTV Rootera, Anda dapat melihat kondisi fisik internal paralon secara <strong class="text-slate-800">Real-Time HD</strong> — menghemat juta rupiah dari risiko salah bobol keramik atau merusak struktur pondasi bangunan.
+                    @else
                     Pipa air kotor dan saluran pembuangan yang tersumbat lemak sisa makanan, rambut, atau kotoran keras lainnya merupakan masalah pelik yang harus segera ditangani secara higienis. Rootera mengedepankan filosofi <strong class="text-slate-800">Eco-Friendly Plumbing</strong> — membuang sumbatan secara mekanis tanpa menyiramkan cairan asam berbahaya yang berisiko membuat sambungan pipa PVC Anda meleyot, bocor, atau hancur di dalam semen lantai.
+                    @endif
                 </p>
 
                 <h3 class="text-lg sm:text-2xl font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mb-4">
@@ -168,19 +278,19 @@ $faqSchema = [
                     <div class="bg-slate-50/90 p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col">
                         <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg mb-3 shrink-0">⚙️</div>
                         <h4 class="font-bold text-sm sm:text-base text-slate-900 mb-1">Peralatan Modern</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">Menggunakan mesin rotasi fleksibel Ridgid dan kamera inspeksi CCTV presisi tinggi.</p>
+                        <p class="text-xs text-slate-600 leading-relaxed">Menggunakan kamera inspeksi CCTV IP68 presisi tinggi dan pemindai sinyal Sonde 512Hz.</p>
                     </div>
 
                     <div class="bg-slate-50/90 p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col">
                         <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg mb-3 shrink-0">🛡️</div>
                         <h4 class="font-bold text-sm sm:text-base text-slate-900 mb-1">Garansi Layanan Nyata</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">Jaminan garansi tertulis. Jika mampet kembali dalam masa garansi, pengerjaan ulang gratis.</p>
+                        <p class="text-xs text-slate-600 leading-relaxed">Jaminan garansi tertulis. Hasil rekaman transparan tanpa manipulasi data.</p>
                     </div>
 
                     <div class="bg-slate-50/90 p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col">
                         <div class="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold text-lg mb-3 shrink-0">⏱️</div>
-                        <h4 class="font-bold text-sm sm:text-base text-slate-900 mb-1">Estimasi Cepat 1-2 Jam</h4>
-                        <p class="text-xs text-slate-600 leading-relaxed">Proses pembersihan rata-rata diselesaikan hanya dalam waktu 1 hingga 2 jam di lokasi.</p>
+                        <h4 class="font-bold text-sm sm:text-base text-slate-900 mb-1">Estimasi Cepat 1 Jam</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">Proses pemindaian visual pipa selesai secara instan dalam hitungan menit di lokasi.</p>
                     </div>
                 </div>
             </div>
@@ -226,7 +336,7 @@ $faqSchema = [
                 <div class="mb-4">
                     <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 block mb-1">Skema Transparan</span>
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
-                        Daftar Tarif & Perbandingan Layanan {{ $category->name }}
+                        Daftar Tarif &amp; Perbandingan Layanan {{ $category->name }}
                     </h3>
                     <p class="text-xs sm:text-sm text-slate-600 mt-1">Berikut adalah skema harga transparan layanan kami untuk hunian residensial dan corporate:</p>
                 </div>
@@ -236,7 +346,7 @@ $faqSchema = [
                     <table class="w-full text-left text-xs sm:text-sm border-collapse">
                         <thead>
                             <tr class="bg-slate-900 text-white">
-                                <th class="py-3.5 px-5 font-bold">Fitur & Spesifikasi</th>
+                                <th class="py-3.5 px-5 font-bold">Fitur &amp; Spesifikasi</th>
                                 <th class="py-3.5 px-5 font-bold">Kategori Hunian Rumah</th>
                                 <th class="py-3.5 px-5 font-bold">Kategori Industri / Corporate</th>
                             </tr>
@@ -249,24 +359,24 @@ $faqSchema = [
                             </tr>
                             <tr class="bg-slate-50/70">
                                 <td class="py-3.5 px-5 font-bold text-slate-900">Metode Kerja</td>
-                                <td class="py-3.5 px-5 text-slate-600">Rotary Cable / Spiral Cleaner</td>
-                                <td class="py-3.5 px-5 text-slate-600">Rotary Cable & High-Pressure Hydro-Jetting</td>
+                                <td class="py-3.5 px-5 text-slate-600">{{ $isCctv ? 'Endoscope Camera HD & Meter Counter' : 'Rotary Cable / Spiral Cleaner' }}</td>
+                                <td class="py-3.5 px-5 text-slate-600">{{ $isCctv ? 'Endoscope Camera + 512Hz Sonde Locator' : 'Rotary Cable & High-Pressure Hydro-Jetting' }}</td>
                             </tr>
                             <tr>
-                                <td class="py-3.5 px-5 font-bold text-slate-900">Garansi Pekerjaan</td>
-                                <td class="py-3.5 px-5 text-slate-600">Garansi Standar (Berlaku)</td>
-                                <td class="py-3.5 px-5 text-slate-600">Garansi Ekstra & Kontrak Maintenance</td>
+                                <td class="py-3.5 px-5 font-bold text-slate-900">Deliverables Klien</td>
+                                <td class="py-3.5 px-5 text-slate-600">{{ $isCctv ? 'Live Monitor & Video MP4 Record' : 'Garansi Standar (Berlaku)' }}</td>
+                                <td class="py-3.5 px-5 text-slate-600">{{ $isCctv ? 'Video MP4 HD + PDF Audit Report + Marking' : 'Garansi Ekstra & Kontrak Maintenance' }}</td>
                             </tr>
                             <tr class="bg-slate-50/70">
                                 <td class="py-3.5 px-5 font-bold text-slate-900">Tingkat Keberhasilan</td>
-                                <td class="py-3.5 px-5 font-bold text-emerald-600">Hingga 98%</td>
-                                <td class="py-3.5 px-5 font-bold text-emerald-600">Hingga 98%</td>
+                                <td class="py-3.5 px-5 font-bold text-emerald-600">Hingga 98% Presisi</td>
+                                <td class="py-3.5 px-5 font-bold text-emerald-600">Hingga 98% Presisi</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                {{-- Mobile Stacked Cards View (Clean Layout for Viewport 375px) --}}
+                {{-- Mobile Stacked Cards View --}}
                 <div class="sm:hidden space-y-3">
                     {{-- Card Residensial --}}
                     <div class="bg-white border-2 border-emerald-500/40 rounded-2xl p-4 shadow-2xs space-y-2">
@@ -275,9 +385,9 @@ $faqSchema = [
                             <span class="text-xs font-extrabold text-emerald-600">{{ $formattedPriceHome }}</span>
                         </div>
                         <div class="text-xs text-slate-600 space-y-1 pt-1">
-                            <div class="flex justify-between"><span>Metode:</span> <strong class="text-slate-800">Rotary Cable Spiral</strong></div>
-                            <div class="flex justify-between"><span>Garansi:</span> <strong class="text-slate-800">30 Hari Resmi</strong></div>
-                            <div class="flex justify-between"><span>Tingkat Sukses:</span> <strong class="text-emerald-600">Hingga 98%</strong></div>
+                            <div class="flex justify-between"><span>Metode:</span> <strong class="text-slate-800">{{ $isCctv ? 'Kamera Endoscope IP68' : 'Rotary Cable Spiral' }}</strong></div>
+                            <div class="flex justify-between"><span>Output:</span> <strong class="text-slate-800">{{ $isCctv ? 'Rekaman MP4 Video' : '30 Hari Resmi' }}</strong></div>
+                            <div class="flex justify-between"><span>Akurasi:</span> <strong class="text-emerald-600">Hingga 98% Presisi</strong></div>
                         </div>
                     </div>
 
@@ -288,9 +398,9 @@ $faqSchema = [
                             <span class="text-xs font-extrabold text-blue-600">{{ $formattedPriceCorporate }}</span>
                         </div>
                         <div class="text-xs text-slate-600 space-y-1 pt-1">
-                            <div class="flex justify-between"><span>Metode:</span> <strong class="text-slate-800">Rotary + Hydro Jetting</strong></div>
-                            <div class="flex justify-between"><span>Garansi:</span> <strong class="text-slate-800">Garansi Ekstra SLA</strong></div>
-                            <div class="flex justify-between"><span>Tingkat Sukses:</span> <strong class="text-emerald-600">Hingga 98%</strong></div>
+                            <div class="flex justify-between"><span>Metode:</span> <strong class="text-slate-800">{{ $isCctv ? 'Kamera HD + 512Hz Sonde' : 'Rotary + Hydro Jetting' }}</strong></div>
+                            <div class="flex justify-between"><span>Output:</span> <strong class="text-slate-800">{{ $isCctv ? 'Laporan PDF Audit + Video' : 'Garansi Ekstra SLA' }}</strong></div>
+                            <div class="flex justify-between"><span>Akurasi:</span> <strong class="text-emerald-600">Hingga 98% Presisi</strong></div>
                         </div>
                     </div>
                 </div>
@@ -301,51 +411,11 @@ $faqSchema = [
             {{-- 6. REAL DOKUMENTASI PEKERJAAN --}}
             @php
                 $catSlug = strtolower($category->slug ?? '');
-                $docItems = [];
-                
-                if (str_contains($catSlug, 'bio') || str_contains($catSlug, 'septic') || str_contains($catSlug, 'tank')) {
-                    $docItems = [
-                        ['title' => 'Pelancaran Saluran Bio Tank Bogor', 'img' => 'pelancaran-saluran-bio-tank-bogor-jabar.webp', 'desc' => 'Pembersihan penumpukan kerak dan sumbatan pipa outlet pembuangan bio tank di Bogor.'],
-                        ['title' => 'Pelancaran Bak Kontrol Perumahan', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pengurasan endapan lumpur dan pasir yang menyumbat saluran pembuangan utama bio tank.'],
-                        ['title' => 'Pembersihan Grease Trap & Drainase', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Penyedotan dan pengikatan sedimen padat pada sistem tangki peresapan.']
-                    ];
-                } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
-                    $docItems = [
-                        ['title' => 'Pelancaran Kloset Pabrik Industri', 'img' => 'pelancaran-kloset-mampet-pabrik-industri.webp', 'desc' => 'Penanganan kloset toilet karyawan pabrik mampet total tanpa bongkar dengan mesin Ridgid.'],
-                        ['title' => 'Pelancaran Saluran Kloset Spiral Baja', 'img' => 'pelancar-saluran-kloset-toilet-mampet.webp', 'desc' => 'Teknisi menggunakan spiral baja fleksibel pendorong sumbatan leher angsa kloset.'],
-                        ['title' => 'Inspeksi CCTV Dalam Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Deteksi benda asing atau gumpalan keras di dalam pipa kloset dengan kamera CCTV.']
-                    ];
-                } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
-                    $docItems = [
-                        ['title' => 'Floor Drain Resto EM Gelato Blok M', 'img' => 'pelancaran-floor-drain-em-gelato-blok-m.webp', 'desc' => 'Penanganan rontokan rambut & endapan sabun pada floor drain area kuliner Blok M.'],
-                        ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan internal pipa floor drain kantor Pertamina Sunter Jakarta Utara.'],
-                        ['title' => 'Pelancaran Floor Drain Rumah Tinggal', 'img' => 'pelancar-floor-drain-kamar-mandi-rumah.webp', 'desc' => 'Pembersihan pipa 2 inchi kamar mandi perumahan warga secara aman dan cepat.']
-                    ];
-                } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'dapur') || str_contains($catSlug, 'cuci-piring')) {
-                    $docItems = [
-                        ['title' => 'Pelancaran Wastafel Mampet Rumah Warga', 'img' => 'pelancaran-wastafel-mampet-rumah-warga.webp', 'desc' => 'Pembersihan pipa afur wastafel cuci piring rumah tangga yang tersumbat minyak makanan.'],
-                        ['title' => 'Drainase Kitchen Soichiro Steakhouse', 'img' => 'pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp', 'desc' => 'Pengikatan lemak beku pada drainase kitchen resto Soichiro Steakhouse Jakarta.'],
-                        ['title' => 'Teknisi APD Penanganan Sink Pabrik Makanan', 'img' => 'teknisi-apd-lengkap-sink-pabrik-makanan.webp', 'desc' => 'Standar steril APD K3 penanganan sink mampet fasilitas industri makanan ternama.']
-                    ];
-                } elseif (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'deteksi') || str_contains($catSlug, 'inspeksi')) {
-                    $docItems = [
-                        ['title' => 'Kondisi Pipa Resto Mall Tersumbat Lemak', 'img' => 'kondisi-pipa-lemak-resto-mall-tersumbat.webp', 'desc' => 'Visual internal pipa resto mall yang penuh dengan endapan lemak pekat membatu.'],
-                        ['title' => 'Inspeksi CCTV Saluran Kloset', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Kamera endoskopi memetakan retakan atau sumbatan pipa paralon bawah lantai.'],
-                        ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan titik bocor & sumbatan pipa saluran kantor Pertamina Sunter.']
-                    ];
-                } elseif (str_contains($catSlug, 'talang') || str_contains($catSlug, 'gutter')) {
-                    $docItems = [
-                        ['title' => 'Before Pembersihan Talang Gutter', 'img' => 'before-pembersihan-talang-gutter.webp', 'desc' => 'Kondisi fisik talang air sebelum pembersihan total dari penumpukan lumpur hitam.'],
-                        ['title' => 'After Pembersihan Gutter Restoran Clean', 'img' => 'after-pembersihan-talang-gutter-rootera.webp', 'desc' => 'Hasil akhir talang air gutter bersih total bebas genangan air setelah diservis.'],
-                        ['title' => 'Pembersihan Talang Gutter Seporsi Mie Kari', 'img' => 'pelancaran-gutter-seporsi-mie-kari-jakarta.webp', 'desc' => 'Pembersihan serasah daun & minyak yang menyumbat talang gutter resto Mie Kari.']
-                    ];
-                } else {
-                    $docItems = [
-                        ['title' => 'Pembersihan Lemak Bak Kontrol Resto', 'img' => 'pembersihan-lemak-bak-kontrol-resto.webp', 'desc' => 'Pengangkatan gumpalan lemak padat dari saluran bak kontrol pembuangan resto.'],
-                        ['title' => 'Pembersihan Grease Trap Restoran', 'img' => 'pembersihan-grease-trap-restoran.webp', 'desc' => 'Pembersihan box jebakan lemak resto agar operasional tetap higienis.'],
-                        ['title' => 'Pelancaran Bak Kontrol Perumahan Warga', 'img' => 'pelancar-bak-kontrol-perumahan-warga.webp', 'desc' => 'Pembersihan sisa lumpur & sampah pada bak kontrol drainase pembuangan perumahan.']
-                    ];
-                }
+                $docItems = [
+                    ['title' => 'Inspeksi CCTV Floor Drain Pertamina Sunter', 'img' => 'inspeksi-cctv-floor-drain-pertamina-sunter.webp', 'desc' => 'Pemeriksaan titik bocor & sumbatan pipa saluran kantor Pertamina Sunter.'],
+                    ['title' => 'Inspeksi CCTV Saluran Kloset Mampet', 'img' => 'inspeksi-cctv-saluran-kloset-mampet.webp', 'desc' => 'Deteksi benda asing atau gumpalan keras di dalam pipa kloset dengan kamera CCTV.'],
+                    ['title' => 'Kondisi Pipa Resto Mall Tersumbat Lemak', 'img' => 'kondisi-pipa-lemak-resto-mall-tersumbat.webp', 'desc' => 'Visual internal pipa resto mall yang penuh dengan endapan lemak pekat membatu.']
+                ];
             @endphp
 
             <div class="bg-slate-50/90 border border-slate-200/80 rounded-3xl p-5 sm:p-8">
@@ -354,7 +424,7 @@ $faqSchema = [
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
                         📷 Dokumentasi Pekerjaan Real Layanan {{ $category->name }}
                     </h3>
-                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Bukti aksi teknisi di lapangan menggunakan mesin modern &amp; kamera CCTV:</p>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">Bukti aksi teknisi di lapangan menggunakan kamera CCTV endoscope presisi:</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -404,7 +474,7 @@ $faqSchema = [
                 <div class="mb-4">
                     <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 block mb-1">Layanan Terkait</span>
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
-                        🔧 Layanan Pipa & Sanitasi Terkait Lainnya
+                        🔧 Layanan Pipa &amp; Sanitasi Terkait Lainnya
                     </h3>
                 </div>
 
@@ -425,9 +495,9 @@ $faqSchema = [
             @if(isset($relatedArticles) && $relatedArticles->isNotEmpty())
             <div class="bg-slate-50/90 border border-slate-200/80 rounded-3xl p-5 sm:p-8">
                 <div class="mb-4">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 block mb-1">Panduan & Educations</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-600 block mb-1">Panduan &amp; Educations</span>
                     <h3 class="text-lg sm:text-2xl font-bold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
-                        📰 Pusat Edukasi & Artikel Perawatan Pipa
+                        📰 Pusat Edukasi &amp; Artikel Perawatan Pipa
                     </h3>
                 </div>
 
@@ -454,12 +524,46 @@ $faqSchema = [
                 <div class="text-center mb-6 sm:mb-8">
                     <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Jawaban Pertanyaan</span>
                     <h3 class="text-lg sm:text-2xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mt-1">
-                        Pertanyaan Umum (FAQ) Layanan
+                        Pertanyaan Umum (FAQ) Layanan {{ $category->name }}
                     </h3>
                 </div>
 
                 <div class="space-y-3 max-w-3xl mx-auto" x-data="{ activeFaq: 1 }">
-                    {{-- FAQ Item 1 --}}
+                    @if($isCctv)
+                    {{-- FAQ CCTV 1 --}}
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+                        <button type="button" @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
+                            <span class="flex items-center gap-2"><span>❓</span> Bagaimana cara kerja pelacakan septic tank &amp; bak kontrol tersembunyi dengan Sonde 512Hz?</span>
+                            <span class="text-cyan-600 font-bold text-base shrink-0" x-text="activeFaq === 1 ? '−' : '+'">−</span>
+                        </button>
+                        <div x-show="activeFaq === 1" x-collapse class="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3">
+                            Kepala kamera CCTV memancarkan frekuensi sinyal 512Hz dari dalam pipa di bawah tanah. Teknisi menggunakan alat receiver pemindai permukaan untuk melacak gelombang sinyal persis di atas ubin/lantai, sehingga titik lokasi dan kedalaman septic tank/manhole dapat ditemukan tanpa membongkar keramik acak.
+                        </div>
+                    </div>
+
+                    {{-- FAQ CCTV 2 --}}
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+                        <button type="button" @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
+                            <span class="flex items-center gap-2"><span>❓</span> Apakah pelanggan akan mendapatkan bukti file rekaman video CCTV hasil inspeksi?</span>
+                            <span class="text-cyan-600 font-bold text-base shrink-0" x-text="activeFaq === 2 ? '−' : '+'">+</span>
+                        </button>
+                        <div x-show="activeFaq === 2" x-collapse class="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3">
+                            Ya, 100% transparan. Setiap pelanggan berhak mendapatkan file rekaman video resolusi tinggi Full HD (format MP4) yang diserahkan langsung via Flashdisk, Cloud Drive, atau WhatsApp, lengkap dengan lembar rekomendasi audit teknis perbaikan.
+                        </div>
+                    </div>
+
+                    {{-- FAQ CCTV 3 --}}
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+                        <button type="button" @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
+                            <span class="flex items-center gap-2"><span>❓</span> Berapa biaya jasa inspeksi pipa kamera CCTV di Rootera?</span>
+                            <span class="text-cyan-600 font-bold text-base shrink-0" x-text="activeFaq === 3 ? '−' : '+'">+</span>
+                        </button>
+                        <div x-show="activeFaq === 3" x-collapse class="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3">
+                            Biaya jasa inspeksi kamera CCTV terjangkau dan transparan mulai dari {{ $formattedPriceHome }} untuk kategori hunian rumah tangga, dan {{ $formattedPriceCorporate }} untuk kategori gedung corporate/industri. Sangat hemat dibanding risiko pembongkaran ubin secara tebak-tebakan.
+                        </div>
+                    </div>
+                    @else
+                    {{-- FAQ Standard 1 --}}
                     <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                         <button type="button" @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
                             <span class="flex items-center gap-2"><span>❓</span> Berapa lama proses pengerjaan pelancar pipa mampet Rootera?</span>
@@ -470,7 +574,7 @@ $faqSchema = [
                         </div>
                     </div>
 
-                    {{-- FAQ Item 2 --}}
+                    {{-- FAQ Standard 2 --}}
                     <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                         <button type="button" @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
                             <span class="flex items-center gap-2"><span>❓</span> Apakah metode pembersihan Rootera aman untuk pipa paralon PVC?</span>
@@ -481,7 +585,7 @@ $faqSchema = [
                         </div>
                     </div>
 
-                    {{-- FAQ Item 3 --}}
+                    {{-- FAQ Standard 3 --}}
                     <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                         <button type="button" @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
                             <span class="flex items-center gap-2"><span>❓</span> Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?</span>
@@ -491,6 +595,7 @@ $faqSchema = [
                             Biaya jasa pelancar pipa berkisar mulai dari {{ $formattedPriceHome }} untuk kategori residensial/hunian rumah tangga, dan {{ $formattedPriceCorporate }} untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi.
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
@@ -500,13 +605,13 @@ $faqSchema = [
                 
                 <div class="relative z-10 max-w-2xl mx-auto">
                     <span class="inline-block px-3 py-1 rounded-full bg-white/15 text-white text-[11px] font-bold uppercase tracking-wider mb-3 backdrop-blur-md">
-                        ⚡ PENANGANAN DARURAT 24 JAM
+                        ⚡ INSPEKSI KAMERA &amp; LOKASI PRESISI
                     </span>
                     <h3 class="text-xl sm:text-3xl font-extrabold text-white mb-2 sm:mb-3 font-['Plus_Jakarta_Sans',sans-serif] leading-tight">
-                        Atasi Saluran Mampet Sekarang Juga!
+                        Pesan Layanan Inspeksi Kamera CCTV Pipa Sekarang!
                     </h3>
                     <p class="text-xs sm:text-base text-slate-100 max-w-xl mx-auto mb-6 leading-relaxed">
-                        Konsultasikan secara gratis masalah pipa Anda dan dapatkan jadwal penanganan dari tim teknisi bersertifikat kami.
+                        Konsultasikan kebutuhan inspeksi saluran pipa Anda dan dapatkan bukti rekaman video HD serta penandaan posisi akurat dari tim teknisi bersertifikat kami.
                     </p>
 
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">

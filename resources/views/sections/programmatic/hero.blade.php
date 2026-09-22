@@ -18,7 +18,7 @@
     </div>
 
     <!-- Content Container -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Breadcrumbs -->
         <nav class="flex items-center flex-wrap gap-2 text-xs sm:text-sm text-slate-300 mb-6 font-medium" aria-label="Breadcrumb">
@@ -32,10 +32,10 @@
         </nav>
 
         <!-- Main Content Area -->
-        <div class="max-w-3xl space-y-5 sm:space-y-6 text-left">
+        <div class="w-full max-w-3xl space-y-5 sm:space-y-6 text-left">
             
             <!-- Live SLA Badge with Pulsing Indicator -->
-            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-emerald-950/70 border border-emerald-500/40 backdrop-blur-md text-xs sm:text-sm text-emerald-300 font-semibold shadow-inner">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-emerald-950/70 border border-emerald-500/40 backdrop-blur-md text-xs sm:text-sm text-emerald-300 font-semibold shadow-inner max-w-full">
                 <span class="relative flex h-2.5 w-2.5 shrink-0">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -76,23 +76,23 @@
 
         <!-- Bottom Hero: Dynamic Local Context Dispatch Box / Pos Hub Siaga Terdekat -->
         @if(isset($dispatchHub))
-        <div class="mt-8 lg:mt-10 rounded-2xl bg-slate-900/80 border border-emerald-500/30 p-4 sm:p-5 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
-            <div class="flex items-center gap-3.5">
+        <div class="mt-8 lg:mt-10 w-full max-w-full rounded-2xl bg-slate-900/80 border border-emerald-500/30 p-4 sm:p-5 backdrop-blur-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl overflow-hidden">
+            <div class="flex items-center gap-3.5 max-w-full overflow-hidden">
                 <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-lg shrink-0">
                     📍
                 </div>
-                <div>
+                <div class="overflow-hidden">
                     <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Pos Hub Siaga Terdekat</div>
-                    <div class="text-sm sm:text-base font-extrabold text-white">{{ $dispatchHub }}</div>
+                    <div class="text-sm sm:text-base font-extrabold text-white truncate">{{ $dispatchHub }}</div>
                     @if($district)
-                    <div class="text-xs text-slate-300 mt-0.5">
+                    <div class="text-xs text-slate-300 mt-0.5 leading-relaxed">
                         Posko teknisi {{ $district->name }} merupakan bagian resmi dari armada Rootera Plumbing Regional {{ $city->name }}.
                     </div>
                     @endif
                 </div>
             </div>
             @if($district)
-            <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" class="shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline bg-white/10 px-3.5 py-2 rounded-xl border border-white/15 backdrop-blur-sm transition-all">
+            <a href="{{ url('/jasa-saluran-mampet/' . $city->slug) }}" class="max-w-full shrink-0 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:underline bg-white/10 px-3.5 py-2 rounded-xl border border-white/15 backdrop-blur-sm transition-all whitespace-normal">
                 <span>Lihat ringkasan posko &amp; layanan Rootera se-{{ $city->name }} →</span>
             </a>
             @elseif(!empty($nearbyLandmarks))

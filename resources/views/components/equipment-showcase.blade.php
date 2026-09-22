@@ -49,12 +49,12 @@
     @if($title || $subtitle)
     <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
         @if($title)
-        <h3 class="text-lg sm:text-2xl font-extrabold text-slate-900 mb-1.5 tracking-tight">
+        <h3 class="text-lg sm:text-2xl font-extrabold text-slate-900 mb-1.5 tracking-tight font-['Plus_Jakarta_Sans',sans-serif]">
             {{ $title }}
         </h3>
         @endif
         @if($subtitle)
-        <p class="text-xs sm:text-sm text-slate-500 leading-relaxed">
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
             {{ $subtitle }}
         </p>
         @endif
@@ -62,38 +62,40 @@
     @endif
 
     {{-- 2-COLUMN COMPACT GRID ON MOBILE, 3-COLUMN ON TABLET & DESKTOP --}}
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         @foreach($tools as $tool)
-        <div class="group bg-white rounded-xl sm:rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+        <div class="group bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full">
             
-            {{-- IMAGE CONTAINER WITH ASPECT RATIO & BADGE --}}
-            <div class="relative aspect-[4/3] bg-slate-100/90 border-b border-slate-200/60 overflow-hidden">
-                <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+            {{-- IMAGE CONTAINER WITH UNIFORM ASPECT RATIO & GLASS BADGE --}}
+            <div class="relative aspect-video sm:aspect-[4/3] bg-slate-100 border-b border-slate-200/60 overflow-hidden">
+                <img src="{{ $tool['url'] }}" alt="{{ $tool['alt'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}';">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
-                {{-- BADGE ALAT RESMI --}}
-                <div class="absolute top-2 left-2 z-10">
-                    <span class="bg-emerald-600/95 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-md inline-flex items-center gap-1 uppercase">
-                        ✓ {{ $tool['badge'] }}
+                {{-- BADGE ALAT RESMI WITH GLASSMORPHISM --}}
+                <div class="absolute top-2.5 left-2.5 z-10">
+                    <span class="bg-slate-900/80 border border-emerald-400/40 text-emerald-300 backdrop-blur-md text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full shadow-md inline-flex items-center gap-1.5 uppercase tracking-wide">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        {{ $tool['badge'] }}
                     </span>
                 </div>
             </div>
 
             {{-- CONTENT AREA --}}
-            <div class="p-3 sm:p-5 flex flex-col flex-grow justify-between bg-white">
+            <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <h4 class="text-xs sm:text-base font-bold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors mb-1.5 line-clamp-2">
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug group-hover:text-emerald-600 transition-colors mb-1.5 line-clamp-2 font-['Plus_Jakarta_Sans',sans-serif]">
                         {{ $tool['title'] }}
                     </h4>
-                    <p class="text-[11px] sm:text-xs text-slate-500 leading-relaxed mb-3 line-clamp-2 sm:line-clamp-3">
+                    <p class="text-xs text-slate-600 leading-relaxed mb-4 line-clamp-2 sm:line-clamp-3">
                         {{ $tool['desc'] }}
                     </p>
                 </div>
 
                 {{-- SPECIFICATION CHIPS --}}
                 @if(!empty($tool['chips']))
-                <div class="pt-2 border-t border-slate-100 flex flex-wrap gap-1 mt-auto">
+                <div class="pt-3 border-t border-slate-100 flex flex-wrap gap-1.5 mt-auto">
                     @foreach($tool['chips'] as $chip)
-                    <span class="bg-slate-100 text-slate-700 text-[9px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                    <span class="bg-slate-100/90 text-slate-700 text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded-md border border-slate-200/60">
                         {{ $chip }}
                     </span>
                     @endforeach

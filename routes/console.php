@@ -11,4 +11,6 @@ Artisan::command('inspire', function () {
 
 Schedule::command('youtube:sync-feed')->hourly();
 Schedule::command('sitemap:generate')->dailyAt('02:00');
+Schedule::command('seo:warmup-cache --limit=300')->dailyAt('03:00');
+Schedule::command('seo:push-index --limit=150')->dailyAt('04:00');
 

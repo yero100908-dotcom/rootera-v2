@@ -6,8 +6,9 @@
             {{-- Primary Pipa Mampet District Landing Page --}}
             <url>
                 <loc>{{ url("/layanan-pipa-mampet/pipa-mampet/{$city->slug}/{$district->slug}") }}</loc>
+                <lastmod>{{ ($district->updated_at ?? $city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
                 <changefreq>weekly</changefreq>
-                <priority>0.70</priority>
+                <priority>0.80</priority>
             </url>
 
             {{-- Other Active Service Category District Pages --}}
@@ -16,8 +17,9 @@
                     @if($category->slug !== 'pipa-mampet')
                     <url>
                         <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") }}</loc>
+                        <lastmod>{{ ($district->updated_at ?? $city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
                         <changefreq>weekly</changefreq>
-                        <priority>0.70</priority>
+                        <priority>0.80</priority>
                     </url>
                     @endif
                 @endforeach

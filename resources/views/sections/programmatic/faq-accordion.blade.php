@@ -16,26 +16,28 @@ c<!-- FAQ Accordion Section -->
         </div>
 
         @php
+            $firstLm = (!empty($nearbyLandmarks) && is_array($nearbyLandmarks)) ? $nearbyLandmarks[0] : ($district->name ?? $locationShort);
+            
             $essentialFaqs = [
                 [
-                    'q' => "Berapa lama waktu kedatangan teknisi Rootera ke lokasi saya di " . ($district->name ?? $locationShort) . "?",
-                    'a' => "Setelah pesanan dikonfirmasi via WhatsApp, teknisi terdekat dari <strong>" . ($dispatchHub ?? 'Pos Siaga') . "</strong> langsung meluncur ke lokasi Anda dengan estimasi <strong>15–30 Menit</strong>."
+                    'q' => "Berapa lama estimasi waktu kedatangan teknisi Rootera di " . ($district->name ?? $locationShort) . "?",
+                    'a' => "Setelah jadwal dikonfirmasi via WhatsApp 24 Jam, teknisi terdekat dari <strong>" . ($dispatchHub ?? 'Pos Siaga') . "</strong> langsung meluncur ke lokasi Anda dengan estimasi <strong>15–30 Menit</strong> (melayani area " . ($district->name ?? $locationShort) . " hingga kawasan kelurahan " . $firstLm . ")."
                 ],
                 [
-                    'q' => "Apakah pengerjaan pelancaran pipa memerlukan pembongkaran lantai atau keramik?",
-                    'a' => "<strong>100% Tanpa Bongkar</strong>. Kami menggunakan mesin Spiral Rotary Cable Ridgid fleksibel standar industri USA yang membersihkan pipa hingga puluhan meter tanpa merusak ubin atau keramik rumah Anda."
+                    'q' => "Apakah pengerjaan pelancaran " . strtolower($category->name ?? 'pipa mampet') . " membutuhkan pembongkaran ubin?",
+                    'a' => "<strong>100% Tanpa Bongkar</strong>. Kami menggunakan mesin Spiral Rotary Cable Ridgid fleksibel standar industri USA yang membersihkan lemak & kerak pipa tanpa merusak lantai rumah Anda di " . ($district->name ?? $locationShort) . "."
                 ],
                 [
-                    'q' => "Berapa estimasi biaya jasa saluran mampet di area " . ($district->name ?? $locationShort) . "?",
-                    'a' => "Tarif transparan <strong>mulai dari Rp 400.000-an</strong> untuk wastafel/bak cuci piring. Biaya final diinfokan di awal setelah inspeksi tanpa biaya tersembunyi."
+                    'q' => "Apakah armada Rootera menjangkau seluruh kelurahan di " . ($district->name ?? $locationShort) . "?",
+                    'a' => "Ya, layanan kami mencakup seluruh kelurahan di kawasan <strong>" . ($district->name ?? $locationShort) . "</strong> (" . (!empty($nearbyLandmarks) ? implode(', ', array_slice($nearbyLandmarks, 0, 4)) : $locationShort) . ") tanpa biaya transportasi tambahan."
                 ],
                 [
-                    'q' => "Apa yang dimaksud dengan sistem garansi \"No Result No Pay\"?",
-                    'a' => "Jika saluran yang tersumbat tidak berhasil kami lancarkan hingga air mengalir normal kembali, Anda tidak dikenakan biaya jasa pengerjaan <strong>(Tuntas Baru Bayar / No Result No Pay)</strong>."
+                    'q' => "Berapa estimasi biaya jasa " . strtolower($category->name ?? 'saluran mampet') . " di " . ($district->name ?? $locationShort) . "?",
+                    'a' => "Tarif transparan <strong>mulai dari Rp 400.000-an</strong>. Biaya pasti diinfokan diawal secara transparan tanpa biaya tersembunyi dengan sistem <strong>Tuntas Baru Bayar (No Result No Pay)</strong>."
                 ],
                 [
-                    'q' => "Apakah ada jaminan garansi resmi setelah saluran lancar?",
-                    'a' => "Ya, seluruh pekerjaan disertai <strong>Garansi Resmi 30 Hari</strong>. Jika saluran kembali mampet dalam masa garansi, teknisi kami kerjakan ulang <strong>100% GRATIS</strong>."
+                    'q' => "Apakah pengerjaan jasa " . strtolower($category->name ?? 'pipa mampet') . " ini bergaransi resmi?",
+                    'a' => "Ya, seluruh pekerjaan dilengkapi <strong>Garansi Resmi 30 Hari</strong>. Jika saluran kembali mampet dalam masa garansi, teknisi kami kerjakan ulang <strong>100% GRATIS</strong>."
                 ]
             ];
         @endphp

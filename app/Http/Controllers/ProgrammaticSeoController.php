@@ -51,7 +51,7 @@ class ProgrammaticSeoController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
         }
 
-        $cacheKey = "prog_seo_v5_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
+        $cacheKey = "prog_seo_v8_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
         $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
@@ -126,29 +126,29 @@ class ProgrammaticSeoController extends Controller
             $travelTime = $estimatedArrival;
             $nearbyLandmarks = $this->villageService->getVillagesForDistrict($district ? $district->slug : null, $city->slug, $locationShort);
 
+            $firstLandmark = !empty($nearbyLandmarks) ? $nearbyLandmarks[0] : $locationShort;
+            $secondLandmark = (count($nearbyLandmarks) > 1) ? $nearbyLandmarks[1] : $locationShort;
+
             $localFaqs = [
                 [
                     'question' => "Berapa lama estimasi waktu kedatangan teknisi Rootera di area {$locationShort}?",
-                    'answer' => "Teknisi terdekat kami disiagakan di {$dispatchHub} dengan estimasi waktu tempuh rata-rata {$travelTime} setelah jadwal pemesanan dikonfirmasi tim WhatsApp 24 jam."
+                    'answer' => "Teknisi terdekat kami disiagakan di {$dispatchHub} dengan estimasi waktu tempuh rata-rata {$travelTime} melayani seluruh area {$locationShort} hingga kawasan kelurahan {$firstLandmark}."
                 ],
                 [
-                    'question' => "Apakah pengerjaan pipa mampet di wilayah {$locationShort} membutuhkan pembongkaran lantai?",
-                    'answer' => "Tidak ada pembongkaran. Kami menggunakan teknologi spiral rotary cable & Hydro Jetting tekanan tinggi yang melancarkan saluran mampet 100% tanpa merusak keramik atau dinding di {$locationShort}."
+                    'question' => "Apakah pengerjaan jasa {$category->name} di {$locationShort} membutuhkan pembongkaran lantai?",
+                    'answer' => "Tidak ada pembongkaran. Kami menggunakan teknologi spiral rotary cable & Hydro Jetting tekanan tinggi yang melancarkan saluran {$category->name} 100% tanpa merusak keramik di {$locationShort}."
                 ],
                 [
-                    'question' => "Apakah pengerjaan jasa {$category->name} di {$locationShort} dilengkapi garansi?",
-                    'answer' => "Ya, seluruh penanganan pelancaran saluran pipa air di area {$locationShort} dilengkapi garansi resmi 30 hari pasca pengerjaan demi jaminan tuntas."
+                    'question' => "Apakah penanganan {$category->name} di area {$locationShort} dilengkapi garansi?",
+                    'answer' => "Ya, seluruh pengerjaan di area {$locationShort} (termasuk kelurahan {$firstLandmark}, {$secondLandmark}, dan sekitarnya) dilengkapi garansi resmi 30 hari pasca pengerjaan (Tuntas Baru Bayar)."
                 ]
             ];
 
-            // Generate Dynamic Transactional SEO Metadata (City vs District Differentiation - Max 58 Chars for SERP)
-            $title = $district
-                ? "Jasa Pipa Mampet {$district->name} 24 Jam Tanpa Bongkar - Rootera"
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam - Rootera";
-
-            $description = $district
-                ? "Saluran wastafel, kloset, atau got mampet di {$district->name}, {$city->name}? Teknisi posko siaga terdekat meluncur cepat 24 jam tanpa bongkar keramik. Garansi tuntas 30 hari."
-                : "Pusat layanan pelancaran pipa mampet di {$city->name}. Menggunakan mesin spiral Ridgid & hydro-jetting tanpa bongkar ubin. Bergaransi 30 hari & tuntas baru bayar.";
+            // Generate Dynamic Transactional SEO Metadata (Title: 50-60 chars, Meta Desc: 140-155 chars)
+            $seedKey = "spintax_" . md5($district ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}"));
+            
+            $title = $this->spintaxService->generateMetaTitle($category->name, $locationName, $district ? $district->name : null, $seedKey);
+            $description = $this->spintaxService->generateMetaDescription($category->name, $locationName, $estimatedArrival, $seedKey);
 
             if ($district) {
                 // Self-referencing canonical for district pages to index district landing pages individually in Google Search
@@ -176,6 +176,9 @@ class ProgrammaticSeoController extends Controller
             $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $locationName, $estimatedArrival, $seedKey);
             $valueProps = $this->spintaxService->generateValueProps($locationShort, $seedKey);
             $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey, $nearbyLandmarks);
+            $guaranteeCallout = $this->spintaxService->generateGuaranteeCallout($locationShort, $seedKey);
+            $sectionOrder = $this->spintaxService->getSectionOrder($seedKey);
+            $technicalContext = $this->getTechnicalContext($category->slug, $locationShort);
 
             return view('pages.programmatic-landing', compact(
                 'category',
@@ -203,11 +206,106 @@ class ProgrammaticSeoController extends Controller
                 'heroHeadline',
                 'heroSubtitle',
                 'valueProps',
-                'areaTechnicalIntro'
+                'areaTechnicalIntro',
+                'guaranteeCallout',
+                'sectionOrder',
+                'technicalContext'
             ))->render();
         });
 
         return response($html);
+    }
+
+    /**
+     * Get Category-Specific Technical Context for pSEO pages.
+     */
+    protected function getTechnicalContext(string $categorySlug, string $locationShort): array
+    {
+        switch ($categorySlug) {
+            case 'wastafel-mampet':
+            case 'wastafel-cuci-piring':
+                return [
+                    'problem_causes' => [
+                        'Penumpukan gumpalan lemak minyak goreng beku yang mengeras di dinding leher angsa (P-trap/S-trap).',
+                        'Sisa akumulasi nasi, potongan sayuran, dan endapan organik yang membusuk di saluran buang.',
+                        "Penyempitan lumen pipa PVC di kawasan {$locationShort} akibat pengerakan kerak sabun cuci piring bercampur minyak."
+                    ],
+                    'methodology' => [
+                        'Pelancaran mekanis rotary spiral cable Ridgid yang memecahkan bekuan lemak tanpa bongkar pipa.',
+                        'Pembersihan dinding pipa dengan mata pisau pemotong lemak khusus.',
+                        'Flushing aliran air deras untuk memastikan kerak lemak terbuang tuntas ke bak kontrol.'
+                    ],
+                    'preventative_tip' => 'Hindari membuang minyak jelantah langsung ke bak cuci piring. Gunakan saringan lemak (grease trap) dan bilas dengan air hangat berkala.',
+                    'risk_warning' => 'Menuangkan soda api cair berlebihan dapat membengkokkan pipa PVC tipis dan membekukan lemak menjadi seperti semen.'
+                ];
+
+            case 'kamar-mandi-mampet':
+            case 'floor-drain-kamar-mandi':
+                return [
+                    'problem_causes' => [
+                        'Rontokan helai rambut yang tersangkut dan menggumpal di saringan floor drain.',
+                        'Residu kerak sabun mandi (soap scum) yang membeku bercampur endapan kapur air tanah.',
+                        "Pasir, rontokan semen keramik, atau rontokan spons mandi di area {$locationShort} yang masuk ke perangkap bau (odor trap)."
+                    ],
+                    'methodology' => [
+                        'Penarikan gumpalan rambut dan kerak dengan kabel fleksibel anti-lilit.',
+                        'Pembersihan kerak kapur di siku leher angsa kamar mandi tanpa membongkar lantai ubin.',
+                        'Pengujian debit alir penuh untuk memastikan tidak ada air menggenang saat mandi.'
+                    ],
+                    'preventative_tip' => 'Pasang saringan mesh halus di atas floor drain dan bersihkan gumpalan rambut setiap selesai mandi.',
+                    'risk_warning' => 'Bongkar paksa floor drain berisiko merusak lapisan kedap air (waterproofing) dan memicu kebocoran ke lantai bawah.'
+                ];
+
+            case 'wc-toilet-mampet':
+            case 'wc-kloset-toilet':
+                return [
+                    'problem_causes' => [
+                        'Sumbatan benda asing seperti tisu basah, pembalut, pembersih telinga, atau mainan anak.',
+                        'Penumpukan kerak kalsium/urin di saluran leher angsa mangkuk kloset (toilet bowl trap).',
+                        "Penyempitan jalur pipa menuju septic tank hunian {$locationShort} akibat saluran udara bak kontrol tersumbat."
+                    ],
+                    'methodology' => [
+                        'Pendorongan dan evakuasi benda asing dengan mesin spiral rotary berkepala kait khusus.',
+                        'Pelancaran leher angsa kloset duduk/jongkok 100% tanpa melepas atau merusak mangkuk WC.',
+                        'Uji siram (flushing test) dengan tekanan air penuh untuk memastikan sedot limbah lancar.'
+                    ],
+                    'preventative_tip' => 'Sediakan tempat sampah khusus di kamar mandi dan edukasi penghuni untuk tidak membuang tisu/pembalut ke dalam kloset.',
+                    'risk_warning' => 'Menggunakan pemukul manual atau bahan kimia panas ekstrem dapat merekatkan sumbatan dan meretakkan keramik kloset.'
+                ];
+
+            case 'got-saluran-pembuangan':
+            case 'got-saluran-pembuangan-utama':
+                return [
+                    'problem_causes' => [
+                        "Sedimentasi endapan lumpur tebal dan pasir yang mengendap di bak kontrol kawasan {$locationShort}.",
+                        'Sampah daun rontok, ranting, dan sampah plastik yang terbawa air hujan ke talang & got.',
+                        'Pertumbuhan akar pohon yang menerobos sambungan pipa pembuangan luar.'
+                    ],
+                    'methodology' => [
+                        'Pembersihan lumpur dan sampah menggunakan mesin pemutar kabel heavy-duty.',
+                        'Hydro-jetting tekanan tinggi untuk merontokkan kerak sedimen di pipa drainase utama.',
+                        'Pengurasan dan pemeriksaan kelancaran aliran bak kontrol hingga muara got kota.'
+                    ],
+                    'preventative_tip' => 'Lakukan pembersihan bak kontrol dan talang air hujan secara berkala setiap menyambut musim hujan.',
+                    'risk_warning' => 'Got tersumbat yang dibiarkan dapat memicu luapan air kotor berbau ke dalam rumah saat curah hujan tinggi.'
+                ];
+
+            default: // pipa-mampet
+                return [
+                    'problem_causes' => [
+                        "Akumulasi gabungan kerak minyak, sisa sabun, dan sedimen tanah di pipa utama area {$locationShort}.",
+                        'Penyempitan diameter dalam pipa PVC akibat pengerakan bertahun-tahun.',
+                        'Kemiringan (slope) instalasi pipa yang kurang curam sehingga aliran air lambat.'
+                    ],
+                    'methodology' => [
+                        'Inspeksi titik sumbatan dan pendorongan spiral fleksibel Ridgid.',
+                        'Pelancaran jalur pipa horizontal maupun vertikal tanpa membongkar tembok/lantai.',
+                        'Verifikasi aliran lancar 100% dan garansi pengerjaan ulang 30 hari.'
+                    ],
+                    'preventative_tip' => 'Gunakan saringan di setiap afur buangan dan hindari membuang padatan ke saluran air.',
+                    'risk_warning' => 'Pipa tersumbat total yang dipaksa dialiri air bertekanan tanpa pelancaran dapat memicu kebocoran sambungan pipa.'
+                ];
+        }
     }
 
     /**

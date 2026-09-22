@@ -11,7 +11,9 @@
             <h2 class="text-xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight font-['Plus_Jakarta_Sans',sans-serif]">
                 Mengapa Pilihan Utama di {{ $locationShort }}?
             </h2>
-            @if(isset($areaTechnicalIntro))
+            @if(isset($guaranteeCallout))
+                <p class="text-xs sm:text-sm font-semibold text-slate-700 bg-emerald-50 border border-emerald-200/80 px-4 py-2 rounded-xl mt-3 leading-relaxed max-w-2xl mx-auto text-center shadow-xs">{!! $guaranteeCallout !!}</p>
+            @elseif(isset($areaTechnicalIntro))
                 <p class="text-xs sm:text-sm text-slate-600 mt-2.5 leading-relaxed max-w-3xl mx-auto text-center">{!! $areaTechnicalIntro !!}</p>
             @endif
         </div>
