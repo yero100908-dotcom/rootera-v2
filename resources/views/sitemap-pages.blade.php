@@ -17,11 +17,6 @@
         <priority>0.90</priority>
     </url>
     <url>
-        <loc>{{ url('/jasa-cuci-toren-air') }}</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.90</priority>
-    </url>
-    <url>
         <loc>{{ url('/garansi') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.80</priority>

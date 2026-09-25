@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('meta_title', $title ?? ($seo['title'] ?? ''))
+@section('meta_description', $description ?? ($seo['description'] ?? ''))
+@section('og_image', !empty($ogImage) ? (str_starts_with($ogImage, 'http') ? $ogImage : secure_url(ltrim($ogImage, '/'))) : secure_url('images/og/rootera-default.jpg'))
+@section('canonical', $canonical ?? ($seo['canonical'] ?? ''))
+
 @push('preloads')
 @if(!empty($ogImage))
     <link rel="preload" as="image" href="{{ $ogImage }}" fetchpriority="high">

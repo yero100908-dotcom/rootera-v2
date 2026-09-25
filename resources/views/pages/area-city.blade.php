@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('structured_data')
+@section('schema-markup')
 <?php
 $citySlug = (isset($city) && is_object($city) && isset($city->slug)) ? $city->slug : '';
 $cityName = (isset($city) && is_object($city)) ? ($city->full_name ?? $city->name ?? 'Kota') : 'Kota';
@@ -265,6 +265,10 @@ $graphSchema = [
                 <div class="relative rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl shadow-slate-950/50 group">
                     <img src="{{ asset('images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp') }}" 
                          alt="Teknisi Rootera Plumbing {{ $cityName }}" 
+                         width="600"
+                         height="440"
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition-transform duration-700">
 
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
@@ -643,6 +647,10 @@ $graphSchema = [
                 <div class="rounded-2xl overflow-hidden mb-4 border border-rose-200">
                     <img src="{{ asset('images/dokumentasi/sebelum-pipa-mampet-lemak.webp') }}" 
                          alt="Sebelum Hydro Jetting Rootera Plumbing" 
+                         width="600"
+                         height="224"
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <h3 class="font-bold text-slate-900 text-base mb-1">Pipa Jenuh Kerak Lemak &amp; Endapan</h3>
@@ -657,6 +665,10 @@ $graphSchema = [
                 <div class="rounded-2xl overflow-hidden mb-4 border border-emerald-200">
                     <img src="{{ asset('images/dokumentasi/after-gutter-resto-bersih-rootera.webp') }}" 
                          alt="Sesudah Hydro Jetting Rootera Plumbing" 
+                         width="600"
+                         height="224"
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <h3 class="font-bold text-slate-900 text-base mb-1">Pipa Plong &amp; Dinding Pipa Clean</h3>
@@ -953,22 +965,6 @@ $graphSchema = [
 </section>
 @endif
 
-{{-- ========================================================================= --}}
-{{-- 9. FLOATING MOBILE CTA BAR (SMARTPHONE PERFECTION)                       --}}
-{{-- ========================================================================= --}}
-<div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md p-3 border-t border-slate-800 flex items-center justify-between gap-3 shadow-2xl">
-    <div class="flex items-center gap-2 pl-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-        <div class="text-[11px] font-bold text-white leading-tight">
-            <div>Siaga {{ $cityNameClean }}</div>
-            <div class="text-[10px] text-emerald-400 font-normal">Garansi 30 Hari</div>
-        </div>
-    </div>
-    <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . $cityNameClean) }}" 
-       target="_blank" rel="noopener" 
-       class="px-5 py-2.5 bg-[#169F81] text-white text-xs font-bold rounded-xl shadow-lg flex items-center gap-2 text-decoration-none min-h-[44px]">
-        <span>💬 WA CS 24 Jam</span>
-    </a>
-</div>
+{{-- Note: Redundant mobile CTA bar removed to avoid stacking with components.mobile-sticky-cta --}}
 
 @endsection

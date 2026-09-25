@@ -19,7 +19,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $html = Cache::remember('home_page_html_v4', 86400, function () {
+        $html = Cache::remember('home_page_html_v5', 86400, function () {
             $serviceCategories = ServiceCategory::where('is_active', true)
                 ->orderBy('sort_order')
                 ->get();
@@ -89,7 +89,7 @@ class HomeController extends Controller
                 'title'       => 'Rootera Plumbing — Jasa Saluran Pipa Mampet Jakarta & Jabodetabek 24 Jam',
                 'description' => 'Spesialis jasa saluran mampet & tukang perbaikan pipa tersumbat di Jakarta & Jabodetabek. Tanpa bongkar, garansi 30 hari, & respon cepat. Hubungi WA 24 jam!',
                 'canonical'   => url('/'),
-                'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+                'og_image'    => secure_url('images/og/rootera-default.jpg'),
             ];
 
             return view('pages.home', compact(
@@ -116,7 +116,7 @@ class HomeController extends Controller
             'title'       => 'Terms of Service & Ketentuan Layanan — Rootera Plumbing',
             'description' => 'Ketentuan operasional, booking, penetapan harga, garansi, & regulasi pembatalan order jasa pelancaran pipa mampet Rootera Plumbing (J&J Group).',
             'canonical'   => url('/terms-of-service'),
-            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            'og_image'    => secure_url('images/og/rootera-default.jpg'),
         ];
 
         return view('pages.terms-of-service', compact('seo'));
@@ -128,7 +128,7 @@ class HomeController extends Controller
             'title'       => 'Privacy Policy & Kebijakan Privasi Data — Rootera Plumbing',
             'description' => 'Kebijakan perlindungan data pribadi & privasi pelanggan Rootera Plumbing sesuai UU PDP Indonesia (UU No. 27/2022) & standar kerahasiaan data.',
             'canonical'   => url('/privacy-policy'),
-            'og_image'    => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            'og_image'    => secure_url('images/og/rootera-default.jpg'),
         ];
 
         return view('pages.privacy-policy', compact('seo'));

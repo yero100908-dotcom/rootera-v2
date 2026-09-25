@@ -161,7 +161,24 @@ class ProgrammaticSeoController extends Controller
                 }
             }
 
-            $ogImage = $category->image_url;
+            $catSlug = strtolower($category->slug ?? '');
+            if (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') || str_contains($catSlug, 'deteksi')) {
+                $ogImage = secure_url('images/og/cctv.jpeg');
+            } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'sink')) {
+                $ogImage = secure_url('images/og/wastafel.jpg');
+            } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
+                $ogImage = secure_url('images/og/kloset.jpeg');
+            } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
+                $ogImage = secure_url('images/og/floor-drain.jpeg');
+            } elseif (str_contains($catSlug, 'got') || str_contains($catSlug, 'saluran-pembuangan') || str_contains($catSlug, 'bak-kontrol')) {
+                $ogImage = secure_url('images/og/gutter.jpg');
+            } elseif (str_contains($catSlug, 'industri') || str_contains($catSlug, 'b2b') || str_contains($catSlug, 'pabrik')) {
+                $ogImage = secure_url('images/og/industri.jpeg');
+            } elseif (str_contains($catSlug, 'pipa') || str_contains($catSlug, 'mampet')) {
+                $ogImage = secure_url('images/og/pipamampet.jpg');
+            } else {
+                $ogImage = secure_url('images/og/rootera-default.jpg');
+            }
 
             $seo = [
                 'title'       => $title,
@@ -391,7 +408,7 @@ class ProgrammaticSeoController extends Controller
                 ? url("/layanan-cuci-toren/{$city->slug}/{$district->slug}")
                 : url("/jasa-cuci-toren/{$city->slug}");
 
-            $ogImage = asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp');
+            $ogImage = secure_url('images/og/rootera-default.jpg');
 
             $seo = [
                 'title'       => $title,

@@ -41,11 +41,39 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
-    {{-- Global GEO Meta Tags (Headquarters: Cijantung, Jakarta Timur) --}}
-    <meta name="geo.region" content="ID-JK" />
-    <meta name="geo.placename" content="Jakarta Timur" />
-    <meta name="geo.position" content="-6.3275278;106.8627778" />
-    <meta name="ICBM" content="-6.3275278, 106.8627778" />
+    {{-- Dynamic GEO Meta Tags (Target City / District OR Headquarters: Cijantung, Jakarta Timur) --}}
+    <?php
+        $geoLat = -6.3275278;
+        $geoLng = 106.8627778;
+        $geoPlaceName = "Jakarta Timur";
+        $geoRegion = "ID-JK";
+
+        if (isset($district) && !empty($district->latitude) && !empty($district->longitude)) {
+            $geoLat = (float) $district->latitude;
+            $geoLng = (float) $district->longitude;
+            $geoPlaceName = $district->name . ", " . ($city->name ?? 'Jabodetabek');
+        } elseif (isset($city) && !empty($city->latitude) && !empty($city->longitude)) {
+            $geoLat = (float) $city->latitude;
+            $geoLng = (float) $city->longitude;
+            $geoPlaceName = $city->full_name ?? $city->name;
+            if (isset($city->province)) {
+                $provName = strtolower($city->province->name ?? '');
+                if (str_contains($provName, 'jawa barat')) {
+                    $geoRegion = "ID-JB";
+                } elseif (str_contains($provName, 'banten')) {
+                    $geoRegion = "ID-BT";
+                } elseif (str_contains($provName, 'jawa tengah')) {
+                    $geoRegion = "ID-JT";
+                } elseif (str_contains($provName, 'lampung')) {
+                    $geoRegion = "ID-LA";
+                }
+            }
+        }
+    ?>
+    <meta name="geo.region" content="{{ $geoRegion }}" />
+    <meta name="geo.placename" content="{{ $geoPlaceName }}" />
+    <meta name="geo.position" content="{{ $geoLat }};{{ $geoLng }}" />
+    <meta name="ICBM" content="{{ $geoLat }}, {{ $geoLng }}" />
     <meta name="author" content="Rootera Plumbing (J&J Group)" />
 
     {{-- LCP Image Preload for Homepage (Responsive Mobile & Desktop) --}}
@@ -55,22 +83,70 @@
     @endif
     @stack('preloads')
 
-    {{-- Dynamic SEO Meta Tags --}}
-    @hasSection('meta_title')
-        <title>@yield('meta_title')</title>
-    @elseif(isset($seo['title']) && !empty($seo['title']))
-        <title>{{ $seo['title'] }}</title>
-    @elseif(request()->routeIs('home') || request()->path() === '/')
-        <title>Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar</title>
-    @else
-        <title>{{ $title ?? 'Jasa Saluran Pipa Mampet 24 Jam - Rootera Plumbing' }}</title>
-    @endif
+    {{-- Dynamic SEO Meta Tags & Open Graph Configuration --}}
+    @php
+        $defaultOgImage = secure_url('images/og/rootera-default.jpg');
 
-    @hasSection('meta_description')
-        <meta name="description" content="@yield('meta_description')">
-    @else
-        <meta name="description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
-    @endif
+        // Resolve title
+        if (View::hasSection('meta_title')) {
+            $effectiveTitle = trim(View::getSection('meta_title'));
+        } elseif (!empty($seo['title'])) {
+            $effectiveTitle = $seo['title'];
+        } elseif (request()->routeIs('home') || request()->path() === '/') {
+            $effectiveTitle = 'Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar';
+        } else {
+            $effectiveTitle = $title ?? 'Rootera Plumbing - Jasa Saluran Pipa Mampet & Deteksi CCTV 24 Jam';
+        }
+
+        // Resolve description
+        if (View::hasSection('meta_description')) {
+            $effectiveDescription = trim(View::getSection('meta_description'));
+        } elseif (!empty($seo['description'])) {
+            $effectiveDescription = $seo['description'];
+        } else {
+            $effectiveDescription = 'Layanan pelancaran pipa mampet, deteksi pipa bocor, dan inspeksi kamera CCTV 24 jam bergaransi.';
+        }
+
+        // Resolve OG Image
+        if (View::hasSection('og_image')) {
+            $rawOgImage = trim(View::getSection('og_image'));
+        } elseif (!empty($seo['og_image'])) {
+            $rawOgImage = $seo['og_image'];
+        } else {
+            $rawOgImage = $ogImage ?? '';
+        }
+
+        if (empty($rawOgImage)) {
+            $effectiveOgImage = $defaultOgImage;
+        } elseif (\Illuminate\Support\Str::startsWith($rawOgImage, ['http://', 'https://'])) {
+            $effectiveOgImage = \Illuminate\Support\Str::startsWith($rawOgImage, 'http://')
+                ? 'https://' . substr($rawOgImage, 7)
+                : $rawOgImage;
+        } else {
+            $effectiveOgImage = secure_url(ltrim($rawOgImage, '/'));
+        }
+
+        // Detect mime type for og:image:type
+        $imgExt = strtolower(pathinfo(parse_url($effectiveOgImage, PHP_URL_PATH), PATHINFO_EXTENSION));
+        $ogImageType = match($imgExt) {
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp',
+            default => 'image/jpeg',
+        };
+
+        // Resolve URL
+        if (View::hasSection('canonical')) {
+            $effectiveUrl = trim(View::getSection('canonical'));
+        } elseif (!empty($seo['canonical'])) {
+            $effectiveUrl = $seo['canonical'];
+        } else {
+            $effectiveUrl = url()->current();
+        }
+    @endphp
+
+    <title>{{ $effectiveTitle }}</title>
+    <meta name="description" content="{{ $effectiveDescription }}">
 
     @hasSection('meta_keywords')
         <meta name="keywords" content="@yield('meta_keywords')">
@@ -78,11 +154,7 @@
         <meta name="keywords" content="{{ $seo['keywords'] ?? 'jasa saluran pipa mampet, jasa saluran mampet, jasa pipa mampet, jasa sedot wc, jasa perbaikan pipa saluran air, saluran mampet jabodetabek, rootera plumbing, rootera' }}">
     @endif
 
-    @hasSection('canonical')
-        <link rel="canonical" href="@yield('canonical')">
-    @else
-        <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
-    @endif
+    <link rel="canonical" href="{{ $effectiveUrl }}">
     
     @if(isset($seo['is_indexable']) && !$seo['is_indexable'])
         <meta name="robots" content="noindex, follow">
@@ -90,40 +162,26 @@
         <meta name="robots" content="index, follow">
     @endif
 
-    {{-- Open Graph --}}
-    <meta property="og:type"        content="{{ $seo['og_type'] ?? 'website' }}">
-    @hasSection('canonical')
-        <meta property="og:url"         content="@yield('canonical')">
-    @else
-        <meta property="og:url"         content="{{ $seo['canonical'] ?? url()->current() }}">
-    @endif
-
-    @hasSection('meta_title')
-        <meta property="og:title"   content="@yield('meta_title')">
-    @elseif(isset($seo['title']) && !empty($seo['title']))
-        <meta property="og:title"   content="{{ $seo['title'] }}">
-    @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta property="og:title"   content="Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar">
-    @else
-        <meta property="og:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing">
-    @endif
-
-    @hasSection('meta_description')
-        <meta property="og:description" content="@yield('meta_description')">
-    @else
-        <meta property="og:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
-    @endif
-    <meta property="og:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
-    <meta property="og:site_name"   content="Rootera Plumbing - J&J Group">
-    <meta property="og:see_also"    content="https://www.youtube.com/@RooteraPlumbing">
-    <meta property="og:see_also"    content="https://www.instagram.com/rootera_plumbing/">
-    <meta property="og:see_also"    content="https://www.tiktok.com/@rooteraplumbing.id">
-    <meta property="og:see_also"    content="https://x.com/RooteraPlumbing">
-    <meta property="og:see_also"    content="https://www.linkedin.com/in/rooteraplumbing/">
-    <meta property="og:see_also"    content="https://id.pinterest.com/rooteraplumbing/">
-    <meta property="og:see_also"    content="https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/">
-    <meta property="og:see_also"    content="https://maps.google.com/?cid=16012437648585635749">
-    <meta property="og:locale"      content="id_ID">
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="{{ $seo['og_type'] ?? 'website' }}">
+    <meta property="og:url" content="{{ $effectiveUrl }}">
+    <meta property="og:title" content="{{ $effectiveTitle }}">
+    <meta property="og:description" content="{{ $effectiveDescription }}">
+    <meta property="og:image" content="{{ $effectiveOgImage }}">
+    <meta property="og:image:secure_url" content="{{ $effectiveOgImage }}">
+    <meta property="og:image:type" content="{{ $ogImageType }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Rootera Plumbing">
+    <meta property="og:see_also" content="https://www.youtube.com/@RooteraPlumbing">
+    <meta property="og:see_also" content="https://www.instagram.com/rootera_plumbing/">
+    <meta property="og:see_also" content="https://www.tiktok.com/@rooteraplumbing.id">
+    <meta property="og:see_also" content="https://x.com/RooteraPlumbing">
+    <meta property="og:see_also" content="https://www.linkedin.com/in/rooteraplumbing/">
+    <meta property="og:see_also" content="https://id.pinterest.com/rooteraplumbing/">
+    <meta property="og:see_also" content="https://www.facebook.com/people/Jasa-Saluran-Pipa-Mampet/61591857691922/">
+    <meta property="og:see_also" content="https://maps.google.com/?cid=16012437648585635749">
+    <meta property="og:locale" content="id_ID">
 
     @if(isset($seo['og_type']) && $seo['og_type'] === 'article')
         @if(!empty($seo['published_time']))
@@ -137,24 +195,12 @@
         @endif
     @endif
 
-    {{-- Twitter Card --}}
-    <meta name="twitter:card"        content="summary_large_image">
-    @hasSection('meta_title')
-        <meta name="twitter:title"   content="@yield('meta_title')">
-    @elseif(isset($seo['title']) && !empty($seo['title']))
-        <meta name="twitter:title"   content="{{ $seo['title'] }}">
-    @elseif(request()->routeIs('home') || request()->path() === '/')
-        <meta name="twitter:title"   content="Rootera Plumbing — Jasa Saluran Pipa Mampet No. 1 & Tanpa Bongkar">
-    @else
-        <meta name="twitter:title"   content="{{ $title ?? 'Rootera Plumbing' }} | Rootera Plumbing (J&J Group)">
-    @endif
-
-    @hasSection('meta_description')
-        <meta name="twitter:description" content="@yield('meta_description')">
-    @else
-        <meta name="twitter:description" content="{{ $seo['description'] ?? 'Jasa saluran pipa mampet profesional tanpa bongkar & bergaransi 30 hari. Solusi wastafel, WC, floor drain & got tersumbat 24 jam. Hubungi teknisi!' }}">
-    @endif
-    <meta name="twitter:image"       content="{{ $seo['og_image'] ?? asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ $effectiveUrl }}">
+    <meta name="twitter:title" content="{{ $effectiveTitle }}">
+    <meta name="twitter:description" content="{{ $effectiveDescription }}">
+    <meta name="twitter:image" content="{{ $effectiveOgImage }}">
 
     {{-- Schema Markup: Dynamic structured data --}}
     @hasSection('structured_data')

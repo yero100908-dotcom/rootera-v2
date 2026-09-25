@@ -1,6 +1,8 @@
-{{-- Mobile Sticky CTA Bar Component (Visible on mobile screens < 768px) --}}
+{{-- Mobile Sticky CTA Bar Component (Optimized for CRO & Contextual Tracking) --}}
 <?php
-$waPhone = isset($city) && !empty($city->whatsapp_number) ? preg_replace('/[^0-9]/', '', $city->whatsapp_number) : "6281385404000";
+$waPhone = isset($city) && !empty($city->whatsapp_number) 
+    ? preg_replace('/[^0-9]/', '', $city->whatsapp_number) 
+    : "6281385404000";
 
 if (isset($district) && isset($category)) {
     $waText = "Halo Rootera Plumbing, saya butuh teknisi darurat untuk jasa {$category->name} di area Kecamatan {$district->name}, {$city->name}. Bisa datang segera?";
@@ -16,32 +18,32 @@ if (isset($district) && isset($category)) {
     $waText = "Halo Rootera Plumbing, saya butuh bantuan darurat pelancar saluran pipa mampet 24 Jam.";
 }
 
-$waLink = "https://wa.me/{$waPhone}?text=" . urlencode($waText);
-$etaText = 'Respon Cepat';
-$areaLabel = isset($district) ? $district->name : (isset($city) ? $city->name : 'Lokasi Anda');
+$waLink = "https://wa.me/{$waPhone}?text=" . rawurlencode($waText);
+$areaLabel = isset($district) ? $district->name : (isset($city) ? $city->name : 'Jabodetabek');
 ?>
 
-<div id="mobile-sticky-cta-bar" class="fixed bottom-0 inset-x-0 w-full max-w-full z-[9990] md:hidden bg-[#061434]/90 border-t border-white/10 backdrop-blur-lg shadow-2xl transform-gpu px-3 py-2.5 transition-transform duration-300">
-    <div class="flex items-center justify-between gap-2 w-full max-w-lg mx-auto">
-        <div class="flex items-center gap-2">
+<div id="mobile-sticky-cta-bar" class="fixed bottom-0 inset-x-0 w-full z-[9990] md:hidden bg-[#061434]/95 border-t border-emerald-500/30 backdrop-blur-md shadow-[0_-8px_25px_rgba(0,0,0,0.4)] px-3 py-2.5 transition-all duration-300 transform-gpu">
+    <div class="flex items-center justify-between gap-2.5 w-full max-w-md mx-auto">
+        <div class="flex items-center gap-2 min-w-0">
             <span class="relative flex h-3 w-3 shrink-0">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
             </span>
-            <div class="leading-tight">
+            <div class="leading-tight truncate">
                 <div class="text-[11px] font-bold text-white flex items-center gap-1">
                     <span>Teknisi Siaga</span>
-                    <span class="text-emerald-400 font-extrabold">Respon Cepat</span>
+                    <span class="text-emerald-400 font-extrabold">24 Jam</span>
                 </div>
-                <div class="text-[10px] text-slate-400 truncate max-w-[130px]">
+                <div class="text-[10px] text-slate-300 truncate">
                     📍 Area {{ $areaLabel }}
                 </div>
             </div>
         </div>
 
-        <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="bg-[#25D366] hover:bg-[#1EBE5A] active:bg-[#169F81] text-white font-extrabold text-xs px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-green-500/20 text-decoration-none transition-transform active:scale-95 shrink-0">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-            <span>Panggil Teknisi WA (24 Jam)</span>
+        <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 active:scale-95 text-white font-extrabold text-xs px-4 py-2.5 rounded-full flex items-center gap-1.5 shadow-lg shadow-emerald-500/30 text-decoration-none transition-transform shrink-0">
+            <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+            <span>Panggil Teknisi WA</span>
         </a>
     </div>
 </div>
+

@@ -4,13 +4,18 @@
 <?php
 $wordCount = str_word_count(strip_tags($article->content));
 $articleUrl = url('/blog/' . $article->slug);
+$articleImgRaw = $article->thumbnail_url ?: asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp');
+$articleImg = \Illuminate\Support\Str::startsWith($articleImgRaw, 'http://')
+    ? 'https://' . substr($articleImgRaw, 7)
+    : (\Illuminate\Support\Str::startsWith($articleImgRaw, 'https://') ? $articleImgRaw : secure_url(ltrim($articleImgRaw, '/')));
+
 $articleSchema = [
   "@context" => "https://schema.org",
   "@type" => ["BlogPosting", "TechArticle"],
   "@id" => $articleUrl . "#article",
   "headline" => $article->clean_title,
   "description" => $article->meta_description ?? $article->excerpt,
-  "image" => [$article->thumbnail_url ?: asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')],
+  "image" => [$articleImg],
   "wordCount" => $wordCount,
   "inLanguage" => "id-ID",
   "author" => [

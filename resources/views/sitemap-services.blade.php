@@ -7,18 +7,23 @@
         <loc>{{ route('layanan.show', $category->slug) }}</loc>
         @if($category->updated_at)
         <lastmod>{{ $category->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        @else
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
         @endif
         <changefreq>weekly</changefreq>
         <priority>0.95</priority>
     </url>
 
-        {{-- Programmatic Category x City Landing Pages --}}
+        {{-- Programmatic Category x City Landing Pages (Kecuali pipa-mampet yang sudah ada di sitemap-cities.xml) --}}
         @foreach ($cities as $city)
+        @if($category->slug !== 'pipa-mampet')
         <url>
-            <loc>{{ $category->slug === 'pipa-mampet' ? url("/jasa-saluran-mampet/{$city->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}") }}</loc>
+            <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}") }}</loc>
+            <lastmod>{{ ($city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.90</priority>
         </url>
+        @endif
         @endforeach
     @endforeach
 
@@ -27,12 +32,14 @@
     @foreach ($sectors as $sec)
     <url>
         <loc>{{ url("/sektor-plumbing/{$sec->slug}") }}</loc>
+        <lastmod>{{ ($sec->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.90</priority>
     </url>
         @foreach ($cities as $city)
         <url>
             <loc>{{ url("/sektor-plumbing/{$sec->slug}/{$city->slug}") }}</loc>
+            <lastmod>{{ ($city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.85</priority>
         </url>

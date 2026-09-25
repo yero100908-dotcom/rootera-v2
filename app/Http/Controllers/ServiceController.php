@@ -33,7 +33,7 @@ class ServiceController extends Controller
             'title'       => 'Layanan Rootera – Solusi Pipa Mampet & Instalasi Sanitary Profesional',
             'description' => 'Temukan semua layanan Rootera: pembersihan saluran mampet, cuci toren, dan instalasi pipa profesional menggunakan alat modern tanpa bongkar bangunan.',
             'canonical'   => url('/layanan'),
-            'og_image'    => asset('images/JnJ.jpeg'),
+            'og_image'    => secure_url('images/og/rootera-default.jpg'),
         ];
 
         // Ambil teknologi dari database (dinamis)
@@ -80,20 +80,40 @@ class ServiceController extends Controller
             ->take(6)
             ->get();
 
-        $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv') 
-               || str_contains(strtolower($category->slug ?? ''), 'inspeksi') 
-               || str_contains(strtolower($category->slug ?? ''), 'deteksi');
+        $catSlug = strtolower($category->slug ?? '');
+        $isCctv = str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') || str_contains($catSlug, 'deteksi');
 
         if ($isCctv) {
             $title = "Jasa Inspeksi Kamera Pipa CCTV & Pelacak Saluran Air | Rootera";
             $description = "Layanan inspeksi visual kamera pipa CCTV, deteksi pipa bocor/pecah & pelacak letak septic tank tersembunyi tanpa bongkar. Bukti rekaman video HD.";
+            $ogImage = secure_url('images/og/cctv.jpeg');
+        } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'sink')) {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = secure_url('images/og/wastafel.jpg');
+        } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & WC di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = secure_url('images/og/kloset.jpeg');
+        } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan floor drain kamar mandi di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = secure_url('images/og/floor-drain.jpeg');
+        } elseif (str_contains($catSlug, 'got') || str_contains($catSlug, 'saluran-pembuangan') || str_contains($catSlug, 'bak-kontrol')) {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan got & bak kontrol di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = secure_url('images/og/gutter.jpg');
+        } elseif (str_contains($catSlug, 'industri') || str_contains($catSlug, 'b2b') || str_contains($catSlug, 'pabrik')) {
+            $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
+            $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa industri & gedung di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = secure_url('images/og/industri.jpeg');
         } else {
             $title = Str::limit($category->meta_title ?? "Jasa {$category->name} Pelancar Pipa Mampet - Rootera", 60, '');
             $description = Str::limit($category->meta_description ?? "Layanan {$category->name} profesional, cepat, tanpa bongkar. Atasi sumbatan pipa air & wastafel di Jabodetabek, Bandung, Semarang, Lampung, Jogja, Solo.", 150, '');
+            $ogImage = $category->image ? secure_url('storage/' . $category->image) : secure_url('images/og/pipamampet.jpg');
         }
 
         $canonical = url('/layanan/' . $category->slug);
-        $ogImage = $category->image ? asset('storage/' . $category->image) : asset('images/JnJ.jpeg');
 
         $seo = [
             'title'       => $title,
