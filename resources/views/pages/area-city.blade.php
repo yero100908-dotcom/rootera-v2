@@ -12,25 +12,64 @@ $cityProvName = (isset($city) && is_object($city) && isset($city->province) && i
 $isLampungArea = ($citySlug === 'bandar-lampung' || (isset($city->province) && str_contains(strtolower($city->province->slug ?? ''), 'lampung')));
 $isSemarangArea = ($citySlug === 'semarang' || (isset($city->province) && str_contains(strtolower($city->province->slug ?? ''), 'jawa-tengah')));
 
-if ($isLampungArea) {
-    $fallbackStreet = "Jl. Danau Towuti No. 9";
-    $fallbackLocality = "Kedaton, Surabaya, Kota Bandar Lampung";
-    $fallbackPostal = "35148";
-    $fallbackLat = -5.388639;
-    $fallbackLng = 105.265417;
-} elseif ($isSemarangArea) {
-    $fallbackStreet = "Jl. Simpang Lima No. 1";
-    $fallbackLocality = "Semarang Tengah, Kota Semarang";
-    $fallbackPostal = "50134";
-    $fallbackLat = -6.9902958;
-    $fallbackLng = 110.4227318;
+// City-specific fallback coordinate & address matrix for regional precision
+$knownCityFallbacks = [
+    'bandar-lampung' => [
+        'street' => 'Jl. Danau Towuti No. 9',
+        'locality' => 'Kedaton, Kota Bandar Lampung',
+        'postal' => '35148',
+        'lat' => -5.388639,
+        'lng' => 105.265417,
+    ],
+    'semarang' => [
+        'street' => 'Jl. Simpang Lima No. 1',
+        'locality' => 'Semarang Tengah, Kota Semarang',
+        'postal' => '50134',
+        'lat' => -6.9902958,
+        'lng' => 110.4227318,
+    ],
+    'surakarta' => [
+        'street' => 'Jl. Slamet Riyadi',
+        'locality' => 'Banjarsari, Kota Surakarta',
+        'postal' => '57131',
+        'lat' => -7.5666,
+        'lng' => 110.8167,
+    ],
+    'surabaya' => [
+        'street' => 'Jl. Pemuda',
+        'locality' => 'Genteng, Kota Surabaya',
+        'postal' => '60271',
+        'lat' => -7.2575,
+        'lng' => 112.7521,
+    ],
+    'bandung' => [
+        'street' => 'Jl. Asia Afrika',
+        'locality' => 'Sumur Bandung, Kota Bandung',
+        'postal' => '40111',
+        'lat' => -6.9175,
+        'lng' => 107.6191,
+    ],
+    'yogyakarta' => [
+        'street' => 'Jl. Malioboro',
+        'locality' => 'Gedongtengen, Kota Yogyakarta',
+        'postal' => '55271',
+        'lat' => -7.7956,
+        'lng' => 110.3695,
+    ],
+];
+
+if (isset($knownCityFallbacks[$citySlug])) {
+    $fallbackStreet = $knownCityFallbacks[$citySlug]['street'];
+    $fallbackLocality = $knownCityFallbacks[$citySlug]['locality'];
+    $fallbackPostal = $knownCityFallbacks[$citySlug]['postal'];
+    $fallbackLat = $knownCityFallbacks[$citySlug]['lat'];
+    $fallbackLng = $knownCityFallbacks[$citySlug]['lng'];
 } else {
-    // Default Jabodetabek / HQ
-    $fallbackStreet = "Jl. Gongseng Raya No. 9";
-    $fallbackLocality = "Cijantung, Pasar Rebo, Kota Jakarta Timur";
-    $fallbackPostal = "13770";
-    $fallbackLat = -6.3275975;
-    $fallbackLng = 106.8627125;
+    $fallbackStreet = "Pusat Layanan Rootera " . $cityNameClean;
+    $fallbackLocality = $cityNameClean . ", " . $cityProvName;
+    $fallbackPostal = "10000";
+    $fallbackLat = (isset($city) && !empty($city->latitude)) ? (float)$city->latitude : -6.3275975;
+    $fallbackLng = (isset($city) && !empty($city->longitude)) ? (float)$city->longitude : 106.8627125;
 }
 
 $cityAddress = [
@@ -181,11 +220,54 @@ $cityBreadcrumbs = [
   ]
 ];
 
+// Structured FAQ Data for Rich Results Schema
+$cityFaqs = [
+    [
+        'question' => 'Berapa lama estimasi teknisi tiba di lokasi ' . $cityNameClean . '?',
+        'answer' => 'Teknisi Rootera disiapgajikan di pos respon armada ' . $cityNameClean . ' dengan estimasi kedatangan ' . ($city->estimated_arrival ?? '15-30 Menit') . ' setelah pemesanan dikonfirmasi via WhatsApp CS 24 jam.'
+    ],
+    [
+        'question' => 'Apakah pengerjaan benar-benar 100% tanpa bongkar ubin/keramik?',
+        'answer' => 'Ya, 100% tanpa bongkar keramik. Kami menggunakan mesin rotary spiral baja Ridgid fleksibel buatan USA & pemotong khusus yang mampu menembus lekukan pipa (P-Trap/S-Trap), mengikis kerak lemak jenuh tanpa merusak ubin lantai rumah Anda.'
+    ],
+    [
+        'question' => 'Bagaimana ketentuan Garansi Resmi 30 Hari Rootera?',
+        'answer' => 'Setiap pengerjaan dilengkapi nota garansi resmi. Jika dalam kurun waktu 30 Hari Garansi saluran pada titik yang sama kembali tersumbat, teknisi kami meluncur ulang dan memperbaikinya 100% GRATIS.'
+    ],
+    [
+        'question' => 'Bagaimana sistem pembayaran setelah pengerjaan selesai?',
+        'answer' => 'Sistem pembayaran menerapkan No Result No Pay (Tuntas Baru Bayar). Anda hanya membayar jika air saluran sudah mengalir lancar kembali secara teruji. Pembayaran dapat dilakukan via Cash atau Transfer Bank.'
+    ],
+    [
+        'question' => 'Apakah Rootera melayani komersial, restoran, & pabrik di ' . $cityNameClean . '?',
+        'answer' => 'Tentu saja. Kami melayani perumahan residensial, resto/cafe (pembersihan grease trap & lemak jenuh), apartemen, gedung perkantoran, hingga pabrik industri menggunakan teknologi Hydro-Jetting 300 Bar dengan fasilitas Faktur Pajak PPN 11%.'
+    ]
+];
+
+$faqSchemaEntities = [];
+foreach ($cityFaqs as $fItem) {
+    $faqSchemaEntities[] = [
+        "@type" => "Question",
+        "name" => strip_tags($fItem['question']),
+        "acceptedAnswer" => [
+            "@type" => "Answer",
+            "text" => strip_tags($fItem['answer'])
+        ]
+    ];
+}
+
+$cityFaqSchema = [
+    "@type" => "FAQPage",
+    "@id" => $cityCanonical . "#faq",
+    "mainEntity" => $faqSchemaEntities
+];
+
 $graphSchema = [
   "@context" => "https://schema.org",
   "@graph" => [
     $cityBusinessSchema,
-    $cityBreadcrumbs
+    $cityBreadcrumbs,
+    $cityFaqSchema
   ]
 ];
 ?>
@@ -245,17 +327,23 @@ $graphSchema = [
                 </div>
 
                 {{-- CTA Group --}}
-                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4">
                     <a href="https://wa.me/{{ $city->whatsapp_number ?? '6281385404000' }}?text={{ urlencode('Halo Rootera, saya butuh jasa pelancar pipa mampet di area ' . $cityName . '. Bisa panggil teknisi?') }}" 
                        target="_blank" rel="noopener" 
-                       class="inline-flex items-center justify-center gap-3 bg-[#169F81] hover:bg-emerald-600 text-white font-bold text-sm sm:text-base px-8 py-4 rounded-2xl shadow-xl shadow-emerald-900/40 transition-all hover:scale-[1.02] active:scale-95 text-decoration-none">
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-                        <span>Panggil Teknisi {{ $cityNameClean }} (24 Jam)</span>
+                       class="inline-flex items-center justify-center gap-2.5 bg-[#169F81] hover:bg-emerald-600 text-white font-bold text-sm sm:text-base px-6 py-3.5 sm:py-4 rounded-2xl shadow-xl shadow-emerald-900/40 transition-all hover:scale-[1.02] active:scale-95 text-decoration-none">
+                        <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                        <span>Panggil Teknisi WA (24 Jam)</span>
+                    </a>
+
+                    <a href="tel:{{ preg_replace('/[^0-9+]/', '', $city->branch_phone ?? ($city->whatsapp_number ?? '081385404000')) }}" 
+                       class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm sm:text-base px-6 py-3.5 sm:py-4 rounded-2xl shadow-lg shadow-blue-900/30 transition-all hover:scale-[1.02] active:scale-95 text-decoration-none">
+                        <svg class="w-5 h-5 fill-none stroke-current stroke-2 shrink-0" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <span>Telepon Darurat</span>
                     </a>
 
                     <a href="#estimasi-biaya" 
-                       class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm sm:text-base px-6 py-4 rounded-2xl border border-white/20 backdrop-blur-md transition-all text-decoration-none">
-                        <span>Jelajahi Estimasi &amp; Posko Armada ↓</span>
+                       class="inline-flex items-center justify-center gap-1.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm px-5 py-3.5 sm:py-4 rounded-2xl border border-white/20 backdrop-blur-md transition-all text-decoration-none">
+                        <span>Estimasi &amp; Posko ↓</span>
                     </a>
                 </div>
             </div>
@@ -814,7 +902,7 @@ $graphSchema = [
         @if(isset($city->districts) && $city->districts->isNotEmpty())
         <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-12">
             @foreach($city->districts as $district)
-                <a href="{{ url('/layanan-pipa-mampet/pipa-mampet/' . ($city->slug ?? 'wilayah') . '/' . $district->slug) }}" 
+                <a href="{{ route('layanan.district', ['categorySlug' => 'pipa-mampet', 'citySlug' => $city->slug ?? 'wilayah', 'districtSlug' => $district->slug]) }}" 
                    class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
                     <span>📍 {{ $district->name }}</span>
                     <span class="text-emerald-600">→</span>
@@ -845,30 +933,32 @@ $graphSchema = [
 {{-- ========================================================================= --}}
 {{-- 7. FAQ & EDUKASI LOKAL (MODERN & MOBILE-FIRST ACCORDION)                  --}}
 {{-- ========================================================================= --}}
-<?php
-  $cityFaqs = [
-      [
-          'question' => 'Berapa lama estimasi teknisi tiba di lokasi ' . $cityNameClean . '?',
-          'answer' => 'Teknisi Rootera disiapgajikan di pos respon armada <strong>' . $cityNameClean . '</strong> dengan estimasi kedatangan <strong>' . ($city->estimated_arrival ?? '15-30 Menit') . '</strong> setelah pemesanan dikonfirmasi via WhatsApp CS 24 jam.'
-      ],
-      [
-          'question' => 'Apakah pengerjaan benar-benar 100% tanpa bongkar ubin/keramik?',
-          'answer' => 'Ya, <strong>100% tanpa bongkar keramik</strong>. Kami menggunakan mesin rotary spiral baja Ridgid fleksibel buatan USA &amp; pemotong khusus yang mampu menembus lekukan pipa (P-Trap/S-Trap), mengikis kerak lemak jenuh tanpa merusak ubin lantai rumah Anda.'
-      ],
-      [
-          'question' => 'Bagaimana ketentuan Garansi Resmi 30 Hari Rootera?',
-          'answer' => 'Setiap pengerjaan dilengkapi nota garansi resmi. Jika dalam kurun waktu <strong>30 Hari Garansi</strong> saluran pada titik yang sama kembali tersumbat, teknisi kami meluncur ulang dan memperbaikinya <strong>100% GRATIS</strong>.'
-      ],
-      [
-          'question' => 'Bagaimana sistem pembayaran setelah pengerjaan selesai?',
-          'answer' => 'Sistem pembayaran menerapkan <strong>No Result No Pay (Tuntas Baru Bayar)</strong>. Anda hanya membayar jika air saluran sudah mengalir lancar kembali secara teruji. Pembayaran dapat dilakukan via Cash atau Transfer Bank.'
-      ],
-      [
-          'question' => 'Apakah Rootera melayani komersial, restoran, & pabrik di ' . $cityNameClean . '?',
-          'answer' => 'Tentu saja. Kami melayani perumahan residensial, resto/cafe (pembersihan <i>grease trap</i> &amp; lemak jenuh), apartemen, gedung perkantoran, hingga pabrik industri menggunakan teknologi <strong>Hydro-Jetting 300 Bar</strong> dengan fasilitas <strong>Faktur Pajak PPN 11%</strong>.'
-      ]
-  ];
-?>
+@php
+  if (!isset($cityFaqs) || empty($cityFaqs)) {
+      $cityFaqs = [
+          [
+              'question' => 'Berapa lama estimasi teknisi tiba di lokasi ' . $cityNameClean . '?',
+              'answer' => 'Teknisi Rootera disiapgajikan di pos respon armada <strong>' . $cityNameClean . '</strong> dengan estimasi kedatangan <strong>' . ($city->estimated_arrival ?? '15-30 Menit') . '</strong> setelah pemesanan dikonfirmasi via WhatsApp CS 24 jam.'
+          ],
+          [
+              'question' => 'Apakah pengerjaan benar-benar 100% tanpa bongkar ubin/keramik?',
+              'answer' => 'Ya, <strong>100% tanpa bongkar keramik</strong>. Kami menggunakan mesin rotary spiral baja Ridgid fleksibel buatan USA &amp; pemotong khusus yang mampu menembus lekukan pipa (P-Trap/S-Trap), mengikis kerak lemak jenuh tanpa merusak ubin lantai rumah Anda.'
+          ],
+          [
+              'question' => 'Bagaimana ketentuan Garansi Resmi 30 Hari Rootera?',
+              'answer' => 'Setiap pengerjaan dilengkapi nota garansi resmi. Jika dalam kurun waktu <strong>30 Hari Garansi</strong> saluran pada titik yang sama kembali tersumbat, teknisi kami meluncur ulang dan memperbaikinya <strong>100% GRATIS</strong>.'
+          ],
+          [
+              'question' => 'Bagaimana sistem pembayaran setelah pengerjaan selesai?',
+              'answer' => 'Sistem pembayaran menerapkan <strong>No Result No Pay (Tuntas Baru Bayar)</strong>. Anda hanya membayar jika air saluran sudah mengalir lancar kembali secara teruji. Pembayaran dapat dilakukan via Cash atau Transfer Bank.'
+          ],
+          [
+              'question' => 'Apakah Rootera melayani komersial, restoran, & pabrik di ' . $cityNameClean . '?',
+              'answer' => 'Tentu saja. Kami melayani perumahan residensial, resto/cafe (pembersihan <i>grease trap</i> &amp; lemak jenuh), apartemen, gedung perkantoran, hingga pabrik industri menggunakan teknologi <strong>Hydro-Jetting 300 Bar</strong> dengan fasilitas <strong>Faktur Pajak PPN 11%</strong>.'
+          ]
+      ];
+  }
+@endphp
 <section class="py-16 sm:py-24 bg-white border-b border-slate-200" id="faq-edukasi">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header FAQ --}}

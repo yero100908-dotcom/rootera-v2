@@ -20,11 +20,11 @@ $articleSchema = [
   "inLanguage" => "id-ID",
   "author" => [
     "@type" => "Person",
-    "name" => $article->author ?: "Tim Ahli Rootera Plumbing",
+    "name" => $article->author ?: "Tim Teknis Rootera Plumbing",
     "jobTitle" => "Master Plumbing Specialist",
     "worksFor" => [
       "@type" => "Organization",
-      "name" => "Rootera Plumbing Indonesia",
+      "name" => "Rootera Plumbing",
       "url" => url('/')
     ]
   ],
@@ -393,14 +393,14 @@ if (!empty($faqMatches)) {
                             <div>
                                 <div class="flex items-center gap-2">
                                     <span class="text-sm font-extrabold text-slate-900 leading-tight">
-                                        {{ $article->author ?: 'Tim Ahli Rootera' }}
+                                        {{ $article->author ?: 'Tim Teknis Rootera Plumbing' }}
                                     </span>
                                     <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200/60 inline-flex items-center gap-1">
                                         <span>✓</span> Verified E-E-A-T
                                     </span>
                                 </div>
                                 <span class="text-xs text-slate-500 font-medium block mt-0.5">
-                                    Spesialis Plumbing &amp; Sanitasi
+                                    Master Plumbing Specialist &amp; Teknisi Sanitasi Rootera
                                 </span>
                             </div>
                         </div>

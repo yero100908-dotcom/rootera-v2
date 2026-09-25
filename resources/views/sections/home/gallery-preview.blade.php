@@ -249,16 +249,16 @@ function openHomeMediaModal(type, url, title, beforeUrl) {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 sm:p-4 w-full">
                 <div class="text-center">
                     <span class="bg-red-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase mb-2 inline-block shadow-xs">SEBELUM (BEFORE)</span>
-                    <img src="${beforeUrl}" class="w-full h-48 sm:h-72 object-cover rounded-xl border border-red-500/30" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
+                    <img src="${beforeUrl}" class="w-full h-48 sm:h-72 object-cover rounded-xl border border-red-500/30" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
                 </div>
                 <div class="text-center">
                     <span class="bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase mb-2 inline-block shadow-xs">SESUDAH (AFTER)</span>
-                    <img src="${url}" class="w-full h-48 sm:h-72 object-cover rounded-xl border border-emerald-500/30" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">
+                    <img src="${url}" class="w-full h-48 sm:h-72 object-cover rounded-xl border border-emerald-500/30" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">
                 </div>
             </div>
         `;
     } else {
-        container.innerHTML = `<img src="${url}" class="w-full max-h-[70vh] object-contain" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.jpeg') }}';">`;
+        container.innerHTML = `<img src="${url}" class="w-full max-h-[70vh] object-contain" onerror="this.onerror=null;this.src='{{ asset('images/JnJ.webp') }}';">`;
     }
     modal.classList.remove('hidden');
     modal.classList.add('flex');

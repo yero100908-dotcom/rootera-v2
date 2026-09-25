@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id" class="w-full h-full overflow-x-hidden">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {{-- Favicon & Touch Icons --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
+
     <!-- Google tag (gtag.js) - User Interaction Delay for Performance -->
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -26,9 +35,6 @@
         setTimeout(loadGA, 4000);
       })();
     </script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     {{-- Mobile Web App & Theme Color Standards --}}
     <meta name="mobile-web-app-capable" content="yes">
@@ -37,8 +43,6 @@
     <meta name="theme-color" content="#0B2545">
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#071930">
     <meta name="msapplication-navbutton-color" content="#0B2545">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="google-site-verification" content="S0NcIdbOStrvK_9vfK7mA4CnO2IhMDg3kp4_QLZHYRQ" />
 
     {{-- Dynamic GEO Meta Tags (Target City / District OR Headquarters: Cijantung, Jakarta Timur) --}}
@@ -58,13 +62,20 @@
             $geoPlaceName = $city->full_name ?? $city->name;
             if (isset($city->province)) {
                 $provName = strtolower($city->province->name ?? '');
-                if (str_contains($provName, 'jawa barat')) {
+                $provSlug = strtolower($city->province->slug ?? '');
+                if (str_contains($provName, 'jakarta') || str_contains($provName, 'dki') || str_contains($provSlug, 'jakarta')) {
+                    $geoRegion = "ID-JK";
+                } elseif (str_contains($provName, 'jawa barat') || str_contains($provSlug, 'jawa-barat')) {
                     $geoRegion = "ID-JB";
-                } elseif (str_contains($provName, 'banten')) {
+                } elseif (str_contains($provName, 'banten') || str_contains($provSlug, 'banten')) {
                     $geoRegion = "ID-BT";
-                } elseif (str_contains($provName, 'jawa tengah')) {
+                } elseif (str_contains($provName, 'jawa tengah') || str_contains($provSlug, 'jawa-tengah')) {
                     $geoRegion = "ID-JT";
-                } elseif (str_contains($provName, 'lampung')) {
+                } elseif (str_contains($provName, 'jawa timur') || str_contains($provSlug, 'jawa-timur')) {
+                    $geoRegion = "ID-JI";
+                } elseif (str_contains($provName, 'yogyakarta') || str_contains($provName, 'diy') || str_contains($provSlug, 'yogyakarta')) {
+                    $geoRegion = "ID-YO";
+                } elseif (str_contains($provName, 'lampung') || str_contains($provSlug, 'lampung')) {
                     $geoRegion = "ID-LA";
                 }
             }
@@ -291,15 +302,15 @@
         @endif
     @endif
 
-    {{-- Fonts --}}
+    {{-- Fonts (Non-blocking Asynchronous Loading) --}}
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-    {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap">
+    </noscript>
 
     <style>[x-cloak] { display: none !important; }</style>
 

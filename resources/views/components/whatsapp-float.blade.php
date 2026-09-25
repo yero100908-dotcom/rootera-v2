@@ -23,7 +23,7 @@ $waLink = "https://wa.me/{$waPhone}?text=" . urlencode($waText);
 ?>
 <a
     href="{{ $waLink }}"
-    class="whatsapp-float"
+    class="whatsapp-float hidden md:flex"
     id="whatsapp-float"
     target="_blank"
     rel="noopener noreferrer"

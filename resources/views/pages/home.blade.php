@@ -89,8 +89,7 @@ $homeSchema = [
             "itemOffered" => [
               "@type" => "Service",
               "name" => "Jasa Saluran Pipa Mampet Tanpa Bongkar",
-              "description" => "Pelancaran wastafel, kran, floor drain, dan WC kloset mampet menggunakan mesin Spiral Rotary Cable Ridgid profesional tanpa membongkar struktur keramik.",
-              "termsOfService" => "Garansi resmi 30 hari tuntas & SLA ketibaan teknisi < 30 menit"
+              "description" => "Pelancaran wastafel, kran, floor drain, dan WC kloset mampet menggunakan mesin Spiral Rotary Cable Ridgid profesional tanpa membongkar struktur keramik. Bergaransi resmi 30 hari tuntas & SLA ketibaan teknisi < 30 menit."
             ]
           ],
           [
@@ -98,8 +97,7 @@ $homeSchema = [
             "itemOffered" => [
               "@type" => "Service",
               "name" => "Jasa Pembersihan Hydro-Jetting Pipa Industri & Restoran",
-              "description" => "Pembersihan kerak minyak encer, sisa lemak membatu, dan lumpur keras pipa restoran dan komersial dengan semprotan air bertekanan tinggi hingga 300 Bar.",
-              "termsOfService" => "Garansi 30 hari dan pembersihan menyeluruh tanpa bahan kimia korosif"
+              "description" => "Pembersihan kerak minyak encer, sisa lemak membatu, dan lumpur keras pipa restoran dan komersial dengan semprotan air bertekanan tinggi hingga 300 Bar. Bergaransi 30 hari dan pembersihan menyeluruh tanpa bahan kimia korosif."
             ]
           ]
         ]
@@ -113,8 +111,7 @@ $homeSchema = [
         "@id" => url('/') . '#organization'
       ],
       "areaServed" => ["Jabodetabek", "Semarang", "Bandar Lampung"],
-      "description" => "Layanan darurat 24 jam pelancaran saluran pipa mampet tanpa bongkar keramik bergaransi tuntas 30 hari dengan peralatan mesin Spiral Rotary Ridgid & Hydro Jetting 300 Bar. Response time teknisi tiba di lokasi kurang dari 30 menit.",
-      "termsOfService" => "Garansi resmi 30 hari. Pengerjaan ulang tanpa biaya jika masalah sumbatan berulang dalam masa garansi."
+      "description" => "Layanan darurat 24 jam pelancaran saluran pipa mampet tanpa bongkar keramik bergaransi tuntas 30 hari dengan peralatan mesin Spiral Rotary Ridgid & Hydro Jetting 300 Bar. Response time teknisi tiba di lokasi kurang dari 30 menit. Pengerjaan ulang tanpa biaya jika masalah sumbatan berulang dalam masa garansi."
     ],
     [
       "@type" => "FAQPage",
@@ -173,7 +170,7 @@ $homeSchema = [
         <picture style="width: 100%; height: 100%; display: block;">
             <source media="(max-width: 767px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-mobile.webp') }}" type="image/webp">
             <source media="(min-width: 768px)" srcset="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" type="image/webp">
-            <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Banner Jasa Saluran Pipa Mampet Profesional Rootera Plumbing" loading="eager" fetchpriority="high" width="1920" height="960" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
+            <img src="{{ asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp') }}" alt="Banner Jasa Saluran Pipa Mampet Profesional Rootera Plumbing" loading="eager" fetchpriority="high" decoding="async" width="1920" height="960" style="width: 100%; height: 100%; object-fit: cover; object-position: center;" />
         </picture>
         {{-- High-Contrast Dark Gradient Overlay --}}
         <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 19, 43, 0.94) 0%, rgba(15, 23, 42, 0.85) 45%, rgba(6, 20, 52, 0.70) 100%);"></div>
@@ -222,7 +219,7 @@ $homeSchema = [
                 <div style="position: relative; border-radius: 24px; overflow: hidden; border: 2px solid rgba(255,255,255,0.18); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); background: #0f172a; cursor: pointer;" onclick="openHomeMediaModal('video', '{{ asset('videos/dokumentasi/video-inspeksi-cctv-wastafel.mp4') }}', 'Inspeksi Kamera CCTV Saluran Wastafel Mampet')">
                     <picture>
                         <source srcset="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" type="image/webp">
-                        <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" alt="Teknisi APD Lengkap Rootera Plumbing Penanganan Saluran Sink Mampet" width="600" height="380" style="width: 100%; height: 380px; object-fit: cover; display: block;" />
+                        <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" alt="Teknisi APD Lengkap Rootera Plumbing Penanganan Saluran Sink Mampet" loading="lazy" decoding="async" width="600" height="380" style="width: 100%; height: 380px; object-fit: cover; display: block;" />
                     </picture>
                     <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,20,52,0.85) 0%, rgba(6,20,52,0.3) 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 0.75rem;">
