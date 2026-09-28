@@ -99,14 +99,16 @@ if (isset($city) && is_object($city) && isset($city->districts) && count($city->
 $cityBusinessSchema = [
   "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
   "@id" => $cityCanonical . "#organization",
-  "name" => "Rootera Plumbing " . $cityNameClean,
+  "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet " . $cityNameClean,
   "alternateName" => ["Rootera " . $cityNameClean, "Jasa Saluran Pipa Mampet " . $cityNameClean, "Tukang Pipa Mampet " . $cityNameClean],
   "description" => $seo['description'] ?? "Pusat layanan pelancaran saluran pipa mampet 24 jam di {$cityNameClean} bergaransi resmi.",
   "url" => $cityCanonical,
   "telephone" => "+" . (isset($city) && !empty($city->branch_phone) ? $city->branch_phone : $cityPhone),
   "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   "image" => $seo['og_image'] ?? asset('images/JnJ.webp'),
-  "priceRange" => "Rp 400.000 - Rp 1.500.000",
+  "priceRange" => "$$",
+  "currenciesAccepted" => "IDR",
+  "paymentAccepted" => "Cash, Transfer Bank, QRIS",
   "parentOrganization" => [
     "@type" => "Organization",
     "name" => "J&J GROUP",
@@ -133,6 +135,18 @@ $cityBusinessSchema = [
     "@type" => "OfferCatalog",
     "name" => "Katalog Layanan Pipa Mampet " . $cityNameClean,
     "itemListElement" => [
+      [
+        "@type" => "Offer",
+        "price" => "400000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Jasa Pelancaran Pipa Mampet " . $cityNameClean,
+          "description" => "Pelancaran pipa mampet tanpa bongkar keramik."
+        ]
+      ],
       [
         "@type" => "Offer",
         "price" => "400000",
@@ -179,6 +193,18 @@ $cityBusinessSchema = [
           "@type" => "Service",
           "name" => "Jasa Pelancaran Pipa Utama, Got & Talang Air " . $cityNameClean,
           "description" => "Pembersihan pipa pembuangan utama, saluran got luar, serta talang air atap tanpa bongkar saluran."
+        ]
+      ],
+      [
+        "@type" => "Offer",
+        "price" => "750000",
+        "priceCurrency" => "IDR",
+        "priceValidUntil" => date('Y-12-31'),
+        "availability" => "https://schema.org/InStock",
+        "itemOffered" => [
+          "@type" => "Service",
+          "name" => "Jasa Inspeksi Kamera CCTV Pipa " . $cityNameClean,
+          "description" => "Pemeriksaan visual internal pipa dengan kamera endoskopi waterproof 1080p."
         ]
       ]
     ]
@@ -351,7 +377,7 @@ $graphSchema = [
             {{-- Right Column: Visual Showcase & Floating Glassmorphism Badges --}}
             <div class="lg:col-span-5 relative mt-6 lg:mt-0">
                 <div class="relative rounded-3xl overflow-hidden border-4 border-white/10 shadow-2xl shadow-slate-950/50 group">
-                    <img src="{{ asset('images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp') }}" 
+                    <img src="{{ $heroImage ?? asset('images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp') }}" 
                          alt="Teknisi Rootera Plumbing {{ $cityName }}" 
                          width="600"
                          height="440"
@@ -384,6 +410,39 @@ $graphSchema = [
 @if((isset($city) && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung'))
     <x-workshop-posko-bandar-lampung :city="$city" />
 @endif
+
+{{-- ========================================================================= --}}
+{{-- 2. CAKUPAN AREA & DIREKTORI KECAMATAN TERPADU                             --}}
+{{-- ========================================================================= --}}
+<section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200" id="jangkauan-area">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold mb-2 border border-emerald-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Teknisi Siaga Hari Ini di {{ $cityNameClean }}</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
+                Direktori Kecamatan Siaga di {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-600 text-xs sm:text-sm mt-1.5">
+                Pilih kecamatan lokasi Anda untuk informasi armada terdekat, estimasi biaya, dan pemanggilan teknisi 24 jam:
+            </p>
+        </div>
+
+        {{-- Interactive Chips --}}
+        @if(isset($city->districts) && $city->districts->isNotEmpty())
+        <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-8">
+            @foreach($city->districts as $district)
+                <a href="{{ url('/jasa-saluran-mampet/' . $city->slug . '/' . $district->slug) }}" 
+                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
+                    <span>📍 Kecamatan {{ $district->name }}</span>
+                    <span class="text-emerald-600">→</span>
+                </a>
+            @endforeach
+        </div>
+        @endif
+    </div>
+</section>
 
 {{-- ========================================================================= --}}
 {{-- 2. ESTIMASI BIAYA & POPULAR HIGHLIGHT (PURE WHITE #FFFFFF)                --}}
@@ -880,55 +939,7 @@ $graphSchema = [
     <x-media-documentation :articles="$articles ?? collect()" :projectShowcases="$projectShowcases ?? collect()" :locationName="$cityNameClean" />
 </div>
 
-{{-- ========================================================================= --}}
-{{-- 6. PENATAAN CAKUPAN AREA (INTERACTIVE CHIPS & PULSING DOT)                --}}
-{{-- ========================================================================= --}}
-<section class="py-16 sm:py-24 bg-[#F8FAFC] border-b border-slate-200" id="jangkauan-area">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold mb-3 border border-emerald-300">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span>Teknisi Siaga Hari Ini di {{ $cityNameClean }}</span>
-            </div>
-            <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
-                Cakupan Area &amp; Kecamatan di {{ $cityNameClean }}
-            </h2>
-            <p class="text-slate-600 text-sm sm:text-base mt-2">
-                Pilih kelurahan/kecamatan terdekat Anda untuk pemanggilan armada teknisi siaga 24 jam:
-            </p>
-        </div>
 
-        {{-- Interactive Chips --}}
-        @if(isset($city->districts) && $city->districts->isNotEmpty())
-        <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-12">
-            @foreach($city->districts as $district)
-                <a href="{{ route('layanan.district', ['categorySlug' => 'pipa-mampet', 'citySlug' => $city->slug ?? 'wilayah', 'districtSlug' => $district->slug]) }}" 
-                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
-                    <span>📍 {{ $district->name }}</span>
-                    <span class="text-emerald-600">→</span>
-                </a>
-            @endforeach
-        </div>
-        @endif
-
-        {{-- B2B Callout Box --}}
-        <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-8 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl border border-slate-700">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full border border-emerald-500/30">🏢 Corporate &amp; B2B Contract</span>
-                <h3 class="text-xl sm:text-2xl font-extrabold text-white mt-2 mb-1 font-['Plus_Jakarta_Sans',sans-serif]">
-                    Butuh Kontrak Maintenance Pipa Restoran / Gedung di {{ $cityNameClean }}?
-                </h3>
-                <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                    Sistem Hydro Jetting &amp; e-Faktur Pajak PPN 11% resmi untuk kebutuhan perawatan saluran rutin restoran, mall, hotel, &amp; pabrik.
-                </p>
-            </div>
-            <a href="{{ route('b2b.index') }}" 
-               class="shrink-0 px-6 py-3.5 bg-[#169F81] hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-all text-decoration-none shadow-lg">
-                Konsultasi B2B {{ $cityNameClean }} →
-            </a>
-        </div>
-    </div>
-</section>
 
 {{-- ========================================================================= --}}
 {{-- 7. FAQ & EDUKASI LOKAL (MODERN & MOBILE-FIRST ACCORDION)                  --}}

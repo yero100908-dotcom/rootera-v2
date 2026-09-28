@@ -7,18 +7,20 @@ $rawPhone = isset($city) && !empty($city->branch_phone)
 $waPhone = preg_replace('/[^0-9]/', '', $rawPhone);
 $telPhone = "0" . preg_replace('/^62/', '', $waPhone);
 
-if (isset($district) && isset($category)) {
-    $waText = "Halo Rootera Plumbing, saya butuh teknisi darurat untuk jasa {$category->name} di area Kecamatan {$district->name}, {$city->name}. Bisa datang segera?";
+if (isset($district)) {
+    $districtName = $district->name ?? 'Kecamatan';
+    $cityName = isset($city) ? ($city->full_name ?? $city->name) : '';
+    $waText = "Halo Rootera Plumbing, saya butuh penanganan pipa mampet darurat di area Kecamatan {$districtName}" . ($cityName ? ", {$cityName}" : "") . ". Apakah teknisi bisa segera meluncur?";
 } elseif (isset($category) && isset($city)) {
     $cityName = $city->full_name ?? $city->name;
-    $waText = "Halo Rootera Plumbing, saya butuh panggilan teknisi pelancar {$category->name} di area {$cityName}. Mohon info jadwal teknisi.";
+    $waText = "Halo Rootera Plumbing, saya butuh penanganan pipa mampet darurat untuk jasa {$category->name} di area {$cityName}. Apakah teknisi bisa segera meluncur?";
 } elseif (isset($category)) {
-    $waText = "Halo Rootera Plumbing, saya butuh info & konsultasi gratis jasa {$category->name}. Mohon info ketersediaan teknisi.";
+    $waText = "Halo Rootera Plumbing, saya butuh penanganan pipa mampet darurat untuk jasa {$category->name}. Apakah teknisi bisa segera meluncur?";
 } elseif (isset($city)) {
     $cityName = $city->full_name ?? $city->name;
-    $waText = "Halo Rootera Plumbing, saya butuh teknisi darurat pipa mampet untuk wilayah {$cityName}. Bisakah datang hari ini?";
+    $waText = "Halo Rootera Plumbing, saya butuh penanganan pipa mampet darurat di area {$cityName}. Apakah teknisi bisa segera meluncur?";
 } else {
-    $waText = "Halo Rootera Plumbing, saya butuh bantuan darurat pelancar saluran pipa mampet 24 Jam.";
+    $waText = "Halo Rootera Plumbing, saya butuh penanganan pipa mampet darurat 24 Jam. Apakah teknisi bisa segera meluncur?";
 }
 
 $waLink = "https://wa.me/{$waPhone}?text=" . rawurlencode($waText);

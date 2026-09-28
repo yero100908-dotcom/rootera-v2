@@ -51,7 +51,7 @@ class ProgrammaticSeoController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
         }
 
-        $cacheKey = "prog_seo_v8_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
+        $cacheKey = "prog_seo_v9_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
         $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
@@ -151,14 +151,16 @@ class ProgrammaticSeoController extends Controller
             $description = $this->spintaxService->generateMetaDescription($category->name, $locationName, $estimatedArrival, $seedKey);
 
             if ($district) {
-                // Self-referencing canonical for district pages to index district landing pages individually in Google Search
-                $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}");
+                // Consolidate thin legacy district URLs to City Hub & set noindex
+                $canonical = url("/jasa-saluran-mampet/{$city->slug}");
+                $isIndexable = false;
             } else {
                 if ($category->slug === 'pipa-mampet') {
                     $canonical = url("/jasa-saluran-mampet/{$city->slug}");
                 } else {
                     $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
                 }
+                $isIndexable = true;
             }
 
             $catSlug = strtolower($category->slug ?? '');
@@ -181,10 +183,11 @@ class ProgrammaticSeoController extends Controller
             }
 
             $seo = [
-                'title'       => $title,
-                'description' => $description,
-                'canonical'   => $canonical,
-                'og_image'    => $ogImage,
+                'title'        => $title,
+                'description'  => $description,
+                'canonical'    => $canonical,
+                'og_image'     => $ogImage,
+                'is_indexable' => $isIndexable,
             ];
 
             // Generate Spintax Variations for Anti-Duplicate Content Engine

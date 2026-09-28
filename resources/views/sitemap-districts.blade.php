@@ -3,27 +3,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     @foreach ($cities as $city)
         @foreach ($city->districts as $district)
-            {{-- Primary Pipa Mampet District Landing Page --}}
-            <url>
-                <loc>{{ url("/layanan-pipa-mampet/pipa-mampet/{$city->slug}/{$district->slug}") }}</loc>
-                <lastmod>{{ ($district->updated_at ?? $city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
-                <changefreq>weekly</changefreq>
-                <priority>0.80</priority>
-            </url>
-
-            {{-- Other Active Service Category District Pages --}}
-            @if(isset($categories))
-                @foreach($categories as $category)
-                    @if($category->slug !== 'pipa-mampet')
-                    <url>
-                        <loc>{{ url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") }}</loc>
-                        <lastmod>{{ ($district->updated_at ?? $city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
-                        <changefreq>weekly</changefreq>
-                        <priority>0.80</priority>
-                    </url>
-                    @endif
-                @endforeach
+            @if ($district->is_active ?? true)
+                <url>
+                    <loc>{{ url("/jasa-saluran-mampet/{$city->slug}/{$district->slug}") }}</loc>
+                    <lastmod>{{ ($district->updated_at ?? $city->updated_at ?? now())->tz('UTC')->toAtomString() }}</lastmod>
+                    <changefreq>weekly</changefreq>
+                    <priority>0.70</priority>
+                </url>
             @endif
         @endforeach
     @endforeach
 </urlset>
+

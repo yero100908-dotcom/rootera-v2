@@ -3,22 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\District;
 use App\Models\Province;
 use App\Models\ServiceCategory;
 use App\Models\ProjectGallery;
 use App\Models\Article;
 use App\Models\Faq;
+use App\Models\Technology;
 use App\Services\SpintaxService;
+use App\Services\RegionalAssetResolver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class AreaServiceController extends Controller
 {
     protected SpintaxService $spintaxService;
+    protected RegionalAssetResolver $assetResolver;
 
-    public function __construct(SpintaxService $spintaxService)
+    public function __construct(SpintaxService $spintaxService, RegionalAssetResolver $assetResolver)
     {
         $this->spintaxService = $spintaxService;
+        $this->assetResolver = $assetResolver;
     }
 
     /**
@@ -76,13 +81,15 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("pseo_city_show_v4_{$citySlug}", 86400, function () use ($citySlug) {
+        $html = Cache::remember("pseo_city_show_v5_{$citySlug}", 86400, function () use ($citySlug) {
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
                 ->with(['province', 'districts' => function ($q) {
                     $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
                 }])
                 ->firstOrFail();
+
+            $heroImage = $this->assetResolver->resolveHeroImage($city);
 
             $siblingCities = City::where('province_id', $city->province_id)
                 ->where('id', '!=', $city->id)
@@ -137,7 +144,7 @@ class AreaServiceController extends Controller
                 'title'       => $title,
                 'description' => $description,
                 'canonical'   => $canonical,
-                'og_image'    => asset('images/JnJ.webp'),
+                'og_image'    => $heroImage,
             ];
 
             // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
@@ -158,7 +165,8 @@ class AreaServiceController extends Controller
                 'heroHeadline',
                 'heroSubtitle',
                 'valueProps',
-                'areaTechnicalIntro'
+                'areaTechnicalIntro',
+                'heroImage'
             ))->render();
         });
 
@@ -196,6 +204,140 @@ class AreaServiceController extends Controller
             $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Pipa Mampet", "Provinsi " . $province->name, "25–45 Menit", $seedKey);
 
             return view('pages.area-region', compact('province', 'allCategories', 'seo', 'heroHeadline', 'heroSubtitle'))->render();
+        });
+
+        return response($html);
+    }
+
+    /**
+     * Display District Hub All-in-One page (/jasa-saluran-mampet/{citySlug}/{districtSlug})
+     */
+    public function showDistrict(string $citySlug, string $districtSlug)
+    {
+        $aliasMap = [
+            'tangerang-kota'   => 'tangerang',
+            'kab-tangerang'    => 'kabupaten-tangerang',
+            'cikarang'         => 'kabupaten-bekasi',
+            'karawang'         => 'kabupaten-karawang',
+            'sleman'           => 'kabupaten-sleman',
+            'sidoarjo'         => 'kabupaten-sidoarjo',
+            'gresik'           => 'surabaya',
+        ];
+
+        if (isset($aliasMap[$citySlug])) {
+            return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}/{$districtSlug}"), 301);
+        }
+
+        $html = Cache::remember("pseo_district_show_v2_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+            $city = City::where('slug', $citySlug)
+                ->where('is_active', true)
+                ->with(['province', 'districts' => function ($q) {
+                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
+                }])
+                ->firstOrFail();
+
+            $district = District::where('city_id', $city->id)
+                ->where('slug', $districtSlug)
+                ->where('is_active', true)
+                ->firstOrFail();
+
+            $heroImage = $this->assetResolver->resolveHeroImage($city, $district);
+
+            $siblingDistricts = $city->districts->filter(function ($d) use ($district) {
+                return $d->id !== $district->id;
+            })->take(12)->values();
+
+            $siblingCities = City::where('province_id', $city->province_id)
+                ->where('id', '!=', $city->id)
+                ->where('is_active', true)
+                ->orderBy('name')
+                ->take(8)
+                ->get();
+
+            $allCategories = ServiceCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+
+            $projectShowcases = ProjectGallery::where('is_active', true)
+                ->where(function ($q) use ($city, $district) {
+                    $q->where('district_id', $district->id)->orWhere('city_id', $city->id)->orWhereNull('city_id');
+                })
+                ->with(['district', 'city', 'serviceCategory'])
+                ->latest()
+                ->take(4)
+                ->get();
+
+            if ($projectShowcases->count() < 4) {
+                $existingIds = $projectShowcases->pluck('id')->toArray();
+                $moreShowcases = ProjectGallery::where('is_active', true)
+                    ->whereNotIn('id', $existingIds)
+                    ->with(['district', 'city', 'serviceCategory'])
+                    ->latest()
+                    ->take(4 - $projectShowcases->count())
+                    ->get();
+                $projectShowcases = $projectShowcases->concat($moreShowcases);
+            }
+
+            $relatedArticles = Article::published()
+                ->latest('published_at')
+                ->take(3)
+                ->get();
+
+            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(5)->get();
+            $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
+
+            $locationName = "{$district->name}, {$city->full_name}";
+            $locationShort = $district->name;
+            $estimatedArrival = $district->estimated_arrival ?? ($city->estimated_arrival ?? "20–35 Menit");
+            $dispatchHub = "Pos Hub Armada Kecamatan {$district->name}";
+
+            // Priority Custom DB Meta Tags with Dynamic Fallback (District Hub Standard)
+            $title = !empty($district->meta_title)
+                ? $district->meta_title
+                : "Jasa Saluran Pipa Mampet {$district->name}, {$city->name} 24 Jam — Rootera";
+
+            $description = !empty($district->meta_description)
+                ? $district->meta_description
+                : "Spesialis jasa saluran pipa mampet 24 jam di {$district->name}, {$city->name}. Pelancaran wastafel, kloset WC, floor drain & got tersumbat tanpa bongkar lantai. Bergaransi 30 hari!";
+
+            $canonical = url("/jasa-saluran-mampet/{$city->slug}/{$district->slug}");
+
+            $seo = [
+                'title'        => $title,
+                'description'  => $description,
+                'canonical'    => $canonical,
+                'og_image'     => $heroImage,
+                'is_indexable' => true,
+            ];
+
+            // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
+            $seedKey = "district_hub_" . md5($canonical);
+            $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $district->name . ", " . $city->name, $seedKey);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $district->name . ", " . $city->name, $estimatedArrival, $seedKey);
+            $valueProps = $this->spintaxService->generateValueProps($district->name, $seedKey);
+            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $district->name, $seedKey);
+
+            return view('pages.area-district', compact(
+                'city',
+                'district',
+                'siblingDistricts',
+                'siblingCities',
+                'allCategories',
+                'projectShowcases',
+                'relatedArticles',
+                'faqs',
+                'technologies',
+                'locationName',
+                'locationShort',
+                'estimatedArrival',
+                'dispatchHub',
+                'seo',
+                'heroHeadline',
+                'heroSubtitle',
+                'valueProps',
+                'areaTechnicalIntro',
+                'heroImage'
+            ))->render();
         });
 
         return response($html);
