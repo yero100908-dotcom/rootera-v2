@@ -10,10 +10,12 @@ class Article extends Model
     use HasFactory;
 
     public const CATEGORIES = [
-        'Tips Rumah' => 'Tips & Sanitasi Rumah',
+        'Regulasi & Kepatuhan B2B' => 'Regulasi & Kepatuhan B2B (Grease Trap & AMDAL)',
+        'Investigasi Teknik & Diagnosa' => 'Investigasi Teknik & Diagnosa CCTV',
+        'Analisis Biaya & Metode' => 'Analisis Biaya & Metode (Hydro Jetting vs Rotary)',
+        'Tips Rumah' => 'Panduan Sanitasi Residensial',
         'Komersial & B2B' => 'Komersial & Industri B2B',
         'Material & Instalasi' => 'Material & Instalasi Pipa',
-        'Teknologi & Solusi' => 'Teknologi & Solusi Modern',
     ];
 
     protected $fillable = [
@@ -65,14 +67,38 @@ class Article extends Model
     {
         if ($this->thumbnail) {
             if (\Illuminate\Support\Str::startsWith($this->thumbnail, ['http://', 'https://'])) {
-                return $this->thumbnail;
+                if (!str_contains($this->thumbnail, 'rooteraplumbing')) {
+                    return $this->thumbnail;
+                }
+                $parsed = parse_url($this->thumbnail, PHP_URL_PATH);
+                if ($parsed) {
+                    $this->thumbnail = ltrim($parsed, '/');
+                }
             }
-            $path = \Illuminate\Support\Str::startsWith($this->thumbnail, ['storage/', 'images/', 'assets/'])
-                ? $this->thumbnail
-                : 'storage/' . $this->thumbnail;
 
-            if (file_exists(public_path($path))) {
-                return asset($path);
+            $cleanPath = ltrim($this->thumbnail, '/');
+
+            if (file_exists(public_path($cleanPath))) {
+                return asset($cleanPath);
+            }
+
+            if (!\Illuminate\Support\Str::startsWith($cleanPath, 'storage/')) {
+                $storagePath = 'storage/' . $cleanPath;
+                if (file_exists(public_path($storagePath))) {
+                    return asset($storagePath);
+                }
+            }
+
+            if (!\Illuminate\Support\Str::startsWith($cleanPath, 'images/')) {
+                $imagesPath = 'images/' . $cleanPath;
+                if (file_exists(public_path($imagesPath))) {
+                    return asset($imagesPath);
+                }
+            }
+
+            $appPublicPath = storage_path('app/public/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
+            if (file_exists($appPublicPath)) {
+                return asset('storage/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
             }
         }
 

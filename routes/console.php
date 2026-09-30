@@ -10,7 +10,11 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('youtube:sync-feed')->hourly();
-Schedule::command('sitemap:generate')->dailyAt('02:00');
+Schedule::command('sitemap:generate')->dailyAt('01:00');
+Schedule::command('seo:push-indexing --limit=150')
+    ->dailyAt('02:00')
+    ->withoutOverlapping()
+    ->runInBackground();
 Schedule::command('seo:warmup-cache --limit=300')->dailyAt('03:00');
-Schedule::command('seo:push-index --limit=150')->dailyAt('04:00');
+
 

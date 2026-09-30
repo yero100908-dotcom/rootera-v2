@@ -79,16 +79,16 @@ $blogSchema = [
         {{-- BRANDING PORTAL HEADER --}}
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-white/10 pb-6 mb-8 md:mb-10">
             <div>
-                <div class="inline-flex items-center gap-2 bg-white/5 border border-white/15 px-3.5 py-1 rounded-full text-xs font-bold text-teal-400 uppercase tracking-wider backdrop-blur-md shadow-xs mb-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-sm animate-pulse"></span>
-                    <span>Rootera News &amp; Tech Portal</span>
+                <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 px-3.5 py-1 rounded-full text-xs font-extrabold text-emerald-400 uppercase tracking-widest shadow-md mb-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Sanitation &amp; Plumbing Journal</span>
                 </div>
                 <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-                    Portal Berita &amp; <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Insight Plumbing</span>
+                    Jurnal Teknik Sanitasi &amp; <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Investigasi Saluran Pipa</span>
                 </h1>
             </div>
             <p class="text-slate-300 text-xs sm:text-sm max-w-md text-left md:text-right leading-relaxed font-medium">
-                Pusat edukasi teknologi sanitasi, komparasi instalasi pipa, panduan B2B, &amp; tips perawatan rumah dari teknisi ahli Rootera.
+                Wawasan investigasi lapangan, regulasi limbah komersial B2B, dan panduan pencegahan kerusakan struktural instalasi perpipaan dari teknisi profesional Rootera.
             </p>
         </div>
 

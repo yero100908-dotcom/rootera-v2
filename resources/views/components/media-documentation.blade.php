@@ -17,58 +17,117 @@ $locShort = $locationShort ?? $locationName ?? 'Area Layanan';
 $mediaService = app(\App\Services\MediaService::class);
 $toolkitImages = $mediaService->getToolkitImages();
 
-// 4 Curated Real Portfolio Items with official /galeri-dokumentasi/{slug} URL structure
-$fourPortfolioItems = [
-    [
-        'title'       => 'Pelancaran Drainase Kitchen Soichiro Japanese Steakhouse',
-        'slug'        => 'pelancaran-drainase-kitchen-soichiro-japanese-steakhouse',
-        'category'    => 'Restoran & Kafe',
-        'location'    => 'Jakarta',
-        'description' => 'Penanganan sumbatan pembekuan lemak pada saluran drainase dapur komersial restoran Soichiro Japanese Steakhouse menggunakan mesin spiral rotary tanpa merusak keramik.',
-        'image'       => asset('images/dokumentasi/pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp'),
-        'url'         => url('/galeri-dokumentasi/pelancaran-drainase-kitchen-soichiro-japanese-steakhouse'),
-        'width'       => 600,
-        'height'      => 375,
-    ],
-    [
-        'title'       => 'Pelancaran Floor Drain Kamar Mandi Rumah Tinggal',
-        'slug'        => 'pelancaran-floor-drain-kamar-mandi-rumah-tinggal',
-        'category'    => 'Rumah Tinggal',
-        'location'    => 'Jakarta',
-        'description' => 'Proses pengerjaan pelancaran saringan dan pipa floor drain kamar mandi perumahan secara cepat tanpa membongkar ubin.',
-        'image'       => asset('images/dokumentasi/pelancar-floor-drain-kamar-mandi-rumah.webp'),
-        'url'         => url('/galeri-dokumentasi/pelancaran-floor-drain-kamar-mandi-rumah-tinggal'),
-        'width'       => 600,
-        'height'      => 375,
-    ],
-    [
-        'title'       => 'Inspeksi Kamera CCTV Pipa Tersumbat Lemak',
-        'slug'        => 'inspeksi-kamera-cctv-pipa-tersumbat-lemak',
-        'category'    => 'Inspeksi CCTV',
-        'location'    => 'Jabodetabek',
-        'description' => 'Tampilan monitor kamera CCTV yang menampilkan akumulasi lemak membatu di dinding dalam pipa pembuangan.',
-        'image'       => asset('images/dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat.webp'),
-        'url'         => url('/galeri-dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat-lemak'),
-        'width'       => 600,
-        'height'      => 375,
-    ],
-    [
-        'title'       => 'Proyek Pelancaran Saluran Mall Banjarmasin (Part 1)',
-        'slug'        => 'proyek-pelancaran-saluran-mall-banjarmasin-part-1',
-        'category'    => 'Gedung & Pabrik',
-        'location'    => 'Banjarmasin, Kalsel',
-        'description' => 'Ekspansi layanan nasional Rootera Plumbing menangani proyek pelancaran saluran pembuangan utama Mall Banjarmasin.',
-        'image'       => asset('images/dokumentasi/pelancaran-saluran-mampet-mall-banjarmasin-1.webp'),
-        'url'         => url('/galeri-dokumentasi/proyek-pelancaran-saluran-mall-banjarmasin-part-1'),
-        'width'       => 600,
-        'height'      => 375,
-    ],
-];
+// Dynamic Proof Injection: Use passed $projectShowcases if available
+if (!empty($projectShowcases) && (is_countable($projectShowcases) && count($projectShowcases) > 0)) {
+    $fourPortfolioItems = [];
+    foreach ($projectShowcases as $pItem) {
+        $realLoc = !empty($pItem->location_tag) ? $pItem->location_tag : (!empty($pItem->related_area_name) ? $pItem->related_area_name : 'Jabodetabek');
+        
+        $isFallback = false;
+        if (isset($pItem->is_fallback)) {
+            $isFallback = (bool) $pItem->is_fallback;
+        } elseif ($locShort && strtolower(trim($realLoc)) !== strtolower(trim($locShort)) && !str_contains(strtolower($realLoc), strtolower($locShort))) {
+            $isFallback = true;
+        }
+
+        $fourPortfolioItems[] = [
+            'title'       => $pItem->title,
+            'slug'        => $pItem->slug,
+            'category'    => $pItem->category_label ?? 'Studi Kasus',
+            'location'    => $realLoc,
+            'is_fallback' => $isFallback,
+            'description' => $pItem->description ?? $pItem->technical_diagnosis ?? 'Studi kasus pengerjaan pelancaran pipa mampet tanpa bongkar.',
+            'image'       => $pItem->display_thumbnail ?? $pItem->after_image_url ?? asset('images/JnJ.jpeg'),
+            'url'         => route('galeri.show', $pItem->slug),
+            'tool_used'   => $pItem->tool_used,
+            'pipe_specs'  => $pItem->pipe_specs,
+            'pipe_length' => $pItem->pipe_length,
+            'warranty_days' => $pItem->warranty_days ?? 30,
+            'completion_time' => $pItem->completion_time,
+            'width'       => 600,
+            'height'      => 375,
+        ];
+    }
+} else {
+    // 4 Curated Real Portfolio Items fallback
+    $fourPortfolioItems = [
+        [
+            'title'       => 'Pelancaran Drainase Kitchen Soichiro Japanese Steakhouse',
+            'slug'        => 'pelancaran-drainase-kitchen-soichiro-japanese-steakhouse',
+            'category'    => 'Restoran & Kafe',
+            'location'    => 'Jakarta',
+            'is_fallback' => false,
+            'description' => 'Penanganan sumbatan pembekuan lemak pada saluran drainase dapur komersial restoran Soichiro Japanese Steakhouse menggunakan mesin spiral rotary tanpa merusak keramik.',
+            'image'       => asset('images/dokumentasi/pelancaran-drainase-kitchen-soichiro-steakhouse-jakarta.webp'),
+            'url'         => url('/galeri-dokumentasi/pelancaran-drainase-kitchen-soichiro-japanese-steakhouse'),
+            'tool_used'   => 'Ridgid K-50 Spiral Rotary',
+            'pipe_specs'  => 'Pipa PVC 4 Inch',
+            'pipe_length' => '15 Meter',
+            'warranty_days' => 30,
+            'completion_time' => '45 Menit',
+            'width'       => 600,
+            'height'      => 375,
+        ],
+        [
+            'title'       => 'Pelancaran Floor Drain Kamar Mandi Rumah Tinggal',
+            'slug'        => 'pelancaran-floor-drain-kamar-mandi-rumah-tinggal',
+            'category'    => 'Rumah Tinggal',
+            'location'    => 'Jakarta',
+            'is_fallback' => false,
+            'description' => 'Proses pengerjaan pelancaran saringan dan pipa floor drain kamar mandi perumahan secara cepat tanpa membongkar ubin.',
+            'image'       => asset('images/dokumentasi/pelancar-floor-drain-kamar-mandi-rumah.webp'),
+            'url'         => url('/galeri-dokumentasi/pelancaran-floor-drain-kamar-mandi-rumah-tinggal'),
+            'tool_used'   => 'Ridgid Cable Flexible',
+            'pipe_specs'  => 'Pipa PVC 3 Inch',
+            'pipe_length' => '10 Meter',
+            'warranty_days' => 30,
+            'completion_time' => '30 Menit',
+            'width'       => 600,
+            'height'      => 375,
+        ],
+        [
+            'title'       => 'Inspeksi Kamera CCTV Pipa Tersumbat Lemak',
+            'slug'        => 'inspeksi-kamera-cctv-pipa-tersumbat-lemak',
+            'category'    => 'Inspeksi CCTV',
+            'location'    => 'Jabodetabek',
+            'is_fallback' => false,
+            'description' => 'Tampilan monitor kamera CCTV yang menampilkan akumulasi lemak membatu di dinding dalam pipa pembuangan.',
+            'image'       => asset('images/dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat.webp'),
+            'url'         => url('/galeri-dokumentasi/inspeksi-kamera-cctv-pipa-tersumbat-lemak'),
+            'tool_used'   => 'Kamera CCTV Endoskopi 1080p',
+            'pipe_specs'  => 'Pipa PVC 4 Inch',
+            'pipe_length' => '25 Meter',
+            'warranty_days' => 30,
+            'completion_time' => '35 Menit',
+            'width'       => 600,
+            'height'      => 375,
+        ],
+        [
+            'title'       => 'Proyek Pelancaran Saluran Mall Banjarmasin (Part 1)',
+            'slug'        => 'proyek-pelancaran-saluran-mall-banjarmasin-part-1',
+            'category'    => 'Gedung & Pabrik',
+            'location'    => 'Banjarmasin, Kalsel',
+            'is_fallback' => false,
+            'description' => 'Ekspansi layanan nasional Rootera Plumbing menangani proyek pelancaran saluran pembuangan utama Mall Banjarmasin.',
+            'image'       => asset('images/dokumentasi/pelancaran-saluran-mampet-mall-banjarmasin-1.webp'),
+            'url'         => url('/galeri-dokumentasi/proyek-pelancaran-saluran-mall-banjarmasin-part-1'),
+            'tool_used'   => 'Hydro-Jetting 300 Bar',
+            'pipe_specs'  => 'Pipa HDPE 8 Inch',
+            'pipe_length' => '40 Meter',
+            'warranty_days' => 30,
+            'completion_time' => '60 Menit',
+            'width'       => 600,
+            'height'      => 375,
+        ],
+    ];
+}
 
 // Resolve articles to display from props or query DB directly
 if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($articlesToDisplay) === 0)) {
     if (!empty($relatedArticles) && (is_countable($relatedArticles) && count($relatedArticles) > 0)) {
         $articlesToDisplay = $relatedArticles;
+    } elseif (!empty($articles) && (is_countable($articles) && count($articles) > 0)) {
+        $articlesToDisplay = $articles;
     } else {
         $articlesToDisplay = \App\Models\Article::published()
             ->latest('published_at')
@@ -166,9 +225,15 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
                     <span class="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 bg-slate-900/90 text-emerald-400 border border-emerald-500/30 text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm uppercase z-10 shadow-sm">
                         🏷️ {{ $item['category'] }}
                     </span>
-                    <span class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 bg-emerald-600/90 text-white text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm z-10 shadow-sm">
-                        📍 {{ $item['location'] }}
-                    </span>
+                    @if(!empty($item['is_fallback']))
+                        <span class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 bg-slate-900/90 text-amber-300 border border-amber-500/40 text-[10px] sm:text-xs font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm z-10 shadow-sm" title="Proyek Referensi Regional Hub">
+                            🛡️ Referensi ({{ $item['location'] }})
+                        </span>
+                    @else
+                        <span class="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 bg-emerald-600/90 text-white text-[10px] sm:text-xs font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full backdrop-blur-sm z-10 shadow-sm">
+                            📍 {{ $item['location'] }}
+                        </span>
+                    @endif
 
                     {{-- Hover Overlay & Eye Icon Button --}}
                     <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
@@ -190,6 +255,23 @@ if (empty($articlesToDisplay) || (is_countable($articlesToDisplay) && count($art
                         <p class="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
                             {{ $item['description'] }}
                         </p>
+
+                        {{-- Technical Badges --}}
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            @if(!empty($item['tool_used']))
+                                <span class="bg-blue-50 text-blue-700 border border-blue-200/80 text-[10px] font-semibold px-1.5 py-0.5 rounded flex items-center gap-0.5" title="Alat yang digunakan">
+                                    🛠️ <span class="truncate max-w-[110px]">{{ $item['tool_used'] }}</span>
+                                </span>
+                            @endif
+                            @if(!empty($item['pipe_specs']))
+                                <span class="bg-slate-100 text-slate-700 border border-slate-200 text-[10px] font-semibold px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                    📏 {{ $item['pipe_specs'] }} @if(!empty($item['pipe_length']))({{ $item['pipe_length'] }})@endif
+                                </span>
+                            @endif
+                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                🛡️ Garansi {{ $item['warranty_days'] ?? 30 }} Hari
+                            </span>
+                        </div>
                     </div>
 
                     {{-- Card Footer Action Buttons --}}

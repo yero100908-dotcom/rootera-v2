@@ -100,67 +100,136 @@
 @endpush
 
 @section('content')
-{{-- HERO & FEATURED SHOWCASE SECTION --}}
-<div class="relative overflow-hidden bg-gradient-to-br from-[#061434] via-[#081d48] to-[#0b2b64] text-white py-10 sm:py-16">
-    {{-- Background Glow Orbs --}}
-    <div class="absolute -top-24 -left-24 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+{{-- LUXURY ENGINEERING HERO & HUD STATS SECTION --}}
+<div class="relative overflow-hidden bg-slate-950 text-white py-12 sm:py-20 border-b border-slate-800">
+    {{-- Ambient Lighting Orbs --}}
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
-            <div class="inline-flex items-center gap-2 bg-teal-500/15 border border-teal-400/30 text-teal-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-                Dokumentasi Riil Tanpa Edit Rekayasa
+            <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-widest mb-3 shadow-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Dokumentasi Rekayasa Pipa Lapangan</span>
             </div>
-            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-3 text-white">
-                Galeri Pekerjaan & <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">Bukti Pengerjaan Pipa</span>
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4 text-white">
+                Arsip Dokumentasi & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Studi Kasus Rekayasa Pipa</span>
             </h1>
             <p class="text-slate-300 text-xs sm:text-base leading-relaxed max-w-2xl mx-auto">
-                Kumpulan video riil aksi teknisi, foto komparasi sebelum-sesudah (*Before & After*), serta performa mesin hydro-jetting & spiral rotary di lapangan.
+                Pembuktian teknis riil pelancaran saluran tersumbat 100% tanpa bongkar ubin menggunakan mesin spiral rotary Ridgid, kamera CCTV fiber optic HD, &amp; Hydro Jetting bertekanan tinggi.
             </p>
         </div>
 
+        {{-- METRICS HUD BAR --}}
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 max-w-4xl mx-auto mb-10 sm:mb-14">
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl backdrop-blur-md flex items-center gap-3.5 shadow-lg">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+                    📁
+                </div>
+                <div>
+                    <div class="text-lg font-extrabold text-white">90+ Proyek</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Dokumentasi Riil Terverifikasi</div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl backdrop-blur-md flex items-center gap-3.5 shadow-lg">
+                <div class="w-11 h-11 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl shrink-0">
+                    🛡️
+                </div>
+                <div>
+                    <div class="text-lg font-extrabold text-white">Garansi 30 Hari</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Jaminan Callback Gratis</div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-2xl backdrop-blur-md flex items-center gap-3.5 shadow-lg">
+                <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center text-xl shrink-0">
+                    🚫
+                </div>
+                <div>
+                    <div class="text-lg font-extrabold text-white">Tanpa Bongkar</div>
+                    <div class="text-[11px] text-slate-400 font-medium">Aman untuk Keramik &amp; Pipa</div>
+                </div>
+            </div>
+        </div>
+
         @if($featuredProject)
-        {{-- FEATURED SHOWCASE CARD --}}
-        <div class="bg-white/5 border border-white/15 rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-md shadow-2xl grid grid-cols-1 lg:grid-cols-2 gap-0 w-full max-w-7xl mx-auto">
-            <div class="lg:col-span-1 relative bg-slate-950 flex items-center justify-center min-h-[240px] sm:min-h-[320px] lg:min-h-[380px]">
+        {{-- FEATURED SHOWCASE CARD WITH INTERACTIVE SLIDER OR VIDEO --}}
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden backdrop-blur-md shadow-2xl grid grid-cols-1 lg:grid-cols-2 gap-0 w-full max-w-7xl mx-auto">
+            <div class="lg:col-span-1 relative bg-slate-950 flex items-center justify-center min-h-[260px] sm:min-h-[340px] lg:min-h-[400px]">
                 @if($featuredProject->media_type === 'video' && $featuredProject->display_media)
-                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[420px]">
+                    <video autoplay muted loop playsinline poster="{{ $featuredProject->display_thumbnail }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[440px]">
                         <source src="{{ $featuredProject->display_media }}" type="video/mp4">
                         Browser Anda tidak mendukung video tag.
                     </video>
+                @elseif($featuredProject->display_before_image)
+                    <x-before-after-slider 
+                        :beforeImage="$featuredProject->display_before_image" 
+                        :afterImage="$featuredProject->display_thumbnail" 
+                        :title="$featuredProject->title"
+                        aspectRatio="aspect-[4/3] max-h-[440px]" />
                 @else
-                    <img src="{{ $featuredProject->display_thumbnail }}" alt="Proyek Unggulan - {{ $featuredProject->title }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[420px]">
+                    <img src="{{ $featuredProject->display_thumbnail }}" alt="Proyek Unggulan - {{ $featuredProject->title }}" title="{{ $featuredProject->title }} - Rootera Plumbing" class="w-full h-full object-cover max-h-[440px]">
                 @endif
                 <div class="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
-                    <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wide shadow-md">⭐ Proyek Unggulan</span>
-                    <span class="bg-slate-900/80 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-md">{{ $featuredProject->category_label }}</span>
+                    <span class="bg-amber-400 text-slate-950 text-xs font-black px-2.5 py-1 rounded-md uppercase tracking-wide shadow-md">⭐ Studi Kasus Unggulan</span>
+                    <span class="bg-slate-900/90 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-xs font-bold px-2.5 py-1 rounded-md shadow-md">{{ $featuredProject->category_label }}</span>
                 </div>
             </div>
-            <div class="lg:col-span-1 p-5 sm:p-8 flex flex-col justify-between bg-slate-900/90 border-t lg:border-t-0 lg:border-l border-white/10">
+
+            <div class="lg:col-span-1 p-6 sm:p-8 flex flex-col justify-between bg-slate-900/95 border-t lg:border-t-0 lg:border-l border-slate-800">
                 <div>
-                    @if($featuredProject->location_tag)
-                    <div class="text-teal-300 text-xs font-bold mb-2 flex items-center gap-1">
-                        📍 {{ $featuredProject->location_tag }}
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        @if($featuredProject->location_tag)
+                        <span class="text-emerald-400 text-xs font-bold flex items-center gap-1">
+                            📍 {{ $featuredProject->location_tag }}
+                        </span>
+                        @endif
+                        <span class="text-slate-400 text-xs font-medium">
+                            🏢 {{ $featuredProject->project_client_type }}
+                        </span>
                     </div>
-                    @endif
-                    <h2 class="text-lg sm:text-xl font-bold text-white leading-snug mb-2 hover:text-teal-300 transition-colors">
+
+                    <h2 class="text-lg sm:text-2xl font-bold text-white leading-snug mb-3 hover:text-emerald-400 transition-colors">
                         <a href="{{ route('galeri.show', $featuredProject->slug) }}">
                             {{ $featuredProject->title }}
                         </a>
                     </h2>
+                    
+                    {{-- Technical Badges --}}
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        @if($featuredProject->tool_used)
+                        <span class="bg-blue-500/20 border border-blue-400/30 text-blue-300 text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                            🛠️ {{ $featuredProject->tool_used }}
+                        </span>
+                        @endif
+                        @if($featuredProject->pipe_specs)
+                        <span class="bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                            📏 {{ $featuredProject->pipe_specs }} @if($featuredProject->pipe_length)({{ $featuredProject->pipe_length }})@endif
+                        </span>
+                        @endif
+                        @if($featuredProject->completion_time)
+                        <span class="bg-purple-500/20 border border-purple-400/30 text-purple-300 text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                            ⏱️ {{ $featuredProject->completion_time }}
+                        </span>
+                        @endif
+                        <span class="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[11px] font-bold px-2 py-0.5 rounded-md">
+                            🛡️ Garansi {{ $featuredProject->warranty_days ?? 30 }} Hari
+                        </span>
+                    </div>
+
                     <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6 line-clamp-3">
                         {{ $featuredProject->description }}
                     </p>
                 </div>
-                <div class="flex flex-wrap gap-2 pt-2">
-                    @if($featuredProject->related_service_url)
-                    <a href="{{ url($featuredProject->related_service_url) }}" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all shadow-md shadow-emerald-500/20 flex items-center gap-1.5">
-                        Lihat Layanan →
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-800">
+                    <a href="{{ route('galeri.show', $featuredProject->slug) }}" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold px-5 py-2.5 rounded-xl transition-all shadow-md shadow-emerald-500/20 flex items-center gap-1.5 no-underline">
+                        <span>Baca Laporan Teknis</span> →
                     </a>
-                    @endif
-                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera, saya tertarik dengan pengerjaan proyek: ' . $featuredProject->title) }}" target="_blank" rel="noopener noreferrer" class="bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all border border-white/20 flex items-center gap-1.5">
-                        💬 Konsultasi Masalah Serupa
+                    
+                    <a href="https://wa.me/6281385404000?text={{ urlencode('Halo Rootera Plumbing, saya membaca laporan proyek unggulan [' . $featuredProject->title . ']. Saya ingin konsultasi masalah serupa.') }}" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition-all border border-slate-700 flex items-center gap-1.5 no-underline">
+                        💬 Konsultasi Kasus Ini
                     </a>
                 </div>
             </div>
@@ -173,7 +242,7 @@
 <section class="py-8 sm:py-14 bg-slate-50 min-h-screen">
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {{-- MOBILE-FIRST HORIZONTAL SCROLLABLE FILTER PILLS --}}
+        {{-- ALPINE.JS RECOVERY TABS / FILTER PILLS --}}
         <div class="relative mb-6 sm:mb-10">
             <div class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1 text-xs sm:text-sm font-semibold" id="filter-bar">
                 @php
@@ -182,48 +251,48 @@
                     $activeKey = ($currentMedia === 'video') ? 'video' : $currentCat;
                 @endphp
 
-                <button type="button" onclick="applyGalleryFilter('all', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'all' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>✨ Semua</span>
+                <button type="button" onclick="applyGalleryFilter('all', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'all' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>✨ Semua Proyek</span>
                     <span class="pill-badge">{{ $counts['all'] ?? 0 }}</span>
                 </button>
 
-                <button type="button" onclick="applyGalleryFilter('residential', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'residential' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>🏠 Rumah Tinggal</span>
-                    <span class="pill-badge">{{ $counts['residential'] ?? 0 }}</span>
-                </button>
-
-                <button type="button" onclick="applyGalleryFilter('commercial_resto', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'commercial_resto' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>🍽️ Resto & Kafe</span>
+                <button type="button" onclick="applyGalleryFilter('commercial_resto', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'commercial_resto' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>🍽️ Komersial &amp; Restoran (B2B)</span>
                     <span class="pill-badge">{{ $counts['commercial_resto'] ?? 0 }}</span>
                 </button>
 
-                <button type="button" onclick="applyGalleryFilter('commercial_b2b', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'commercial_b2b' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>🏢 Gedung & Pabrik</span>
+                <button type="button" onclick="applyGalleryFilter('residential', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'residential' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>🏠 Residensial &amp; Kamar Mandi</span>
+                    <span class="pill-badge">{{ $counts['residential'] ?? 0 }}</span>
+                </button>
+
+                <button type="button" onclick="applyGalleryFilter('commercial_b2b', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'commercial_b2b' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>🏢 Hydro Jetting Bertekanan</span>
                     <span class="pill-badge">{{ $counts['commercial_b2b'] ?? 0 }}</span>
                 </button>
 
-                <button type="button" onclick="applyGalleryFilter('cctv_inspection', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'cctv_inspection' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>📹 Inspeksi CCTV</span>
+                <button type="button" onclick="applyGalleryFilter('cctv_inspection', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'cctv_inspection' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>📹 Inspeksi CCTV Pipa</span>
                     <span class="pill-badge">{{ $counts['cctv_inspection'] ?? 0 }}</span>
                 </button>
 
-                <button type="button" onclick="applyGalleryFilter('before_after', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'before_after' ? 'active-pill' : 'inactive-pill' }}">
-                    <span>⚖️ Before & After</span>
+                <button type="button" onclick="applyGalleryFilter('before_after', 'all')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'before_after' ? 'active-pill' : 'inactive-pill' }}">
+                    <span>⚖️ Before &amp; After</span>
                     <span class="pill-badge">{{ $counts['before_after'] ?? 0 }}</span>
                 </button>
 
-                <button type="button" onclick="applyGalleryFilter('all', 'video')" class="filter-pill shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'video' ? 'active-pill' : 'inactive-pill' }}">
+                <button type="button" onclick="applyGalleryFilter('all', 'video')" class="filter-pill shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full border transition-all duration-200 {{ $activeKey === 'video' ? 'active-pill' : 'inactive-pill' }}">
                     <span>▶️ Video Pengerjaan</span>
                     <span class="pill-badge">{{ $counts['video'] ?? 0 }}</span>
                 </button>
             </div>
         </div>
 
-        {{-- SKELETON LOADING GRID (HIDDEN BY DEFAULT) --}}
+        {{-- SKELETON LOADING GRID --}}
         <div id="skeleton-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mb-8">
             @for($i = 0; $i < 8; $i++)
-            <div class="bg-white rounded-xl sm:rounded-2xl p-3 border border-slate-200 animate-pulse space-y-3">
-                <div class="aspect-[4/3] bg-slate-200 rounded-lg w-full"></div>
+            <div class="bg-white rounded-2xl p-3.5 border border-slate-200 animate-pulse space-y-3">
+                <div class="aspect-[16/10] bg-slate-200 rounded-xl w-full"></div>
                 <div class="h-4 bg-slate-200 rounded w-3/4"></div>
                 <div class="h-3 bg-slate-200 rounded w-1/2"></div>
             </div>
@@ -235,10 +304,10 @@
             @include('pages.gallery.partials.gallery_grid', ['galleries' => $galleries])
         </div>
 
-        {{-- LOAD MORE BUTTON & PAGINATION CONTAINER --}}
+        {{-- LOAD MORE BUTTON & PAGINATION WRAPPER --}}
         <div class="flex flex-col items-center justify-center mt-8 gap-3" id="pagination-wrapper">
             @if($galleries->hasMorePages())
-            <button type="button" id="btn-load-more" onclick="loadMoreGalleryItems()" data-next-url="{{ $galleries->nextPageUrl() }}" class="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-lg transition-all hover:scale-105 active:scale-95">
+            <button type="button" id="btn-load-more" onclick="loadMoreGalleryItems()" data-next-url="{{ $galleries->nextPageUrl() }}" class="inline-flex items-center gap-2 px-6 py-3.5 bg-slate-900 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold rounded-full shadow-lg transition-all hover:scale-105 active:scale-95">
                 <span id="load-more-text">Muat Lebih Banyak Dokumentasi</span>
                 <svg id="load-more-spinner" class="hidden animate-spin w-4 h-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -247,28 +316,28 @@
             </button>
             @endif
 
-            <div class="text-xs text-slate-400 font-medium" id="gallery-count-info">
-                Menampilkan <span id="current-loaded-count">{{ count($galleries) }}</span> dari <span id="total-gallery-count">{{ $galleries->total() }}</span> dokumentasi
+            <div class="text-xs text-slate-500 font-medium" id="gallery-count-info">
+                Menampilkan <span id="current-loaded-count" class="font-bold text-slate-800">{{ count($galleries) }}</span> dari <span id="total-gallery-count" class="font-bold text-slate-800">{{ $galleries->total() }}</span> laporan proyek
             </div>
         </div>
 
         {{-- INSTAGRAM LIVE REELS & FEED SHOWCASE SECTION --}}
-        <div class="mt-12 md:mt-16 p-6 sm:p-8 bg-gradient-to-br from-[#061434] via-[#0b2b64] to-[#07172B] text-white rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
+        <div class="mt-12 md:mt-16 p-6 sm:p-8 bg-slate-950 text-white rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden">
             <div class="absolute -top-24 -right-24 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800 relative z-10">
                 <div>
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-400/30 mb-2">
                         <span>📸 INSTAGRAM OFFICIAL REELS &amp; UPDATES</span>
                     </div>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-white">
                         Dokumentasi Harian di <span class="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">@rootera_plumbing</span>
                     </h3>
                     <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
                         Ikuti unggahan Reels aksi penanganan pipa tersumbat, inspeksi CCTV, dan edukasi cuci toren terbaru langsung dari feed Instagram kami.
                     </p>
                 </div>
-                <a href="https://www.instagram.com/rootera_plumbing/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-pink-500/20 transition-all hover:scale-105 shrink-0">
+                <a href="https://www.instagram.com/rootera_plumbing/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-pink-500/20 transition-all hover:scale-105 shrink-0 no-underline">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                     <span>Follow @rootera_plumbing</span>
                 </a>
@@ -290,14 +359,14 @@
     </div>
 </section>
 
-{{-- MODAL VIEWER FOR PHOTO LIGHTBOX & HTML5 VIDEO --}}
-<div id="mediaModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[99999] hidden items-center justify-center p-3 sm:p-6" onclick="closeMediaModal(event)">
-    <div class="relative w-full max-w-4xl bg-slate-900 rounded-2xl overflow-hidden border border-white/15 shadow-2xl animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
+{{-- MODAL LIGHTBOX VIEWER FOR PHOTO & VIDEO --}}
+<div id="mediaModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[99999] hidden items-center justify-center p-3 sm:p-6" onclick="closeMediaModal(event)">
+    <div class="relative w-full max-w-4xl bg-slate-900 rounded-3xl overflow-hidden border border-slate-700 shadow-2xl animate-in fade-in zoom-in-95 duration-200" onclick="event.stopPropagation()">
         
         {{-- Modal Header --}}
-        <div class="flex justify-between items-center px-4 py-3 bg-slate-950/80 border-b border-white/10">
+        <div class="flex justify-between items-center px-5 py-3.5 bg-slate-950 border-b border-slate-800">
             <h4 id="modalMediaTitle" class="text-white font-bold text-xs sm:text-base truncate max-w-[80%]"></h4>
-            <button type="button" onclick="forceCloseMediaModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-xl transition-colors">&times;</button>
+            <button type="button" onclick="forceCloseMediaModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-xl transition-colors">&times;</button>
         </div>
 
         {{-- Modal Content Area --}}
@@ -305,13 +374,13 @@
             {{-- Injected dynamically --}}
         </div>
 
-        {{-- Modal Footer with CTA --}}
-        <div class="p-3 bg-slate-950/90 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs">
+        {{-- Modal Footer --}}
+        <div class="p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
             <span class="text-slate-400 flex items-center gap-1 font-medium">
-                🛡️ Dokumen Resmi Rootera Plumbing
+                🛡️ Dokumen Resmi Rootera Plumbing Indonesia
             </span>
-            <a id="modalWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl transition-colors flex items-center gap-1.5">
-                💬 Konsultasi Kasus Ini via WhatsApp
+            <a id="modalWaBtn" href="#" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-5 py-2.5 rounded-full transition-colors flex items-center gap-1.5 no-underline shadow-md">
+                💬 Konsultasi Kasus Ini via WA
             </a>
         </div>
 
@@ -321,7 +390,6 @@
 
 @push('styles')
 <style>
-/* Hide standard scrollbars for smooth filter navigation */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -330,7 +398,6 @@
     scrollbar-width: none;
 }
 
-/* Active & Inactive Pill States */
 .filter-pill .pill-badge {
     font-size: 0.7rem;
     padding: 0.15rem 0.45rem;
@@ -338,15 +405,15 @@
     font-weight: 700;
 }
 .active-pill {
-    background-color: #0b2b64;
-    color: #ffffff;
-    border-color: #2dd4bf;
-    box-shadow: 0 4px 14px rgba(11, 43, 100, 0.35);
+    background-color: #0b132b;
+    color: #34d399;
+    border-color: #10b981;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
     transform: scale(1.02);
 }
 .active-pill .pill-badge {
-    background-color: rgba(45, 212, 191, 0.25);
-    color: #2dd4bf;
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #34d399;
 }
 .inactive-pill {
     background-color: #ffffff;
@@ -354,20 +421,13 @@
     border-color: #cbd5e1;
 }
 .inactive-pill:hover {
-    background-color: #f1f5f9;
-    color: #0b2b64;
-    border-color: #94a3b8;
+    background-color: #f8fafc;
+    color: #0b132b;
+    border-color: #10b981;
 }
 .inactive-pill .pill-badge {
     background-color: #f1f5f9;
     color: #64748b;
-}
-
-/* Shimmer Loading Animation */
-@keyframes shimmer {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
 }
 </style>
 @endpush
@@ -387,16 +447,13 @@ function applyGalleryFilter(category, mediaType) {
     currentMediaType = mediaType;
     currentPage = 1;
 
-    // Update active UI pills
     updateActivePills(category, mediaType);
 
-    // Show Skeleton Loader
     const gridContainer = document.getElementById('gallery-grid-container');
     const skeletonGrid = document.getElementById('skeleton-grid');
     gridContainer.classList.add('hidden');
     skeletonGrid.classList.remove('hidden');
 
-    // Build URL query params
     const params = new URLSearchParams();
     if (category !== 'all') params.set('category', category);
     if (mediaType !== 'all') params.set('media_type', mediaType);
@@ -469,7 +526,6 @@ function loadMoreGalleryItems() {
 }
 
 function updateLoadMoreButton(nextPageUrl, total, currentLoaded) {
-    const wrapper = document.getElementById('pagination-wrapper');
     const btn = document.getElementById('btn-load-more');
     const countInfo = document.getElementById('gallery-count-info');
 
@@ -490,7 +546,6 @@ function updateLoadMoreButton(nextPageUrl, total, currentLoaded) {
 
 function updateActivePills(category, mediaType) {
     const pills = document.querySelectorAll('.filter-pill');
-    const targetKey = (mediaType === 'video') ? 'video' : category;
 
     pills.forEach(pill => {
         pill.classList.remove('active-pill');
@@ -524,7 +579,7 @@ function openMediaModal(type, url, title, beforeUrl, encodedTitle) {
     container.innerHTML = '';
     
     if (waBtn) {
-        waBtn.href = `https://wa.me/6281385404000?text=Halo%20Rootera%2C%20saya%20tertarik%20dengan%20dokumentasi%3A%20${encodedTitle}`;
+        waBtn.href = `https://wa.me/6281385404000?text=Halo%20Rootera%20Plumbing%2C%20saya%20membaca%20laporan%20studi%20kasus%20%5B${encodedTitle}%5D.%20Saya%20memiliki%20masalah%20serupa%20dan%20ingin%20konsultasi%2Fpanggil%20teknisi.`;
     }
 
     if (type === 'video') {
@@ -590,15 +645,5 @@ document.addEventListener('keydown', function(e) {
         forceCloseMediaModal();
     }
 });
-
-// Trigger Instagram Embed processing on client load
-function processInstagramEmbeds() {
-    if (window.instgrm && window.instgrm.Embeds && typeof window.instgrm.Embeds.process === 'function') {
-        window.instgrm.Embeds.process();
-    }
-}
-document.addEventListener('DOMContentLoaded', processInstagramEmbeds);
-document.addEventListener('turbo:load', processInstagramEmbeds);
-document.addEventListener('livewire:navigated', processInstagramEmbeds);
 </script>
 @endpush

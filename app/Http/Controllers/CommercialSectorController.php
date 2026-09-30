@@ -9,6 +9,7 @@ use App\Models\ProjectGallery;
 use App\Models\Gallery;
 use App\Models\Article;
 use App\Models\Faq;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -216,7 +217,7 @@ class CommercialSectorController extends Controller
      */
     public function submitFakturPajak(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'company_name' => 'required|string|max:255',
             'npwp_number'  => 'required|string|max:50',
             'tax_address'  => 'required|string',
@@ -224,6 +225,31 @@ class CommercialSectorController extends Controller
             'phone'        => 'required|string|max:30',
             'invoice_no'   => 'nullable|string|max:100',
         ]);
+
+        try {
+            $messageBody = sprintf(
+                "[PERMINTAAN FAKTUR PAJAK B2B]\nPerusahaan: %s\nNPWP: %s\nAlamat Pajak: %s\nEmail Finance: %s\nKontak PIC: %s\nNo. Invoice/Order: %s",
+                $validated['company_name'],
+                $validated['npwp_number'],
+                $validated['tax_address'],
+                $validated['finance_email'],
+                $validated['phone'],
+                $validated['invoice_no'] ?? '-'
+            );
+
+            Contact::create([
+                'name'         => '[B2B Faktur Pajak] ' . $validated['company_name'],
+                'email'        => $validated['finance_email'],
+                'phone'        => $validated['phone'],
+                'area'         => Str::limit($validated['tax_address'], 100),
+                'service_type' => 'Faktur Pajak B2B / Komersial',
+                'message'      => $messageBody,
+                'status'       => 'new',
+                'source'       => 'b2b_faktur_pajak',
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Gagal menyimpan B2B Faktur Pajak Lead: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'Permintaan Faktur Pajak berhasil dikirim. Tim finance kami akan memproses e-Faktur ke email finance Anda dalam 1x24 jam kerja.');
     }

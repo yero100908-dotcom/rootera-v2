@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Faq;
 use App\Models\ServiceCategory;
+use App\Models\Contact;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class DiagnosticController extends Controller
 {
@@ -61,5 +63,62 @@ class DiagnosticController extends Controller
         });
 
         return view('pages.diagnostic', compact('seo', 'faqs', 'categories', 'canonical'));
+    }
+
+    /**
+     * AJAX Endpoint: Capture Lead Data from Interactive Diagnostic Tool
+     */
+    public function captureLead(Request $request)
+    {
+        $validated = $request->validate([
+            'city_name'       => 'nullable|string|max:100',
+            'pipe_location'   => 'nullable|string|max:100',
+            'flow_symptom'    => 'nullable|string|max:100',
+            'duration'        => 'nullable|string|max:60',
+            'severity_score'  => 'nullable|integer',
+            'severity_label'  => 'nullable|string|max:50',
+            'phone'           => 'nullable|string|max:30',
+        ]);
+
+        try {
+            $cityName = $validated['city_name'] ?? 'Umum';
+            $pipeLocation = $validated['pipe_location'] ?? 'Diagnosa Saluran';
+            $flowSymptom = $validated['flow_symptom'] ?? '-';
+            $duration = $validated['duration'] ?? '-';
+            $severityLabel = $validated['severity_label'] ?? '-';
+            $severityScore = $validated['severity_score'] ?? 0;
+
+            $messageSummary = sprintf(
+                "[LEAD DIAGNOSA ONLINE] Area: %s | Jalur: %s | Gejala: %s | Durasi: %s | Keparahan: %s (Skor: %d)",
+                $cityName,
+                $pipeLocation,
+                $flowSymptom,
+                $duration,
+                $severityLabel,
+                $severityScore
+            );
+
+            $contact = Contact::create([
+                'name'         => 'Lead Diagnosa Online (' . $cityName . ')',
+                'phone'        => $validated['phone'] ?? 'Belum terisi (Menunggu WA)',
+                'area'         => $cityName,
+                'service_type' => $pipeLocation,
+                'message'      => $messageSummary,
+                'status'       => 'new',
+                'source'       => 'diagnostic_online',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'lead_id' => $contact->id,
+                'message' => 'Data diagnosa berhasil disimpan.',
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Gagal menyimpan Diagnostic Lead: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem, namun diagnosa tetap dapat diteruskan ke WhatsApp.',
+            ], 500);
+        }
     }
 }

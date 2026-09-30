@@ -22,6 +22,13 @@ class Gallery extends Model
         'location_tag',
         'related_service_url',
         'description',
+        'tool_used',
+        'pipe_specs',
+        'pipe_length',
+        'completion_time',
+        'warranty_days',
+        'cost_estimate',
+        'technical_diagnosis',
         'is_featured',
         'is_active',
         'sort_order',
@@ -29,9 +36,11 @@ class Gallery extends Model
     ];
 
     protected $casts = [
-        'is_featured'  => 'boolean',
-        'is_active'    => 'boolean',
-        'published_at' => 'datetime',
+        'is_featured'   => 'boolean',
+        'is_active'     => 'boolean',
+        'warranty_days' => 'integer',
+        'cost_estimate' => 'decimal:2',
+        'published_at'  => 'datetime',
     ];
 
     protected static function boot()
@@ -68,31 +77,53 @@ class Gallery extends Model
         };
     }
 
-    protected function resolveAssetUrl(?string $rawPath, string $fallback = 'images/JnJ.jpeg'): string
+    protected function resolveAssetUrl(?string $rawPath, string $fallback = 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp'): string
     {
         if (empty($rawPath)) {
             return asset($fallback);
         }
 
-        $path = $rawPath;
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            $parsed = parse_url($path, PHP_URL_PATH);
+        if (Str::startsWith($rawPath, ['http://', 'https://'])) {
+            if (!str_contains($rawPath, 'rooteraplumbing')) {
+                return $rawPath;
+            }
+            $parsed = parse_url($rawPath, PHP_URL_PATH);
             if ($parsed) {
-                $path = ltrim($parsed, '/');
+                $rawPath = ltrim($parsed, '/');
             }
         }
 
-        $cleanPath = ltrim($path, '/');
-        if (!Str::startsWith($cleanPath, ['images/', 'assets/', 'storage/', 'videos/'])) {
-            $cleanPath = 'storage/' . $cleanPath;
-        }
+        $cleanPath = ltrim($rawPath, '/');
 
+        // 1. Direct public path check
         if (file_exists(public_path($cleanPath))) {
             return asset($cleanPath);
         }
 
-        if (Str::startsWith($rawPath, ['http://', 'https://']) && !str_contains($rawPath, 'rooteraplumbing')) {
-            return $rawPath;
+        // 2. Storage prefix check
+        if (!Str::startsWith($cleanPath, 'storage/')) {
+            $storagePath = 'storage/' . $cleanPath;
+            if (file_exists(public_path($storagePath))) {
+                return asset($storagePath);
+            }
+        }
+
+        // 3. Images prefix & dokumentasi check
+        if (!Str::startsWith($cleanPath, 'images/')) {
+            $imagesPath = 'images/' . $cleanPath;
+            if (file_exists(public_path($imagesPath))) {
+                return asset($imagesPath);
+            }
+            $dokumentasiPath = 'images/dokumentasi/' . basename($cleanPath);
+            if (file_exists(public_path($dokumentasiPath))) {
+                return asset($dokumentasiPath);
+            }
+        }
+
+        // 4. Fallback check for storage/app/public physical location
+        $appPublicPath = storage_path('app/public/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
+        if (file_exists($appPublicPath)) {
+            return asset('storage/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
         }
 
         return asset($fallback);
@@ -100,7 +131,16 @@ class Gallery extends Model
 
     public function getDisplayThumbnailAttribute(): string
     {
-        return $this->resolveAssetUrl($this->thumbnail_path, 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
+        if (!empty($this->thumbnail_path)) {
+            return $this->resolveAssetUrl($this->thumbnail_path, 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
+        }
+        if (!empty($this->media_file_path)) {
+            return $this->resolveAssetUrl($this->media_file_path, 'assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
+        }
+        if (!empty($this->before_image_path)) {
+            return $this->resolveAssetUrl($this->before_image_path, 'images/JnJ.jpeg');
+        }
+        return asset('assets/banners/rootera-plumbing-jasa-saluran-mampet-profesional-desktop.webp');
     }
 
     public function getDisplayMediaAttribute(): string
@@ -120,6 +160,86 @@ class Gallery extends Model
             return null;
         }
         return $this->resolveAssetUrl($this->before_image_path, 'images/JnJ.jpeg');
+    }
+
+    /**
+     * Get local showcases with hierarchical fallback from 90+ real gallery records.
+     */
+    public static function getLocalShowcases(?int $cityId = null, ?int $districtId = null, int $limit = 3)
+    {
+        $city = $cityId ? \App\Models\City::find($cityId) : null;
+        $district = $districtId ? \App\Models\District::find($districtId) : null;
+
+        $results = collect();
+
+        // 1. Match by District location_tag
+        if ($district) {
+            $districtName = $district->name;
+            $matched = static::where('is_active', true)
+                ->where('location_tag', 'like', "%{$districtName}%")
+                ->latest('published_at')
+                ->latest('id')
+                ->take($limit)
+                ->get();
+
+            foreach ($matched as $g) {
+                $g->is_fallback = false;
+                $results->push($g);
+            }
+        }
+
+        // 2. Match by City location_tag
+        if ($results->count() < $limit && $city) {
+            $existingIds = $results->pluck('id')->toArray();
+            $cityName = $city->name;
+            $matched = static::where('is_active', true)
+                ->whereNotIn('id', $existingIds)
+                ->where('location_tag', 'like', "%{$cityName}%")
+                ->latest('published_at')
+                ->latest('id')
+                ->take($limit - $results->count())
+                ->get();
+
+            foreach ($matched as $g) {
+                $g->is_fallback = $district ? true : false;
+                $results->push($g);
+            }
+        }
+
+        // 3. Fallback to featured active galleries
+        if ($results->count() < $limit) {
+            $existingIds = $results->pluck('id')->toArray();
+            $featured = static::where('is_active', true)
+                ->whereNotIn('id', $existingIds)
+                ->where('is_featured', true)
+                ->latest('published_at')
+                ->latest('id')
+                ->take($limit - $results->count())
+                ->get();
+
+            foreach ($featured as $g) {
+                $g->is_fallback = ($district || $city) ? true : false;
+                $results->push($g);
+            }
+        }
+
+        // 4. Ultimate fallback to active galleries
+        if ($results->count() < $limit) {
+            $existingIds = $results->pluck('id')->toArray();
+            $general = static::where('is_active', true)
+                ->whereNotIn('id', $existingIds)
+                ->latest('published_at')
+                ->latest('id')
+                ->take($limit - $results->count())
+                ->get();
+
+            foreach ($general as $g) {
+                $g->is_fallback = ($district || $city) ? true : false;
+                $results->push($g);
+            }
+        }
+
+        return $results;
     }
 
     public function getToolsUsedAttribute(): array

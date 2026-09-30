@@ -10,6 +10,8 @@ use App\Models\Technology;
 use App\Models\ProjectGallery;
 use App\Models\Article;
 use App\Services\SpintaxService;
+use App\Services\PhysicalHubResolver;
+use App\Services\LocalSchemaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -51,7 +53,7 @@ class ProgrammaticSeoController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
         }
 
-        $cacheKey = "prog_seo_v9_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
+        $cacheKey = "prog_seo_v10_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
 
         // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
         $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
@@ -91,25 +93,9 @@ class ProgrammaticSeoController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            $projectShowcases = ProjectGallery::where('is_active', true)
-                ->where(function ($q) use ($city) {
-                    $q->where('city_id', $city->id)->orWhereNull('city_id');
-                })
-                ->with(['district', 'city', 'serviceCategory'])
-                ->latest()
-                ->take(4)
-                ->get();
-
-            if ($projectShowcases->count() < 4) {
-                $existingIds = $projectShowcases->pluck('id')->toArray();
-                $moreShowcases = ProjectGallery::where('is_active', true)
-                    ->whereNotIn('id', $existingIds)
-                    ->with(['district', 'city', 'serviceCategory'])
-                    ->latest()
-                    ->take(4 - $projectShowcases->count())
-                    ->get();
-                $projectShowcases = $projectShowcases->concat($moreShowcases);
-            }
+            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
+            $localProjects = ProjectGallery::getLocalShowcases($city->id, $district ? $district->id : null, 3);
+            $projectShowcases = $localProjects;
 
             $relatedArticles = \App\Models\Article::published()
                 ->latest('published_at')
@@ -119,10 +105,13 @@ class ProgrammaticSeoController extends Controller
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
             $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
 
+            // TUGAS 2: Dispatcher Physical Hub Resolver
+            $physicalHub = PhysicalHubResolver::resolveHub($city, $district);
+
             $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
             $locationShort = $district ? $district->name : $city->name;
-            $estimatedArrival = $district ? ($district->estimated_arrival ?? "30–45 Menit") : ($city->estimated_arrival ?? "30–45 Menit");
-            $dispatchHub = $district ? "Pos Hub Armada Kecamatan {$district->name}" : "Pos Hub Armada Utama {$city->name}";
+            $estimatedArrival = $physicalHub['estimated_arrival'];
+            $dispatchHub = $physicalHub['name'] . " (" . $physicalHub['locality'] . ")";
             $travelTime = $estimatedArrival;
             $nearbyLandmarks = $this->villageService->getVillagesForDistrict($district ? $district->slug : null, $city->slug, $locationShort);
 
@@ -162,6 +151,9 @@ class ProgrammaticSeoController extends Controller
                 }
                 $isIndexable = true;
             }
+
+            // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
+            $schemas = LocalSchemaService::buildSchemas($city, $district, $physicalHub, $category, $canonical, $localFaqs);
 
             $catSlug = strtolower($category->slug ?? '');
             if (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') || str_contains($catSlug, 'deteksi')) {
@@ -208,6 +200,9 @@ class ProgrammaticSeoController extends Controller
                 'siblingCities',
                 'allCategories',
                 'projectShowcases',
+                'localProjects',
+                'physicalHub',
+                'schemas',
                 'relatedArticles',
                 'faqs',
                 'technologies',

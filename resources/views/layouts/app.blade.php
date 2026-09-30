@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NW5VLV9R');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Yandex Webmaster Verification -->
+    <meta name="yandex-verification" content="f66313cf1fe4c045" />
+
     {{-- Favicon & Touch Icons --}}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/brand/favicon-rooteraplumbing-jasa-saluran-pipa-mampet.png') }}">
@@ -319,6 +330,11 @@
     @stack('styles')
 </head>
 <body class="min-h-screen w-full max-w-full bg-white text-slate-800 antialiased overflow-x-hidden relative m-0 p-0">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NW5VLV9R"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     {{-- Navbar --}}
     @include('components.navbar')
 

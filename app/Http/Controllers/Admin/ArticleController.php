@@ -7,6 +7,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
@@ -62,7 +63,8 @@ class ArticleController extends Controller
             $validated['published_at'] = now();
         }
 
-        Article::create($validated);
+        $article = Article::create($validated);
+        $this->clearArticleCache($article->slug);
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil ditambahkan.');
@@ -94,6 +96,8 @@ class ArticleController extends Controller
             'meta_description' => 'nullable|string|max:300',
         ]);
 
+        $oldSlug = $article->slug;
+
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
         $validated['is_headline'] = $request->boolean('is_headline');
         $validated['is_featured'] = $request->boolean('is_featured');
@@ -116,6 +120,7 @@ class ArticleController extends Controller
         }
 
         $article->update($validated);
+        $this->clearArticleCache($article->slug, $oldSlug);
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil diperbarui.');
@@ -123,10 +128,27 @@ class ArticleController extends Controller
 
     public function destroy(Article $article, \App\Services\WebpConverterService $webpService)
     {
+        $slug = $article->slug;
         $webpService->deleteIfExists($article->thumbnail);
         $article->delete();
+        $this->clearArticleCache($slug);
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil dihapus.');
     }
+
+    /**
+     * Perform targeted cache invalidation when articles are mutated.
+     */
+    protected function clearArticleCache(string $slug, ?string $oldSlug = null)
+    {
+        Cache::forget('blog_index_page_v1');
+        Cache::forget('blog_recent_articles');
+        Cache::forget("article_show_{$slug}");
+        if ($oldSlug && $oldSlug !== $slug) {
+            Cache::forget("article_show_{$oldSlug}");
+        }
+        Cache::forget('home_page_html_v5');
+    }
 }
+

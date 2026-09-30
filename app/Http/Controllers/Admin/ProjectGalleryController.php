@@ -35,14 +35,21 @@ class ProjectGalleryController extends Controller
             'city_id'             => 'nullable|exists:cities,id',
             'district_id'         => 'nullable|exists:districts,id',
             'client_type'         => 'required|string|max:60',
+            'tool_used'           => 'nullable|string|max:150',
+            'pipe_specs'          => 'nullable|string|max:150',
+            'pipe_length'         => 'nullable|string|max:100',
             'completion_time'     => 'nullable|string|max:60',
-            'description'         => 'nullable|string|max:500',
+            'warranty_days'       => 'nullable|integer|min:0',
+            'cost_estimate'       => 'nullable|numeric|min:0',
+            'description'         => 'nullable|string',
+            'technical_diagnosis' => 'nullable|string',
             'before_image'        => 'nullable|image|mimes:jpeg,png,jpg,webp,bmp,gif,svg|max:5120',
             'after_image'         => 'nullable|image|mimes:jpeg,png,jpg,webp,bmp,gif,svg|max:5120',
             'sort_order'          => 'nullable|integer',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']) . '-' . Str::random(5);
+        $validated['warranty_days'] = $validated['warranty_days'] ?? 30;
 
         if ($request->hasFile('before_image')) {
             $validated['before_image'] = $webpService->convertAndStore($request->file('before_image'), 'projects');
@@ -54,7 +61,8 @@ class ProjectGalleryController extends Controller
 
         ProjectGallery::create($validated);
 
-        Cache::flush();
+        Cache::forget('home_page_html_v5');
+        Cache::forget('gallery_projects_list');
 
         return redirect()->route('admin.project-galleries.index')
             ->with('success', 'Portofolio proyek berhasil ditambahkan.');
@@ -68,8 +76,14 @@ class ProjectGalleryController extends Controller
             'city_id'             => 'nullable|exists:cities,id',
             'district_id'         => 'nullable|exists:districts,id',
             'client_type'         => 'required|string|max:60',
+            'tool_used'           => 'nullable|string|max:150',
+            'pipe_specs'          => 'nullable|string|max:150',
+            'pipe_length'         => 'nullable|string|max:100',
             'completion_time'     => 'nullable|string|max:60',
-            'description'         => 'nullable|string|max:500',
+            'warranty_days'       => 'nullable|integer|min:0',
+            'cost_estimate'       => 'nullable|numeric|min:0',
+            'description'         => 'nullable|string',
+            'technical_diagnosis' => 'nullable|string',
             'before_image'        => 'nullable|image|mimes:jpeg,png,jpg,webp,bmp,gif,svg|max:5120',
             'after_image'         => 'nullable|image|mimes:jpeg,png,jpg,webp,bmp,gif,svg|max:5120',
             'sort_order'          => 'nullable|integer',
@@ -87,7 +101,8 @@ class ProjectGalleryController extends Controller
 
         $projectGallery->update($validated);
 
-        Cache::flush();
+        Cache::forget('home_page_html_v5');
+        Cache::forget('gallery_projects_list');
 
         return redirect()->route('admin.project-galleries.index')
             ->with('success', 'Portofolio proyek berhasil diperbarui.');
@@ -100,7 +115,8 @@ class ProjectGalleryController extends Controller
 
         $projectGallery->delete();
 
-        Cache::flush();
+        Cache::forget('home_page_html_v5');
+        Cache::forget('gallery_projects_list');
 
         return redirect()->route('admin.project-galleries.index')
             ->with('success', 'Portofolio proyek berhasil dihapus.');
@@ -109,7 +125,8 @@ class ProjectGalleryController extends Controller
     public function toggleActive(ProjectGallery $projectGallery)
     {
         $projectGallery->update(['is_active' => !$projectGallery->is_active]);
-        Cache::flush();
+        Cache::forget('home_page_html_v5');
+        Cache::forget('gallery_projects_list');
         return redirect()->back()->with('success', 'Status proyek diperbarui.');
     }
 }

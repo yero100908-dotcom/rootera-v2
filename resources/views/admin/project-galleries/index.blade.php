@@ -70,6 +70,11 @@
                     </td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex items-center justify-end gap-2">
+                            @if($proj->slug)
+                            <a href="{{ route('galeri.show', $proj->slug) }}" target="_blank" class="p-2 rounded-xl text-blue-600 hover:bg-blue-50 border border-slate-200/80 transition-all hover:scale-105" title="Lihat di Web (Live Preview)">
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            </a>
+                            @endif
                             <button onclick="openEditModal({{ json_encode($proj) }})" class="p-2 rounded-xl text-emerald-600 hover:bg-emerald-50 border border-slate-200/80 transition-all hover:scale-105" title="Edit Proyek">
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                             </button>
@@ -152,15 +157,43 @@
                     </select>
                 </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Alat / Mesin Digunakan</label>
+                    <input type="text" id="projectToolUsed" name="tool_used" placeholder="Misal: Ridgid K-50 Spiral Machine" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900">
+                </div>
+
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Ukuran / Spesifikasi Pipa</label>
+                    <input type="text" id="projectPipeSpecs" name="pipe_specs" placeholder="Misal: Pipa PVC 3 Inch" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900">
+                </div>
+
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Panjang Jalur Pipa</label>
+                    <input type="text" id="projectPipeLength" name="pipe_length" placeholder="Misal: 12 Meter" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Estimasi Waktu Pengerjaan</label>
                     <input type="text" id="projectCompletionTime" name="completion_time" placeholder="Misal: 1-2 Jam" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900">
+                </div>
+
+                <div>
+                    <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Masa Garansi (Hari)</label>
+                    <input type="number" id="projectWarrantyDays" name="warranty_days" value="30" placeholder="30" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900">
                 </div>
             </div>
 
             <div>
                 <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Deskripsi Pengerjaan</label>
-                <textarea id="projectDescription" name="description" rows="3" placeholder="Tuliskan ringkasan proses pelancaran..." class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl p-3 text-xs text-slate-800"></textarea>
+                <textarea id="projectDescription" name="description" rows="2" placeholder="Tuliskan ringkasan proses pelancaran..." class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl p-3 text-xs text-slate-800"></textarea>
+            </div>
+
+            <div>
+                <label class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1 block">Diagnosa Teknis &amp; Temuan Lapangan</label>
+                <textarea id="projectTechnicalDiagnosis" name="technical_diagnosis" rows="2" placeholder="Analisa penyebab sumbatan, hasil CCTV, atau kendala di lokasi..." class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl p-3 text-xs text-slate-800"></textarea>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -193,8 +226,13 @@
         document.getElementById('projectCategory').value = '';
         document.getElementById('projectClientType').value = 'Rumah Tangga';
         document.getElementById('projectCity').value = '';
+        document.getElementById('projectToolUsed').value = '';
+        document.getElementById('projectPipeSpecs').value = '';
+        document.getElementById('projectPipeLength').value = '';
         document.getElementById('projectCompletionTime').value = '1-2 Jam';
+        document.getElementById('projectWarrantyDays').value = '30';
         document.getElementById('projectDescription').value = '';
+        document.getElementById('projectTechnicalDiagnosis').value = '';
         
         document.getElementById('projectModal').classList.remove('hidden');
         document.getElementById('projectModal').classList.add('flex');
@@ -208,8 +246,13 @@
         document.getElementById('projectCategory').value = project.service_category_id || '';
         document.getElementById('projectClientType').value = project.client_type || 'Rumah Tangga';
         document.getElementById('projectCity').value = project.city_id || '';
+        document.getElementById('projectToolUsed').value = project.tool_used || '';
+        document.getElementById('projectPipeSpecs').value = project.pipe_specs || '';
+        document.getElementById('projectPipeLength').value = project.pipe_length || '';
         document.getElementById('projectCompletionTime').value = project.completion_time || '';
+        document.getElementById('projectWarrantyDays').value = project.warranty_days || 30;
         document.getElementById('projectDescription').value = project.description || '';
+        document.getElementById('projectTechnicalDiagnosis').value = project.technical_diagnosis || '';
 
         document.getElementById('projectModal').classList.remove('hidden');
         document.getElementById('projectModal').classList.add('flex');

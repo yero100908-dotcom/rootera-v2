@@ -183,8 +183,75 @@ $webAppSchema = [
                 this.selectedQ3 = null;
                 this.selectedQ4 = null;
                 this.selectedCity = 'Jakarta Selatan';
+            },
+
+            async captureLead() {
+                let locMap = { 
+                    'wastafel': 'Wastafel Dapur (Kitchen Sink)', 
+                    'floordrain': 'Floor Drain Kamar Mandi', 
+                    'kloset': 'Kloset Toilet (WC)', 
+                    'talang': 'Pipa Talang Air Hujan',
+                    'greasetrap': 'Grease Trap Restoran/Kafe (B2B)',
+                    'got': 'Pipa Utama & Bak Kontrol Luar' 
+                };
+                let symMap = { 'lambat': 'Lambat Mengalir', 'mampet': 'Mampet Total', 'meluap': 'Air Meluap Balik' };
+                let durMap = { 'baru': 'Baru Hari Ini', 'kumat': '2-7 Hari', 'parah': '>1 Minggu' };
+
+                let payload = {
+                    city_name: this.selectedCity,
+                    pipe_location: locMap[this.selectedQ1] || 'Saluran Air',
+                    flow_symptom: symMap[this.selectedQ2] || 'Mampet',
+                    duration: durMap[this.selectedQ4] || 'Baru',
+                    severity_score: this.totalScore,
+                    severity_label: this.severityCategory === 'low' ? 'RINGAN' : (this.severityCategory === 'medium' ? 'SEDANG' : 'PARAH/DARURAT'),
+                    phone: null
+                };
+
+                try {
+                    await fetch('{{ route("diagnostic.capture-lead") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                } catch (e) {
+                    console.warn('Diagnostic lead capture network fallback:', e);
+                }
+            },
+
+            async finishAndShowReport() {
+                this.step = 6;
+                await this.captureLead();
+            },
+
+            async redirectWaWithCapture(e) {
+                if (e) e.preventDefault();
+                await this.captureLead();
+                window.open(this.waUrl, '_blank');
             }
         }" class="bg-white rounded-3xl p-5 sm:p-8 text-slate-800 text-left shadow-2xl border border-slate-200/90 relative overflow-hidden">
+            
+            {{-- FAST-TRACK EMERGENCY CALL / WA BANNER --}}
+            <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-red-600 via-amber-600 to-red-700 text-white shadow-lg border border-red-400/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl animate-pulse shrink-0">🚨</span>
+                    <div>
+                        <div class="font-extrabold text-xs sm:text-sm uppercase tracking-wide">Saluran Meluap Darurat / Butuh Penanganan Cepat Sekarang?</div>
+                        <div class="text-[11px] sm:text-xs text-amber-100 font-medium">Lewati kuis diagnosa &amp; langsung panggil armada siaga terdekat 24 Jam</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                    <a href="tel:081385404000" class="flex-1 sm:flex-initial px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all text-decoration-none shadow-sm">
+                        <span>📞 Call</span>
+                    </a>
+                    <a href="https://wa.me/6281385404000?text=Halo%20Rootera%20Plumbing%2C%20saluran%20pipa%20saya%20meluap%20darurat%2C%20butuh%20teknisi%20secepatnya." target="_blank" rel="noopener" class="flex-1 sm:flex-initial px-3.5 py-2 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all text-decoration-none shadow-sm">
+                        <span>💬 WA Darurat</span>
+                    </a>
+                </div>
+            </div>
             
             {{-- Progress Bar Indicator --}}
             <div x-show="step <= 5" x-cloak class="mb-6">
@@ -555,7 +622,7 @@ $webAppSchema = [
 
                 <div class="flex justify-between items-center">
                     <button type="button" @click="step = 4" class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">&larr; Kembali</button>
-                    <button type="button" @click="step = 6" class="px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-lg hover:scale-[1.02] flex items-center gap-2 cursor-pointer">
+                    <button type="button" @click="finishAndShowReport()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-full font-extrabold text-xs sm:text-sm transition-all shadow-lg hover:scale-[1.02] flex items-center gap-2 cursor-pointer">
                         <span>📊 Tampilkan Laporan Diagnosa Lengkap</span>
                     </button>
                 </div>
@@ -627,7 +694,7 @@ $webAppSchema = [
                                 Penanganan efektif menggunakan mesin kabel spiral fleksibel <em>Ridgid Drain Cleaner</em> yang merontokkan gumpalan rambut &amp; sabun dalam 20–30 menit tanpa membongkar ubin keramik rumah Anda.
                             </p>
 
-                            <a :href="waUrl" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
+                            <a :href="waUrl" @click.prevent="redirectWaWithCapture($event)" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
                                 <span>📱 Konsultasi &amp; Panggil Teknisi Area <span x-text="selectedCity"></span> (WA 24 Jam)</span>
                             </a>
                         </div>
@@ -670,7 +737,7 @@ $webAppSchema = [
                                 Kepala pisau pendorong spiral berputar merontokkan batuan lemak beku hingga dinding pipa kembali bersih seperti baru. Pengerjaan 100% tanpa bongkar bergaransi 30 hari.
                             </p>
 
-                            <a :href="waUrl" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
+                            <a :href="waUrl" @click.prevent="redirectWaWithCapture($event)" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
                                 <span>📱 Konsultasi &amp; Panggil Teknisi Area <span x-text="selectedCity"></span> (WA 24 Jam)</span>
                             </a>
                         </div>
@@ -713,7 +780,7 @@ $webAppSchema = [
                                 Penyemprotan air jet bertekanan tinggi merontokkan semua lumpur padat &amp; benda asing, dilanjutkan inspeksi kamera CCTV untuk memastikan instalasi pipa bebas kerusakan.
                             </p>
 
-                            <a :href="waUrl" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
+                            <a :href="waUrl" @click.prevent="redirectWaWithCapture($event)" target="_blank" rel="noopener" class="w-full py-4 px-6 bg-[#25D366] hover:bg-[#1EBE5A] text-white font-extrabold text-xs sm:text-sm rounded-full shadow-lg transition-transform hover:scale-[1.01] flex items-center justify-center gap-2 text-decoration-none">
                                 <span>🚨 Panggil Tim Darurat Area <span x-text="selectedCity"></span> (WA 24 Jam)</span>
                             </a>
                         </div>

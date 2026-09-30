@@ -33,6 +33,7 @@ use App\Http\Controllers\DiagnosticController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
+Route::post('/diagnosa-pipa/capture-lead', [DiagnosticController::class, 'captureLead'])->name('diagnostic.capture-lead');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
 Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);

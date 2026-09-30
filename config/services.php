@@ -39,4 +39,9 @@ return [
         'channel_id' => env('YOUTUBE_CHANNEL_ID', 'UCKC8vr5ES6beRrSkgOq_4qw'),
     ],
 
+    'google' => [
+        'indexing_credentials_json' => env('GOOGLE_INDEXING_CREDENTIALS_JSON', storage_path('app/google-indexing-key.json')),
+    ],
+
 ];
+

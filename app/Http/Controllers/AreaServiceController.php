@@ -12,6 +12,8 @@ use App\Models\Faq;
 use App\Models\Technology;
 use App\Services\SpintaxService;
 use App\Services\RegionalAssetResolver;
+use App\Services\PhysicalHubResolver;
+use App\Services\LocalSchemaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -81,7 +83,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("pseo_city_show_v5_{$citySlug}", 86400, function () use ($citySlug) {
+        $html = Cache::remember("pseo_city_show_v6_{$citySlug}", 86400, function () use ($citySlug) {
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
                 ->with(['province', 'districts' => function ($q) {
@@ -102,25 +104,9 @@ class AreaServiceController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            $projectShowcases = ProjectGallery::where('is_active', true)
-                ->where(function ($q) use ($city) {
-                    $q->where('city_id', $city->id)->orWhereNull('city_id');
-                })
-                ->with(['district', 'city', 'serviceCategory'])
-                ->latest()
-                ->take(4)
-                ->get();
-
-            if ($projectShowcases->count() < 4) {
-                $existingIds = $projectShowcases->pluck('id')->toArray();
-                $moreShowcases = ProjectGallery::where('is_active', true)
-                    ->whereNotIn('id', $existingIds)
-                    ->with(['district', 'city', 'serviceCategory'])
-                    ->latest()
-                    ->take(4 - $projectShowcases->count())
-                    ->get();
-                $projectShowcases = $projectShowcases->concat($moreShowcases);
-            }
+            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
+            $localProjects = ProjectGallery::getLocalShowcases($city->id, null, 3);
+            $projectShowcases = $localProjects;
 
             $relatedArticles = Article::published()
                 ->latest('published_at')
@@ -128,6 +114,9 @@ class AreaServiceController extends Controller
                 ->get();
 
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(4)->get();
+
+            // TUGAS 2: Dispatcher Physical Hub Resolver
+            $physicalHub = PhysicalHubResolver::resolveHub($city);
 
             // Priority Custom DB Meta Tags with Dynamic Fallback (City Hub Standard)
             $title = !empty($city->meta_title)
@@ -141,16 +130,20 @@ class AreaServiceController extends Controller
             $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 
             $seo = [
-                'title'       => $title,
-                'description' => $description,
-                'canonical'   => $canonical,
-                'og_image'    => $heroImage,
+                'title'        => $title,
+                'description'  => $description,
+                'canonical'    => $canonical,
+                'og_image'     => $heroImage,
+                'is_indexable' => true,
             ];
+
+            // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
+            $schemas = LocalSchemaService::buildSchemas($city, null, $physicalHub, null, $canonical, $faqs->toArray());
 
             // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
             $seedKey = "city_hub_" . md5($canonical);
             $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $city->full_name, $seedKey);
-            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $city->estimated_arrival ?? "25–40 Menit", $seedKey);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $physicalHub['estimated_arrival'], $seedKey);
             $valueProps = $this->spintaxService->generateValueProps($city->name, $seedKey);
             $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $city->full_name, $seedKey);
 
@@ -159,6 +152,9 @@ class AreaServiceController extends Controller
                 'siblingCities',
                 'allCategories',
                 'projectShowcases',
+                'localProjects',
+                'physicalHub',
+                'schemas',
                 'relatedArticles',
                 'faqs',
                 'seo',
@@ -228,7 +224,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}/{$districtSlug}"), 301);
         }
 
-        $html = Cache::remember("pseo_district_show_v2_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+        $html = Cache::remember("pseo_district_show_v3_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
                 ->with(['province', 'districts' => function ($q) {
@@ -258,25 +254,9 @@ class AreaServiceController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            $projectShowcases = ProjectGallery::where('is_active', true)
-                ->where(function ($q) use ($city, $district) {
-                    $q->where('district_id', $district->id)->orWhere('city_id', $city->id)->orWhereNull('city_id');
-                })
-                ->with(['district', 'city', 'serviceCategory'])
-                ->latest()
-                ->take(4)
-                ->get();
-
-            if ($projectShowcases->count() < 4) {
-                $existingIds = $projectShowcases->pluck('id')->toArray();
-                $moreShowcases = ProjectGallery::where('is_active', true)
-                    ->whereNotIn('id', $existingIds)
-                    ->with(['district', 'city', 'serviceCategory'])
-                    ->latest()
-                    ->take(4 - $projectShowcases->count())
-                    ->get();
-                $projectShowcases = $projectShowcases->concat($moreShowcases);
-            }
+            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
+            $localProjects = ProjectGallery::getLocalShowcases($city->id, $district->id, 3);
+            $projectShowcases = $localProjects;
 
             $relatedArticles = Article::published()
                 ->latest('published_at')
@@ -286,10 +266,13 @@ class AreaServiceController extends Controller
             $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(5)->get();
             $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
 
+            // TUGAS 2: Dispatcher Physical Hub Resolver
+            $physicalHub = PhysicalHubResolver::resolveHub($city, $district);
+
             $locationName = "{$district->name}, {$city->full_name}";
             $locationShort = $district->name;
-            $estimatedArrival = $district->estimated_arrival ?? ($city->estimated_arrival ?? "20–35 Menit");
-            $dispatchHub = "Pos Hub Armada Kecamatan {$district->name}";
+            $estimatedArrival = $physicalHub['estimated_arrival'];
+            $dispatchHub = $physicalHub['name'] . " (" . $physicalHub['locality'] . ")";
 
             // Priority Custom DB Meta Tags with Dynamic Fallback (District Hub Standard)
             $title = !empty($district->meta_title)
@@ -310,6 +293,9 @@ class AreaServiceController extends Controller
                 'is_indexable' => true,
             ];
 
+            // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
+            $schemas = LocalSchemaService::buildSchemas($city, $district, $physicalHub, null, $canonical, $faqs->toArray());
+
             // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
             $seedKey = "district_hub_" . md5($canonical);
             $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $district->name . ", " . $city->name, $seedKey);
@@ -324,6 +310,9 @@ class AreaServiceController extends Controller
                 'siblingCities',
                 'allCategories',
                 'projectShowcases',
+                'localProjects',
+                'physicalHub',
+                'schemas',
                 'relatedArticles',
                 'faqs',
                 'technologies',
