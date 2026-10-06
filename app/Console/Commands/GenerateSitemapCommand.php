@@ -28,19 +28,7 @@ class GenerateSitemapCommand extends Command
     public function handle()
     {
         $this->info('Flushing old sitemap cache...');
-        Cache::forget('sitemap_index_xml_v4');
-        Cache::forget('sitemap_index_xml_v5');
-        Cache::forget('sitemap_pages_xml_v4');
-        Cache::forget('sitemap_pages_xml_v5');
-        Cache::forget('sitemap_services_xml_v4');
-        Cache::forget('sitemap_services_xml_v5');
-        Cache::forget('sitemap_cities_xml_v4');
-        Cache::forget('sitemap_cities_xml_v5');
-        Cache::forget('sitemap_districts_xml_v4');
-        Cache::forget('sitemap_districts_xml_v5');
-        Cache::forget('sitemap_blog_xml_v4');
-        Cache::forget('sitemap_gallery_xml_v4');
-        Cache::forget('sitemap_videos_xml_v4');
+        SitemapController::clearCache();
 
         $this->info('Warming up fresh XML sitemaps...');
         $controller = new SitemapController();
@@ -48,6 +36,7 @@ class GenerateSitemapCommand extends Command
         $controller->pages();
         $controller->services();
         $controller->cities();
+        $controller->districts();
         $controller->blog();
         $controller->gallery();
         $controller->videos();

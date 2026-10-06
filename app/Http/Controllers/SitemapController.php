@@ -12,9 +12,24 @@ use App\Models\ServiceSector;
 use App\Models\PropertyType;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
 
 class SitemapController extends Controller
 {
+    /**
+     * Cache keys for all sitemap endpoints.
+     */
+    public const CACHE_KEYS = [
+        'sitemap_index'    => 'sitemap_index_xml_v5',
+        'sitemap_pages'    => 'sitemap_pages_xml_v5',
+        'sitemap_services' => 'sitemap_services_xml_v5',
+        'sitemap_cities'   => 'sitemap_cities_xml_v5',
+        'sitemap_districts' => 'sitemap_districts_xml_v5',
+        'sitemap_blog'     => 'sitemap_blog_xml_v5',
+        'sitemap_gallery'  => 'sitemap_gallery_xml_v5',
+        'sitemap_videos'   => 'sitemap_videos_xml_v5',
+    ];
+
     /**
      * List of city slugs that are alias 301 redirects and must be excluded from sitemaps.
      */
@@ -29,12 +44,50 @@ class SitemapController extends Controller
         'solo'
     ];
 
+    public function __construct()
+    {
+        $this->prepareCanonicalUrls();
+    }
+
+    /**
+     * Ensure URL generator always produces canonical HTTPS URLs for sitemaps
+     * regardless of whether it is invoked via CLI artisan command or HTTP request.
+     */
+    protected function prepareCanonicalUrls(): void
+    {
+        $domain = env('SITEMAP_CANONICAL_HOST', 'https://rooteraplumbing.id');
+        URL::forceRootUrl($domain);
+        URL::forceScheme('https');
+    }
+
+    /**
+     * Flush all sitemap caches (both current v5 and legacy keys).
+     */
+    public static function clearCache(): void
+    {
+        $legacyKeys = [
+            'sitemap_index_xml_v4',
+            'sitemap_pages_xml_v4',
+            'sitemap_services_xml_v4',
+            'sitemap_cities_xml_v4',
+            'sitemap_districts_xml_v4',
+            'sitemap_blog_xml_v4',
+            'sitemap_gallery_xml_v4',
+            'sitemap_videos_xml_v4',
+        ];
+
+        foreach (array_merge($legacyKeys, array_values(self::CACHE_KEYS)) as $key) {
+            Cache::forget($key);
+        }
+    }
+
     /**
      * Master Sitemap Index File (/sitemap.xml)
      */
     public function index(): Response
     {
-        $content = Cache::remember('sitemap_index_xml_v5', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_index'], 86400, function () {
             $latestArticle = Article::published()->latest('updated_at')->first();
             $lastmodBlog = $latestArticle ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString() : now()->tz('UTC')->toAtomString();
             $lastmodNow = now()->tz('UTC')->toAtomString();
@@ -50,7 +103,8 @@ class SitemapController extends Controller
      */
     public function pages(): Response
     {
-        $content = Cache::remember('sitemap_pages_xml_v5', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_pages'], 86400, function () {
             $faqCategories = FaqCategory::where('is_active', true)->get();
             $technologies = Technology::where('is_active', true)->get();
             return view('sitemap-pages', compact('faqCategories', 'technologies'))->render();
@@ -64,7 +118,8 @@ class SitemapController extends Controller
      */
     public function services(): Response
     {
-        $content = Cache::remember('sitemap_services_xml_v5', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_services'], 86400, function () {
             $categories = ServiceCategory::where('is_active', true)->get();
             $cities = City::where('is_active', true)->whereNotIn('slug', $this->aliasSlugs)->get();
             $sectors = ServiceSector::where('is_active', true)->get();
@@ -80,7 +135,8 @@ class SitemapController extends Controller
      */
     public function cities(): Response
     {
-        $content = Cache::remember('sitemap_cities_xml_v5', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_cities'], 86400, function () {
             $cities = City::where('is_active', true)->whereNotIn('slug', $this->aliasSlugs)->orderBy('sort_order')->orderBy('name')->get();
             $propertyTypes = PropertyType::where('is_active', true)->get();
             return view('sitemap-cities', compact('cities', 'propertyTypes'))->render();
@@ -94,7 +150,8 @@ class SitemapController extends Controller
      */
     public function districts(): Response
     {
-        $content = Cache::remember('sitemap_districts_xml_v5', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_districts'], 86400, function () {
             $cities = City::where('is_active', true)
                 ->whereNotIn('slug', $this->aliasSlugs)
                 ->with(['districts' => function ($q) {
@@ -114,7 +171,8 @@ class SitemapController extends Controller
      */
     public function blog(): Response
     {
-        $content = Cache::remember('sitemap_blog_xml_v4', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_blog'], 86400, function () {
             $articles = Article::published()->latest('published_at')->get();
             $categories = Article::CATEGORIES;
             $galleries = Gallery::where('is_active', true)->latest('created_at')->get();
@@ -130,7 +188,8 @@ class SitemapController extends Controller
      */
     public function gallery(): Response
     {
-        $content = Cache::remember('sitemap_gallery_xml_v4', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_gallery'], 86400, function () {
             $galleries = Gallery::where('is_active', true)->latest('created_at')->get();
             return view('sitemap-gallery', compact('galleries'))->render();
         });
@@ -143,7 +202,8 @@ class SitemapController extends Controller
      */
     public function videos(): Response
     {
-        $content = Cache::remember('sitemap_videos_xml_v4', 86400, function () {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_videos'], 86400, function () {
             $videos = Gallery::where('is_active', true)
                 ->where('media_type', 'video')
                 ->latest('created_at')
@@ -159,6 +219,7 @@ class SitemapController extends Controller
      */
     public function xsl(): Response
     {
+        $this->prepareCanonicalUrls();
         $content = view('sitemap-xsl')->render();
         return response(trim($content), 200)->header('Content-Type', 'text/xsl; charset=utf-8');
     }

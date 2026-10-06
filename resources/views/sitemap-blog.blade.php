@@ -10,16 +10,6 @@
         <priority>0.90</priority>
     </url>
 
-    {{-- Industry Category Pillars --}}
-    @if(isset($categories))
-    @foreach ($categories as $catKey => $catLabel)
-    <url>
-        <loc>{{ route('blog', ['category' => $catKey]) }}</loc>
-        <changefreq>daily</changefreq>
-        <priority>0.85</priority>
-    </url>
-    @endforeach
-    @endif
 
     {{-- Articles & News Items --}}
     @foreach ($articles as $article)
