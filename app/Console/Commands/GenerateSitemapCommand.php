@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\Article;
 use App\Models\City;
+use App\Models\ResidentialCluster;
 use App\Models\ServiceCategory;
 use App\Models\Gallery;
 use App\Models\District;
@@ -40,7 +41,7 @@ class GenerateSitemapCommand extends Command
      * The name and signature of the console command.
      */
     protected $signature = 'sitemap:generate
-                            {--only= : Generate only one specific sitemap: static|services|pseo|articles|all}
+                            {--only= : Generate only one specific sitemap: static|services|pseo|articles|clusters|all}
                             {--dry-run : Count URLs without writing any files}
                             {--chunk=500 : Max URLs per pseo sitemap chunk file}';
 
@@ -73,6 +74,7 @@ class GenerateSitemapCommand extends Command
     public function handle(): int
     {
         $this->prepareCanonicalUrl();
+        $this->cleanupEmptyStaticSitemaps();
         $this->now = now()->tz('UTC')->toAtomString();
 
         $only   = $this->option('only') ? strtolower((string) $this->option('only')) : 'all';
@@ -112,7 +114,7 @@ class GenerateSitemapCommand extends Command
 
         // ── Warm the SitemapController-managed sub-sitemaps ──────────────────
         if ($only === 'all') {
-            $this->info('♨  Warming SitemapController sub-sitemaps (cities, districts, pages, gallery, videos)...');
+            $this->info('♨  Warming SitemapController sub-sitemaps (cities, districts, pages, gallery, videos, clusters)...');
             $controller = new SitemapController();
             $controller->index();
             $controller->pages();
@@ -122,7 +124,16 @@ class GenerateSitemapCommand extends Command
             $controller->blog();
             $controller->gallery();
             $controller->videos();
-            $this->line('   ✓ SitemapController cache warmed.');
+            $controller->clusters();
+            $this->line('   ✓ SitemapController cache warmed (including clusters).');
+        }
+
+        // ── Build sitemap-clusters.xml as a static file ──────────────────────
+        if (($only === 'all' || $only === 'clusters') && !$dryRun) {
+            $clusterFile = $this->buildClustersSitemapFile($dryRun);
+            if ($clusterFile) {
+                $generatedFiles[] = $clusterFile;
+            }
         }
 
         // ── Write sitemap-index.xml to public/ ───────────────────────────────
@@ -187,7 +198,17 @@ class GenerateSitemapCommand extends Command
             ];
         }
 
-        $this->info("📄 sitemap-services.xml — " . count($entries) . " service categories");
+        $sectors = \App\Models\ServiceSector::where('is_active', true)->get();
+        foreach ($sectors as $sec) {
+            $entries[] = [
+                'loc'        => $this->baseUrl . '/sektor-plumbing/' . $sec->slug,
+                'priority'   => '0.8',
+                'changefreq' => 'weekly',
+                'lastmod'    => $sec->updated_at?->tz('UTC')->toAtomString() ?? $this->now,
+            ];
+        }
+
+        $this->info("📄 sitemap-services.xml — " . count($entries) . " service categories and commercial sectors");
 
         return $this->writeXml('sitemap-services.xml', $entries, $dryRun);
     }
@@ -272,14 +293,64 @@ class GenerateSitemapCommand extends Command
     }
 
     /**
+     * sitemap-clusters.xml — Indexable residential cluster landing pages +
+     *                         cluster × service-category intersection pages.
+     *
+     * @return string  Public path of written file, or '' on dry-run.
+     */
+    protected function buildClustersSitemapFile(bool $dryRun): string
+    {
+        $clusters   = ResidentialCluster::indexable()->orderBy('sort_order')->get();
+        $categories = ServiceCategory::where('is_active', true)->orderBy('sort_order')->get();
+
+        $entries = [];
+
+        // Cluster landing pages (/area-perumahan/{slug})
+        foreach ($clusters as $cluster) {
+            $entries[] = [
+                'loc'        => $this->baseUrl . '/area-perumahan/' . $cluster->slug,
+                'priority'   => '0.70',
+                'changefreq' => 'monthly',
+                'lastmod'    => ($cluster->updated_at ?? now())->tz('UTC')->toAtomString(),
+            ];
+        }
+
+        // Cluster × Category intersection pages (/area-perumahan/{clusterSlug}/{categorySlug})
+        foreach ($clusters as $cluster) {
+            foreach ($categories as $cat) {
+                $entries[] = [
+                    'loc'        => $this->baseUrl . '/area-perumahan/' . $cluster->slug . '/' . $cat->slug,
+                    'priority'   => '0.55',
+                    'changefreq' => 'monthly',
+                    'lastmod'    => ($cluster->updated_at ?? now())->tz('UTC')->toAtomString(),
+                ];
+            }
+        }
+
+        $this->info("📄 sitemap-clusters.xml — "
+            . count($clusters) . " clusters × "
+            . count($categories) . " categories = "
+            . count($entries) . " total URLs");
+
+        return $this->writeXml('sitemap-clusters.xml', $entries, $dryRun);
+    }
+
+    /**
      * sitemap-index.xml — Master index pointing to all generated sub-sitemaps.
      *
      * @param  array<int, string>  $files  Public paths relative to public/.
      */
     protected function buildSitemapIndex(array $files): void
     {
-        // Merge with the existing SitemapController-managed endpoints
-        $controllerEndpoints = [
+        // Collect filenames already included via generated $files to avoid duplicates
+        $generatedFilenames = array_filter(array_map(
+            fn($f) => $f ? basename((string) $f) : null,
+            $files
+        ));
+
+        // SitemapController-managed (dynamic) endpoints
+        // — skip any whose filename is already covered by a generated static file
+        $controllerEndpoints = array_values(array_filter([
             $this->baseUrl . '/sitemap-pages.xml',
             $this->baseUrl . '/sitemap-services.xml',
             $this->baseUrl . '/sitemap-cities.xml',
@@ -287,13 +358,17 @@ class GenerateSitemapCommand extends Command
             $this->baseUrl . '/sitemap-blog.xml',
             $this->baseUrl . '/sitemap-gallery.xml',
             $this->baseUrl . '/sitemap-videos.xml',
-        ];
+            $this->baseUrl . '/sitemap-clusters.xml',
+        ], fn($loc) => !in_array(basename($loc), $generatedFilenames, true)));
 
         $lines   = ['<?xml version="1.0" encoding="UTF-8"?>'];
+        $lines[] = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
         $lines[] = '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+        $lines[] = '  <!-- Static sitemaps: generated by php artisan sitemap:generate -->';
 
-        // Generated static/pseo/article sitemaps first
+        // Generated static/pseo/article/cluster sitemaps
         foreach ($files as $filepath) {
+            if (empty($filepath)) continue;
             $filename = basename((string) $filepath);
             $loc      = $this->baseUrl . '/' . $filename;
             $lines[]  = "  <sitemap>";
@@ -302,7 +377,9 @@ class GenerateSitemapCommand extends Command
             $lines[]  = "  </sitemap>";
         }
 
-        // Controller-generated sitemaps
+        $lines[] = '  <!-- Dynamic sitemaps: served live by SitemapController -->';
+
+        // Controller-generated sitemaps (deduplicated)
         foreach ($controllerEndpoints as $loc) {
             $lines[] = "  <sitemap>";
             $lines[] = "    <loc>{$loc}</loc>";
@@ -313,9 +390,15 @@ class GenerateSitemapCommand extends Command
         $lines[] = '</sitemapindex>';
         $xml     = implode("\n", $lines);
 
-        $target = public_path('sitemap-index.xml');
-        File::put($target, $xml);
-        $this->line("   ✓ sitemap-index.xml written to public/");
+        $total  = count($generatedFilenames) + count($controllerEndpoints);
+        $targetIndex = public_path('sitemap-index.xml');
+        File::put($targetIndex, $xml);
+
+        $targetSitemap = public_path('sitemap.xml');
+        File::put($targetSitemap, $xml);
+
+        $this->line("   ✓ sitemap-index.xml written to public/ ({$total} unique sub-sitemaps)");
+        $this->line("   ✓ sitemap.xml written to public/ ({$total} unique sub-sitemaps)");
     }
 
     // ════════════════════════════════════════════════════════════════════════
@@ -333,6 +416,7 @@ class GenerateSitemapCommand extends Command
     protected function writeXml(string $filename, array $entries, bool $dryRun): string
     {
         $lines   = ['<?xml version="1.0" encoding="UTF-8"?>'];
+        $lines[] = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
         $lines[] = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
                  . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
                  . ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9'
@@ -381,5 +465,27 @@ class GenerateSitemapCommand extends Command
 
         URL::forceRootUrl($this->baseUrl);
         URL::forceScheme('https');
+    }
+
+    /**
+     * Delete any 0-byte or corrupted static sitemap files from public/
+     * to prevent web-server route shadowing.
+     */
+    protected function cleanupEmptyStaticSitemaps(): void
+    {
+        $patterns = [
+            public_path('sitemap.xml'),
+            public_path('sitemap-*.xml'),
+        ];
+
+        foreach ($patterns as $pattern) {
+            $files = glob($pattern) ?: [];
+            foreach ($files as $file) {
+                if (file_exists($file) && filesize($file) === 0) {
+                    @unlink($file);
+                    $this->warn('   ⚠️  Deleted 0-byte static file: ' . basename($file));
+                }
+            }
+        }
     }
 }

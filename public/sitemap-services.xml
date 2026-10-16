@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
     <loc>https://rooteraplumbing.id/layanan/pipa-mampet</loc>
@@ -38,6 +39,54 @@
   </url>
   <url>
     <loc>https://rooteraplumbing.id/layanan/pipa-industri-pabrik</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/restoran-cafe</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/hotel-apartemen</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/rumah-sakit-klinik</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/pabrik-industri</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/perkantoran-coworking</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/instansi-kampus</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/mall-shopping-center</loc>
+    <lastmod>2026-08-24T08:50:54+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rooteraplumbing.id/sektor-plumbing/ruko-kompleks-bisnis</loc>
     <lastmod>2026-08-24T08:50:54+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

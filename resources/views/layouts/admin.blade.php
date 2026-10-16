@@ -302,6 +302,21 @@
                 Kota &amp; Wilayah SEO
             </a>
 
+            <a href="{{ route('admin.districts.index') }}" class="sidebar-link {{ request()->routeIs('admin.districts.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+                Kecamatan (Lokal)
+            </a>
+
+            <a href="{{ route('admin.clusters.index') }}" class="sidebar-link {{ request()->routeIs('admin.clusters.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Cluster Perumahan
+            </a>
+
+            <a href="{{ route('admin.service-aliases.index') }}" class="sidebar-link {{ request()->routeIs('admin.service-aliases.*') ? 'active' : '' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                Alias Kata Kunci
+            </a>
+
             {{-- Group 3: Company & Settings --}}
             <div class="sidebar-label" style="margin-top:.85rem">Perusahaan &amp; Settings</div>
 

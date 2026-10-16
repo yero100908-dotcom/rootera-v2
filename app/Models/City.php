@@ -49,6 +49,11 @@ class City extends Model
         return $this->hasMany(District::class)->orderBy('sort_order')->orderBy('name');
     }
 
+    public function residentialClusters()
+    {
+        return $this->hasMany(ResidentialCluster::class);
+    }
+
     public function getFullNameAttribute(): string
     {
         return "{$this->type} {$this->name}";

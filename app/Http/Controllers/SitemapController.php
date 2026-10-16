@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\ResidentialCluster;
 use App\Models\ServiceCategory;
 use App\Models\City;
 use App\Models\Gallery;
@@ -28,6 +29,7 @@ class SitemapController extends Controller
         'sitemap_blog'     => 'sitemap_blog_xml_v5',
         'sitemap_gallery'  => 'sitemap_gallery_xml_v5',
         'sitemap_videos'   => 'sitemap_videos_xml_v5',
+        'sitemap_clusters' => 'sitemap_clusters_xml_v1',
     ];
 
     /**
@@ -82,17 +84,45 @@ class SitemapController extends Controller
     }
 
     /**
-     * Master Sitemap Index File (/sitemap.xml)
+     * Master Sitemap Index File (/sitemap.xml & /sitemap-index.xml)
      */
     public function index(): Response
     {
         $this->prepareCanonicalUrls();
         $content = Cache::remember(self::CACHE_KEYS['sitemap_index'], 86400, function () {
-            $latestArticle = Article::published()->latest('updated_at')->first();
-            $lastmodBlog = $latestArticle ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString() : now()->tz('UTC')->toAtomString();
+            $latestArticle  = Article::published()->latest('updated_at')->first();
+            $latestCluster  = ResidentialCluster::indexable()->latest('updated_at')->first();
+
             $lastmodNow = now()->tz('UTC')->toAtomString();
 
-            return view('sitemap-index', compact('lastmodBlog', 'lastmodNow'))->render();
+            // Reflect actual mtime of artisan-generated static sitemaps
+            $staticFile   = public_path('sitemap-static.xml');
+            $pseoFile     = public_path('sitemap-pseo.xml');
+            $articlesFile = public_path('sitemap-articles.xml');
+
+            $clusterFile  = public_path('sitemap-clusters.xml');
+
+            $lastmodStatic = file_exists($staticFile)
+                ? \Carbon\Carbon::createFromTimestamp(filemtime($staticFile))->tz('UTC')->toAtomString()
+                : $lastmodNow;
+            $lastmodPseo = file_exists($pseoFile)
+                ? \Carbon\Carbon::createFromTimestamp(filemtime($pseoFile))->tz('UTC')->toAtomString()
+                : $lastmodNow;
+            $lastmodBlog = file_exists($articlesFile)
+                ? \Carbon\Carbon::createFromTimestamp(filemtime($articlesFile))->tz('UTC')->toAtomString()
+                : ($latestArticle
+                    ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString()
+                    : $lastmodNow);
+            $lastmodClusters = file_exists($clusterFile)
+                ? \Carbon\Carbon::createFromTimestamp(filemtime($clusterFile))->tz('UTC')->toAtomString()
+                : ($latestCluster
+                    ? ($latestCluster->updated_at ?? now())->tz('UTC')->toAtomString()
+                    : $lastmodNow);
+
+            return view('sitemap-index', compact(
+                'lastmodBlog', 'lastmodNow', 'lastmodClusters',
+                'lastmodStatic', 'lastmodPseo'
+            ))->render();
         });
 
         return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
@@ -222,5 +252,49 @@ class SitemapController extends Controller
         $this->prepareCanonicalUrls();
         $content = view('sitemap-xsl')->render();
         return response(trim($content), 200)->header('Content-Type', 'text/xsl; charset=utf-8');
+    }
+
+    /**
+     * Residential Clusters Sub-Sitemap (/sitemap-clusters.xml)
+     *
+     * Includes cluster landing pages and cluster × service-category intersections
+     * for all indexable (content_score ≥ 70) clusters.
+     */
+    public function clusters(): Response
+    {
+        $this->prepareCanonicalUrls();
+        $content = Cache::remember(self::CACHE_KEYS['sitemap_clusters'], 86400, function () {
+            $clusters   = ResidentialCluster::indexable()->orderBy('sort_order')->get();
+            $categories = ServiceCategory::where('is_active', true)->orderBy('sort_order')->get();
+
+            return view('sitemap-clusters', compact('clusters', 'categories'))->render();
+        });
+
+        return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');
+    }
+
+    /**
+     * Serve an artisan-generated static sitemap XML file from public/.
+     * Works for: /sitemap-static.xml, /sitemap-pseo.xml, /sitemap-articles.xml
+     * Falls back to a 503 with an XML error body if the file hasn't been generated yet.
+     */
+    public function serveStaticFile(\Illuminate\Http\Request $request): Response
+    {
+        // Derive filename from request path: /sitemap-static.xml -> sitemap-static.xml
+        $filename = ltrim($request->path(), '/');
+        $filepath = public_path($filename);
+
+        if (!file_exists($filepath) || filesize($filepath) === 0) {
+            \Illuminate\Support\Facades\Artisan::call('sitemap:generate');
+        }
+
+        if (!file_exists($filepath) || filesize($filepath) === 0) {
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>'
+                 . '<error>Sitemap not yet generated. Run: php artisan sitemap:generate</error>';
+            return response($xml, 503)->header('Content-Type', 'text/xml; charset=utf-8');
+        }
+
+        $content = file_get_contents($filepath);
+        return response($content, 200)->header('Content-Type', 'text/xml; charset=utf-8');
     }
 }

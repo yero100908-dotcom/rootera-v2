@@ -35,6 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
 Route::post('/diagnosa-pipa/capture-lead', [DiagnosticController::class, 'captureLead'])->name('diagnostic.capture-lead');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap-index.xml', [SitemapController::class, 'index'])->name('sitemap.index');
 Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
 Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
@@ -45,6 +46,10 @@ Route::get('/sitemap-services.xml', [SitemapController::class, 'services'])->nam
 Route::get('/sitemap-blog.xml', [SitemapController::class, 'blog'])->name('sitemap.blog');
 Route::get('/sitemap-gallery.xml', [SitemapController::class, 'gallery'])->name('sitemap.gallery');
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
+Route::get('/sitemap-clusters.xml', [SitemapController::class, 'clusters'])->name('sitemap.clusters');
+Route::get('/sitemap-static.xml',   [SitemapController::class, 'serveStaticFile'])->name('sitemap.static');
+Route::get('/sitemap-pseo.xml',     [SitemapController::class, 'serveStaticFile'])->name('sitemap.pseo');
+Route::get('/sitemap-articles.xml', [SitemapController::class, 'serveStaticFile'])->name('sitemap.articles');
 Route::redirect('/sitemap-cuci-toren-cities.xml', '/sitemap.xml', 301);
 Route::redirect('/sitemap-cuci-toren-districts.xml', '/sitemap.xml', 301);
 
@@ -79,6 +84,12 @@ Route::get('/solusi-properti/{propertyTypeSlug}/{citySlug}', [App\Http\Controlle
 
 // Canonical pSEO routes: /layanan/{service_slug}/{city_slug} → showService()
 // These must be defined BEFORE the 301 redirect rules below so they take priority.
+// Hyper-local residential cluster pSEO (dedicated prefix → no conflict with /layanan/*)
+Route::get('/area-perumahan/{clusterSlug}', [App\Http\Controllers\ClusterSeoController::class, 'show'])
+    ->where('clusterSlug', '[a-z0-9-]+')->name('cluster.show');
+Route::get('/area-perumahan/{clusterSlug}/{categorySlug}', [App\Http\Controllers\ClusterSeoController::class, 'service'])
+    ->where(['clusterSlug' => '[a-z0-9-]+', 'categorySlug' => '[a-z0-9-]+'])->name('cluster.service');
+
 Route::get('/layanan/{serviceSlug}/{citySlug}', [ProgrammaticSeoController::class, 'showService'])->name('pseo.service.city');
 
 // Legacy & Canonical Consolidation 301 Permanent Redirects for SEO Backlinks & Indexing
@@ -182,6 +193,34 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/service-areas/{serviceArea}/edit', [ServiceAreaController::class, 'edit'])->name('service-areas.edit');
     Route::put('/service-areas/{serviceArea}', [ServiceAreaController::class, 'update'])->name('service-areas.update');
     Route::delete('/service-areas/{serviceArea}', [ServiceAreaController::class, 'destroy'])->name('service-areas.destroy');
+
+    // Hyper-local pSEO: Residential Clusters
+    Route::get('/clusters', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'index'])->name('clusters.index');
+    Route::get('/clusters/create', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'create'])->name('clusters.create');
+    Route::post('/clusters', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'store'])->name('clusters.store');
+    Route::get('/clusters/{cluster}/edit', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'edit'])->name('clusters.edit');
+    Route::put('/clusters/{cluster}', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'update'])->name('clusters.update');
+    Route::delete('/clusters/{cluster}', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'destroy'])->name('clusters.destroy');
+    Route::patch('/clusters/{cluster}/indexable', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'toggleIndexable'])->name('clusters.indexable');
+    Route::get('/clusters/{cluster}/preview', [App\Http\Controllers\Admin\ResidentialClusterController::class, 'preview'])->name('clusters.preview');
+
+    // Hyper-local pSEO: Districts (Kecamatan)
+    Route::get('/districts', [App\Http\Controllers\Admin\DistrictController::class, 'index'])->name('districts.index');
+    Route::get('/districts/create', [App\Http\Controllers\Admin\DistrictController::class, 'create'])->name('districts.create');
+    Route::post('/districts', [App\Http\Controllers\Admin\DistrictController::class, 'store'])->name('districts.store');
+    Route::get('/districts/by-city/{city}', [App\Http\Controllers\Admin\DistrictController::class, 'byCity'])->name('districts.by-city');
+    Route::get('/districts/{district}/edit', [App\Http\Controllers\Admin\DistrictController::class, 'edit'])->name('districts.edit');
+    Route::put('/districts/{district}', [App\Http\Controllers\Admin\DistrictController::class, 'update'])->name('districts.update');
+    Route::delete('/districts/{district}', [App\Http\Controllers\Admin\DistrictController::class, 'destroy'])->name('districts.destroy');
+    Route::patch('/districts/{district}/indexable', [App\Http\Controllers\Admin\DistrictController::class, 'toggleIndexable'])->name('districts.indexable');
+
+    // Service Aliases / Keyword Synonyms
+    Route::get('/service-aliases', [App\Http\Controllers\Admin\ServiceAliasController::class, 'index'])->name('service-aliases.index');
+    Route::get('/service-aliases/create', [App\Http\Controllers\Admin\ServiceAliasController::class, 'create'])->name('service-aliases.create');
+    Route::post('/service-aliases', [App\Http\Controllers\Admin\ServiceAliasController::class, 'store'])->name('service-aliases.store');
+    Route::get('/service-aliases/{serviceAlias}/edit', [App\Http\Controllers\Admin\ServiceAliasController::class, 'edit'])->name('service-aliases.edit');
+    Route::put('/service-aliases/{serviceAlias}', [App\Http\Controllers\Admin\ServiceAliasController::class, 'update'])->name('service-aliases.update');
+    Route::delete('/service-aliases/{serviceAlias}', [App\Http\Controllers\Admin\ServiceAliasController::class, 'destroy'])->name('service-aliases.destroy');
 
     // Gallery CRUD
     Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');

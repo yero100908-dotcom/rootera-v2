@@ -24,6 +24,11 @@ class ServiceCategory extends Model
         return $this->hasMany(Service::class);
     }
 
+    public function aliases()
+    {
+        return $this->hasMany(ServiceAlias::class);
+    }
+
     public function getImageUrlAttribute(): string
     {
         if (!$this->image) {

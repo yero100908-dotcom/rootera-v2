@@ -13,6 +13,7 @@ class ProjectGallery extends Model
         'service_category_id',
         'city_id',
         'district_id',
+        'residential_cluster_id',
         'title',
         'slug',
         'client_type',
@@ -49,6 +50,11 @@ class ProjectGallery extends Model
     public function district()
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function residentialCluster()
+    {
+        return $this->belongsTo(ResidentialCluster::class);
     }
 
     /**
