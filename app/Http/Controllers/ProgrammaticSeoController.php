@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\ServiceCategory;
@@ -12,6 +14,7 @@ use App\Models\Article;
 use App\Services\SpintaxService;
 use App\Services\PhysicalHubResolver;
 use App\Services\LocalSchemaService;
+use App\Services\Seo\SchemaGeneratorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -20,11 +23,157 @@ class ProgrammaticSeoController extends Controller
 {
     protected SpintaxService $spintaxService;
     protected \App\Services\DistrictVillageService $villageService;
+    protected SchemaGeneratorService $schemaGenerator;
 
-    public function __construct(SpintaxService $spintaxService, \App\Services\DistrictVillageService $villageService)
+    public function __construct(
+        SpintaxService $spintaxService,
+        \App\Services\DistrictVillageService $villageService,
+        SchemaGeneratorService $schemaGenerator
+    ) {
+        $this->spintaxService   = $spintaxService;
+        $this->villageService   = $villageService;
+        $this->schemaGenerator  = $schemaGenerator;
+    }
+
+    /**
+     * Display programmatic landing page for Service Category + City OR Service Category + City + District.
+     */
+    /**
+     * Canonical pSEO route: /layanan/{service_slug}/{city_slug}
+     *
+     * Handles the new keyword-rich URL pattern. Fetches ServiceCategory and City
+     * by their slugs and returns a 404 if either is inactive. Eager-loads
+     * ProjectGallery (filtered by city), localised FAQs, and Testimonials.
+     * Generates dynamic meta title/description and injects three JSON-LD blocks.
+     */
+    public function showService(string $serviceSlug, string $citySlug): \Illuminate\Http\Response
     {
-        $this->spintaxService = $spintaxService;
-        $this->villageService = $villageService;
+        // Resolve the canonical URL for this pattern
+        $canonicalUrl = url("/layanan/{$serviceSlug}/{$citySlug}");
+        $cacheKey     = "pseo_service_v1_{$serviceSlug}_{$citySlug}";
+
+        $html = Cache::remember($cacheKey, 86400, function () use ($serviceSlug, $citySlug, $canonicalUrl) {
+            // Fetch ServiceCategory — 404 if not found or inactive
+            $category = ServiceCategory::where('slug', $serviceSlug)
+                ->where('is_active', true)
+                ->firstOrFail();
+
+            // Fetch City — 404 if not found or inactive
+            $city = City::where('slug', $citySlug)
+                ->where('is_active', true)
+                ->with([
+                    'province',
+                    'districts' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order')->orderBy('name'),
+                ])
+                ->firstOrFail();
+
+            $locationName  = $city->full_name;
+            $locationShort = $city->name;
+
+            // ── Eager-load ProjectGallery filtered by city + service category ──
+            $projectShowcases = ProjectGallery::with(['city', 'district', 'serviceCategory'])
+                ->where('is_active', true)
+                ->where('city_id', $city->id)
+                ->where('service_category_id', $category->id)
+                ->latest()
+                ->take(4)
+                ->get();
+
+            // Fallback: any city galleries if no category-specific ones found
+            if ($projectShowcases->isEmpty()) {
+                $projectShowcases = ProjectGallery::getLocalShowcases($city->id, null, 3);
+            }
+
+            // ── Localised FAQs ───────────────────────────────────────────────
+            $localFaqs = [
+                [
+                    'question' => "Berapa lama estimasi waktu kedatangan teknisi Rootera di {$locationShort}?",
+                    'answer'   => "Teknisi Rootera terdekat siap dikirim ke seluruh wilayah {$locationShort} dengan estimasi respons 30–60 menit setelah konfirmasi pesanan via WhatsApp.",
+                ],
+                [
+                    'question' => "Apakah layanan {$category->name} di {$locationShort} membutuhkan pembongkaran lantai?",
+                    'answer'   => "Tidak. Kami menggunakan teknologi spiral rotary cable & Hydro Jetting tekanan tinggi yang melancarkan {$category->name} 100% tanpa merusak keramik atau tembok di {$locationShort}.",
+                ],
+                [
+                    'question' => "Apakah ada garansi untuk pengerjaan {$category->name} di {$locationShort}?",
+                    'answer'   => "Ya. Seluruh pengerjaan di {$locationShort} dilengkapi garansi resmi 30 hari pasca pengerjaan (Tuntas Baru Bayar). Jika berulang dalam 30 hari, kami kerjakan ulang tanpa biaya tambahan.",
+                ],
+            ];
+
+            // Pull active FAQs from DB as additional structured data
+            $dbFaqs = Faq::where('is_active', true)
+                ->orderBy('sort_order')
+                ->take(5)
+                ->get()
+                ->map(fn ($f) => ['question' => $f->question, 'answer' => $f->answer])
+                ->toArray();
+
+            $allFaqs = array_merge($localFaqs, $dbFaqs);
+
+            // ── Dynamic meta title & description (per spec) ──────────────────
+            $metaTitle = "Jasa {$category->name} {$city->name} - Tanpa Bongkar & Bergaransi | Rootera";
+            if (mb_strlen($metaTitle) > 60) {
+                $metaTitle = "Jasa {$category->name} {$city->name} | Rootera";
+            }
+            if (mb_strlen($metaTitle) > 60) {
+                $metaTitle = mb_strimwidth($metaTitle, 0, 58, '..');
+            }
+
+            $metaDescription = "Layanan {$category->name} profesional di {$city->name} dan sekitarnya. "
+                . "Teknisi spesialis mesin spiral & CCTV pipa, respon cepat 24 jam, garansi 30 hari.";
+            if (mb_strlen($metaDescription) > 155) {
+                $metaDescription = mb_strimwidth($metaDescription, 0, 152, '...');
+            }
+
+            // ── JSON-LD Schema Injection (3 scripts) ─────────────────────────
+            $schemas = $this->schemaGenerator->buildPseoSchemas($city, $category, $allFaqs);
+
+            // ── OG image ─────────────────────────────────────────────────────
+            $catSlug = strtolower($category->slug ?? '');
+            $ogImage = match(true) {
+                str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') => secure_url('images/og/cctv.jpeg'),
+                str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'sink')  => secure_url('images/og/wastafel.jpg'),
+                str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset')       => secure_url('images/og/kloset.jpeg'),
+                str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain') => secure_url('images/og/floor-drain.jpeg'),
+                str_contains($catSlug, 'got') || str_contains($catSlug, 'saluran-pembuangan')  => secure_url('images/og/gutter.jpg'),
+                str_contains($catSlug, 'pipa') || str_contains($catSlug, 'mampet')     => secure_url('images/og/pipamampet.jpg'),
+                default => secure_url('images/og/rootera-default.jpg'),
+            };
+
+            $seo = [
+                'title'        => $metaTitle,
+                'description'  => $metaDescription,
+                'canonical'    => $canonicalUrl,
+                'og_image'     => $ogImage,
+                'is_indexable' => true,
+            ];
+
+            $relatedArticles = Article::published()->latest('published_at')->take(3)->get();
+            $allCategories   = ServiceCategory::where('is_active', true)
+                ->where('id', '!=', $category->id)
+                ->orderBy('sort_order')
+                ->get();
+
+            return view('pages.programmatic-service-city', compact(
+                'category',
+                'city',
+                'projectShowcases',
+                'localFaqs',
+                'allFaqs',
+                'schemas',
+                'metaTitle',
+                'metaDescription',
+                'canonicalUrl',
+                'ogImage',
+                'seo',
+                'relatedArticles',
+                'allCategories',
+                'locationName',
+                'locationShort'
+            ))->render();
+        });
+
+        return response($html);
     }
 
     /**
@@ -153,7 +302,11 @@ class ProgrammaticSeoController extends Controller
             }
 
             // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
+            // Build both the legacy LocalSchemaService format AND the new SchemaGeneratorService JSON-LD strings
             $schemas = LocalSchemaService::buildSchemas($city, $district, $physicalHub, $category, $canonical, $localFaqs);
+
+            // Generate JSON-LD strings via SchemaGeneratorService for <x-seo-head> injection
+            $jsonLdSchemas = $this->schemaGenerator->buildPseoSchemas($city, $category, $localFaqs);
 
             $catSlug = strtolower($category->slug ?? '');
             if (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') || str_contains($catSlug, 'deteksi')) {
@@ -203,6 +356,7 @@ class ProgrammaticSeoController extends Controller
                 'localProjects',
                 'physicalHub',
                 'schemas',
+                'jsonLdSchemas',
                 'relatedArticles',
                 'faqs',
                 'technologies',

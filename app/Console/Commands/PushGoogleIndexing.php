@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -27,7 +29,7 @@ class PushGoogleIndexing extends Command
     protected $signature = 'seo:push-indexing 
                             {--limit=150 : Maximum number of URLs to push (default 150)} 
                             {--dry-run : Simulate URL collection & priority selection without calling API} 
-                            {--type= : Filter specific URL type: article, gallery, pseo, static, b2b, property, faq} 
+                            {--type= : Filter specific URL type: article, gallery, pseo, pseo_service, static, b2b, property, faq} 
                             {--action=URL_UPDATED : Action type: URL_UPDATED or URL_DELETED} 
                             {--force : Force submission ignoring the 14-day skip guard}';
 
@@ -322,7 +324,7 @@ class PushGoogleIndexing extends Command
         }
 
         // -------------------------------------------------------------
-        // PRIORITAS 2 & 3: Halaman pSEO Kota & Kecamatan
+        // PRIORITAS 2 & 3: Halaman pSEO Kota & Kecamatan (legacy pattern)
         // -------------------------------------------------------------
         if (!$filterType || str_contains($filterType, 'pseo') || $filterType === 'city' || $filterType === 'district') {
             $cities = City::where('is_active', true)
@@ -338,6 +340,26 @@ class PushGoogleIndexing extends Command
                 foreach ($city->districts as $district) {
                     $distUrl = "{$baseUrl}/jasa-saluran-mampet/{$city->slug}/{$district->slug}";
                     $this->categorizePseoUrl($distUrl, 'pseo_district', $allPushed, $priority2, $priority3, $priority4);
+                }
+            }
+        }
+
+        // -------------------------------------------------------------
+        // PRIORITAS 2 & 3: New canonical pSEO /layanan/{service}/{city}
+        // -------------------------------------------------------------
+        if (!$filterType || str_contains($filterType, 'pseo') || $filterType === 'pseo_service') {
+            $serviceCategories = \App\Models\ServiceCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+
+            $serviceCities = City::where('is_active', true)
+                ->whereNotIn('slug', $aliasSlugs)
+                ->get();
+
+            foreach ($serviceCategories as $cat) {
+                foreach ($serviceCities as $city) {
+                    $url = "{$baseUrl}/layanan/{$cat->slug}/{$city->slug}";
+                    $this->categorizePseoUrl($url, 'pseo_service', $allPushed, $priority2, $priority3, $priority4);
                 }
             }
         }
