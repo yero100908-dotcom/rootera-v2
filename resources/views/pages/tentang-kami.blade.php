@@ -30,15 +30,16 @@ $organizationSchema = [
   "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet",
   "alternateName" => ["Rootera", "Rootera Indonesia", "J&J Group Plumbing Division"],
   "url" => url('/'),
-  "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
-  "image" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+  "logo" => secure_asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+  "image" => secure_asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   "telephone" => "+6281385404000",
   "priceRange" => "$$",
   "foundingDate" => "2026-07-01",
   "founder" => [
     "@type" => "Person",
     "name" => "Rafael Abimanyu",
-    "jobTitle" => "Founder & Lead Director"
+    "jobTitle" => "Founder & Lead Director",
+    "image" => secure_asset('assets/staff/rafael-abimanyu-rootera-plumbing.webp')
   ],
   "parentOrganization" => [
     "@type" => "Organization",
@@ -569,6 +570,8 @@ $aboutPageSchema = [
                             <div class="w-full md:w-72 lg:w-80 aspect-[3/4] sm:aspect-[4/5] overflow-hidden relative bg-[#07172B] shrink-0 max-w-[220px] sm:max-w-[260px] md:max-w-none mx-auto md:mx-0 my-4 md:my-0 rounded-2xl md:rounded-none">
                                 <img src="{{ $member['image'] }}" 
                                      alt="{{ $member['alt'] ?? $member['name'] }}" 
+                                     width="320" 
+                                     height="400" 
                                      loading="eager" 
                                      class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
                                 <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wider bg-slate-950/90 text-emerald-400 backdrop-blur-md border border-emerald-500/40 shadow-lg">
@@ -638,6 +641,8 @@ $aboutPageSchema = [
                                 <div class="aspect-[4/5] overflow-hidden rounded-xl bg-[#07172B] relative shadow-md border border-slate-700/60">
                                     <img src="{{ $member['image'] }}" 
                                          alt="{{ $member['alt'] ?? $member['name'] }}" 
+                                         width="320" 
+                                         height="400" 
                                          loading="lazy" 
                                          class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300">
                                     <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider bg-slate-900/90 text-emerald-400 backdrop-blur-xs border border-emerald-500/30">
@@ -684,6 +689,8 @@ $aboutPageSchema = [
                                 <div class="aspect-[4/5] overflow-hidden relative bg-[#07172B] rounded-lg sm:rounded-xl">
                                     <img src="{{ $member['image'] }}" 
                                          alt="{{ $member['alt'] ?? $member['name'] }}" 
+                                         width="320" 
+                                         height="400" 
                                          loading="lazy" 
                                          class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300">
                                     <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider bg-slate-900/90 text-emerald-400 backdrop-blur-xs border border-emerald-500/30">
@@ -735,7 +742,7 @@ $aboutPageSchema = [
         <div class="p-4 sm:p-6">
             <div class="flex items-center gap-3.5 mb-4">
                 <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0">
-                    <img id="modal-img" src="" alt="" class="w-full h-full object-cover object-top">
+                    <img id="modal-img" src="" alt="Teknisi Saluran Pipa Rootera Plumbing" width="80" height="80" class="w-full h-full object-cover object-top">
                 </div>
                 <div class="min-w-0">
                     <span id="modal-badge" class="px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"></span>
@@ -807,6 +814,7 @@ function filterTeam(category) {
 
 function openTechnicianModal(member) {
     document.getElementById('modal-img').src = member.image;
+    document.getElementById('modal-img').alt = member.alt || (member.name + ' - Teknisi Saluran Pipa Rootera Plumbing');
     document.getElementById('modal-name').innerText = member.name;
     document.getElementById('modal-role').innerText = member.role;
     document.getElementById('modal-badge').innerText = member.badge || 'Teknisi Certified';

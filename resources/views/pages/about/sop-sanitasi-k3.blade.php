@@ -202,8 +202,12 @@ $schemaData = [
             {{-- Right Column: Image Showcase Container --}}
             <div class="lg:col-span-5">
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-100 group">
-                    <img src="{{ asset('images/dokumentasi/teknisi-rootera-plumbing-bekerja-lapangan.webp') }}" 
-                         alt="Protokol APD Teknisi Rootera Plumbing" 
+                    <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" 
+                         alt="Protokol APD Teknisi Rootera Plumbing Bekerja di Lapangan" 
+                         width="600"
+                         height="460"
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-[460px] object-cover group-hover:scale-105 transition-transform duration-700">
 
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>

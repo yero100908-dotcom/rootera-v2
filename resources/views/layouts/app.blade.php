@@ -328,6 +328,7 @@
     {{-- Styles --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    @stack('head')
 </head>
 <body class="min-h-screen w-full max-w-full bg-white text-slate-800 antialiased overflow-x-hidden relative m-0 p-0">
     <!-- Google Tag Manager (noscript) -->

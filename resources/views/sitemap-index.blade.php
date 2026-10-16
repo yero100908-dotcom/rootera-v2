@@ -33,10 +33,6 @@
         <lastmod>{{ $lastmodNow }}</lastmod>
     </sitemap>
     <sitemap>
-        <loc>{{ url('/sitemap-blog.xml') }}</loc>
-        <lastmod>{{ $lastmodBlog ?? $lastmodNow }}</lastmod>
-    </sitemap>
-    <sitemap>
         <loc>{{ url('/sitemap-gallery.xml') }}</loc>
         <lastmod>{{ $lastmodNow }}</lastmod>
     </sitemap>

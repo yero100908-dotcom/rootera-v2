@@ -160,9 +160,46 @@ class GenerateSitemapCommand extends Command
     {
         $entries = [
             ['loc' => $this->baseUrl . '/',                     'priority' => '1.0', 'changefreq' => 'daily'],
-            ['loc' => $this->baseUrl . '/layanan',              'priority' => '0.9', 'changefreq' => 'weekly'],
+            [
+                'loc'        => $this->baseUrl . '/layanan',
+                'priority'   => '0.9',
+                'changefreq' => 'weekly',
+                'images'     => [
+                    [
+                        'loc'     => $this->baseUrl . '/assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp',
+                        'title'   => 'Mesin Rooter Ridgid Spiral Baja - Rootera Plumbing',
+                        'caption' => 'Peralatan mekanik modern pelancar pipa mampet tanpa bongkar lantai.',
+                    ],
+                    [
+                        'loc'     => $this->baseUrl . '/images/dokumentasi/after-gutter-resto-bersih-rootera.webp',
+                        'title'   => 'Hasil Pengerjaan Pelancaran Pipa Mampet Rootera Plumbing',
+                        'caption' => 'Dokumentasi hasil pembersihan pipa saluran air bersih 100% lancar.',
+                    ],
+                ],
+            ],
             ['loc' => $this->baseUrl . '/jasa-saluran-mampet',  'priority' => '0.9', 'changefreq' => 'weekly'],
-            ['loc' => $this->baseUrl . '/tentang-kami',         'priority' => '0.7', 'changefreq' => 'monthly'],
+            [
+                'loc'        => $this->baseUrl . '/tentang-kami',
+                'priority'   => '0.7',
+                'changefreq' => 'monthly',
+                'images'     => [
+                    [
+                        'loc'     => $this->baseUrl . '/assets/staff/rafael-abimanyu-rootera-plumbing.webp',
+                        'title'   => 'Rafael Abimanyu - Founder & Lead Director Rootera Plumbing',
+                        'caption' => 'Profil Rafael Abimanyu pimpinan teknis dan founder Rootera Plumbing Indonesia.',
+                    ],
+                    [
+                        'loc'     => $this->baseUrl . '/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp',
+                        'title'   => 'Logo Resmi Rootera Plumbing Jasa Saluran Pipa Mampet',
+                        'caption' => 'Kantor pusat dan workshop resmi Rootera Plumbing di Cijantung, Jakarta Timur.',
+                    ],
+                    [
+                        'loc'     => $this->baseUrl . '/images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp',
+                        'title'   => 'Tim Teknisi APD K3 Rootera Plumbing',
+                        'caption' => 'Armada teknisi profesional Rootera Plumbing dengan standar keselamatan K3.',
+                    ],
+                ],
+            ],
             ['loc' => $this->baseUrl . '/kontak',               'priority' => '0.8', 'changefreq' => 'monthly'],
             ['loc' => $this->baseUrl . '/faq',                  'priority' => '0.7', 'changefreq' => 'weekly'],
             ['loc' => $this->baseUrl . '/blog',                 'priority' => '0.8', 'changefreq' => 'daily'],
@@ -279,11 +316,29 @@ class GenerateSitemapCommand extends Command
 
         $entries = [];
         foreach ($articles as $art) {
+            $images = [];
+            if (!empty($art->thumbnail_url)) {
+                $thumbUrl = $art->thumbnail_url;
+                if (str_starts_with($thumbUrl, 'http')) {
+                    $parsedPath = parse_url($thumbUrl, PHP_URL_PATH) ?: '';
+                    $thumbUrl   = $this->baseUrl . '/' . ltrim($parsedPath, '/');
+                } else {
+                    $thumbUrl   = $this->baseUrl . '/' . ltrim($thumbUrl, '/');
+                }
+
+                $images[] = [
+                    'loc'     => $thumbUrl,
+                    'title'   => $art->clean_title ?? $art->title,
+                    'caption' => 'Panduan dan solusi sanitasi pipa drainase: ' . ($art->clean_title ?? $art->title),
+                ];
+            }
+
             $entries[] = [
                 'loc'        => $this->baseUrl . '/blog/' . $art->slug,
                 'priority'   => '0.7',
                 'changefreq' => 'monthly',
                 'lastmod'    => ($art->updated_at ?? $art->published_at)?->tz('UTC')->toAtomString() ?? $this->now,
+                'images'     => $images,
             ];
         }
 
@@ -348,8 +403,11 @@ class GenerateSitemapCommand extends Command
             $files
         ));
 
+        $hasArticlesStatic = in_array('sitemap-articles.xml', $generatedFilenames, true);
+
         // SitemapController-managed (dynamic) endpoints
-        // — skip any whose filename is already covered by a generated static file
+        // — skip any whose filename is already covered by a generated static file,
+        // and skip sitemap-blog.xml if sitemap-articles.xml is generated to avoid duplicate blog sitemaps.
         $controllerEndpoints = array_values(array_filter([
             $this->baseUrl . '/sitemap-pages.xml',
             $this->baseUrl . '/sitemap-services.xml',
@@ -359,7 +417,13 @@ class GenerateSitemapCommand extends Command
             $this->baseUrl . '/sitemap-gallery.xml',
             $this->baseUrl . '/sitemap-videos.xml',
             $this->baseUrl . '/sitemap-clusters.xml',
-        ], fn($loc) => !in_array(basename($loc), $generatedFilenames, true)));
+        ], function($loc) use ($generatedFilenames, $hasArticlesStatic) {
+            $base = basename($loc);
+            if ($base === 'sitemap-blog.xml' && $hasArticlesStatic) {
+                return false;
+            }
+            return !in_array($base, $generatedFilenames, true);
+        }));
 
         $lines   = ['<?xml version="1.0" encoding="UTF-8"?>'];
         $lines[] = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
@@ -415,12 +479,28 @@ class GenerateSitemapCommand extends Command
      */
     protected function writeXml(string $filename, array $entries, bool $dryRun): string
     {
+        $hasImages = false;
+        foreach ($entries as $e) {
+            if (!empty($e['images'])) {
+                $hasImages = true;
+                break;
+            }
+        }
+
         $lines   = ['<?xml version="1.0" encoding="UTF-8"?>'];
         $lines[] = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
-        $lines[] = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
-                 . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
-                 . ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9'
-                 . ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        if ($hasImages) {
+            $lines[] = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+                     . ' xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"'
+                     . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+                     . ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9'
+                     . ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        } else {
+            $lines[] = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+                     . ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
+                     . ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9'
+                     . ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
+        }
 
         foreach ($entries as $entry) {
             $lines[] = '  <url>';
@@ -433,6 +513,20 @@ class GenerateSitemapCommand extends Command
             }
             if (isset($entry['priority'])) {
                 $lines[] = '    <priority>' . $entry['priority'] . '</priority>';
+            }
+            if (!empty($entry['images']) && is_array($entry['images'])) {
+                foreach ($entry['images'] as $img) {
+                    if (empty($img['loc'])) continue;
+                    $lines[] = '    <image:image>';
+                    $lines[] = '      <image:loc>' . htmlspecialchars($img['loc'], ENT_XML1, 'UTF-8') . '</image:loc>';
+                    if (!empty($img['title'])) {
+                        $lines[] = '      <image:title>' . htmlspecialchars($img['title'], ENT_XML1, 'UTF-8') . '</image:title>';
+                    }
+                    if (!empty($img['caption'])) {
+                        $lines[] = '      <image:caption>' . htmlspecialchars($img['caption'], ENT_XML1, 'UTF-8') . '</image:caption>';
+                    }
+                    $lines[] = '    </image:image>';
+                }
             }
             $lines[] = '  </url>';
         }

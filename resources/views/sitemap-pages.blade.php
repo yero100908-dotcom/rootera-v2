@@ -1,6 +1,7 @@
 {!! '<' . '?xml version="1.0" encoding="UTF-8"?' . '>' !!}
 {!! '<' . '?xml-stylesheet type="text/xsl" href="' . url('/sitemap.xsl') . '"?' . '>' !!}
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     <url>
         <loc>{{ url('/') }}</loc>
         <changefreq>daily</changefreq>
@@ -10,6 +11,16 @@
         <loc>{{ url('/layanan') }}</loc>
         <changefreq>weekly</changefreq>
         <priority>0.90</priority>
+        <image:image>
+            <image:loc>{{ url('/assets/TOOLKIT/mesin-rooter-ridgid-k50-spiral-baja.webp') }}</image:loc>
+            <image:title>Mesin Rooter Ridgid Spiral Baja - Rootera Plumbing</image:title>
+            <image:caption>Peralatan mekanik modern pelancar pipa mampet tanpa bongkar lantai.</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>{{ url('/images/dokumentasi/after-gutter-resto-bersih-rootera.webp') }}</image:loc>
+            <image:title>Hasil Pengerjaan Pelancaran Pipa Mampet Rootera Plumbing</image:title>
+            <image:caption>Dokumentasi hasil pembersihan pipa saluran air bersih 100% lancar.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>{{ url('/cek-kondisi-pipa') }}</loc>
@@ -40,6 +51,21 @@
         <loc>{{ url('/tentang-kami') }}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.80</priority>
+        <image:image>
+            <image:loc>{{ url('/assets/staff/rafael-abimanyu-rootera-plumbing.webp') }}</image:loc>
+            <image:title>Rafael Abimanyu - Founder &amp; Lead Director Rootera Plumbing</image:title>
+            <image:caption>Profil Rafael Abimanyu pimpinan teknis dan founder Rootera Plumbing Indonesia.</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>{{ url('/images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp') }}</image:loc>
+            <image:title>Logo Resmi Rootera Plumbing Jasa Saluran Pipa Mampet</image:title>
+            <image:caption>Kantor pusat dan workshop resmi Rootera Plumbing di Cijantung, Jakarta Timur.</image:caption>
+        </image:image>
+        <image:image>
+            <image:loc>{{ url('/images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}</image:loc>
+            <image:title>Tim Teknisi APD K3 Rootera Plumbing</image:title>
+            <image:caption>Armada teknisi profesional Rootera Plumbing dengan standar keselamatan K3.</image:caption>
+        </image:image>
     </url>
     <url>
         <loc>{{ url('/tentang-kami/holding-jj-group') }}</loc>

@@ -827,7 +827,7 @@ $graphSchema = [
                     <span>⚠️ Kondisi Awal (Mampet Total)</span>
                 </div>
                 <div class="rounded-2xl overflow-hidden mb-4 border border-rose-200">
-                    <img src="{{ asset('images/dokumentasi/sebelum-pipa-mampet-lemak.webp') }}" 
+                    <img src="{{ asset('images/dokumentasi/kondisi-pipa-lemak-resto-mall-tersumbat.webp') }}" 
                          alt="Sebelum Hydro Jetting Rootera Plumbing" 
                          width="600"
                          height="224"

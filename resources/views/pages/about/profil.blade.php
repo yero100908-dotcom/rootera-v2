@@ -91,8 +91,12 @@ $schemaData = [
 
             <div class="relative">
                 <div class="rounded-3xl overflow-hidden shadow-2xl border-4 border-slate-100">
-                    <img src="{{ asset('images/dokumentasi/teknisi-rootera-plumbing-bekerja-lapangan.webp') }}" 
-                         alt="Teknisi Rootera Plumbing Bekerja dengan APD K3" 
+                    <img src="{{ asset('images/dokumentasi/teknisi-apd-lengkap-sink-pabrik-makanan.webp') }}" 
+                         alt="Teknisi Rootera Plumbing Bekerja dengan APD K3 Lengkap" 
+                         width="600"
+                         height="480"
+                         loading="lazy"
+                         decoding="async"
                          class="w-full h-[480px] object-cover">
                 </div>
                 <div class="absolute -bottom-6 -left-6 bg-slate-900 text-white p-5 rounded-2xl shadow-xl max-w-xs border border-slate-700">
