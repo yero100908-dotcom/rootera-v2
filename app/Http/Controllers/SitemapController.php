@@ -153,8 +153,9 @@ class SitemapController extends Controller
             $categories = ServiceCategory::where('is_active', true)->get();
             $cities = City::where('is_active', true)->whereNotIn('slug', $this->aliasSlugs)->get();
             $sectors = ServiceSector::where('is_active', true)->get();
+            $aliases = \App\Models\ServiceAlias::active()->landingPage()->with('serviceCategory')->get();
 
-            return view('sitemap-services', compact('categories', 'cities', 'sectors'))->render();
+            return view('sitemap-services', compact('categories', 'cities', 'sectors', 'aliases'))->render();
         });
 
         return response(trim($content), 200)->header('Content-Type', 'text/xml; charset=utf-8');

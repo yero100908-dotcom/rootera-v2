@@ -80,14 +80,22 @@
                 <div id="faq-list" class="space-y-3">
                     @php $faqItems = old('faq_overrides', $alias->faq_overrides ?? []); @endphp
                     @forelse($faqItems as $fIdx => $fItem)
-                    <div class="faq-row grid md:grid-cols-2 gap-3 bg-slate-50/60 p-3 rounded-xl border border-slate-200">
-                        <div>
-                            <label class="{{ $lbl }}">Pertanyaan *</label>
-                            <input name="faq_overrides[{{ $fIdx }}][question]" value="{{ $fItem['question'] ?? '' }}" class="{{ $input }}" required maxlength="200" placeholder="Berapa biaya {{ $alias->keyword ?? 'layanan' }} ini?">
+                    <div class="faq-row bg-slate-50/60 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex justify-between items-center pb-1 border-b border-slate-200/60">
+                            <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Item FAQ</span>
+                            <button type="button" class="remove-faq text-xs font-bold text-rose-500 hover:text-rose-700 hover:underline flex items-center gap-1">
+                                ✕ Hapus
+                            </button>
                         </div>
-                        <div>
-                            <label class="{{ $lbl }}">Jawaban *</label>
-                            <textarea name="faq_overrides[{{ $fIdx }}][answer]" class="{{ $input }}" rows="2" required maxlength="1000">{{ $fItem['answer'] ?? '' }}</textarea>
+                        <div class="grid md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="{{ $lbl }}">Pertanyaan *</label>
+                                <input name="faq_overrides[{{ $fIdx }}][question]" value="{{ $fItem['question'] ?? '' }}" class="{{ $input }}" required maxlength="200" placeholder="Berapa biaya {{ $alias->keyword ?? 'layanan' }} ini?">
+                            </div>
+                            <div>
+                                <label class="{{ $lbl }}">Jawaban *</label>
+                                <textarea name="faq_overrides[{{ $fIdx }}][answer]" class="{{ $input }}" rows="2" required maxlength="1000">{{ $fItem['answer'] ?? '' }}</textarea>
+                            </div>
                         </div>
                     </div>
                     @empty
@@ -160,21 +168,44 @@
     const inputCls  = @json('w-full text-sm rounded-xl border border-slate-200 px-3 py-2.5 focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500');
     const lblCls    = @json('block text-xs font-extrabold text-slate-600 uppercase tracking-wide mb-1.5');
 
-    addFaq.addEventListener('click', () => {
-        const row = document.createElement('div');
-        row.className = 'faq-row grid md:grid-cols-2 gap-3 bg-slate-50/60 p-3 rounded-xl border border-slate-200';
-        row.innerHTML = `
-            <div>
-                <label class="${lblCls}">Pertanyaan *</label>
-                <input name="faq_overrides[${faqIdx}][question]" class="${inputCls}" required maxlength="200" placeholder="Pertanyaan…">
-            </div>
-            <div>
-                <label class="${lblCls}">Jawaban *</label>
-                <textarea name="faq_overrides[${faqIdx}][answer]" class="${inputCls}" rows="2" required maxlength="1000" placeholder="Jawaban…"></textarea>
-            </div>`;
-        faqList.appendChild(row);
-        faqIdx++;
-    });
+    // Remove FAQ handler via event delegation
+    if (faqList) {
+        faqList.addEventListener('click', (e) => {
+            const btn = e.target.closest('.remove-faq');
+            if (btn) {
+                const row = btn.closest('.faq-row');
+                if (row) {
+                    row.remove();
+                }
+            }
+        });
+    }
+
+    if (addFaq && faqList) {
+        addFaq.addEventListener('click', () => {
+            const row = document.createElement('div');
+            row.className = 'faq-row bg-slate-50/60 p-3.5 rounded-xl border border-slate-200 space-y-2';
+            row.innerHTML = `
+                <div class="flex justify-between items-center pb-1 border-b border-slate-200/60">
+                    <span class="text-[11px] font-extrabold uppercase tracking-wider text-slate-500">Item FAQ Baru</span>
+                    <button type="button" class="remove-faq text-xs font-bold text-rose-500 hover:text-rose-700 hover:underline flex items-center gap-1">
+                        ✕ Hapus
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="${lblCls}">Pertanyaan *</label>
+                        <input name="faq_overrides[${faqIdx}][question]" class="${inputCls}" required maxlength="200" placeholder="Pertanyaan…">
+                    </div>
+                    <div>
+                        <label class="${lblCls}">Jawaban *</label>
+                        <textarea name="faq_overrides[${faqIdx}][answer]" class="${inputCls}" rows="2" required maxlength="1000" placeholder="Jawaban…"></textarea>
+                    </div>
+                </div>`;
+            faqList.appendChild(row);
+            faqIdx++;
+        });
+    }
 })();
 </script>
 @endpush

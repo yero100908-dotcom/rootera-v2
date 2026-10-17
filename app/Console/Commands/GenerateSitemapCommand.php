@@ -235,6 +235,20 @@ class GenerateSitemapCommand extends Command
             ];
         }
 
+        $aliases = \App\Models\ServiceAlias::active()
+            ->landingPage()
+            ->with('serviceCategory')
+            ->get();
+
+        foreach ($aliases as $alias) {
+            $entries[] = [
+                'loc'        => $this->baseUrl . '/layanan/' . $alias->slug,
+                'priority'   => '0.85',
+                'changefreq' => 'weekly',
+                'lastmod'    => $alias->updated_at?->tz('UTC')->toAtomString() ?? $this->now,
+            ];
+        }
+
         $sectors = \App\Models\ServiceSector::where('is_active', true)->get();
         foreach ($sectors as $sec) {
             $entries[] = [
@@ -245,7 +259,7 @@ class GenerateSitemapCommand extends Command
             ];
         }
 
-        $this->info("📄 sitemap-services.xml — " . count($entries) . " service categories and commercial sectors");
+        $this->info("📄 sitemap-services.xml — " . count($entries) . " service categories, aliases, and commercial sectors");
 
         return $this->writeXml('sitemap-services.xml', $entries, $dryRun);
     }

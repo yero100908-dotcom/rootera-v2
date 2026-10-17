@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         // 2. Call Taxonomies & Seeders
         $this->call([
             ServiceCategorySeeder::class,
+            ServiceAliasSeeder::class,
             CommercialSectorSeeder::class,
             PropertyTypeSeeder::class,
             GeoDatabaseSeeder::class,

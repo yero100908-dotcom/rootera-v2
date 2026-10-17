@@ -60,10 +60,42 @@ class SpintaxService
     }
 
     /**
+     * Get active copy_only aliases for a category, formatted as a spintax group:
+     * e.g. "{Saluran Pipa Mampet|paralon mampet|servis pipa buntu|tembak saluran}"
+     */
+    public function getCategoryKeywordSpintax(?int $categoryId, string $fallbackName): string
+    {
+        if (! $categoryId) {
+            return $fallbackName;
+        }
+
+        try {
+            $aliases = \Illuminate\Support\Facades\Cache::remember("cat_copy_aliases_{$categoryId}", 3600, function () use ($categoryId) {
+                return \App\Models\ServiceAlias::active()
+                    ->copyOnly()
+                    ->where('service_category_id', $categoryId)
+                    ->pluck('keyword')
+                    ->all();
+            });
+
+            if (empty($aliases)) {
+                return $fallbackName;
+            }
+
+            $options = array_merge([$fallbackName], array_map('ucwords', $aliases));
+            return '{' . implode('|', array_unique($options)) . '}';
+        } catch (\Throwable) {
+            return $fallbackName;
+        }
+    }
+
+    /**
      * Generate dynamic Hero Headline for programmatic pages (8-12 variations).
      */
-    public function generateHeroHeadline(string $categoryName, string $locationName, string $seedKey): string
+    public function generateHeroHeadline(string $categoryName, string $locationName, string $seedKey, ?int $categoryId = null): string
     {
+        $targetCategory = $categoryId ? $this->getCategoryKeywordSpintax($categoryId, $categoryName) : $categoryName;
+
         if (str_contains(strtolower($categoryName), 'cctv') || str_contains(strtolower($categoryName), 'inspeksi')) {
             $pattern = "{Jasa Inspeksi Kamera Pipa CCTV|Spesialis CCTV Endoscope Pipa|Jasa Pemetaan Saluran Kamera CCTV} {di|Area|Wilayah|Kawasan} {locationName} - {Tanpa Bongkar Keramik|Akurat Presisi 98%|512Hz Sonde Locator|Hasil Rekaman Video HD}";
         } else {
@@ -72,7 +104,7 @@ class SpintaxService
         
         $text = str_replace(
             ['{categoryName}', '{locationName}'],
-            [$categoryName, $locationName],
+            [$targetCategory, $locationName],
             $pattern
         );
 
@@ -82,13 +114,15 @@ class SpintaxService
     /**
      * Generate dynamic Hero Subtitle / Intro paragraph (8-12 variations).
      */
-    public function generateHeroSubtitle(string $categoryName, string $locationName, string $estimatedArrival, string $seedKey): string
+    public function generateHeroSubtitle(string $categoryName, string $locationName, string $estimatedArrival, string $seedKey, ?int $categoryId = null): string
     {
+        $targetCategory = $categoryId ? $this->getCategoryKeywordSpintax($categoryId, $categoryName) : $categoryName;
+
         $pattern = "{{Solusi terpercaya|Layanan darurat terdepan|Pilihan utama|Penanganan profesional|Layanan panggil cepat|Rekomendasi terbaik} untuk masalah {saluran air mampet|wastafel tersumbat|pipa pembuangan bermasalah|kloset & drain mampet|endapan lemak & kerak pipa} di kawasan <strong>{locationName}</strong>. {Dikerjakan secara mekanis tanpa bongkar paksa|Menggunakan teknologi modern rigid spiral & hydro jetting|Ditangani teknisi berpengalaman bersertifikat|Didukung garansi pengerjaan tuntas 100%|Proses pengerjaan cepat 1-2 jam tuntas} dengan estimasi waktu tiba teknisi <strong>{estimatedArrival}</strong>.|{Solusi praktis dan efisien|Solusi bebas ribet} mengatasi {categoryName} di <strong>{locationName}</strong>. Tim teknisi siaga meluncur dengan estimasi <strong>{estimatedArrival}</strong> membawa {peralatan spiral modern|mesin hydro-jetting|alat pembersih pipa canggih} tanpa merusak lantai.}";
 
         $text = str_replace(
             ['{categoryName}', '{locationName}', '{estimatedArrival}'],
-            [$categoryName, $locationName, $estimatedArrival],
+            [$targetCategory, $locationName, $estimatedArrival],
             $pattern
         );
 
@@ -123,9 +157,10 @@ class SpintaxService
     /**
      * Generate dynamic Area Technical Intro paragraph with Landmark Mesh integration.
      */
-    public function generateAreaTechnicalIntro(string $categoryName, string $locationName, string $seedKey, array $landmarks = []): string
+    public function generateAreaTechnicalIntro(string $categoryName, string $locationName, string $seedKey, array $landmarks = [], ?int $categoryId = null): string
     {
         $landmarkText = !empty($landmarks) ? "meliputi kawasan " . implode(', ', array_slice($landmarks, 0, 4)) : "sekitar area " . $locationName;
+        $targetCategory = $categoryId ? $this->getCategoryKeywordSpintax($categoryId, $categoryName) : $categoryName;
 
         if (str_contains(strtolower($categoryName), 'cctv') || str_contains(strtolower($categoryName), 'inspeksi')) {
             $pattern = "{Kawasan <strong>{locationName}</strong> ({landmarkText}) memiliki tantangan infrastruktur instalasi pipa bawah lantai yang kompleks. {Layanan jasa cctv pipa <strong>{locationName}</strong>|Deteksi letak septic tank hilang & bak kontrol <strong>{locationName}</strong>|Pemetaan denah saluran paralon tanpa bongkar <strong>{locationName}</strong>} dari Rootera hadir menggunakan kamera endoscope visual HD IP68 &amp; Sonde Locator 512Hz untuk melacak titik kebocoran pipa dalam dinding serta retakan paralon secara presisi tanpa merusak struktur ubin.|Sebagai wilayah hunian &amp; gedung komersial di <strong>{locationName}</strong> ({landmarkText}), kebutuhan layanan inspeksi kamera CCTV pipa saluran air sangat krusial untuk menemukan titik amblas, penembusan akar pohon, dan sumber bau misterius tanpa membobol semen secara tebak-tebakan.}";
@@ -135,7 +170,7 @@ class SpintaxService
 
         $text = str_replace(
             ['{categoryName}', '{locationName}', '{landmarkText}'],
-            [$categoryName, $locationName, $landmarkText],
+            [$targetCategory, $locationName, $landmarkText],
             $pattern
         );
 
@@ -154,9 +189,10 @@ class SpintaxService
     /**
      * Generate dynamic Transactional Meta Title (Target: 50-60 chars).
      */
-    public function generateMetaTitle(string $categoryName, string $locationName, ?string $districtName, string $seedKey): string
+    public function generateMetaTitle(string $categoryName, string $locationName, ?string $districtName, string $seedKey, ?int $categoryId = null): string
     {
         $locationShort = $districtName ?: $locationName;
+        $targetCategory = $categoryId ? $this->getCategoryKeywordSpintax($categoryId, $categoryName) : $categoryName;
 
         if (str_contains(strtolower($categoryName), 'cctv') || str_contains(strtolower($categoryName), 'inspeksi')) {
             $pattern = "{Jasa Inspeksi Kamera Pipa CCTV {locationShort} - Rootera|Deteksi Pipa Kamera CCTV & Pelacak Saluran {locationShort} | Rootera|Jasa Pemetaan Pipa & CCTV Inspeksi {locationShort} - Rootera}";
@@ -166,7 +202,7 @@ class SpintaxService
 
         $text = str_replace(
             ['{categoryName}', '{locationShort}'],
-            [$categoryName, $locationShort],
+            [$targetCategory, $locationShort],
             $pattern
         );
 
@@ -182,8 +218,10 @@ class SpintaxService
     /**
      * Generate dynamic Transactional Meta Description (Target: 140-155 chars).
      */
-    public function generateMetaDescription(string $categoryName, string $locationName, string $estimatedArrival, string $seedKey): string
+    public function generateMetaDescription(string $categoryName, string $locationName, string $estimatedArrival, string $seedKey, ?int $categoryId = null): string
     {
+        $targetCategory = $categoryId ? $this->getCategoryKeywordSpintax($categoryId, $categoryName) : $categoryName;
+
         if (str_contains(strtolower($categoryName), 'cctv') || str_contains(strtolower($categoryName), 'inspeksi')) {
             $pattern = "{Butuh inspeksi kamera CCTV pipa di {locationName}? Deteksi posisi pipa pecah, amblas & pelacak septic tank tersembunyi tanpa bongkar. File video HD MP4.|Jasa inspeksi visual kamera endoscope pipa saluran di {locationName}. Lacak lokasi sumbatan & titik retak akurat dengan Sonde 512Hz. Bukti rekaman video HD.}";
         } else {
@@ -192,7 +230,7 @@ class SpintaxService
 
         $text = str_replace(
             ['{categoryName}', '{locationName}', '{estimatedArrival}'],
-            [$categoryName, $locationName, $estimatedArrival],
+            [$targetCategory, $locationName, $estimatedArrival],
             $pattern
         );
 

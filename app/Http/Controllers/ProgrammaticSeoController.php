@@ -285,8 +285,8 @@ class ProgrammaticSeoController extends Controller
             // Generate Dynamic Transactional SEO Metadata (Title: 50-60 chars, Meta Desc: 140-155 chars)
             $seedKey = "spintax_" . md5($district ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}"));
             
-            $title = $this->spintaxService->generateMetaTitle($category->name, $locationName, $district ? $district->name : null, $seedKey);
-            $description = $this->spintaxService->generateMetaDescription($category->name, $locationName, $estimatedArrival, $seedKey);
+            $title = $this->spintaxService->generateMetaTitle($category->name, $locationName, $district ? $district->name : null, $seedKey, $category->id);
+            $description = $this->spintaxService->generateMetaDescription($category->name, $locationName, $estimatedArrival, $seedKey, $category->id);
 
             if ($district) {
                 // Consolidate thin legacy district URLs to City Hub & set noindex
@@ -337,10 +337,10 @@ class ProgrammaticSeoController extends Controller
 
             // Generate Spintax Variations for Anti-Duplicate Content Engine
             $seedKey = "spintax_" . md5($canonical);
-            $heroHeadline = $this->spintaxService->generateHeroHeadline($category->name, $locationName, $seedKey);
-            $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $locationName, $estimatedArrival, $seedKey);
+            $heroHeadline = $this->spintaxService->generateHeroHeadline($category->name, $locationName, $seedKey, $category->id);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $locationName, $estimatedArrival, $seedKey, $category->id);
             $valueProps = $this->spintaxService->generateValueProps($locationShort, $seedKey);
-            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey, $nearbyLandmarks);
+            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey, $nearbyLandmarks, $category->id);
             $guaranteeCallout = $this->spintaxService->generateGuaranteeCallout($locationShort, $seedKey);
             $sectionOrder = $this->spintaxService->getSectionOrder($seedKey);
             $technicalContext = $this->getTechnicalContext($category->slug, $locationShort);

@@ -27,6 +27,22 @@
         @endforeach
     @endforeach
 
+    {{-- Service Alias Landing Pages (usage = landing_page) --}}
+    @if(isset($aliases))
+    @foreach ($aliases as $alias)
+    <url>
+        <loc>{{ route('layanan.show', $alias->slug) }}</loc>
+        @if($alias->updated_at)
+        <lastmod>{{ $alias->updated_at->tz('UTC')->toAtomString() }}</lastmod>
+        @else
+        <lastmod>{{ now()->tz('UTC')->toAtomString() }}</lastmod>
+        @endif
+        <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+    </url>
+    @endforeach
+    @endif
+
     {{-- B2B Commercial Sector Landing Pages --}}
     @if(isset($sectors))
     @foreach ($sectors as $sec)

@@ -238,16 +238,23 @@
         </div>
 
         <h1 class="cs-title">
-            Jasa {{ $category->name }}<br>
-            di {{ $cluster->name }}
+            {!! $heroHeadline ?? "Jasa {$category->name}<br>di {$cluster->name}" !!}
         </h1>
 
         <p class="cs-desc">
-            Rootera Plumbing menyediakan layanan <strong>{{ $category->name }}</strong> khusus untuk kawasan
-            <strong>{{ $cluster->name }}</strong>, {{ $cluster->city->name ?? '' }}.
-            Teknisi berpengalaman, respons cepat {{ $cluster->estimated_arrival ?? '20–40 menit' }},
-            garansi pengerjaan 30 hari.
+            {!! $heroSubtitle ?? "Rootera Plumbing menyediakan layanan <strong>{$category->name}</strong> khusus untuk kawasan <strong>{$cluster->name}</strong>, " . ($cluster->city->name ?? '') . ". Teknisi berpengalaman, respons cepat " . ($cluster->estimated_arrival ?? '20–40 menit') . ", garansi pengerjaan 30 hari." !!}
         </p>
+
+        @if(!empty($copyAliases) && count($copyAliases) > 0)
+        <div style="margin-top:-1.25rem; margin-bottom:2rem; display:flex; flex-wrap:wrap; gap:0.45rem; align-items:center;">
+            <span style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">Cakupan Masalah:</span>
+            @foreach($copyAliases as $aliasKeyword)
+            <span style="background:rgba(255,255,255,0.12); color:#E2E8F0; font-size:0.75rem; padding:0.2rem 0.65rem; border-radius:50px; border:1px solid rgba(255,255,255,0.22); font-weight:500;">
+                {{ $aliasKeyword }}
+            </span>
+            @endforeach
+        </div>
+        @endif
 
         <div style="display:flex; flex-wrap:wrap; gap:1rem;">
             <a href="https://wa.me/6281385404000?text=Halo+Rootera%2C+saya+butuh+{{ urlencode($category->name) }}+di+{{ urlencode($cluster->name) }}"

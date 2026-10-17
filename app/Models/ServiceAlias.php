@@ -58,4 +58,10 @@ class ServiceAlias extends Model
     {
         return $query->where('usage', 'copy_only');
     }
+
+    public function scopeLandingPage(Builder $query): Builder
+    {
+        return $query->where('usage', 'landing_page');
+    }
 }
+

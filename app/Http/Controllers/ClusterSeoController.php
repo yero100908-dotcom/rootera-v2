@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Cache;
 class ClusterSeoController extends Controller
 {
     public function __construct(
-        private readonly SchemaGeneratorService $schemaGenerator
+        private readonly SchemaGeneratorService $schemaGenerator,
+        private readonly \App\Services\SpintaxService $spintaxService
     ) {}
 
     /* ─────────────────────────────────────────────────────────────────
@@ -173,6 +174,19 @@ class ClusterSeoController extends Controller
                 $this->schemaGenerator->getFaqSchema($faqArr),
             ];
 
+            $copyAliases = Cache::remember("cat_copy_alias_list_{$category->id}", 3600, function () use ($category) {
+                return \App\Models\ServiceAlias::active()
+                    ->copyOnly()
+                    ->where('service_category_id', $category->id)
+                    ->pluck('keyword')
+                    ->take(6)
+                    ->all();
+            });
+
+            $seedKey = "cluster_svc_{$cluster->id}_{$category->id}";
+            $heroHeadline = $this->spintaxService->generateHeroHeadline($category->name, $cluster->name, $seedKey, $category->id);
+            $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $cluster->name, $cluster->estimated_arrival ?? '20–40 menit', $seedKey, $category->id);
+
             $metaTitle       = "{$category->name} di {$cluster->name} | Rootera Plumbing";
             $metaDescription = "Jasa {$category->name} profesional di kawasan {$cluster->name}. "
                 . "Teknisi berpengalaman, harga transparan, garansi pekerjaan. ☎ 0813-8540-4000.";
@@ -187,6 +201,9 @@ class ClusterSeoController extends Controller
                 'canonicalUrl',
                 'metaTitle',
                 'metaDescription',
+                'copyAliases',
+                'heroHeadline',
+                'heroSubtitle',
             ))->render();
         });
 

@@ -7,6 +7,7 @@ namespace App\Services\Seo;
 use App\Models\City;
 use App\Models\ServiceArea;
 use App\Models\ServiceCategory;
+use App\Models\ServiceAlias;
 
 /**
  * SchemaGeneratorService
@@ -218,27 +219,51 @@ class SchemaGeneratorService
     }
 
     /**
-     * Build a Service entity with Provider, TermsOfService, and ServiceType.
+     * Build FAQPage schema for a ServiceAlias using its faq_overrides.
+     * Fallbacks to provided fallback FAQs if overrides are empty.
      *
-     * @param  ServiceCategory  $service  The service category record.
-     * @param  City|null        $area     Optional city to localise the schema.
+     * @param  ServiceAlias  $alias
+     * @param  array         $fallbackFaqs
      * @return array<string, mixed>
      */
-    public function getServiceSchema(ServiceCategory $service, ?City $area = null): array
+    public function getServiceAliasFaqSchema(ServiceAlias $alias, array $fallbackFaqs = []): array
     {
+        $faqs = (!empty($alias->faq_overrides) && is_array($alias->faq_overrides))
+            ? $alias->faq_overrides
+            : $fallbackFaqs;
+
+        return $this->getFaqSchema($faqs);
+    }
+
+    /**
+     * Build a Service entity with Provider, TermsOfService, and ServiceType.
+     *
+     * @param  ServiceCategory      $service  The service category record.
+     * @param  City|null            $area     Optional city to localise the schema.
+     * @param  ServiceAlias|null    $alias    Optional service alias for alias landing pages.
+     * @return array<string, mixed>
+     */
+    public function getServiceSchema(ServiceCategory $service, ?City $area = null, ?ServiceAlias $alias = null): array
+    {
+        $serviceName  = $alias ? "Jasa " . ucwords($alias->keyword) : $service->name;
         $locationName = $area ? $area->full_name : 'Jabodetabek';
-        $canonicalUrl = $area
-            ? url("/layanan-pipa-mampet/{$service->slug}/{$area->slug}")
-            : url("/layanan/{$service->slug}");
+        $canonicalUrl = $alias
+            ? url("/layanan/{$alias->slug}")
+            : ($area
+                ? url("/layanan-pipa-mampet/{$service->slug}/{$area->slug}")
+                : url("/layanan/{$service->slug}"));
+
+        $serviceDesc = ($alias && $alias->intro_override)
+            ? $alias->intro_override
+            : ($service->description ?? "Jasa {$serviceName} profesional di {$locationName}. Teknisi spesialis mesin spiral & CCTV pipa, respon cepat 24 jam.");
 
         return [
             '@context'    => 'https://schema.org',
             '@type'       => 'Service',
             '@id'         => $canonicalUrl . '#service',
-            'name'        => "{$service->name} {$locationName}",
-            'serviceType' => $service->name,
-            'description' => $service->description
-                ?? "Jasa {$service->name} profesional di {$locationName}. Teknisi spesialis mesin spiral & CCTV pipa, respon cepat 24 jam.",
+            'name'        => "{$serviceName} {$locationName}",
+            'serviceType' => $alias ? $alias->name : $service->name,
+            'description' => $serviceDesc,
             'provider' => [
                 '@type' => 'PlumbingService',
                 'name'  => 'Rootera Plumbing',

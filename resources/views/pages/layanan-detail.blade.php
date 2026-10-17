@@ -24,12 +24,15 @@ if ($numericLowPrice <= 0) {
     $numericLowPrice = 400000;
 }
 
+$serviceName = isset($alias) && $alias ? "Jasa " . ucwords($alias->keyword) : ($isCctv ? "Jasa Inspeksi Kamera Pipa CCTV & Pemetaan Saluran" : $category->name);
+$serviceDesc = (isset($alias) && $alias && $alias->intro_override) ? $alias->intro_override : $category->description;
+
 $serviceSchema = [
   "@context" => "https://schema.org",
   "@type" => "Service",
-  "name" => $isCctv ? "Jasa Inspeksi Kamera Pipa CCTV & Pemetaan Saluran" : $category->name,
+  "name" => $serviceName,
   "serviceType" => $isCctv ? ["CCTV Pipe Inspection", "Underground Pipe Locating", "Septic Tank Detector", "Non-Destructive Plumbing Diagnostic"] : ["Drain Cleaning", "Plumbing Service"],
-  "description" => $category->description,
+  "description" => $serviceDesc,
   "provider" => [
     "@type" => "LocalBusiness",
     "@id" => url('/') . '#organization',
@@ -47,61 +50,82 @@ $serviceSchema = [
   ]
 ];
 
-$faqSchema = [
-  "@context" => "https://schema.org",
-  "@type" => "FAQPage",
-  "mainEntity" => $isCctv ? [
-    [
-      "@type" => "Question",
-      "name" => "Bagaimana cara kerja pelacakan septic tank & bak kontrol tersembunyi dengan Sonde 512Hz?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Kepala kamera CCTV memancarkan frekuensi sinyal 512Hz dari dalam pipa di bawah tanah. Teknisi menggunakan alat receiver pemindai permukaan untuk melacak gelombang sinyal persis di atas ubin/lantai, sehingga titik lokasi dan kedalaman septic tank/manhole dapat ditemukan tanpa membongkar keramik acak."
+if (isset($aliasFaqs) && !empty($aliasFaqs)) {
+  $mainFaqEntities = [];
+  foreach ($aliasFaqs as $af) {
+    if (!empty($af['question']) && !empty($af['answer'])) {
+      $mainFaqEntities[] = [
+        "@type" => "Question",
+        "name" => $af['question'],
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => strip_tags($af['answer'])
+        ]
+      ];
+    }
+  }
+  $faqSchema = [
+    "@context" => "https://schema.org",
+    "@type" => "FAQPage",
+    "mainEntity" => $mainFaqEntities
+  ];
+} else {
+  $faqSchema = [
+    "@context" => "https://schema.org",
+    "@type" => "FAQPage",
+    "mainEntity" => $isCctv ? [
+      [
+        "@type" => "Question",
+        "name" => "Bagaimana cara kerja pelacakan septic tank & bak kontrol tersembunyi dengan Sonde 512Hz?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Kepala kamera CCTV memancarkan frekuensi sinyal 512Hz dari dalam pipa di bawah tanah. Teknisi menggunakan alat receiver pemindai permukaan untuk melacak gelombang sinyal persis di atas ubin/lantai, sehingga titik lokasi dan kedalaman septic tank/manhole dapat ditemukan tanpa membongkar keramik acak."
+        ]
+      ],
+      [
+        "@type" => "Question",
+        "name" => "Apakah pelanggan akan mendapatkan bukti file rekaman video CCTV hasil inspeksi?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Ya, 100% transparan. Setiap pelanggan berhak mendapatkan file rekaman video resolusi tinggi Full HD (format MP4) yang diserahkan langsung via Flashdisk, Cloud Drive, atau WhatsApp, lengkap dengan lembar rekomendasi audit teknis perbaikan."
+        ]
+      ],
+      [
+        "@type" => "Question",
+        "name" => "Berapa biaya jasa inspeksi pipa kamera CCTV di Rootera?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Biaya jasa inspeksi kamera CCTV terjangkau dan transparan mulai dari " . $formattedPriceHome . " untuk kategori hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori gedung corporate/industri. Sangat hemat dibanding risiko pembongkaran ubin secara tebak-tebakan."
+        ]
       ]
-    ],
-    [
-      "@type" => "Question",
-      "name" => "Apakah pelanggan akan mendapatkan bukti file rekaman video CCTV hasil inspeksi?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Ya, 100% transparan. Setiap pelanggan berhak mendapatkan file rekaman video resolusi tinggi Full HD (format MP4) yang diserahkan langsung via Flashdisk, Cloud Drive, atau WhatsApp, lengkap dengan lembar rekomendasi audit teknis perbaikan."
-      ]
-    ],
-    [
-      "@type" => "Question",
-      "name" => "Berapa biaya jasa inspeksi pipa kamera CCTV di Rootera?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Biaya jasa inspeksi kamera CCTV terjangkau dan transparan mulai dari " . $formattedPriceHome . " untuk kategori hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori gedung corporate/industri. Sangat hemat dibanding risiko pembongkaran ubin secara tebak-tebakan."
+    ] : [
+      [
+        "@type" => "Question",
+        "name" => "Berapa lama proses pengerjaan pelancar pipa mampet Rootera?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Estimasi waktu pengerjaan pelancar pipa mampet berkisar antara 1 hingga 2 jam saja, tergantung tingkat kesulitan dan panjang saluran pipa. Berkat metode mekanis modern, masalah selesai dengan cepat tanpa harus membongkar struktur bangunan."
+        ]
+      ],
+      [
+        "@type" => "Question",
+        "name" => "Apakah metode pembersihan Rootera aman untuk pipa paralon PVC?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Sangat aman. Kami menggunakan teknologi spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari bahan kimia asam korosif. Metode ramah lingkungan ini menjaga integritas pipa paralon PVC Anda agar tidak bocor atau pecah."
+        ]
+      ],
+      [
+        "@type" => "Question",
+        "name" => "Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?",
+        "acceptedAnswer" => [
+          "@type" => "Answer",
+          "text" => "Biaya jasa pelancar pipa berkisar mulai dari " . $formattedPriceHome . " untuk kategori residensial/hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi."
+        ]
       ]
     ]
-  ] : [
-    [
-      "@type" => "Question",
-      "name" => "Berapa lama proses pengerjaan pelancar pipa mampet Rootera?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Estimasi waktu pengerjaan pelancar pipa mampet berkisar antara 1 hingga 2 jam saja, tergantung tingkat kesulitan dan panjang saluran pipa. Berkat metode mekanis modern, masalah selesai dengan cepat tanpa harus membongkar struktur bangunan."
-      ]
-    ],
-    [
-      "@type" => "Question",
-      "name" => "Apakah metode pembersihan Rootera aman untuk pipa paralon PVC?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Sangat aman. Kami menggunakan teknologi spiral mekanis (rotary cable) dan hydro-jetting bertekanan air tinggi 100% bebas dari bahan kimia asam korosif. Metode ramah lingkungan ini menjaga integritas pipa paralon PVC Anda agar tidak bocor atau pecah."
-      ]
-    ],
-    [
-      "@type" => "Question",
-      "name" => "Berapa biaya jasa pelancar pipa mampet tanpa bongkar di Rootera?",
-      "acceptedAnswer" => [
-        "@type" => "Answer",
-        "text" => "Biaya jasa pelancar pipa berkisar mulai dari " . $formattedPriceHome . " untuk kategori residensial/hunian rumah tangga, dan " . $formattedPriceCorporate . " untuk kategori industri/korporat. Harga sangat transparan tanpa biaya tambahan tersembunyi."
-      ]
-    ]
-  ]
-];
+  ];
+}
 
 $videoSchema = $isCctv ? [
   "@context" => "https://schema.org",
@@ -146,7 +170,13 @@ $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv')
             <span class="text-slate-600">/</span>
             <a href="{{ route('layanan') }}" class="hover:text-emerald-400 transition-colors">Layanan</a>
             <span class="text-slate-600">/</span>
+            @if(isset($alias) && $alias)
+            <a href="{{ route('layanan.show', $category->slug) }}" class="hover:text-emerald-400 transition-colors">{{ $category->name }}</a>
+            <span class="text-slate-600">/</span>
+            <span class="text-cyan-400 font-semibold truncate max-w-[200px] sm:max-w-none">{{ ucwords($alias->keyword) }}</span>
+            @else
             <span class="text-cyan-400 font-semibold truncate max-w-[200px] sm:max-w-none">{{ $category->name }}</span>
+            @endif
         </nav>
 
         @if($isCctv)
@@ -164,12 +194,16 @@ $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv')
 
         {{-- Main Headline CCTV --}}
         <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
-            Jasa Inspeksi Kamera Pipa CCTV &amp; <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Pemetaan Jalur Saluran Tanpa Bongkar</span>
+            Jasa {{ isset($alias) && $alias ? ucwords($alias->keyword) : 'Inspeksi Kamera Pipa CCTV' }} &amp; <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Pemetaan Jalur Saluran Tanpa Bongkar</span>
         </h1>
 
         {{-- Subheadline CCTV --}}
         <p class="mt-3 sm:mt-4 text-xs sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal px-2">
-            Solusi canggih diagnostik visual resolusi tinggi, pelacakan posisi pipa akurat 98% dengan Sonde Locator 512Hz, pencarian letak septic tank hilang, dan inspeksi sebelum renovasi bangunan tanpa membongkar keramik lantai.
+            @if(isset($alias) && $alias && $alias->intro_override)
+                {{ $alias->intro_override }}
+            @else
+                Solusi canggih diagnostik visual resolusi tinggi, pelacakan posisi pipa akurat 98% dengan Sonde Locator 512Hz, pencarian letak septic tank hilang, dan inspeksi sebelum renovasi bangunan tanpa membongkar keramik lantai.
+            @endif
         </p>
 
         {{-- Trust Indicators Bar CCTV --}}
@@ -202,12 +236,16 @@ $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv')
 
         {{-- Main Headline Standard --}}
         <h1 id="page-title" class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight sm:leading-tight max-w-4xl mx-auto font-['Plus_Jakarta_Sans',sans-serif]">
-            Jasa {{ $category->name }} <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Profesional &amp; Bergaransi</span>
+            Jasa {{ isset($alias) && $alias ? ucwords($alias->keyword) : $category->name }} <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Profesional &amp; Bergaransi</span>
         </h1>
 
         {{-- Subheadline Standard --}}
         <p class="mt-3 sm:mt-4 text-xs sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed font-normal px-2">
-            Solusi cerdas melancarkan saluran mampet menggunakan alat mekanis non-destruktif tanpa merusak keramik atau struktur bangunan.
+            @if(isset($alias) && $alias && $alias->intro_override)
+                {{ $alias->intro_override }}
+            @else
+                Solusi cerdas melancarkan saluran mampet menggunakan alat mekanis non-destruktif tanpa merusak keramik atau struktur bangunan.
+            @endif
         </p>
 
         {{-- Trust Indicators Bar Standard --}}
@@ -244,7 +282,7 @@ $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv')
                     @if($isCctv)
                     <strong class="text-cyan-800 font-bold">Direct Answer:</strong> Jasa Inspeksi Pipa Kamera CCTV dari Rootera menghadirkan solusi diagnostik visual presisi non-destruktif untuk melacak titik retak, pipa amblas, pemetaan alur pembuangan, dan lokasi septic tank tersembunyi menggunakan kamera waterproof IP68, meteran kedalaman digital, serta transmitter Sonde 512Hz bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
                     @else
-                    <strong class="text-emerald-800 font-bold">Direct Answer:</strong> Jasa {{ $category->name }} dari Rootera menawarkan solusi pembersihan pipa mampet tanpa bongkar menggunakan teknologi spiral cable mekanis dan hydro-jetting ramah lingkungan (100% bebas asam kimia korosif) yang dijamin membersihkan lemak serta kerak pipa hingga 98% bersih total bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
+                    <strong class="text-emerald-800 font-bold">Direct Answer:</strong> Jasa {{ isset($alias) && $alias ? ucwords($alias->keyword) : $category->name }} dari Rootera menawarkan solusi pembersihan pipa mampet tanpa bongkar menggunakan teknologi spiral cable mekanis dan hydro-jetting ramah lingkungan (100% bebas asam kimia korosif) yang dijamin membersihkan lemak serta kerak pipa hingga 98% bersih total bergaransi di Jabodetabek, Bandung, Semarang, Yogyakarta, Lampung, Cirebon, dan Solo.
                     @endif
                 </p>
             </div>
@@ -529,12 +567,24 @@ $isCctv = str_contains(strtolower($category->slug ?? ''), 'cctv')
                 <div class="text-center mb-6 sm:mb-8">
                     <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Jawaban Pertanyaan</span>
                     <h3 class="text-lg sm:text-2xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif] mt-1">
-                        Pertanyaan Umum (FAQ) Layanan {{ $category->name }}
+                        Pertanyaan Umum (FAQ) Layanan {{ isset($alias) && $alias ? ucwords($alias->keyword) : $category->name }}
                     </h3>
                 </div>
 
                 <div class="space-y-3 max-w-3xl mx-auto" x-data="{ activeFaq: 1 }">
-                    @if($isCctv)
+                    @if(isset($aliasFaqs) && !empty($aliasFaqs))
+                        @foreach($aliasFaqs as $aIdx => $aFaq)
+                        <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+                            <button type="button" @click="activeFaq = (activeFaq === {{ $aIdx + 1 }} ? null : {{ $aIdx + 1 }})" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
+                                <span class="flex items-center gap-2"><span>❓</span> {{ $aFaq['question'] ?? '' }}</span>
+                                <span class="text-emerald-600 font-bold text-base shrink-0" x-text="activeFaq === {{ $aIdx + 1 }} ? '−' : '+'">+</span>
+                            </button>
+                            <div x-show="activeFaq === {{ $aIdx + 1 }}" x-collapse class="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 pt-3">
+                                {{ $aFaq['answer'] ?? '' }}
+                            </div>
+                        </div>
+                        @endforeach
+                    @elseif($isCctv)
                     {{-- FAQ CCTV 1 --}}
                     <div class="bg-slate-50 border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
                         <button type="button" @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full p-4 sm:p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex justify-between items-center gap-3 hover:bg-slate-100 transition-colors min-h-[48px]">
