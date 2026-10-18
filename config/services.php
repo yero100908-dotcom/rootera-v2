@@ -43,5 +43,12 @@ return [
         'indexing_credentials_json' => env('GOOGLE_INDEXING_CREDENTIALS_JSON', storage_path('app/google-indexing-key.json')),
     ],
 
+    'indexnow' => [
+        'key' => env('INDEXNOW_KEY', '680322f5a13b421c8c27fe4e6e677e7a'),
+        'host' => env('INDEXNOW_HOST', 'rooteraplumbing.id'),
+        'key_location' => env('INDEXNOW_KEY_LOCATION', 'https://rooteraplumbing.id/680322f5a13b421c8c27fe4e6e677e7a.txt'),
+        'endpoint' => env('INDEXNOW_ENDPOINT', 'https://api.indexnow.org/indexnow'),
+    ],
+
 ];
 

@@ -257,8 +257,8 @@ class PushGoogleIndexing extends Command
         $baseUrl = rtrim($baseUrl, '/');
 
         // Fetch logs for skip-guard (pushed in last 14 days) and freshness check
-        $recentlyPushed = IndexingLog::pushedRecently(14)->pluck('pushed_at', 'url')->toArray();
-        $allPushed = IndexingLog::pluck('pushed_at', 'url')->toArray();
+        $recentlyPushed = IndexingLog::google()->pushedRecently(14)->pluck('pushed_at', 'url')->toArray();
+        $allPushed = IndexingLog::google()->pluck('pushed_at', 'url')->toArray();
 
         $priority1 = []; // High: New/updated articles & galleries (last 7 days)
         $priority2 = []; // Medium: pSEO Cities & Districts never pushed before

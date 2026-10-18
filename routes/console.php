@@ -15,6 +15,10 @@ Schedule::command('seo:push-indexing --limit=150')
     ->dailyAt('02:00')
     ->withoutOverlapping()
     ->runInBackground();
+Schedule::command('seo:push-indexnow --limit=500')
+    ->dailyAt('02:30')
+    ->withoutOverlapping()
+    ->runInBackground();
 Schedule::command('seo:warmup-cache --limit=300')->dailyAt('03:00');
 
 
