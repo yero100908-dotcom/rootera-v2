@@ -54,6 +54,7 @@ class ArticleController extends Controller
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
+            'thumbnail_alt'    => 'nullable|string|max:255',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
@@ -62,6 +63,7 @@ class ArticleController extends Controller
             'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+            'tags'             => 'nullable|string|max:255',
         ], [
             'promo_end_date.required_if' => 'Batas waktu promo wajib diisi jika tipe konten adalah Promo Khusus.',
             'post_type.required'         => 'Tipe postingan wajib dipilih.',
@@ -123,6 +125,7 @@ class ArticleController extends Controller
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
             'thumbnail'        => 'nullable|image|mimes:jpg,jpeg,png,webp,bmp,gif,svg|max:5120',
+            'thumbnail_alt'    => 'nullable|string|max:255',
             'author'           => 'nullable|string|max:100',
             'status'           => 'required|in:draft,published',
             'published_at'     => 'nullable|date',
@@ -131,6 +134,7 @@ class ArticleController extends Controller
             'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+            'tags'             => 'nullable|string|max:255',
         ], [
             'promo_end_date.required_if' => 'Batas waktu promo wajib diisi jika tipe konten adalah Promo Khusus.',
             'post_type.required'         => 'Tipe postingan wajib dipilih.',

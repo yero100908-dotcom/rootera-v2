@@ -156,7 +156,8 @@ class BlogController extends Controller
         if (!empty($escapedSearch)) {
             $query->where(function ($q) use ($escapedSearch) {
                 $q->where('title', 'like', "%{$escapedSearch}%")
-                  ->orWhere('excerpt', 'like', "%{$escapedSearch}%");
+                  ->orWhere('excerpt', 'like', "%{$escapedSearch}%")
+                  ->orWhere('tags', 'like', "%{$escapedSearch}%");
             });
         }
 
@@ -165,7 +166,8 @@ class BlogController extends Controller
             $cleanTag = Str::substr(strip_tags(trim($tag)), 0, 50);
             $escapedTag = addcslashes($cleanTag, '%_\\');
             $query->where(function ($q) use ($escapedTag) {
-                $q->where('title', 'like', "%{$escapedTag}%")
+                $q->where('tags', 'like', "%{$escapedTag}%")
+                  ->orWhere('title', 'like', "%{$escapedTag}%")
                   ->orWhere('excerpt', 'like', "%{$escapedTag}%")
                   ->orWhere('category', 'like', "%{$escapedTag}%");
             });
@@ -312,26 +314,50 @@ class BlogController extends Controller
             ? Article::select(Article::LIST_COLUMNS)->whereIn('id', $relatedIds)->get()
             : collect();
 
-        $cities = Cache::remember('active_cities_12', 86400, function () {
+        $citiesData = Cache::remember('active_cities_12_v2', 86400, function () {
             return \App\Models\City::where('is_active', true)
-                ->with('province')
+                ->select(['id', 'name', 'slug'])
                 ->orderBy('sort_order')
                 ->take(12)
-                ->get();
+                ->get()
+                ->map(fn($c) => [
+                    'id'   => $c->id,
+                    'name' => $c->name,
+                    'slug' => $c->slug,
+                ])
+                ->toArray();
         });
+        $cities = collect($citiesData)->map(fn($item) => (object) $item);
 
-        $allCategories = Cache::remember('active_service_categories', 86400, function () {
+        $allCategoriesData = Cache::remember('active_service_categories_v2', 86400, function () {
             return \App\Models\ServiceCategory::where('is_active', true)
+                ->select(['id', 'name', 'slug'])
                 ->orderBy('sort_order')
-                ->get();
+                ->get()
+                ->map(fn($cat) => [
+                    'id'   => $cat->id,
+                    'name' => $cat->name,
+                    'slug' => $cat->slug,
+                ])
+                ->toArray();
         });
+        $allCategories = collect($allCategoriesData)->map(fn($item) => (object) $item);
 
-        $projectShowcases = Cache::remember('active_project_showcases_3', 86400, function () {
+        $projectShowcasesData = Cache::remember('active_project_showcases_3_v2', 86400, function () {
             return \App\Models\ProjectGallery::where('is_active', true)
-                ->with(['district', 'city'])
+                ->with(['district:id,name', 'city:id,name'])
                 ->take(3)
-                ->get();
+                ->get()
+                ->map(fn($p) => [
+                    'id'       => $p->id,
+                    'title'    => $p->title,
+                    'image'    => $p->image,
+                    'district' => $p->district ? (object)['name' => $p->district->name] : null,
+                    'city'     => $p->city ? (object)['name' => $p->city->name] : null,
+                ])
+                ->toArray();
         });
+        $projectShowcases = collect($projectShowcasesData)->map(fn($item) => (object) $item);
 
         $rawTitle = $article->meta_title ?: ($article->clean_title ?? $article->title);
         $seoTitle = (mb_strlen($rawTitle) > 65) ? mb_strimwidth($rawTitle, 0, 63, '..') : $rawTitle;
@@ -382,4 +408,19 @@ class BlogController extends Controller
             Cache::put($ipCacheKey, true, now()->addHours(2));
         }
     }
+
+    /**
+     * Dynamic SEO Image Sitemap untuk Content Hub (/sitemap-blog.xml)
+     */
+    public function sitemap(): \Illuminate\Http\Response
+    {
+        $articles = Article::published()
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return response()
+            ->view('sitemap.blog', ['articles' => $articles])
+            ->header('Content-Type', 'text/xml');
+    }
 }
+

@@ -10,11 +10,11 @@ class Article extends Model
     use HasFactory;
 
     public const LIST_COLUMNS = [
-        'id', 'title', 'slug', 'excerpt', 'thumbnail',
+        'id', 'title', 'slug', 'excerpt', 'thumbnail', 'thumbnail_alt',
         'author', 'category', 'status', 'published_at',
         'views', 'youtube_video_id', 'post_type', 'promo_end_date',
         'location_geo', 'client_name', 'is_headline',
-        'is_featured', 'read_time'
+        'is_featured', 'read_time', 'tags',
     ];
 
     public const TYPE_ARTICLE = 'article';
@@ -43,9 +43,9 @@ class Article extends Model
     ];
 
     protected $fillable = [
-        'title', 'slug', 'excerpt', 'content', 'thumbnail',
+        'title', 'slug', 'excerpt', 'content', 'thumbnail', 'thumbnail_alt',
         'author', 'status', 'published_at', 'meta_title',
-        'meta_description', 'og_image', 'canonical_url', 'views',
+        'meta_description', 'tags', 'og_image', 'canonical_url', 'views',
         'youtube_video_id', 'video_embed_url', 'post_type',
         'promo_end_date', 'location_geo', 'client_name',
         'category', 'is_headline', 'is_featured', 'read_time',

@@ -24,6 +24,7 @@
         <image:image>
             <image:loc>{{ $article->thumbnail_url }}</image:loc>
             <image:title>{{ $article->clean_title }}</image:title>
+            <image:caption>{{ $article->thumbnail_alt ?: $article->clean_title }}</image:caption>
         </image:image>
         @endif
     </url>

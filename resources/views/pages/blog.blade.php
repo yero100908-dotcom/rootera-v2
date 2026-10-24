@@ -78,7 +78,7 @@ $blogSchema = [
 
 @section('content')
 
-{{-- PORTAL MEDIA HERO SECTION (DARK GLASSMORPHISM 60:40) --}}
+{{-- PORTAL MEDIA HERO SECTION (ASYMMETRIC BENTO GRID MAGAZINE LAYOUT) --}}
 <section class="relative bg-gradient-to-br from-[#071930] via-[#0B2545] to-[#0D3B66] text-white pt-12 pb-14 md:pt-16 md:pb-20 overflow-hidden">
     {{-- Background Ambient Light Orbs --}}
     <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-emerald-500/10 blur-[130px] pointer-events-none rounded-full" aria-hidden="true"></div>
@@ -93,7 +93,7 @@ $blogSchema = [
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                     <span>Sanitation &amp; Plumbing Journal</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
                     Jurnal Teknik Sanitasi &amp; <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Investigasi Saluran Pipa</span>
                 </h1>
             </div>
@@ -102,74 +102,81 @@ $blogSchema = [
             </p>
         </div>
 
-        {{-- HERO HEADLINE LAYOUT 60:40 --}}
+        {{-- ASYMMETRIC BENTO GRID HERO LAYOUT (8 COLS : 4 COLS) --}}
         @if(isset($headline) && $headline)
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
             
-            {{-- SISI KIRI (60%): FEATURED POST UTAMA (DARK GLASSMORPHISM) --}}
-            <div class="lg:col-span-7 flex flex-col">
-                <div class="bg-white/[0.07] border border-white/15 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl flex flex-col group h-full">
+            {{-- SISI KIRI (8 COLS / ~67%): BENTO HEADLINE UTAMA (MAGAZINE HERO) --}}
+            <div class="lg:col-span-8 flex flex-col">
+                <div class="bg-gradient-to-b from-white/[0.08] to-white/[0.03] border border-white/15 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-between group h-full relative transition-all duration-300 hover:border-emerald-400/40">
                     
-                    {{-- 16:9 MEDIA CONTAINER --}}
-                    <div class="relative bg-slate-950 aspect-[16/9] overflow-hidden cursor-pointer">
+                    {{-- IMMERSIVE MEDIA CONTAINER --}}
+                    <div class="relative bg-slate-950 aspect-[16/10] sm:aspect-[16/9] overflow-hidden cursor-pointer">
                         <a href="{{ route('blog.show', $headline->slug) }}" class="block w-full h-full">
-                            <img src="{{ $headline->thumbnail_url }}" alt="{{ $headline->clean_title }}" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <img src="{{ $headline->thumbnail_url }}" alt="{{ $headline->thumbnail_alt ?: $headline->clean_title }}" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                         </a>
                         
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#071930] via-black/30 to-transparent pointer-events-none"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#061434] via-[#061434]/40 to-transparent pointer-events-none"></div>
 
-                        {{-- BADGES TOP --}}
-                        <div class="absolute top-3.5 left-3.5 flex gap-2 flex-wrap z-10">
-                            <span class="bg-emerald-500 text-slate-950 text-[10px] sm:text-xs font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider shadow-md">
-                                🔥 Headline Utama
+                        {{-- FLOATING BADGES --}}
+                        <div class="absolute top-4 left-4 flex gap-2 flex-wrap z-10">
+                            <span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-950 animate-pulse"></span>
+                                <span>Headline Utama</span>
                             </span>
-                            <span class="bg-slate-950/80 backdrop-blur-sm text-teal-300 border border-teal-500/30 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-md">
+                            <span class="bg-slate-950/80 backdrop-blur-md text-teal-300 border border-teal-500/30 text-xs font-bold px-3 py-1 rounded-full">
                                 {{ $headline->category ?? 'Tips Rumah' }}
                             </span>
                         </div>
 
                         {{-- READ TIME & VIEWS OVERLAY --}}
-                        <div class="absolute bottom-3 right-3 flex gap-2 z-10 text-[10px] sm:text-xs">
-                            <span class="bg-slate-950/80 backdrop-blur-sm text-slate-200 font-semibold px-2.5 py-0.5 rounded-md">
+                        <div class="absolute bottom-4 right-4 flex gap-2 z-10 text-xs font-bold">
+                            <span class="bg-slate-950/80 backdrop-blur-md text-slate-200 px-3 py-1 rounded-full border border-white/10">
                                 ⏱️ {{ $headline->reading_time }} mnt
                             </span>
-                            <span class="bg-slate-950/80 backdrop-blur-sm text-slate-200 font-semibold px-2.5 py-0.5 rounded-md">
-                                👁️ {{ $headline->views }}
+                            <span class="bg-slate-950/80 backdrop-blur-md text-emerald-300 px-3 py-1 rounded-full border border-white/10">
+                                👁️ {{ $headline->views }} views
                             </span>
                         </div>
 
                         {{-- VIDEO PLAY BUTTON OVERLAY IF APPLICABLE --}}
                         @if($headline->youtube_video_id || $headline->post_type === 'video_guide')
                         <a href="{{ route('blog.show', $headline->slug) }}" class="absolute inset-0 flex items-center justify-center z-20">
-                            <div class="w-14 h-14 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg shadow-red-600/50 backdrop-blur-xs group-hover:scale-110 transition-transform">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <div class="w-16 h-16 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-2xl shadow-red-600/50 backdrop-blur-xs group-hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 ml-1 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                             </div>
                         </a>
                         @endif
                     </div>
 
                     {{-- HEADLINE BODY --}}
-                    <div class="p-5 sm:p-7 flex flex-col justify-between flex-grow bg-[#061434]/60">
+                    <div class="p-6 sm:p-8 flex flex-col justify-between flex-grow bg-[#061434]/80">
                         <div>
-                            <div class="flex items-center gap-2 text-xs text-slate-300 font-medium mb-2">
+                            <div class="flex items-center gap-2 text-xs text-slate-300 font-semibold mb-3">
                                 <span>📅 {{ $headline->published_at?->translatedFormat('d F Y') }}</span>
-                                <span>•</span>
-                                <span>✍️ {{ $headline->author ?: 'Redaksi Rootera' }}</span>
+                                <span class="text-slate-500">•</span>
+                                <span class="text-emerald-400 font-bold">✍️ {{ $headline->author ?: 'Redaksi Rootera' }}</span>
                             </div>
 
-                            <h2 class="text-lg sm:text-xl md:text-2xl font-extrabold text-white leading-snug mb-3 group-hover:text-emerald-300 transition-colors">
-                                <a href="{{ route('blog.show', $headline->slug) }}" class="text-decoration-none text-white">
+                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-snug sm:leading-tight mb-4 group-hover:text-emerald-300 transition-colors">
+                                <a href="{{ route('blog.show', $headline->slug) }}" class="text-decoration-none text-white group-hover:text-emerald-300 transition-colors">
                                     {{ $headline->clean_title }}
                                 </a>
                             </h2>
 
-                            <p class="text-xs sm:text-sm text-slate-200/90 leading-relaxed mb-5 line-clamp-3">
-                                {{ Str::limit($headline->excerpt, 150) }}
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 line-clamp-3">
+                                {{ Str::limit($headline->excerpt, 180) }}
                             </p>
                         </div>
 
-                        <div>
-                            <a href="{{ route('blog.show', $headline->slug) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold rounded-xl shadow-lg shadow-emerald-950/40 transition-all group-hover:translate-x-0.5 text-decoration-none">
+                        <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-full bg-[#070F1E] border border-emerald-400/30 flex items-center justify-center text-sm shadow-xs">
+                                    👨‍🔧
+                                </div>
+                                <span class="text-xs font-bold text-slate-300">Tim Riset Sanitasi Rootera</span>
+                            </div>
+                            <a href="{{ route('blog.show', $headline->slug) }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold rounded-xl shadow-lg shadow-emerald-950/40 transition-all group-hover:translate-x-1 text-decoration-none">
                                 <span>Baca Artikel Utama</span>
                                 <svg class="w-4 h-4 fill-none stroke-current shrink-0" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                             </a>
@@ -179,52 +186,64 @@ $blogSchema = [
                 </div>
             </div>
 
-            {{-- SISI KANAN (40%): HIGHLIGHT BERITA VERTIKAL (DESKTOP) & RECENT LIST --}}
-            <div class="lg:col-span-5 flex flex-col gap-3.5">
+            {{-- SISI KANAN (4 COLS / ~33%): BENTO SIDE HEADLINES BERTUMPUK VERTIKAL --}}
+            <div class="lg:col-span-4 flex flex-col gap-4">
                 
-                <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-1">
-                    <h3 class="text-xs sm:text-sm font-extrabold tracking-wider text-emerald-400 uppercase flex items-center gap-2">
-                        <span>⚡</span> HIGHLIGHT BERITA &amp; TREN
+                <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                    <h3 class="text-xs sm:text-sm font-black tracking-wider text-emerald-400 uppercase flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>Highlight Redaksi</span>
                     </h3>
-                    <span class="text-[11px] text-slate-400 font-semibold">Pilihan Redaksi</span>
+                    <span class="text-[11px] text-slate-400 font-bold">Trending Pilihan</span>
                 </div>
 
-                @foreach($sideHeadlines as $side)
-                <article class="group bg-white/[0.05] border border-white/10 hover:border-emerald-400/40 hover:bg-white/[0.10] backdrop-blur-md rounded-2xl p-3 sm:p-3.5 transition-all duration-300 flex gap-3.5 items-center shadow-lg">
-                    
-                    {{-- THUMBNAIL KECIL (16:9 / 4:3) --}}
-                    <a href="{{ route('blog.show', $side->slug) }}" class="shrink-0 w-24 sm:w-28 aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden relative block">
-                        <img src="{{ $side->thumbnail_url }}" alt="{{ $side->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                        @if($side->youtube_video_id || $side->post_type === 'video_guide')
-                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-                            <span class="w-6 h-6 rounded-full bg-red-600/90 text-white flex items-center justify-center text-[10px] shadow-xs">▶</span>
-                        </div>
-                        @endif
-                    </a>
+                @foreach($sideHeadlines->take(2) as $side)
+                <article class="group flex-1 bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-emerald-400/40 rounded-3xl p-4 sm:p-5 transition-all duration-300 backdrop-blur-xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        {{-- THUMBNAIL 16:9 DENGAN SUDUT LEMBUT --}}
+                        <a href="{{ route('blog.show', $side->slug) }}" class="w-full aspect-[16/9] bg-slate-950 rounded-2xl overflow-hidden relative block mb-3.5">
+                            <img src="{{ $side->thumbnail_url }}" alt="{{ $side->thumbnail_alt ?: $side->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            
+                            {{-- BADGE OVERLAY --}}
+                            <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-950/90 text-emerald-300 border border-emerald-500/40">
+                                    {{ $side->category ?? 'Tips Rumah' }}
+                                </span>
+                            </div>
 
-                    {{-- SIDE CONTENT --}}
-                    <div class="flex-grow min-w-0">
-                        <div class="flex items-center gap-2 text-[10px] sm:text-[11px] text-slate-300 font-bold mb-1">
-                            <span class="text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/40">
-                                {{ $side->category ?? 'Tips Rumah' }}
-                            </span>
-                            <span>•</span>
-                            <span>⏱️ {{ $side->reading_time }} mnt</span>
-                        </div>
+                            <div class="absolute bottom-2.5 right-2.5 text-[10px] font-bold bg-black/80 text-white px-2 py-0.5 rounded-md">
+                                ⏱️ {{ $side->reading_time }} mnt
+                            </div>
 
-                        <h4 class="text-xs sm:text-sm font-bold text-white group-hover:text-emerald-300 transition-colors line-clamp-2 leading-snug">
-                            <a href="{{ route('blog.show', $side->slug) }}" class="text-decoration-none text-white">
-                                {{ $side->clean_title }}
-                            </a>
-                        </h4>
+                            @if($side->youtube_video_id || $side->post_type === 'video_guide')
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                <span class="w-8 h-8 rounded-full bg-red-600/90 text-white flex items-center justify-center text-xs shadow-md">▶</span>
+                            </div>
+                            @endif
+                        </a>
 
-                        <div class="text-[10px] text-slate-400 mt-1.5 flex items-center gap-2 font-medium">
+                        {{-- SIDE TITLE & META --}}
+                        <div class="flex items-center gap-2 text-[10px] sm:text-[11px] text-slate-300 font-semibold mb-1.5">
                             <span>📅 {{ $side->published_at?->translatedFormat('d M Y') }}</span>
                             <span>•</span>
                             <span>👁️ {{ $side->views }}</span>
                         </div>
+
+                        <h4 class="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors line-clamp-2 leading-snug">
+                            <a href="{{ route('blog.show', $side->slug) }}" class="text-decoration-none text-white group-hover:text-emerald-300">
+                                {{ $side->clean_title }}
+                            </a>
+                        </h4>
                     </div>
 
+                    <div class="pt-3 mt-2 border-t border-white/5 flex items-center justify-between text-xs">
+                        <span class="text-slate-400 text-[11px]">✍️ {{ $side->author ?: 'Tim Rootera' }}</span>
+                        <a href="{{ route('blog.show', $side->slug) }}" class="text-emerald-400 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1 text-decoration-none text-[11px]">
+                            <span>Baca</span>
+                            <span>→</span>
+                        </a>
+                    </div>
                 </article>
                 @endforeach
 
@@ -323,7 +342,7 @@ $blogSchema = [
 
         </div>
 
-        {{-- MAIN NEWS GRID --}}
+        {{-- MAIN NEWS GRID WITH SCROLL REVEAL INTERACTION --}}
         @if($articles->isEmpty())
         <div class="text-center py-12 px-4 bg-white rounded-3xl border border-slate-200 max-w-md mx-auto shadow-sm">
             <div class="text-4xl mb-3">🔍</div>
@@ -335,13 +354,13 @@ $blogSchema = [
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
             @foreach($articles as $article)
             
-            {{-- 1. KARTU PROMO KHUSUS --}}
+            {{-- 1. KARTU PROMO KHUSUS (BENTO PROMO ARCHETYPE) --}}
             @if($article->isPromo())
-            <article class="group bg-gradient-to-b from-amber-50/40 via-white to-rose-50/20 border-2 border-amber-300 ring-2 ring-amber-400/20 shadow-md hover:shadow-2xl hover:border-amber-400 hover:-translate-y-1.5 transition-all duration-300 rounded-3xl overflow-hidden flex flex-col justify-between relative">
+            <article class="opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-reveal group bg-gradient-to-b from-amber-50/40 via-white to-rose-50/20 border-2 border-amber-300 ring-2 ring-amber-400/20 shadow-md hover:shadow-2xl hover:border-amber-400 hover:-translate-y-1.5 rounded-3xl overflow-hidden flex flex-col justify-between relative">
                 <div>
                     {{-- 16:9 MEDIA CONTAINER --}}
                     <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
-                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->thumbnail_alt ?: $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         
                         {{-- PROMO BADGES & COUNTDOWN --}}
                         <div class="absolute top-3 left-3 flex gap-1.5 z-10 flex-wrap">
@@ -379,7 +398,7 @@ $blogSchema = [
                     </a>
 
                     {{-- PROMO CARD BODY --}}
-                    <div class="p-4 sm:p-5">
+                    <div class="p-5">
                         <div class="flex items-center gap-2 text-[11px] text-amber-800 font-semibold mb-2">
                             <span>🏷️ Penawaran Spesial</span>
                             <span>•</span>
@@ -399,7 +418,7 @@ $blogSchema = [
                 </div>
 
                 {{-- PROMO FOOTER WITH HIGH-CONVERTING CTA --}}
-                <div class="px-4 sm:px-5 pb-4 pt-3 border-t border-amber-100 flex items-center justify-between w-full bg-amber-50/50">
+                <div class="px-5 pb-4 pt-3 border-t border-amber-100 flex items-center justify-between w-full bg-amber-50/50">
                     <span class="text-[11px] font-extrabold text-amber-800 truncate max-w-[130px] flex items-center gap-1">
                         <span>⚡ Promo Diskon</span>
                     </span>
@@ -410,13 +429,13 @@ $blogSchema = [
                 </div>
             </article>
 
-            {{-- 2. KARTU STUDI KASUS & PORTOFOLIO B2B --}}
+            {{-- 2. KARTU STUDI KASUS & PORTOFOLIO B2B (BENTO CASE STUDY ARCHETYPE) --}}
             @elseif($article->isCaseStudy())
-            <article class="group bg-white rounded-3xl overflow-hidden border border-indigo-200/90 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+            <article class="opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-reveal group bg-white rounded-3xl overflow-hidden border border-indigo-200/90 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1.5 flex flex-col justify-between">
                 <div>
                     {{-- 16:9 MEDIA CONTAINER --}}
                     <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
-                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->thumbnail_alt ?: $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         
                         {{-- B2B CASE STUDY BADGE --}}
                         <div class="absolute top-3 left-3 flex gap-2 z-10">
@@ -432,7 +451,7 @@ $blogSchema = [
                     </a>
 
                     {{-- CASE STUDY BODY --}}
-                    <div class="p-4 sm:p-5">
+                    <div class="p-5">
                         {{-- PROMINENT CLIENT & GEO ROW --}}
                         @if($article->client_name || $article->location_geo)
                         <div class="flex items-center gap-2 text-[11px] font-bold text-indigo-950 bg-indigo-50/80 px-3 py-1.5 rounded-xl mb-2.5 border border-indigo-100/90 flex-wrap">
@@ -452,84 +471,72 @@ $blogSchema = [
                         </div>
                         @endif
 
-                        <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium mb-1.5">
-                            <time datetime="{{ $article->published_at?->format('Y-m-d') }}">
-                                📅 {{ $article->published_at?->translatedFormat('d F Y') }}
-                            </time>
-                            <span>•</span>
-                            <span>👁️ {{ $article->views }} views</span>
-                        </div>
-
-                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-2 leading-snug mb-2">
-                            <a href="{{ route('blog.show', $article->slug) }}" class="text-decoration-none text-slate-900 group-hover:text-indigo-700">
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2 leading-snug mb-2">
+                            <a href="{{ route('blog.show', $article->slug) }}" class="text-decoration-none text-slate-900 group-hover:text-indigo-600">
                                 {{ $article->clean_title }}
                             </a>
                         </h3>
 
                         <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3">
-                            {{ Str::limit($article->excerpt, 115) }}
+                            {{ Str::limit($article->excerpt, 120) }}
                         </p>
                     </div>
                 </div>
 
                 {{-- CASE STUDY FOOTER --}}
-                <div class="px-4 sm:px-5 pb-4 pt-3 border-t border-indigo-50 flex items-center justify-between w-full bg-slate-50/50">
-                    <span class="text-[11px] font-extrabold text-indigo-700 flex items-center gap-1 truncate max-w-[130px]">
-                        <span>🛡️ Solusi Lapangan</span>
+                <div class="px-5 pb-4 pt-3 border-t border-slate-100 flex items-center justify-between w-full bg-slate-50/40">
+                    <span class="text-[11px] font-bold text-indigo-900">
+                        🛡️ Proyek Terverifikasi
                     </span>
-                    <a href="{{ route('blog.show', $article->slug) }}" class="text-xs font-extrabold text-indigo-700 hover:text-indigo-950 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-decoration-none shrink-0">
-                        <span>Pelajari Kasus</span>
+                    <a href="{{ route('blog.show', $article->slug) }}" class="text-xs font-extrabold text-indigo-700 hover:text-indigo-900 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-decoration-none">
+                        <span>Baca Studi Kasus</span>
                         <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
                 </div>
             </article>
 
-            {{-- 3. KARTU EDUKASI TEKNIS / KABAR / EDITORIAL STANDAR --}}
+            {{-- 3. KARTU STANDAR EDUKASI / NEWS / PRESS RELEASE (BENTO STANDARD ARCHETYPE) --}}
             @else
-            <article class="group bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+            <article class="opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-reveal group bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-emerald-500 hover:-translate-y-1.5 flex flex-col justify-between">
                 <div>
-                    {{-- 16:9 ASPECT RATIO MEDIA CONTAINER (OPTIMIZED LCP) --}}
+                    {{-- 16:9 MEDIA CONTAINER --}}
                     <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
-                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->thumbnail_alt ?: $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         
                         {{-- CATEGORY / POST TYPE BADGE --}}
-                        <div class="absolute top-3 left-3 flex gap-2 z-10">
+                        <div class="absolute top-3 left-3 flex gap-2 z-10 flex-wrap">
                             @if($article->post_type === 'news')
-                                <span class="bg-blue-700/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                                    📰 Kabar Rootera
+                                <span class="bg-blue-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                    <span>📰</span> KABAR
                                 </span>
                             @elseif($article->post_type === 'press_release')
-                                <span class="bg-purple-700/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                                    📢 Press Release
+                                <span class="bg-purple-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                    <span>📢</span> PRESS RELEASE
                                 </span>
                             @else
-                                <span class="bg-[#0B2545]/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                                <span class="bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm">
                                     {{ $article->category ?? 'Tips Rumah' }}
                                 </span>
                             @endif
                         </div>
 
-                        {{-- READ TIME BADGE --}}
+                        {{-- READ TIME --}}
                         <div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded z-10 flex items-center gap-1">
                             <span>⏱️ {{ $article->reading_time }} mnt</span>
                         </div>
 
-                        {{-- PLAY OVERLAY IF VIDEO --}}
+                        {{-- PLAY BUTTON OVERLAY FOR VIDEO --}}
                         @if($article->youtube_video_id || $article->post_type === 'video_guide')
-                        <div class="absolute inset-0 bg-black/25 flex items-center justify-center group-hover:bg-black/10 transition-colors">
-                            <div class="w-11 h-11 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </div>
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <span class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center text-sm shadow-md">▶</span>
                         </div>
                         @endif
                     </a>
 
-                    {{-- CARD CONTENT BODY --}}
-                    <div class="p-4 sm:p-5">
+                    {{-- CARD BODY --}}
+                    <div class="p-5">
                         <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium mb-2">
-                            <time datetime="{{ $article->published_at?->format('Y-m-d') }}">
-                                📅 {{ $article->published_at?->translatedFormat('d F Y') }}
-                            </time>
+                            <span>📅 {{ $article->published_at?->translatedFormat('d M Y') }}</span>
                             <span>•</span>
                             <span>👁️ {{ $article->views }} views</span>
                         </div>
@@ -541,13 +548,13 @@ $blogSchema = [
                         </h3>
 
                         <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3">
-                            {{ Str::limit($article->excerpt, 115) }}
+                            {{ Str::limit($article->excerpt, 120) }}
                         </p>
                     </div>
                 </div>
 
-                {{-- FOOTER CARD ACTION LINK --}}
-                <div class="px-4 sm:px-5 pb-4 pt-3 border-t border-slate-100 flex items-center justify-between w-full">
+                {{-- CARD FOOTER --}}
+                <div class="px-5 pb-4 pt-3 border-t border-slate-100 flex items-center justify-between w-full">
                     <span class="text-[11px] font-bold text-slate-500 truncate max-w-[130px]">
                         ✍️ {{ $article->author ?: 'Tim Rootera' }}
                     </span>
@@ -591,7 +598,7 @@ $blogSchema = [
                 @foreach($videoArticles as $video)
                 <div class="w-[260px] sm:w-[320px] md:w-auto shrink-0 snap-start bg-slate-950/80 border border-white/10 hover:border-red-500/50 rounded-2xl overflow-hidden transition-all duration-300 group">
                     <a href="{{ route('blog.show', $video->slug) }}" class="relative aspect-[16/9] block overflow-hidden bg-black">
-                        <img src="{{ $video->thumbnail_url }}" alt="{{ $video->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                        <img src="{{ $video->thumbnail_url }}" alt="{{ $video->thumbnail_alt ?: $video->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
                         <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
                             <div class="w-11 h-11 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -656,4 +663,34 @@ $blogSchema = [
     scrollbar-width: none;
 }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+// Interaction: Smooth Scroll Reveal for Articles Feed Grid
+document.addEventListener('DOMContentLoaded', function() {
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+    if (!revealElements.length) return;
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.08,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+    } else {
+        // Fallback for older browsers
+        revealElements.forEach(el => el.classList.remove('opacity-0', 'translate-y-8'));
+    }
+});
+</script>
 @endpush
