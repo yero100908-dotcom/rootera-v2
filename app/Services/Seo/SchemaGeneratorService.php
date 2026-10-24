@@ -250,7 +250,7 @@ class SchemaGeneratorService
         $canonicalUrl = $alias
             ? url("/layanan/{$alias->slug}")
             : ($area
-                ? url("/layanan-pipa-mampet/{$service->slug}/{$area->slug}")
+                ? url("/layanan/{$service->slug}/{$area->slug}")
                 : url("/layanan/{$service->slug}"));
 
         $serviceDesc = ($alias && $alias->intro_override)

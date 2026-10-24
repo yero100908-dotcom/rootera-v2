@@ -204,7 +204,7 @@ class GenerateSitemapCommand extends Command
             ['loc' => $this->baseUrl . '/faq',                  'priority' => '0.7', 'changefreq' => 'weekly'],
             ['loc' => $this->baseUrl . '/blog',                 'priority' => '0.8', 'changefreq' => 'daily'],
             ['loc' => $this->baseUrl . '/layanan-b2b-komersial','priority' => '0.8', 'changefreq' => 'weekly'],
-            ['loc' => $this->baseUrl . '/solusi-properti',      'priority' => '0.7', 'changefreq' => 'weekly'],
+            ['loc' => $this->baseUrl . '/kategori-properti',    'priority' => '0.7', 'changefreq' => 'weekly'],
             ['loc' => $this->baseUrl . '/galeri-dokumentasi',   'priority' => '0.6', 'changefreq' => 'weekly'],
             ['loc' => $this->baseUrl . '/cek-kondisi-pipa',     'priority' => '0.7', 'changefreq' => 'monthly'],
         ];

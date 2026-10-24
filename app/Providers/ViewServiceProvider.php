@@ -33,10 +33,14 @@ class ViewServiceProvider extends ServiceProvider
                 // Prevent boot failures during console commands or migrations
             }
 
+            $canonicalTarget = !empty($customSeo['canonical'])
+                ? $customSeo['canonical']
+                : (!empty($seoModel['canonical_url']) ? $seoModel['canonical_url'] : url()->current());
+
             $seo = [
                 'title'        => $customSeo['title'] ?? $seoModel['meta_title'] ?? 'Jasa Saluran Pipa Mampet 24 Jam | Rootera',
                 'description'  => $customSeo['description'] ?? $seoModel['meta_description'] ?? 'Layanan jasa saluran pipa mampet & pelancaran drainase profesional tanpa bongkar oleh Rootera. Solusi wastafel, got, & WC tersumbat bergaransi. CS 24 Jam!',
-                'canonical'    => $customSeo['canonical'] ?? $seoModel['canonical_url'] ?? url()->current(),
+                'canonical'    => $canonicalTarget,
                 'og_image'     => $customSeo['og_image'] ?? ($seoModel && !empty($seoModel['og_image']) 
                                     ? asset('storage/' . $seoModel['og_image']) 
                                     : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')),

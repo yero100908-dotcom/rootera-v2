@@ -44,14 +44,15 @@ class SeoManageController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'meta_title'       => 'required|string|max:255',
+            'meta_title'       => 'required|string|max:70',
             'meta_description' => 'required|string|max:160',
             'canonical_url'    => 'nullable|url|max:255',
             'is_indexable'     => 'nullable|boolean',
         ]);
 
-        // Checkbox value handling
-        $validated['is_indexable'] = $request->has('is_indexable');
+        // Sanitasi empty string menjadi null agar fallback berjalan aman
+        $validated['canonical_url'] = !empty($validated['canonical_url']) ? trim($validated['canonical_url']) : null;
+        $validated['is_indexable']  = $request->boolean('is_indexable');
 
         try {
             $this->seoService->updatePage((int)$id, $validated);

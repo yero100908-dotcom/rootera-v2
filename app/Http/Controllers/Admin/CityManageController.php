@@ -37,13 +37,16 @@ class CityManageController extends Controller
         ]);
 
         $slugBase = $validated['type'] === 'Kabupaten' ? 'kabupaten-' . $validated['name'] : $validated['name'];
-        $validated['slug'] = Str::slug($slugBase);
+        $slug = Str::slug($slugBase);
+
+        // Check for slug duplication
+        $count = City::where('slug', 'like', "{$slug}%")->count();
+        $validated['slug'] = $count > 0 ? "{$slug}-" . ($count + 1) : $slug;
         $validated['whatsapp_number'] = $validated['whatsapp_number'] ?: '6281385404000';
         $validated['estimated_arrival'] = $validated['estimated_arrival'] ?: '25-40 Menit';
 
-        City::create($validated);
-
-        Cache::flush();
+        $city = City::create($validated);
+        $this->invalidateCityCache($city->slug);
 
         return redirect()->route('admin.cities.index')
             ->with('success', 'Data kota berhasil ditambahkan.');
@@ -61,9 +64,9 @@ class CityManageController extends Controller
             'meta_description'  => 'nullable|string|max:300',
         ]);
 
+        $oldSlug = $city->slug;
         $city->update($validated);
-
-        Cache::flush();
+        $this->invalidateCityCache($city->slug, $oldSlug);
 
         return redirect()->route('admin.cities.index')
             ->with('success', 'Data kota berhasil diperbarui.');
@@ -71,8 +74,9 @@ class CityManageController extends Controller
 
     public function destroy(City $city)
     {
+        $slug = $city->slug;
         $city->delete();
-        Cache::flush();
+        $this->invalidateCityCache($slug);
 
         return redirect()->route('admin.cities.index')
             ->with('success', 'Data kota beserta kecamatan terkait berhasil dihapus.');
@@ -89,18 +93,47 @@ class CityManageController extends Controller
         $validated['slug'] = Str::slug($validated['name']);
         $validated['estimated_arrival'] = $validated['estimated_arrival'] ?: '15-30 Menit';
 
-        District::create($validated);
-
-        Cache::flush();
+        $district = District::create($validated);
+        $this->invalidateDistrictCache($city->slug, $district->slug);
 
         return redirect()->back()->with('success', 'Kecamatan berhasil ditambahkan ke ' . $city->name);
     }
 
     public function destroyDistrict(District $district)
     {
+        $citySlug = $district->city?->slug;
+        $districtSlug = $district->slug;
         $district->delete();
-        Cache::flush();
+
+        if ($citySlug) {
+            $this->invalidateDistrictCache($citySlug, $districtSlug);
+        }
 
         return redirect()->back()->with('success', 'Kecamatan berhasil dihapus.');
+    }
+
+    /**
+     * Invalidate target cache specifically without flushing the whole application cache.
+     */
+    protected function invalidateCityCache(string $slug, ?string $oldSlug = null): void
+    {
+        Cache::forget("pseo_city_show_v6_{$slug}");
+        if ($oldSlug && $oldSlug !== $slug) {
+            Cache::forget("pseo_city_show_v6_{$oldSlug}");
+        }
+        Cache::forget('area_directory_index_v3');
+        Cache::forget('home_page_html_v5');
+        Cache::forget('sitemap_cities_xml_v5');
+        Cache::forget('sitemap_index_xml_v5');
+    }
+
+    /**
+     * Invalidate district-specific cache keys.
+     */
+    protected function invalidateDistrictCache(string $citySlug, string $districtSlug): void
+    {
+        Cache::forget("pseo_district_show_v3_{$citySlug}_{$districtSlug}");
+        Cache::forget("pseo_city_show_v6_{$citySlug}");
+        Cache::forget('sitemap_districts_xml_v5');
     }
 }

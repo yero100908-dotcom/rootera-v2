@@ -23,8 +23,25 @@ class WebpConverterService
         $extension = strtolower($file->getClientOriginalExtension());
         $mimeType  = $file->getMimeType();
 
-        // 1. Preserve vector SVG files as-is
+        // 1. Preserve vector SVG files with Strict Sanitization
         if ($extension === 'svg' || $mimeType === 'image/svg+xml') {
+            $content = file_get_contents($file->getRealPath());
+
+            $dangerousPatterns = [
+                '/<script\b[^>]*>(.*?)<\/script>/is',
+                '/on\w+\s*=/i',
+                '/javascript\s*:/i',
+                '/<iframe\b[^>]*>/i',
+                '/<embed\b[^>]*>/i',
+                '/<object\b[^>]*>/i',
+            ];
+
+            foreach ($dangerousPatterns as $pattern) {
+                if (preg_match($pattern, $content)) {
+                    throw new \InvalidArgumentException('File SVG terdeteksi mengandung skrip berbahaya (XSS). Unggahan ditolak.');
+                }
+            }
+
             return $file->store($folder, $disk);
         }
 

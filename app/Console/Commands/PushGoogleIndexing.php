@@ -296,7 +296,7 @@ class PushGoogleIndexing extends Command
 
             foreach ($projGalleries as $pg) {
                 if ($pg->slug) {
-                    $url = "{$baseUrl}/galeri/{$pg->slug}";
+                    $url = "{$baseUrl}/galeri-dokumentasi/{$pg->slug}";
                     $priority1[] = [
                         'url'         => $url,
                         'type'        => 'gallery',
@@ -312,7 +312,7 @@ class PushGoogleIndexing extends Command
 
             foreach ($galleries as $gal) {
                 if ($gal->slug) {
-                    $url = "{$baseUrl}/galeri/{$gal->slug}";
+                    $url = "{$baseUrl}/galeri-dokumentasi/{$gal->slug}";
                     $priority1[] = [
                         'url'         => $url,
                         'type'        => 'gallery',
@@ -324,13 +324,13 @@ class PushGoogleIndexing extends Command
         }
 
         // -------------------------------------------------------------
-        // PRIORITAS 2 & 3: Halaman pSEO Kota & Kecamatan (legacy pattern)
+        // PRIORITAS 2 & 3: Halaman pSEO Kota & Kecamatan (Filter is_indexable)
         // -------------------------------------------------------------
         if (!$filterType || str_contains($filterType, 'pseo') || $filterType === 'city' || $filterType === 'district') {
             $cities = City::where('is_active', true)
                 ->whereNotIn('slug', $aliasSlugs)
                 ->with(['districts' => function ($q) {
-                    $q->where('is_active', true);
+                    $q->where('is_active', true)->where('is_indexable', true);
                 }])->get();
 
             foreach ($cities as $city) {
@@ -373,9 +373,10 @@ class PushGoogleIndexing extends Command
                 "{$baseUrl}/jasa-saluran-mampet",
                 "{$baseUrl}/layanan",
                 "{$baseUrl}/faq",
-                "{$baseUrl}/layanan-b2b",
-                "{$baseUrl}/solusi-properti",
+                "{$baseUrl}/layanan-b2b-komersial",
+                "{$baseUrl}/kategori-properti",
                 "{$baseUrl}/blog",
+                "{$baseUrl}/cek-kondisi-pipa",
             ];
             foreach ($staticUrls as $sUrl) {
                 $priority4[] = [
@@ -390,7 +391,7 @@ class PushGoogleIndexing extends Command
         if (!$filterType || $filterType === 'b2b') {
             $sectors = ServiceSector::where('is_active', true)->get();
             foreach ($sectors as $sec) {
-                $b2bUrl = "{$baseUrl}/layanan-b2b/{$sec->slug}";
+                $b2bUrl = "{$baseUrl}/sektor-plumbing/{$sec->slug}";
                 $priority4[] = [
                     'url'         => $b2bUrl,
                     'type'        => 'b2b_sector',

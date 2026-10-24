@@ -247,7 +247,7 @@ class PushIndexNow extends Command
 
             foreach ($galleries as $gal) {
                 if ($gal->slug) {
-                    $url = "{$baseUrl}/galeri/{$gal->slug}";
+                    $url = "{$baseUrl}/galeri-dokumentasi/{$gal->slug}";
                     $priority1[] = [
                         'url'         => $url,
                         'type'        => 'gallery',
@@ -272,12 +272,12 @@ class PushIndexNow extends Command
             }
         }
 
-        // 4. pSEO Cities & Districts
+        // 4. pSEO Cities & Districts (Filter is_indexable)
         if (!$filterType || str_contains($filterType, 'pseo') || $filterType === 'city' || $filterType === 'district') {
             $cities = City::where('is_active', true)
                 ->whereNotIn('slug', $aliasSlugs)
                 ->with(['districts' => function ($q) {
-                    $q->where('is_active', true);
+                    $q->where('is_active', true)->where('is_indexable', true);
                 }])->get();
 
             foreach ($cities as $city) {
@@ -326,9 +326,10 @@ class PushIndexNow extends Command
                 "{$baseUrl}/jasa-saluran-mampet",
                 "{$baseUrl}/layanan",
                 "{$baseUrl}/faq",
-                "{$baseUrl}/layanan-b2b",
-                "{$baseUrl}/solusi-properti",
+                "{$baseUrl}/layanan-b2b-komersial",
+                "{$baseUrl}/kategori-properti",
                 "{$baseUrl}/blog",
+                "{$baseUrl}/cek-kondisi-pipa",
             ];
             foreach ($staticUrls as $sUrl) {
                 $priority4[] = [
@@ -344,7 +345,7 @@ class PushIndexNow extends Command
         if (!$filterType || $filterType === 'b2b') {
             $sectors = ServiceSector::where('is_active', true)->get();
             foreach ($sectors as $sec) {
-                $url = "{$baseUrl}/layanan-b2b/{$sec->slug}";
+                $url = "{$baseUrl}/sektor-plumbing/{$sec->slug}";
                 $priority4[] = [
                     'url'         => $url,
                     'type'        => 'b2b_sector',

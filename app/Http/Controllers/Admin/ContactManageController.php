@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactManageController extends Controller
 {
@@ -16,12 +17,21 @@ class ContactManageController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
+        // Optimasi 5 query count terpisah menjadi 1 single conditional aggregation query
+        $rawCounts = Contact::select([
+            DB::raw('COUNT(*) as total_all'),
+            DB::raw("COUNT(CASE WHEN status = 'new' THEN 1 END) as total_new"),
+            DB::raw("COUNT(CASE WHEN status = 'in_progress' THEN 1 END) as total_in_progress"),
+            DB::raw("COUNT(CASE WHEN status = 'completed' THEN 1 END) as total_completed"),
+            DB::raw("COUNT(CASE WHEN status = 'cancelled' THEN 1 END) as total_cancelled"),
+        ])->first();
+
         $counts = [
-            'all'         => Contact::count(),
-            'new'         => Contact::where('status', 'new')->count(),
-            'in_progress' => Contact::where('status', 'in_progress')->count(),
-            'completed'   => Contact::where('status', 'completed')->count(),
-            'cancelled'   => Contact::where('status', 'cancelled')->count(),
+            'all'         => (int) ($rawCounts->total_all ?? 0),
+            'new'         => (int) ($rawCounts->total_new ?? 0),
+            'in_progress' => (int) ($rawCounts->total_in_progress ?? 0),
+            'completed'   => (int) ($rawCounts->total_completed ?? 0),
+            'cancelled'   => (int) ($rawCounts->total_cancelled ?? 0),
         ];
 
         return view('admin.contacts.index', compact('contacts', 'counts', 'status'));

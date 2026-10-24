@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\City;
 use App\Models\ServiceCategory;
+use App\Models\ResidentialCluster;
 use App\Http\Controllers\ProgrammaticSeoController;
 use App\Http\Controllers\AreaServiceController;
+use App\Http\Controllers\ClusterSeoController;
 use Exception;
 
 class WarmupCacheCommand extends Command
@@ -16,48 +20,67 @@ class WarmupCacheCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'seo:warmup-cache {--limit=500 : Maximum number of URLs to warmup in one run}';
+    protected $signature = 'seo:warmup-cache {--limit=1000 : Maximum number of URLs to warmup in one run}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Pre-render and cache programmatic landing pages to ensure <100ms TTFB for search engines';
+    protected $description = 'Pre-render and cache programmatic landing pages (Services, Cities, Districts, Clusters) for <100ms TTFB';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $limit = (int) $this->option('limit');
-        $this->info("🔥 Starting Programmatic SEO Cache Warmup (Limit: {$limit})...");
+        $this->info("🔥 Memulai Cache Warmup Programmatic SEO (Limit: {$limit})...");
 
         $aliasSlugs = [
             'tangerang-kota', 'kab-tangerang', 'cikarang', 'karawang',
-            'sleman', 'sidoarjo', 'gresik', 'solo'
+            'sleman', 'sidoarjo', 'gresik', 'solo',
         ];
 
-        $categories = ServiceCategory::where('is_active', true)->get();
+        $categories = ServiceCategory::where('is_active', true)->orderBy('sort_order')->get();
         $cities = City::where('is_active', true)
             ->whereNotIn('slug', $aliasSlugs)
-            ->with(['districts' => function ($q) {
-                $q->where('is_active', true);
-            }])
+            ->with(['districts' => fn($q) => $q->where('is_active', true)->where('is_indexable', true)])
             ->get();
 
-        $progController = app(ProgrammaticSeoController::class);
-        $areaController = app(AreaServiceController::class);
+        $clusters = class_exists(ResidentialCluster::class)
+            ? ResidentialCluster::indexable()->take(100)->get()
+            : collect();
+
+        $progController    = app(ProgrammaticSeoController::class);
+        $areaController    = app(AreaServiceController::class);
+        $clusterController = app(ClusterSeoController::class);
 
         $totalProcessed = 0;
-        $successCount = 0;
-        $failCount = 0;
+        $successCount   = 0;
+        $failCount      = 0;
 
-        $this->line("📍 Found " . $cities->count() . " active cities and " . $categories->count() . " service categories.");
+        $bar = $this->output->createProgressBar($limit);
+        $bar->start();
 
-        // 1. Warmup City Hub Pages
+        // 1. Warmup Canonical Service × City Hub (/layanan/{service}/{city})
+        foreach ($categories as $category) {
+            foreach ($cities as $city) {
+                if ($totalProcessed >= $limit) break 2;
+                $totalProcessed++;
+                try {
+                    $progController->showService($category->slug, $city->slug);
+                    $successCount++;
+                } catch (Exception $e) {
+                    $failCount++;
+                }
+                $bar->advance();
+            }
+        }
+
+        // 2. Warmup City Hubs (/jasa-saluran-mampet/{city})
         foreach ($cities as $city) {
             if ($totalProcessed >= $limit) break;
             $totalProcessed++;
@@ -67,42 +90,60 @@ class WarmupCacheCommand extends Command
             } catch (Exception $e) {
                 $failCount++;
             }
+            $bar->advance();
         }
 
-        // 2. Warmup Category + City + District Pages
+        // 3. Warmup District Spokes (/jasa-saluran-mampet/{city}/{district})
         foreach ($cities as $city) {
-            if ($totalProcessed >= $limit) break;
-
-            foreach ($categories as $category) {
-                if ($totalProcessed >= $limit) break;
-
-                // City level spoke
+            foreach ($city->districts as $district) {
+                if ($totalProcessed >= $limit) break 2;
                 $totalProcessed++;
                 try {
-                    $progController->show($category->slug, $city->slug);
+                    $areaController->showDistrict($city->slug, $district->slug);
                     $successCount++;
                 } catch (Exception $e) {
                     $failCount++;
                 }
-
-                // District level spokes
-                foreach ($city->districts as $district) {
-                    if ($totalProcessed >= $limit) break;
-                    $totalProcessed++;
-                    try {
-                        $progController->show($category->slug, $city->slug, $district->slug);
-                        $successCount++;
-                    } catch (Exception $e) {
-                        $failCount++;
-                    }
-                }
+                $bar->advance();
             }
         }
 
-        $this->newLine();
-        $this->info("✅ Cache Warmup Completed!");
-        $this->info("📊 Total Pages Warmed Up: <comment>{$successCount}/{$totalProcessed}</comment> (Failures: {$failCount})");
+        // 4. Warmup Hyper-Local Residential Clusters (/area-perumahan/{cluster})
+        foreach ($clusters as $cluster) {
+            if ($totalProcessed >= $limit) break;
+            $totalProcessed++;
+            try {
+                $clusterController->show($cluster->slug);
+                $successCount++;
+            } catch (Exception $e) {
+                $failCount++;
+            }
+            $bar->advance();
 
-        return 0;
+            // Intersect dengan Top 2 Category
+            foreach ($categories->take(2) as $category) {
+                if ($totalProcessed >= $limit) break 2;
+                $totalProcessed++;
+                try {
+                    $clusterController->service($cluster->slug, $category->slug);
+                    $successCount++;
+                } catch (Exception $e) {
+                    $failCount++;
+                }
+                $bar->advance();
+            }
+        }
+
+        // Garbage collection untuk mencegah memory leak
+        if (function_exists('gc_collect_cycles')) {
+            gc_collect_cycles();
+        }
+
+        $bar->finish();
+        $this->newLine(2);
+        $this->info("✅ Cache Warmup Berhasil Diselesaikan!");
+        $this->info("📊 Berhasil Dipanaskan: {$successCount}/{$totalProcessed} Halaman (Gagal: {$failCount})");
+
+        return Command::SUCCESS;
     }
 }

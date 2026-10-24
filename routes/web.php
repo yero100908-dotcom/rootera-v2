@@ -33,7 +33,7 @@ use App\Http\Controllers\DiagnosticController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
-Route::post('/diagnosa-pipa/capture-lead', [DiagnosticController::class, 'captureLead'])->name('diagnostic.capture-lead');
+Route::post('/diagnosa-pipa/capture-lead', [DiagnosticController::class, 'captureLead'])->middleware('throttle:10,1')->name('diagnostic.capture-lead');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/sitemap-index.xml', [SitemapController::class, 'index'])->name('sitemap.index');
 Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
@@ -74,7 +74,7 @@ Route::get('/sektor-plumbing/{sectorSlug}', [App\Http\Controllers\CommercialSect
 Route::get('/sektor-plumbing/{sectorSlug}/{citySlug}', [App\Http\Controllers\CommercialSectorController::class, 'showSectorCity'])->name('b2b.sector.city');
 Route::get('/kontrak-maintenance-saluran/{sectorSlug}', [App\Http\Controllers\CommercialSectorController::class, 'maintenanceContract'])->name('b2b.contract');
 Route::get('/layanan-b2b/faktur-pajak', [App\Http\Controllers\CommercialSectorController::class, 'fakturPajak'])->name('b2b.faktur-pajak');
-Route::post('/layanan-b2b/faktur-pajak', [App\Http\Controllers\CommercialSectorController::class, 'submitFakturPajak'])->name('b2b.faktur-pajak.submit');
+Route::post('/layanan-b2b/faktur-pajak', [App\Http\Controllers\CommercialSectorController::class, 'submitFakturPajak'])->middleware('throttle:5,1')->name('b2b.faktur-pajak.submit');
 Route::get('/layanan-b2b/licensing', [App\Http\Controllers\CommercialSectorController::class, 'licensing'])->name('b2b.licensing');
 
 // Public Property Category Direct-to-Consumer Routes
@@ -122,7 +122,7 @@ Route::get('/galeri-dokumentasi', [App\Http\Controllers\GalleryController::class
 Route::get('/galeri-dokumentasi/{slug}', [App\Http\Controllers\GalleryController::class, 'show'])->name('galeri.show');
 Route::redirect('/galeri', '/galeri-dokumentasi', 301);
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
-Route::post('/kontak', [ContactController::class, 'store'])->name('kontak.store');
+Route::post('/kontak', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('kontak.store');
 
 // Legal & Terms Routes
 Route::get('/terms-of-service', [HomeController::class, 'termsOfService'])->name('terms-of-service');
