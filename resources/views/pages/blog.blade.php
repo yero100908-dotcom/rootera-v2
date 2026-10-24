@@ -2,20 +2,26 @@
 
 @section('schema-markup')
 <?php
-$blogItemList = [];
+$itemListElements = [];
 if (isset($articles) && $articles->count() > 0) {
     foreach ($articles as $index => $art) {
-        $blogItemList[] = [
-            "@type" => "BlogPosting",
+        $itemListElements[] = [
+            "@type" => "ListItem",
             "position" => $index + 1,
-            "headline" => $art->clean_title,
-            "description" => Str::limit($art->excerpt ?? '', 150),
             "url" => route('blog.show', $art->slug),
-            "datePublished" => $art->published_at?->toIso8601String() ?: now()->toIso8601String(),
-            "image" => [$art->thumbnail_url],
-            "author" => [
-                "@type" => "Organization",
-                "name" => "Rootera Plumbing"
+            "name" => $art->clean_title,
+            "item" => [
+                "@type" => "BlogPosting",
+                "headline" => $art->clean_title,
+                "description" => Str::limit($art->excerpt ?? '', 150),
+                "url" => route('blog.show', $art->slug),
+                "datePublished" => $art->published_at?->toIso8601String() ?: now()->toIso8601String(),
+                "image" => [$art->thumbnail_url],
+                "author" => [
+                    "@type" => "Organization",
+                    "name" => "Rootera Plumbing",
+                    "url" => url('/')
+                ]
             ]
         ];
     }
@@ -26,8 +32,8 @@ $blogSchema = [
     "@graph" => [
         [
             "@type" => ["CollectionPage", "Blog"],
-            "@id" => url()->current() . "#blog",
-            "url" => url()->current(),
+            "@id" => ($seo['canonical'] ?? url()->current()) . "#blog",
+            "url" => $seo['canonical'] ?? url()->current(),
             "name" => $seo['title'] ?? "Portal Berita & Panduan Plumbing Indonesia | Rootera Plumbing",
             "description" => $seo['description'] ?? "Portal berita plumbing modern, artikel teknis sanitasi rumah & komersial B2B, komparasi material, serta video tutorial dari teknisi profesional Rootera.",
             "publisher" => [
@@ -39,7 +45,11 @@ $blogSchema = [
                     "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
                 ]
             ],
-            "blogPost" => $blogItemList
+            "mainEntity" => [
+                "@type" => "ItemList",
+                "numberOfItems" => count($itemListElements),
+                "itemListElement" => $itemListElements
+            ]
         ],
         [
             "@type" => "BreadcrumbList",
@@ -103,7 +113,7 @@ $blogSchema = [
                     {{-- 16:9 MEDIA CONTAINER --}}
                     <div class="relative bg-slate-950 aspect-[16/9] overflow-hidden cursor-pointer">
                         <a href="{{ route('blog.show', $headline->slug) }}" class="block w-full h-full">
-                            <img src="{{ $headline->thumbnail_url }}" alt="{{ $headline->clean_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <img src="{{ $headline->thumbnail_url }}" alt="{{ $headline->clean_title }}" loading="eager" fetchpriority="high" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         </a>
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-[#071930] via-black/30 to-transparent pointer-events-none"></div>
@@ -184,7 +194,7 @@ $blogSchema = [
                     
                     {{-- THUMBNAIL KECIL (16:9 / 4:3) --}}
                     <a href="{{ route('blog.show', $side->slug) }}" class="shrink-0 w-24 sm:w-28 aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden relative block">
-                        <img src="{{ $side->thumbnail_url }}" alt="{{ $side->clean_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        <img src="{{ $side->thumbnail_url }}" alt="{{ $side->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         @if($side->youtube_video_id || $side->post_type === 'video_guide')
                         <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
                             <span class="w-6 h-6 rounded-full bg-red-600/90 text-white flex items-center justify-center text-[10px] shadow-xs">▶</span>
@@ -267,27 +277,44 @@ $blogSchema = [
                 </form>
             </div>
 
-            {{-- ROW 2: TIPE KONTEN & SUB-TAGS --}}
-            <div class="flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div class="flex flex-wrap items-center gap-2">
-                    <span class="font-extrabold text-slate-700 shrink-0">Filter Tipe:</span>
-                    <a href="{{ route('blog', array_merge(request()->except('filter', 'page'), ['filter' => 'all'])) }}" 
-                       class="px-3 py-1 rounded-full font-bold text-decoration-none {{ ($filterType ?? 'all') === 'all' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
-                        Semua
-                    </a>
-                    <a href="{{ route('blog', array_merge(request()->except('filter', 'page'), ['filter' => 'article'])) }}" 
-                       class="px-3 py-1 rounded-full font-bold text-decoration-none {{ ($filterType ?? '') === 'article' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
-                        📄 Artikel Teks
-                    </a>
-                    <a href="{{ route('blog', array_merge(request()->except('filter', 'page'), ['filter' => 'video'])) }}" 
-                       class="px-3 py-1 rounded-full font-bold text-decoration-none {{ ($filterType ?? '') === 'video' ? 'bg-red-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
-                        ▶️ Video Panduan
-                    </a>
+            {{-- ROW 2: SEGMENTED CONTROL CONTENT HUB TABS --}}
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs pt-1 border-t border-slate-100">
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 snap-x">
+                    @php
+                        $activeType = $filterPostType ?? request('type') ?? request('filter', 'all');
+                        $hubTabs = [
+                            'all'           => ['label' => 'Semua', 'icon' => '🌐'],
+                            'article'       => ['label' => 'Edukasi Teknis', 'icon' => '📄'],
+                            'promo'         => ['label' => 'Promo Khusus', 'icon' => '🏷️'],
+                            'news'          => ['label' => 'Kabar Perusahaan', 'icon' => '📰'],
+                            'case_study'    => ['label' => 'Studi Kasus B2B', 'icon' => '💼'],
+                            'press_release' => ['label' => 'Press Release', 'icon' => '📢'],
+                            'video_guide'   => ['label' => 'Video Panduan', 'icon' => '🎥'],
+                        ];
+                    @endphp
+
+                    @foreach($hubTabs as $tabKey => $tab)
+                        @php
+                            $isTabActive = ($activeType === $tabKey) || ($tabKey === 'video_guide' && $activeType === 'video');
+                            $tabUrl = route('blog', array_merge(request()->except('type', 'filter', 'page'), ['type' => $tabKey]));
+                            $count = $postTypeCounts[$tabKey] ?? null;
+                        @endphp
+                        <a href="{{ $tabUrl }}" 
+                           class="snap-start shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-bold transition-all text-decoration-none {{ $isTabActive ? 'bg-[#070F1E] text-white shadow-sm ring-1 ring-white/10' : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900' }}">
+                            <span>{{ $tab['icon'] }}</span>
+                            <span>{{ $tab['label'] }}</span>
+                            @if(isset($count))
+                                <span class="text-[10px] px-1.5 py-0.2 rounded-full font-extrabold {{ $isTabActive ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600' }}">
+                                    {{ $count }}
+                                </span>
+                            @endif
+                        </a>
+                    @endforeach
                 </div>
 
-                @if(!empty($search) || !empty($tag) || ($filterCategory ?? 'all') !== 'all' || ($filterType ?? 'all') !== 'all')
-                <div>
-                    <a href="{{ route('blog') }}" class="text-rose-600 font-extrabold hover:underline flex items-center gap-1 text-decoration-none">
+                @if(!empty($search) || !empty($tag) || ($filterCategory ?? 'all') !== 'all' || ($activeType ?? 'all') !== 'all')
+                <div class="shrink-0 self-end sm:self-auto">
+                    <a href="{{ route('blog') }}" class="text-rose-600 font-extrabold hover:underline flex items-center gap-1 text-decoration-none text-xs">
                         <span>× Reset Semua Filter</span>
                     </a>
                 </div>
@@ -300,25 +327,186 @@ $blogSchema = [
         @if($articles->isEmpty())
         <div class="text-center py-12 px-4 bg-white rounded-3xl border border-slate-200 max-w-md mx-auto shadow-sm">
             <div class="text-4xl mb-3">🔍</div>
-            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-1">Tidak Ada Artikel Ditemukan</h3>
-            <p class="text-xs sm:text-sm text-slate-500 mb-4">Coba gunakan kata kunci lain atau pilih pilar kategori industri lainnya.</p>
-            <a href="{{ route('blog') }}" class="inline-flex px-5 py-2.5 bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md text-decoration-none">Lihat Semua Berita</a>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-1">Tidak Ada Konten Ditemukan</h3>
+            <p class="text-xs sm:text-sm text-slate-500 mb-4">Coba ubah filter tipe postingan, kata kunci pencarian, atau pilih kategori lainnya.</p>
+            <a href="{{ route('blog') }}" class="inline-flex px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-md text-decoration-none transition-all">Lihat Semua Konten</a>
         </div>
         @else
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
             @foreach($articles as $article)
-            <article class="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between" itemscope itemtype="https://schema.org/Article">
-                
+            
+            {{-- 1. KARTU PROMO KHUSUS --}}
+            @if($article->isPromo())
+            <article class="group bg-gradient-to-b from-amber-50/40 via-white to-rose-50/20 border-2 border-amber-300 ring-2 ring-amber-400/20 shadow-md hover:shadow-2xl hover:border-amber-400 hover:-translate-y-1.5 transition-all duration-300 rounded-3xl overflow-hidden flex flex-col justify-between relative">
                 <div>
-                    {{-- 16:9 ASPECT RATIO MEDIA CONTAINER --}}
+                    {{-- 16:9 MEDIA CONTAINER --}}
                     <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
-                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" itemprop="image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         
-                        {{-- CATEGORY BADGE --}}
-                        <div class="absolute top-3 left-3 flex gap-2 z-10">
-                            <span class="bg-[#0B2545]/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                                {{ $article->category ?? 'Tips Rumah' }}
+                        {{-- PROMO BADGES & COUNTDOWN --}}
+                        <div class="absolute top-3 left-3 flex gap-1.5 z-10 flex-wrap">
+                            <span class="bg-gradient-to-r from-red-600 to-amber-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                <span>🏷️</span> PROMO KHUSUS
                             </span>
+                            @if($article->promo_end_date)
+                                @if($article->promo_end_date->isPast())
+                                    <span class="bg-red-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                                        🔴 Berakhir
+                                    </span>
+                                @elseif($article->promo_end_date->diffInHours(now()) <= 72)
+                                    <span class="bg-amber-400 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded-md shadow-xs animate-pulse flex items-center gap-1">
+                                        🔥 Segera Berakhir
+                                    </span>
+                                @else
+                                    <span class="bg-slate-950/80 backdrop-blur-xs text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-md shadow-xs">
+                                        ⏰ s/d {{ $article->promo_end_date->translatedFormat('d M') }}
+                                    </span>
+                                @endif
+                            @endif
+                        </div>
+
+                        {{-- DEADLINE STRIP OVERLAY --}}
+                        @if($article->promo_end_date && !$article->promo_end_date->isPast())
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2.5 flex items-center justify-between text-white text-[10px] font-bold">
+                            <span class="flex items-center gap-1 text-amber-300">
+                                <span>⏳</span> Masa Berlaku Promo
+                            </span>
+                            <span class="font-mono text-white/90">
+                                {{ $article->promo_end_date->translatedFormat('d F Y, H:i') }} WIB
+                            </span>
+                        </div>
+                        @endif
+                    </a>
+
+                    {{-- PROMO CARD BODY --}}
+                    <div class="p-4 sm:p-5">
+                        <div class="flex items-center gap-2 text-[11px] text-amber-800 font-semibold mb-2">
+                            <span>🏷️ Penawaran Spesial</span>
+                            <span>•</span>
+                            <span>👁️ {{ $article->views }} peminat</span>
+                        </div>
+
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-2 leading-snug mb-2">
+                            <a href="{{ route('blog.show', $article->slug) }}" class="text-decoration-none text-slate-900 group-hover:text-amber-700">
+                                {{ $article->clean_title }}
+                            </a>
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3">
+                            {{ Str::limit($article->excerpt, 115) }}
+                        </p>
+                    </div>
+                </div>
+
+                {{-- PROMO FOOTER WITH HIGH-CONVERTING CTA --}}
+                <div class="px-4 sm:px-5 pb-4 pt-3 border-t border-amber-100 flex items-center justify-between w-full bg-amber-50/50">
+                    <span class="text-[11px] font-extrabold text-amber-800 truncate max-w-[130px] flex items-center gap-1">
+                        <span>⚡ Promo Diskon</span>
+                    </span>
+                    <a href="{{ route('blog.show', $article->slug) }}" class="px-3.5 py-2 bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white text-xs font-extrabold rounded-xl shadow-sm flex items-center gap-1.5 group-hover:scale-105 transition-all text-decoration-none">
+                        <span>Lihat Promo</span>
+                        <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </article>
+
+            {{-- 2. KARTU STUDI KASUS & PORTOFOLIO B2B --}}
+            @elseif($article->isCaseStudy())
+            <article class="group bg-white rounded-3xl overflow-hidden border border-indigo-200/90 shadow-sm hover:shadow-xl hover:border-indigo-500 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    {{-- 16:9 MEDIA CONTAINER --}}
+                    <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        
+                        {{-- B2B CASE STUDY BADGE --}}
+                        <div class="absolute top-3 left-3 flex gap-2 z-10">
+                            <span class="bg-[#0B2545]/95 backdrop-blur-xs text-indigo-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider flex items-center gap-1">
+                                <span>💼</span> STUDI KASUS B2B
+                            </span>
+                        </div>
+
+                        {{-- READ TIME --}}
+                        <div class="absolute bottom-3 right-3 bg-black/70 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded z-10 flex items-center gap-1">
+                            <span>⏱️ {{ $article->reading_time }} mnt</span>
+                        </div>
+                    </a>
+
+                    {{-- CASE STUDY BODY --}}
+                    <div class="p-4 sm:p-5">
+                        {{-- PROMINENT CLIENT & GEO ROW --}}
+                        @if($article->client_name || $article->location_geo)
+                        <div class="flex items-center gap-2 text-[11px] font-bold text-indigo-950 bg-indigo-50/80 px-3 py-1.5 rounded-xl mb-2.5 border border-indigo-100/90 flex-wrap">
+                            @if($article->client_name)
+                                <span class="flex items-center gap-1 truncate font-extrabold text-indigo-900">
+                                    🏢 {{ $article->client_name }}
+                                </span>
+                            @endif
+                            @if($article->client_name && $article->location_geo)
+                                <span class="text-indigo-300">•</span>
+                            @endif
+                            @if($article->location_geo)
+                                <span class="flex items-center gap-1 text-slate-600 font-medium truncate">
+                                    📍 {{ $article->location_geo }}
+                                </span>
+                            @endif
+                        </div>
+                        @endif
+
+                        <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium mb-1.5">
+                            <time datetime="{{ $article->published_at?->format('Y-m-d') }}">
+                                📅 {{ $article->published_at?->translatedFormat('d F Y') }}
+                            </time>
+                            <span>•</span>
+                            <span>👁️ {{ $article->views }} views</span>
+                        </div>
+
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-2 leading-snug mb-2">
+                            <a href="{{ route('blog.show', $article->slug) }}" class="text-decoration-none text-slate-900 group-hover:text-indigo-700">
+                                {{ $article->clean_title }}
+                            </a>
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3">
+                            {{ Str::limit($article->excerpt, 115) }}
+                        </p>
+                    </div>
+                </div>
+
+                {{-- CASE STUDY FOOTER --}}
+                <div class="px-4 sm:px-5 pb-4 pt-3 border-t border-indigo-50 flex items-center justify-between w-full bg-slate-50/50">
+                    <span class="text-[11px] font-extrabold text-indigo-700 flex items-center gap-1 truncate max-w-[130px]">
+                        <span>🛡️ Solusi Lapangan</span>
+                    </span>
+                    <a href="{{ route('blog.show', $article->slug) }}" class="text-xs font-extrabold text-indigo-700 hover:text-indigo-950 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform text-decoration-none shrink-0">
+                        <span>Pelajari Kasus</span>
+                        <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                </div>
+            </article>
+
+            {{-- 3. KARTU EDUKASI TEKNIS / KABAR / EDITORIAL STANDAR --}}
+            @else
+            <article class="group bg-white rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    {{-- 16:9 ASPECT RATIO MEDIA CONTAINER (OPTIMIZED LCP) --}}
+                    <a href="{{ route('blog.show', $article->slug) }}" class="relative aspect-[16/9] bg-slate-950 overflow-hidden block">
+                        <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        
+                        {{-- CATEGORY / POST TYPE BADGE --}}
+                        <div class="absolute top-3 left-3 flex gap-2 z-10">
+                            @if($article->post_type === 'news')
+                                <span class="bg-blue-700/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                                    📰 Kabar Rootera
+                                </span>
+                            @elseif($article->post_type === 'press_release')
+                                <span class="bg-purple-700/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                                    📢 Press Release
+                                </span>
+                            @else
+                                <span class="bg-[#0B2545]/90 backdrop-blur-xs text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+                                    {{ $article->category ?? 'Tips Rumah' }}
+                                </span>
+                            @endif
                         </div>
 
                         {{-- READ TIME BADGE --}}
@@ -339,20 +527,20 @@ $blogSchema = [
                     {{-- CARD CONTENT BODY --}}
                     <div class="p-4 sm:p-5">
                         <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium mb-2">
-                            <time itemprop="datePublished" datetime="{{ $article->published_at?->format('Y-m-d') }}">
+                            <time datetime="{{ $article->published_at?->format('Y-m-d') }}">
                                 📅 {{ $article->published_at?->translatedFormat('d F Y') }}
                             </time>
                             <span>•</span>
                             <span>👁️ {{ $article->views }} views</span>
                         </div>
 
-                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 leading-snug mb-2" itemprop="headline">
+                        <h3 class="text-sm sm:text-base font-extrabold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 leading-snug mb-2">
                             <a href="{{ route('blog.show', $article->slug) }}" class="text-decoration-none text-slate-900 group-hover:text-emerald-600">
                                 {{ $article->clean_title }}
                             </a>
                         </h3>
 
-                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3" itemprop="description">
+                        <p class="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed mb-3">
                             {{ Str::limit($article->excerpt, 115) }}
                         </p>
                     </div>
@@ -368,8 +556,9 @@ $blogSchema = [
                         <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </a>
                 </div>
-
             </article>
+            @endif
+
             @endforeach
         </div>
 
@@ -402,7 +591,7 @@ $blogSchema = [
                 @foreach($videoArticles as $video)
                 <div class="w-[260px] sm:w-[320px] md:w-auto shrink-0 snap-start bg-slate-950/80 border border-white/10 hover:border-red-500/50 rounded-2xl overflow-hidden transition-all duration-300 group">
                     <a href="{{ route('blog.show', $video->slug) }}" class="relative aspect-[16/9] block overflow-hidden bg-black">
-                        <img src="{{ $video->thumbnail_url }}" alt="{{ $video->clean_title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
+                        <img src="{{ $video->thumbnail_url }}" alt="{{ $video->clean_title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90">
                         <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
                             <div class="w-11 h-11 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-0.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>

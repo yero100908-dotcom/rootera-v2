@@ -4,151 +4,243 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {
     public function index(Request $request)
     {
+        $categories     = Article::CATEGORIES;
         $filterCategory = $request->query('category', 'all');
-        $filterType     = $request->query('filter', 'all');
-        $search         = $request->query('search') ?: $request->query('q');
+        $filterPostType = $request->query('type') ?: $request->query('filter', 'all');
+        $rawSearch      = $request->query('search') ?: $request->query('q');
         $tag            = $request->query('tag');
 
-        // 1. Hero Headline (60% Slot)
-        $headline = Article::published()
-            ->headline()
-            ->orderBy('published_at', 'desc')
-            ->first();
+        // Sanitasi Kata Kunci Pencarian (Mencegah ReDoS / SQL Wildcard Flooding)
+        $search = null;
+        $escapedSearch = null;
+        if (!empty($rawSearch)) {
+            $search = Str::substr(strip_tags(trim($rawSearch)), 0, 80);
+            $escapedSearch = addcslashes($search, '%_\\');
+        }
 
-        if (!$headline) {
-            $headline = Article::published()
+        // 1 & 2. Hero Headline (60%) & Side Highlights (40%) - Cache IDs (1 Jam)
+        $heroIds = Cache::remember('blog_hero_ids_v2', 3600, function () {
+            $headlineId = Article::published()
+                ->headline()
                 ->orderBy('published_at', 'desc')
-                ->first();
-        }
+                ->value('id');
 
-        $excludedIds = $headline ? [$headline->id] : [];
+            if (!$headlineId) {
+                $headlineId = Article::published()
+                    ->orderBy('published_at', 'desc')
+                    ->value('id');
+            }
 
-        // 2. Side Headlines (40% Slot - 3 items)
-        $sideHeadlines = Article::published()
-            ->whereNotIn('id', $excludedIds)
-            ->featured()
-            ->orderBy('published_at', 'desc')
-            ->take(3)
-            ->get();
+            $excludedIds = $headlineId ? [$headlineId] : [];
 
-        if ($sideHeadlines->count() < 3) {
-            $existingSideIds = array_merge($excludedIds, $sideHeadlines->pluck('id')->toArray());
-            $needed = 3 - $sideHeadlines->count();
-            
-            $additionalSides = Article::published()
-                ->whereNotIn('id', $existingSideIds)
-                ->orderBy('views', 'desc')
+            $sideIds = Article::published()
+                ->whereNotIn('id', $excludedIds)
+                ->featured()
                 ->orderBy('published_at', 'desc')
-                ->take($needed)
-                ->get();
+                ->take(3)
+                ->pluck('id')
+                ->toArray();
 
-            $sideHeadlines = $sideHeadlines->concat($additionalSides);
-        }
+            if (count($sideIds) < 3) {
+                $existingSideIds = array_merge($excludedIds, $sideIds);
+                $needed = 3 - count($sideIds);
 
-        $heroExcludedIds = array_merge($excludedIds, $sideHeadlines->pluck('id')->toArray());
+                $additionalSideIds = Article::published()
+                    ->whereNotIn('id', $existingSideIds)
+                    ->orderBy('views', 'desc')
+                    ->orderBy('published_at', 'desc')
+                    ->take($needed)
+                    ->pluck('id')
+                    ->toArray();
 
-        // 3. Dedicated Video Guides (Rootera TV)
-        $videoArticles = Article::published()
-            ->where(function($q) {
-                $q->where('post_type', 'video_guide')
-                  ->orWhereNotNull('youtube_video_id');
-            })
-            ->orderBy('published_at', 'desc')
-            ->take(6)
-            ->get();
+                $sideIds = array_merge($sideIds, $additionalSideIds);
+            }
 
-        // 4. Categories pillars & post counts (Single optimized aggregate query)
-        $categories = Article::CATEGORIES;
-        $countsRaw = Article::published()
-            ->selectRaw('category, count(*) as total')
-            ->groupBy('category')
-            ->pluck('total', 'category');
+            return [
+                'headline_id'     => $headlineId,
+                'side_ids'        => $sideIds,
+                'heroExcludedIds' => array_merge($excludedIds, $sideIds),
+            ];
+        });
 
-        $categoryCounts = [];
-        foreach ($categories as $catKey => $catLabel) {
-            $categoryCounts[$catKey] = (int) ($countsRaw[$catKey] ?? 0);
-        }
+        $headline = $heroIds['headline_id'] 
+            ? Article::select(Article::LIST_COLUMNS)->find($heroIds['headline_id']) 
+            : null;
 
-        // 5. Main Feed Query
-        $query = Article::published();
+        $sideHeadlines = !empty($heroIds['side_ids'])
+            ? Article::select(Article::LIST_COLUMNS)->whereIn('id', $heroIds['side_ids'])->get()
+            : collect();
 
-        // Category Filter
+        $heroExcludedIds = $heroIds['heroExcludedIds'] ?? [];
+
+        // 3. Dedicated Video Guides (Rootera TV) - Cached IDs (1 Jam)
+        $videoIds = Cache::remember('blog_video_ids_v2', 3600, function () {
+            return Article::published()
+                ->where(function ($q) {
+                    $q->where('post_type', Article::TYPE_VIDEO_GUIDE)
+                      ->orWhereNotNull('youtube_video_id');
+                })
+                ->orderBy('published_at', 'desc')
+                ->take(6)
+                ->pluck('id')
+                ->toArray();
+        });
+
+        $videoArticles = !empty($videoIds)
+            ? Article::select(Article::LIST_COLUMNS)->whereIn('id', $videoIds)->orderBy('published_at', 'desc')->get()
+            : collect();
+
+        // 4. Categories & Content Hub Post Types Aggregation Count - Cached (1 Jam)
+        $categoryCounts = Cache::remember('blog_category_counts_v2', 3600, function () use ($categories) {
+            $countsRaw = Article::published()
+                ->selectRaw('category, count(*) as total')
+                ->groupBy('category')
+                ->pluck('total', 'category');
+
+            $counts = [];
+            foreach ($categories as $catKey => $catLabel) {
+                $counts[$catKey] = (int) ($countsRaw[$catKey] ?? 0);
+            }
+            return $counts;
+        });
+
+        $postTypeCounts = Cache::remember('blog_post_type_counts_v2', 1800, function () {
+            return [
+                'all'           => Article::published()->count(),
+                'article'       => Article::published()->where(function ($q) {
+                    $q->whereNull('post_type')->orWhere('post_type', Article::TYPE_ARTICLE);
+                })->whereNull('youtube_video_id')->count(),
+                'promo'         => Article::published()->where('post_type', Article::TYPE_PROMO)->count(),
+                'case_study'    => Article::published()->where('post_type', Article::TYPE_CASE_STUDY)->count(),
+                'news'          => Article::published()->where('post_type', Article::TYPE_NEWS)->count(),
+                'press_release' => Article::published()->where('post_type', Article::TYPE_PRESS_RELEASE)->count(),
+                'video_guide'   => Article::published()->where(function ($q) {
+                    $q->where('post_type', Article::TYPE_VIDEO_GUIDE)->orWhereNotNull('youtube_video_id');
+                })->count(),
+            ];
+        });
+
+        // 5. Main Feed Query (Hanya memuat LIST_COLUMNS untuk efisiensi RAM/DB)
+        $query = Article::published()->select(Article::LIST_COLUMNS);
+
+        // Filter Kategori
         if ($filterCategory !== 'all' && isset($categories[$filterCategory])) {
             $query->where('category', $filterCategory);
         }
 
-        // Type Filter (Article vs Video)
-        if ($filterType === 'article') {
-            $query->where(function($q) {
-                $q->whereNull('post_type')
-                  ->orWhere('post_type', 'article');
-            })->whereNull('youtube_video_id');
-        } elseif ($filterType === 'video') {
-            $query->where(function($q) {
-                $q->where('post_type', 'video_guide')
-                  ->orWhereNotNull('youtube_video_id');
+        // Filter Tipe Konten Hub
+        if ($filterPostType !== 'all') {
+            if ($filterPostType === 'video' || $filterPostType === Article::TYPE_VIDEO_GUIDE) {
+                $query->where(function ($q) {
+                    $q->where('post_type', Article::TYPE_VIDEO_GUIDE)
+                      ->orWhereNotNull('youtube_video_id');
+                });
+            } elseif ($filterPostType === Article::TYPE_ARTICLE) {
+                $query->where(function ($q) {
+                    $q->whereNull('post_type')
+                      ->orWhere('post_type', Article::TYPE_ARTICLE);
+                })->whereNull('youtube_video_id');
+            } elseif (in_array($filterPostType, array_keys(Article::POST_TYPES))) {
+                $query->where('post_type', $filterPostType);
+            }
+        }
+
+        // Filter Pencarian yang sudah di-escape
+        if (!empty($escapedSearch)) {
+            $query->where(function ($q) use ($escapedSearch) {
+                $q->where('title', 'like', "%{$escapedSearch}%")
+                  ->orWhere('excerpt', 'like', "%{$escapedSearch}%");
             });
         }
 
-        // Search Filter
-        if (!empty($search)) {
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('excerpt', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%");
-            });
-        }
-
-        // Tag Filter
+        // Filter Tag
         if (!empty($tag)) {
-            $query->where(function($q) use ($tag) {
-                $q->where('title', 'like', "%{$tag}%")
-                  ->orWhere('excerpt', 'like', "%{$tag}%")
-                  ->orWhere('category', 'like', "%{$tag}%");
+            $cleanTag = Str::substr(strip_tags(trim($tag)), 0, 50);
+            $escapedTag = addcslashes($cleanTag, '%_\\');
+            $query->where(function ($q) use ($escapedTag) {
+                $q->where('title', 'like', "%{$escapedTag}%")
+                  ->orWhere('excerpt', 'like', "%{$escapedTag}%")
+                  ->orWhere('category', 'like', "%{$escapedTag}%");
             });
         }
 
-        // Exclude hero articles from main feed if default view without filters
-        if ($filterCategory === 'all' && $filterType === 'all' && empty($search) && empty($tag)) {
+        // Kecualikan artikel hero jika pada tampilan default tanpa filter
+        if ($filterCategory === 'all' && $filterPostType === 'all' && empty($search) && empty($tag)) {
             $query->whereNotIn('id', $heroExcludedIds);
         }
 
-        $articles = $query->orderBy('published_at', 'desc')
-            ->paginate(9);
+        // Paginasi terkontrol (12 per halaman, hemat memori)
+        $articles = $query->orderBy('published_at', 'desc')->paginate(12);
 
-        // Retain backward compatibility
         $featuredSpotlight = $headline;
-        $filter = $filterType;
+        $filter = $filterPostType;
+        $filterType = $filterPostType;
 
-        $seoTitle = 'Portal Berita & Panduan Plumbing Indonesia | Rootera Plumbing';
-        $seoDesc  = 'Portal berita plumbing modern, artikel teknis sanitasi rumah & komersial B2B, komparasi material, serta video tutorial dari teknisi profesional Rootera.';
+        // Penanganan SEO Meta & Kanonikal Dinamis
+        $seoTitle = 'Portal Jurnal & Content Hub Plumbing Indonesia | Rootera';
+        $seoDesc  = 'Pusat edukasi sanitasi, promo layanan pipa mampet, studi kasus penanganan industri B2B, kabar perusahaan, dan tutorial teknis resmi dari Rootera Plumbing.';
+        $isIndexable = true;
 
         if ($filterCategory !== 'all' && isset($categories[$filterCategory])) {
             $seoTitle = "Panduan & Artikel {$categories[$filterCategory]} | Rootera Plumbing";
             $seoDesc  = "Kumpulan artikel & panduan teknis seputar {$categories[$filterCategory]} oleh tim ahli Rootera Plumbing Indonesia.";
-        } elseif ($filterType === 'video') {
+        } elseif ($filterPostType === Article::TYPE_PROMO) {
+            $seoTitle = 'Promo & Penawaran Spesial Jasa Plumbing | Rootera';
+            $seoDesc  = 'Dapatkan promo diskon khusus pelancaran saluran pipa mampet, cuci toren, dan kuras grease trap dari teknisi resmi Rootera Plumbing.';
+        } elseif ($filterPostType === Article::TYPE_CASE_STUDY) {
+            $seoTitle = 'Studi Kasus & Portofolio Proyek B2B Plumbing | Rootera';
+            $seoDesc  = 'Dokumentasi investigasi CCTV pipa, hydro jetting industri, dan solusi sanitasi pipa komersial & residensial oleh Rootera Plumbing.';
+        } elseif ($filterPostType === Article::TYPE_NEWS) {
+            $seoTitle = 'Kabar Terbaru & Informasi Perusahaan | Rootera News';
+            $seoDesc  = 'Berita terkini, pembaruan operasional, dan pengumuman resmi perusahaan Rootera Plumbing Indonesia.';
+        } elseif ($filterPostType === Article::TYPE_PRESS_RELEASE) {
+            $seoTitle = 'Press Release & Rilis Media Resmi | Rootera Plumbing';
+            $seoDesc  = 'Rilis pers resmi, kemitraan strategis, dan liputan media terkait inovasi sanitasi modern Rootera Plumbing.';
+        } elseif ($filterPostType === Article::TYPE_ARTICLE) {
+            $seoTitle = 'Artikel Edukasi Teknis & Sanitasi Pipa | Jurnal Rootera';
+            $seoDesc  = 'Kumpulan artikel teknis edukatif tentang investigasi pipa, standar AMDAL, instalasi sanitasi, dan perpipaan modern.';
+        } elseif ($filterPostType === 'video' || $filterPostType === Article::TYPE_VIDEO_GUIDE) {
             $seoTitle = 'Video Tutorial & Demo Lapangan Plumbing | Rootera TV';
-            $seoDesc  = 'Tonton video tutorial pelancaran saluran pipa mampet, inspek CCTV pipa, dan demonstrasi peralatan teknis dari teknisi Rootera.';
+            $seoDesc  = 'Tonton video tutorial pelancaran saluran pipa mampet, inspeksi CCTV pipa, dan demonstrasi peralatan teknis dari teknisi Rootera.';
         } elseif (!empty($search)) {
-            $seoTitle = "Hasil Pencarian: {$search} | Rootera News";
-            $seoDesc  = "Menampilkan artikel & panduan teknis plumbing terkait kata kunci {$search} di Rootera Plumbing.";
+            $seoTitle = "Hasil Pencarian: " . e($search) . " | Rootera News";
+            $seoDesc  = "Menampilkan artikel dan panduan terkait kata kunci " . e($search) . " di Rootera Plumbing.";
+            // Halaman pencarian internal WAJIB noindex sesuai rekomendasi Google
+            $isIndexable = false;
         }
 
-        $page = $request->query('page');
-        if ($page && (int)$page > 1) {
+        $page = (int) $request->query('page', 1);
+        if ($page > 1) {
             $seoTitle .= " - Halaman {$page}";
         }
 
+        // Pembangunan URL Kanonikal yang Valid & Terintegrasi Filter Tipe
+        $canonicalParams = [];
+        if ($filterCategory !== 'all' && isset($categories[$filterCategory])) {
+            $canonicalParams['category'] = $filterCategory;
+        }
+        if ($filterPostType !== 'all') {
+            $canonicalParams['type'] = $filterPostType;
+        }
+        if ($page > 1) {
+            $canonicalParams['page'] = $page;
+        }
+
+        $canonicalUrl = route('blog', $canonicalParams);
+
         $seo = [
-            'title'       => $seoTitle,
-            'description' => $seoDesc,
-            'canonical'   => $request->url() . ($page && (int)$page > 1 ? '?page=' . $page : ''),
-            'og_image'    => $headline ? $headline->thumbnail_url : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            'title'        => $seoTitle,
+            'description'  => $seoDesc,
+            'canonical'    => $canonicalUrl,
+            'is_indexable' => $isIndexable,
+            'og_image'     => $headline ? $headline->thumbnail_url : asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
         ];
 
         return view('pages.blog', compact(
@@ -158,8 +250,10 @@ class BlogController extends Controller
             'articles',
             'categories',
             'categoryCounts',
+            'postTypeCounts',
             'featuredSpotlight',
             'filterCategory',
+            'filterPostType',
             'filterType',
             'filter',
             'search',
@@ -168,51 +262,76 @@ class BlogController extends Controller
         ));
     }
 
-    public function show(string $slug)
+    public function show(Request $request, string $slug)
     {
         $article = Article::published()
             ->where('slug', $slug)
             ->firstOrFail();
 
-        $article->incrementViews();
+        // 🛡️ Mitigasi View Counter: Cegah manipulasi refresh spam & bot crawling
+        $this->trackLegitimateView($request, $article);
 
         $previousArticle = Article::published()
+            ->select(Article::LIST_COLUMNS)
             ->where('id', '<', $article->id)
             ->orderBy('id', 'desc')
             ->first();
 
         $nextArticle = Article::published()
+            ->select(Article::LIST_COLUMNS)
             ->where('id', '>', $article->id)
             ->orderBy('id', 'asc')
             ->first();
 
-        $trendingArticles = Article::published()
-            ->where('id', '!=', $article->id)
-            ->orderBy('views', 'desc')
-            ->orderBy('published_at', 'desc')
-            ->take(5)
-            ->get();
+        // Trending & Related Articles (Cached IDs 30 Menit)
+        $trendingIds = Cache::remember("article_trending_ids_{$article->id}", 1800, function () use ($article) {
+            return Article::published()
+                ->where('id', '!=', $article->id)
+                ->orderBy('views', 'desc')
+                ->orderBy('published_at', 'desc')
+                ->take(5)
+                ->pluck('id')
+                ->toArray();
+        });
 
-        $relatedArticles = Article::published()
-            ->where('id', '!=', $article->id)
-            ->orderBy('published_at', 'desc')
-            ->take(3)
-            ->get();
+        $trendingArticles = !empty($trendingIds)
+            ? Article::select(Article::LIST_COLUMNS)->whereIn('id', $trendingIds)->get()
+            : collect();
 
-        $cities = \App\Models\City::where('is_active', true)
-            ->with('province')
-            ->orderBy('sort_order')
-            ->take(12)
-            ->get();
+        $relatedIds = Cache::remember("article_related_ids_{$article->id}_{$article->category}", 1800, function () use ($article) {
+            return Article::published()
+                ->where('id', '!=', $article->id)
+                ->where('category', $article->category)
+                ->orderBy('published_at', 'desc')
+                ->take(3)
+                ->pluck('id')
+                ->toArray();
+        });
 
-        $allCategories = \App\Models\ServiceCategory::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $relatedArticles = !empty($relatedIds)
+            ? Article::select(Article::LIST_COLUMNS)->whereIn('id', $relatedIds)->get()
+            : collect();
 
-        $projectShowcases = \App\Models\ProjectGallery::where('is_active', true)
-            ->with(['district', 'city'])
-            ->take(3)
-            ->get();
+        $cities = Cache::remember('active_cities_12', 86400, function () {
+            return \App\Models\City::where('is_active', true)
+                ->with('province')
+                ->orderBy('sort_order')
+                ->take(12)
+                ->get();
+        });
+
+        $allCategories = Cache::remember('active_service_categories', 86400, function () {
+            return \App\Models\ServiceCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+        });
+
+        $projectShowcases = Cache::remember('active_project_showcases_3', 86400, function () {
+            return \App\Models\ProjectGallery::where('is_active', true)
+                ->with(['district', 'city'])
+                ->take(3)
+                ->get();
+        });
 
         $rawTitle = $article->meta_title ?: ($article->clean_title ?? $article->title);
         $seoTitle = (mb_strlen($rawTitle) > 65) ? mb_strimwidth($rawTitle, 0, 63, '..') : $rawTitle;
@@ -221,8 +340,9 @@ class BlogController extends Controller
             'title'          => $seoTitle,
             'description'    => $article->meta_description ?? $article->excerpt,
             'canonical'      => $article->canonical_url ?? url('/blog/' . $article->slug),
-            'og_image'       => $article->og_image ? asset('storage/' . $article->og_image) : ($article->thumbnail_url ?? asset('images/JnJ.jpeg')),
+            'og_image'       => $article->thumbnail_url,
             'og_type'        => 'article',
+            'is_indexable'   => true,
             'published_time' => $article->published_at?->toIso8601String(),
             'modified_time'  => $article->updated_at?->toIso8601String(),
             'section'        => $article->category ?? 'Tips Rumah',
@@ -239,5 +359,27 @@ class BlogController extends Controller
             'projectShowcases',
             'seo'
         ));
+    }
+
+    /**
+     * Hitung tayangan hanya jika bukan bot dan belum dikunjungi dalam 2 jam terakhir.
+     */
+    protected function trackLegitimateView(Request $request, Article $article): void
+    {
+        $userAgent = strtolower((string) $request->userAgent());
+
+        // Lewati jika bot mesin pencari
+        if (preg_match('/(googlebot|bingbot|yandex|slurp|baiduspider|duckduckbot|facebookexternalhit|whatsapp|ahrefs|semrush|mj12bot|crawler|spider|bot)/i', $userAgent)) {
+            return;
+        }
+
+        $sessionKey = 'viewed_article_' . $article->id;
+        $ipCacheKey = 'art_view_' . $article->id . '_' . md5((string) $request->ip());
+
+        if (!$request->session()->has($sessionKey) && !Cache::has($ipCacheKey)) {
+            $article->incrementViews();
+            $request->session()->put($sessionKey, true);
+            Cache::put($ipCacheKey, true, now()->addHours(2));
+        }
     }
 }

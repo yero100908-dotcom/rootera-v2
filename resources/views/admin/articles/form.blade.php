@@ -3,6 +3,9 @@
 @section('page-title', $mode === 'create' ? 'Tambah Artikel Baru' : 'Edit Artikel')
 
 @section('admin-content')
+<style>
+    [x-cloak] { display: none !important; }
+</style>
 <div class="max-w-6xl mx-auto pb-12">
     <div class="flex items-center justify-between mb-6">
         <a href="{{ route('admin.articles.index') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors">
@@ -10,7 +13,12 @@
         </a>
     </div>
 
-    <form action="{{ $mode === 'create' ? route('admin.articles.store') : route('admin.articles.update', $article) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ $mode === 'create' ? route('admin.articles.store') : route('admin.articles.update', $article) }}" 
+          method="POST" 
+          enctype="multipart/form-data"
+          x-data="{
+              postType: '{{ old('post_type', $article->post_type ?? 'article') }}'
+          }">
         @csrf
         @if($mode === 'edit') @method('PUT') @endif
 
@@ -138,23 +146,86 @@
                         </div>
 
                         <div>
-                            <label for="post_type" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Tipe Konten <span class="text-rose-500">*</span></label>
-                            <select id="post_type" name="post_type" onchange="toggleVideoSection(this.value)" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition-all">
-                                <option value="article" {{ old('post_type', $article->post_type ?? 'article') === 'article' ? 'selected' : '' }}>📄 Artikel Teks Biasa</option>
-                                <option value="video_guide" {{ old('post_type', $article->post_type ?? 'article') === 'video_guide' ? 'selected' : '' }}>🎥 Video Panduan / Rootera TV</option>
+                            <label for="post_type" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-2 block">Tipe Postingan / Konten Hub <span class="text-rose-500">*</span></label>
+                            <select id="post_type" name="post_type" x-model="postType" class="w-full bg-slate-50/50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-800 transition-all">
+                                @foreach(\App\Models\Article::POST_TYPES as $typeKey => $typeLabel)
+                                    <option value="{{ $typeKey }}" {{ old('post_type', $article->post_type ?? 'article') === $typeKey ? 'selected' : '' }}>
+                                        @if($typeKey === 'article') 📄 {{ $typeLabel }}
+                                        @elseif($typeKey === 'promo') 🏷️ {{ $typeLabel }}
+                                        @elseif($typeKey === 'news') 📰 {{ $typeLabel }}
+                                        @elseif($typeKey === 'case_study') 💼 {{ $typeLabel }}
+                                        @elseif($typeKey === 'press_release') 📢 {{ $typeLabel }}
+                                        @elseif($typeKey === 'video_guide') 🎥 {{ $typeLabel }}
+                                        @else 📌 {{ $typeLabel }}
+                                        @endif
+                                    </option>
+                                @endforeach
                             </select>
                             @error('post_type')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
                         </div>
 
-                        {{-- Section Input Video YouTube (Tampil jika Tipe Konten Video) --}}
-                        <div id="video_input_wrapper" class="{{ old('post_type', $article->post_type ?? 'article') === 'video_guide' ? 'block' : 'hidden' }} bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80 space-y-2">
+                        {{-- Section Input Promo Khusus (Tampil hanya jika Tipe Postingan Promo) --}}
+                        <div x-show="postType === 'promo'" x-transition x-cloak class="bg-rose-50/70 p-4 rounded-2xl border border-rose-200/90 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <label for="promo_end_date" class="text-xs font-extrabold uppercase tracking-wider text-rose-950 flex items-center gap-1.5">
+                                    <span>🏷️ Batas Waktu Promo (Deadline)</span>
+                                    <span class="text-rose-600 font-bold">*</span>
+                                </label>
+                                <span class="text-[0.68rem] bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Countdown</span>
+                            </div>
+                            <input type="datetime-local" id="promo_end_date" name="promo_end_date" 
+                                   value="{{ old('promo_end_date', $article->promo_end_date?->format('Y-m-d\TH:i')) }}"
+                                   :required="postType === 'promo'"
+                                   class="w-full bg-white border border-rose-300 focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-800 transition-all">
+                            <p class="text-[0.725rem] text-rose-800/90 leading-tight">
+                                💡 <strong>Info:</strong> Wajib diisi untuk tipe promo. Menentukan tenggat berakhirnya masa diskon/penawaran khusus.
+                            </p>
+                            @error('promo_end_date')<span class="text-rose-600 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
+                        </div>
+
+                        {{-- Section Input Studi Kasus & Portofolio B2B (Tampil hanya jika Tipe Postingan Case Study) --}}
+                        <div x-show="postType === 'case_study'" x-transition x-cloak class="bg-indigo-50/70 p-4 rounded-2xl border border-indigo-200/90 space-y-3">
+                            <div class="flex items-center justify-between border-b border-indigo-100 pb-2">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-950 flex items-center gap-1.5">
+                                    💼 Portofolio B2B & Local SEO
+                                </span>
+                                <span class="text-[0.68rem] bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">B2B Case</span>
+                            </div>
+                            
+                            <div>
+                                <label for="client_name" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 block">
+                                    Nama Klien / Perusahaan
+                                </label>
+                                <input type="text" id="client_name" name="client_name" 
+                                       value="{{ old('client_name', $article->client_name) }}" 
+                                       placeholder="Contoh: PT Mayora Indah Tbk / Mall Kelapa Gading"
+                                       class="w-full bg-white border border-indigo-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 rounded-xl px-4 py-2.5 text-xs text-slate-800 transition-all">
+                                <p class="text-[0.7rem] text-slate-500 mt-1">Nama perusahaan/gedung untuk bukti portofolio B2B.</p>
+                                @error('client_name')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
+                            </div>
+
+                            <div>
+                                <label for="location_geo" class="text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5 block">
+                                    Wilayah / Lokasi Proyek (Local SEO)
+                                </label>
+                                <input type="text" id="location_geo" name="location_geo" 
+                                       value="{{ old('location_geo', $article->location_geo) }}" 
+                                       placeholder="Contoh: Kawasan Industri Jababeka, Cikarang"
+                                       class="w-full bg-white border border-indigo-200 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 rounded-xl px-4 py-2.5 text-xs text-slate-800 transition-all">
+                                <p class="text-[0.7rem] text-slate-500 mt-1">Kota / kawasan industri untuk optimasi Google Local Search.</p>
+                                @error('location_geo')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
+                            </div>
+                        </div>
+
+                        {{-- Section Input Video YouTube (Tampil hanya jika Tipe Konten Video) --}}
+                        <div x-show="postType === 'video_guide'" x-transition x-cloak class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200/80 space-y-2">
                             <label for="youtube_video_id" class="text-xs font-extrabold uppercase tracking-wider text-amber-900 block flex items-center gap-1.5">
                                 <span>🎥 YouTube Video ID / Link URL</span>
                             </label>
                             <input type="text" id="youtube_video_id" name="youtube_video_id" value="{{ old('youtube_video_id', $article->youtube_video_id) }}" placeholder="Contoh: dQw4w9WgXcQ atau https://www.youtube.com/watch?v=..."
                                    class="w-full bg-white border border-amber-300 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 rounded-xl px-4 py-2.5 text-xs font-mono text-slate-800 transition-all">
                             <p class="text-[0.725rem] text-amber-800/90 leading-tight">
-                                💡 <strong>Petunjuk:</strong> Masukkan 11 karakter ID video (seperti <code class="bg-amber-100 px-1 py-0.5 rounded font-bold">dQw4w9WgXcQ</code>) atau tempel link URL YouTube lengkap. Sistem akan otomatis menguraikan ID video tersebut.
+                                💡 <strong>Petunjuk:</strong> Masukkan 11 karakter ID video (seperti <code class="bg-amber-100 px-1 py-0.5 rounded font-bold">dQw4w9WgXcQ</code>) atau tempel link URL YouTube lengkap.
                             </p>
                             @error('youtube_video_id')<span class="text-rose-500 text-xs mt-1 block font-medium">{{ $message }}</span>@enderror
                         </div>
@@ -202,15 +273,6 @@
 </div>
 
 <script>
-function toggleVideoSection(type) {
-    const wrapper = document.getElementById('video_input_wrapper');
-    if (type === 'video_guide') {
-        wrapper.classList.remove('hidden');
-    } else {
-        wrapper.classList.add('hidden');
-    }
-}
-
 function previewImage(input) {
     const preview = document.getElementById('thumbnailPreview');
     const placeholder = document.getElementById('placeholderText');

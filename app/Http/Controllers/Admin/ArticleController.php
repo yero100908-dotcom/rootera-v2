@@ -11,10 +11,28 @@ use Illuminate\Support\Facades\Cache;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::orderBy('created_at', 'desc')->paginate(15);
-        return view('admin.articles.index', compact('articles'));
+        $currentType = $request->query('type', 'all');
+        $query = Article::orderBy('created_at', 'desc');
+
+        if ($currentType !== 'all' && in_array($currentType, array_keys(Article::POST_TYPES))) {
+            $query->where('post_type', $currentType);
+        }
+
+        $articles = $query->paginate(15)->withQueryString();
+
+        $counts = [
+            'all'           => Article::count(),
+            'article'       => Article::where('post_type', Article::TYPE_ARTICLE)->count(),
+            'promo'         => Article::where('post_type', Article::TYPE_PROMO)->count(),
+            'news'          => Article::where('post_type', Article::TYPE_NEWS)->count(),
+            'case_study'    => Article::where('post_type', Article::TYPE_CASE_STUDY)->count(),
+            'press_release' => Article::where('post_type', Article::TYPE_PRESS_RELEASE)->count(),
+            'video_guide'   => Article::where('post_type', Article::TYPE_VIDEO_GUIDE)->count(),
+        ];
+
+        return view('admin.articles.index', compact('articles', 'currentType', 'counts'));
     }
 
     public function create()
@@ -28,7 +46,10 @@ class ArticleController extends Controller
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug|max:255',
             'category'         => 'nullable|string|max:100',
-            'post_type'        => 'required|in:article,video_guide',
+            'post_type'        => 'required|in:' . implode(',', array_keys(Article::POST_TYPES)),
+            'promo_end_date'   => 'nullable|required_if:post_type,promo|date',
+            'location_geo'     => 'nullable|string|max:255',
+            'client_name'      => 'nullable|string|max:255',
             'youtube_video_id' => 'nullable|string|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
@@ -41,14 +62,27 @@ class ArticleController extends Controller
             'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+        ], [
+            'promo_end_date.required_if' => 'Batas waktu promo wajib diisi jika tipe konten adalah Promo Khusus.',
+            'post_type.required'         => 'Tipe postingan wajib dipilih.',
+            'post_type.in'               => 'Tipe postingan yang dipilih tidak valid.',
         ]);
 
         $validated['slug'] = $validated['slug'] ?? Str::slug($validated['title']);
         $validated['is_headline'] = $request->boolean('is_headline');
         $validated['is_featured'] = $request->boolean('is_featured');
 
-        // Extract YouTube Video ID if a full URL was pasted
-        if (!empty($validated['youtube_video_id'])) {
+        // Sanitasi field komersial / video sesuai post_type yang aktif
+        if ($validated['post_type'] !== Article::TYPE_PROMO) {
+            $validated['promo_end_date'] = null;
+        }
+        if ($validated['post_type'] !== Article::TYPE_CASE_STUDY) {
+            $validated['location_geo'] = null;
+            $validated['client_name'] = null;
+        }
+        if ($validated['post_type'] !== Article::TYPE_VIDEO_GUIDE) {
+            $validated['youtube_video_id'] = null;
+        } elseif (!empty($validated['youtube_video_id'])) {
             $rawVideo = trim($validated['youtube_video_id']);
             if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $rawVideo, $matches)) {
                 $validated['youtube_video_id'] = $matches[1];
@@ -81,7 +115,10 @@ class ArticleController extends Controller
             'title'            => 'required|string|max:255',
             'slug'             => 'nullable|string|unique:articles,slug,' . $article->id . '|max:255',
             'category'         => 'nullable|string|max:100',
-            'post_type'        => 'required|in:article,video_guide',
+            'post_type'        => 'required|in:' . implode(',', array_keys(Article::POST_TYPES)),
+            'promo_end_date'   => 'nullable|required_if:post_type,promo|date',
+            'location_geo'     => 'nullable|string|max:255',
+            'client_name'      => 'nullable|string|max:255',
             'youtube_video_id' => 'nullable|string|max:255',
             'excerpt'          => 'nullable|string|max:500',
             'content'          => 'required|string',
@@ -94,6 +131,10 @@ class ArticleController extends Controller
             'read_time'        => 'nullable|integer|min:1|max:300',
             'meta_title'       => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:300',
+        ], [
+            'promo_end_date.required_if' => 'Batas waktu promo wajib diisi jika tipe konten adalah Promo Khusus.',
+            'post_type.required'         => 'Tipe postingan wajib dipilih.',
+            'post_type.in'               => 'Tipe postingan yang dipilih tidak valid.',
         ]);
 
         $oldSlug = $article->slug;
@@ -102,8 +143,17 @@ class ArticleController extends Controller
         $validated['is_headline'] = $request->boolean('is_headline');
         $validated['is_featured'] = $request->boolean('is_featured');
 
-        // Extract YouTube Video ID if a full URL was pasted
-        if (!empty($validated['youtube_video_id'])) {
+        // Sanitasi field komersial / video sesuai post_type yang aktif
+        if ($validated['post_type'] !== Article::TYPE_PROMO) {
+            $validated['promo_end_date'] = null;
+        }
+        if ($validated['post_type'] !== Article::TYPE_CASE_STUDY) {
+            $validated['location_geo'] = null;
+            $validated['client_name'] = null;
+        }
+        if ($validated['post_type'] !== Article::TYPE_VIDEO_GUIDE) {
+            $validated['youtube_video_id'] = null;
+        } elseif (!empty($validated['youtube_video_id'])) {
             $rawVideo = trim($validated['youtube_video_id']);
             if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $rawVideo, $matches)) {
                 $validated['youtube_video_id'] = $matches[1];

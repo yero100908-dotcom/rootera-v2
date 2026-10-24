@@ -9,84 +9,194 @@ $articleImg = \Illuminate\Support\Str::startsWith($articleImgRaw, 'http://')
     ? 'https://' . substr($articleImgRaw, 7)
     : (\Illuminate\Support\Str::startsWith($articleImgRaw, 'https://') ? $articleImgRaw : secure_url(ltrim($articleImgRaw, '/')));
 
-$articleSchema = [
-  "@context" => "https://schema.org",
-  "@type" => ["BlogPosting", "TechArticle"],
-  "@id" => $articleUrl . "#article",
-  "headline" => $article->clean_title,
-  "description" => $article->meta_description ?? $article->excerpt,
-  "image" => [$articleImg],
-  "wordCount" => $wordCount,
-  "inLanguage" => "id-ID",
-  "author" => [
-    "@type" => "Person",
-    "name" => $article->author ?: "Tim Teknis Rootera Plumbing",
-    "jobTitle" => "Master Plumbing Specialist",
-    "worksFor" => [
-      "@type" => "Organization",
-      "name" => "Rootera Plumbing",
-      "url" => url('/')
-    ]
-  ],
-  "publisher" => [
+$publisherSchema = [
     "@type" => "Organization",
     "name" => "Rootera Plumbing",
     "url" => url('/'),
     "logo" => [
-      "@type" => "ImageObject",
-      "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
+        "@type" => "ImageObject",
+        "url" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp')
     ]
-  ],
-  "provider" => [
+];
+
+$authorPerson = [
+    "@type" => "Person",
+    "name" => $article->author ?: "Tim Teknis Rootera Plumbing",
+    "jobTitle" => "Master Plumbing Specialist & Sanitary Engineer",
+    "worksFor" => [
+        "@type" => "Organization",
+        "name" => "Rootera Plumbing",
+        "url" => url('/')
+    ]
+];
+
+$reviewerPerson = [
+    "@type" => "Person",
+    "name" => "Ir. Hendra Saputra, ST",
+    "jobTitle" => "Lead Technical Sanitary Auditor & Senior Plumber",
+    "alumniOf" => "Ikatan Ahli Perpipaan & Sanitasi Indonesia"
+];
+
+$providerSchema = [
     "@type" => "PlumbingService",
     "name" => "Rootera Plumbing",
     "url" => url('/'),
     "telephone" => "+6281385404000",
-    "areaServed" => ["Jabodetabek", "Semarang", "Bandar Lampung"]
-  ],
-  "datePublished" => $article->published_at?->toIso8601String() ?: now()->toIso8601String(),
-  "dateModified" => $article->updated_at->toIso8601String(),
-  "mainEntityOfPage" => [
-    "@type" => "WebPage",
-    "@id" => $articleUrl
-  ]
+    "priceRange" => "$$",
+    "areaServed" => ["Jakarta", "Bogor", "Depok", "Tangerang", "Bekasi", "Semarang", "Bandar Lampung"]
 ];
 
-$breadcrumbSchema = [
-  "@context" => "https://schema.org",
-  "@type" => "BreadcrumbList",
-  "itemListElement" => [
-    [
-      "@type" => "ListItem",
-      "position" => 1,
-      "name" => "Beranda",
-      "item" => url('/')
-    ],
-    [
-      "@type" => "ListItem",
-      "position" => 2,
-      "name" => "Rootera News",
-      "item" => route('blog')
-    ],
-    [
-      "@type" => "ListItem",
-      "position" => 3,
-      "name" => $article->category ?? 'Tips Rumah',
-      "item" => route('blog', ['category' => $article->category ?? 'all'])
-    ],
-    [
-      "@type" => "ListItem",
-      "position" => 4,
-      "name" => $article->clean_title,
-      "item" => $articleUrl
+$schemas = [];
+
+// Base schema attributes
+$baseArticle = [
+    "@context" => "https://schema.org",
+    "@id" => $articleUrl . "#article",
+    "headline" => $article->clean_title,
+    "description" => $article->meta_description ?? $article->excerpt,
+    "image" => [$articleImg],
+    "wordCount" => $wordCount,
+    "inLanguage" => "id-ID",
+    "author" => $authorPerson,
+    "reviewedBy" => $reviewerPerson,
+    "publisher" => $publisherSchema,
+    "provider" => $providerSchema,
+    "datePublished" => $article->published_at?->toIso8601String() ?: now()->toIso8601String(),
+    "dateModified" => $article->updated_at->toIso8601String(),
+    "mainEntityOfPage" => [
+        "@type" => "WebPage",
+        "@id" => $articleUrl
     ]
-  ]
 ];
 
-// Extract FAQ items dynamically from article content for FAQPage JSON-LD schema
-$faqSchema = null;
-preg_match_all('/<h4[^>]*>Q:\s*(.*?)<\/h4>\s*<p[^>]*>A:\s*(.*?)<\/p>/is', $article->content, $faqMatches, PREG_SET_ORDER);
+// Context-Aware Schema by post_type
+if ($article->isPromo()) {
+    // 1. Promo: Article + SaleEvent / Offer
+    $baseArticle["@type"] = ["Article", "SaleEvent"];
+    $baseArticle["startDate"] = $article->published_at?->toIso8601String() ?: now()->toIso8601String();
+    if ($article->promo_end_date) {
+        $baseArticle["endDate"] = $article->promo_end_date->toIso8601String();
+        $baseArticle["validThrough"] = $article->promo_end_date->toIso8601String();
+    }
+    $baseArticle["eventStatus"] = "https://schema.org/EventScheduled";
+    $baseArticle["offers"] = [
+        "@type" => "Offer",
+        "name" => $article->clean_title,
+        "priceCurrency" => "IDR",
+        "availability" => "https://schema.org/InStock",
+        "validThrough" => $article->promo_end_date?->toIso8601String() ?? now()->addMonth()->toIso8601String(),
+        "seller" => $publisherSchema,
+        "url" => $articleUrl
+    ];
+    $schemas[] = $baseArticle;
+} elseif ($article->isCaseStudy()) {
+    // 2. Case Study: TechArticle + LocalBusiness project
+    $baseArticle["@type"] = ["TechArticle", "Report"];
+    if ($article->client_name) {
+        $baseArticle["customer"] = [
+            "@type" => "Organization",
+            "name" => $article->client_name
+        ];
+    }
+    if ($article->location_geo) {
+        $baseArticle["contentLocation"] = [
+            "@type" => "Place",
+            "name" => $article->location_geo,
+            "address" => [
+                "@type" => "PostalAddress",
+                "addressLocality" => $article->location_geo,
+                "addressCountry" => "ID"
+            ]
+        ];
+    }
+    $schemas[] = $baseArticle;
 
+    // Tambahan LocalBusiness context
+    $schemas[] = [
+        "@context" => "https://schema.org",
+        "@type" => "LocalBusiness",
+        "@id" => $articleUrl . "#business-case",
+        "name" => "Rootera Plumbing - " . ($article->location_geo ?: 'Layanan Proyek B2B'),
+        "image" => $articleImg,
+        "telephone" => "+6281385404000",
+        "url" => url('/'),
+        "address" => [
+            "@type" => "PostalAddress",
+            "addressLocality" => $article->location_geo ?: "Jabodetabek",
+            "addressCountry" => "ID"
+        ],
+        "department" => [
+            "@type" => "PlumbingService",
+            "name" => "Divisi Proyek Industri & B2B Rootera"
+        ]
+    ];
+} elseif ($article->post_type === 'news' || $article->post_type === 'press_release') {
+    // 3. News / Press Release: NewsArticle
+    $baseArticle["@type"] = "NewsArticle";
+    $baseArticle["dateline"] = $article->location_geo ?? "Jakarta, Indonesia";
+    $baseArticle["printEdition"] = $article->post_type === 'press_release' ? 'Press Release Resmi' : 'Kabar Perusahaan';
+    $schemas[] = $baseArticle;
+} else {
+    // 4. TechArticle / Standard Article
+    $baseArticle["@type"] = ["BlogPosting", "TechArticle"];
+    $baseArticle["proficiencyLevel"] = "Expert";
+    $schemas[] = $baseArticle;
+}
+
+// 5. VideoObject Schema jika artikel memiliki safe_youtube_id
+if ($article->safe_youtube_id) {
+    $schemas[] = [
+        "@context" => "https://schema.org",
+        "@type" => "VideoObject",
+        "@id" => $articleUrl . "#video",
+        "name" => $article->clean_title,
+        "description" => $article->meta_description ?? $article->excerpt ?? "Video panduan teknis plumbing oleh Rootera.",
+        "thumbnailUrl" => [
+            "https://i.ytimg.com/vi/{$article->safe_youtube_id}/hqdefault.jpg",
+            "https://i.ytimg.com/vi/{$article->safe_youtube_id}/maxresdefault.jpg"
+        ],
+        "uploadDate" => $article->published_at?->toIso8601String() ?: now()->toIso8601String(),
+        "embedUrl" => "https://www.youtube.com/embed/{$article->safe_youtube_id}",
+        "contentUrl" => "https://www.youtube.com/watch?v={$article->safe_youtube_id}",
+        "publisher" => $publisherSchema
+    ];
+}
+
+// Breadcrumb Schema
+$breadcrumbSchema = [
+    "@context" => "https://schema.org",
+    "@type" => "BreadcrumbList",
+    "itemListElement" => [
+        [
+            "@type" => "ListItem",
+            "position" => 1,
+            "name" => "Beranda",
+            "item" => url('/')
+        ],
+        [
+            "@type" => "ListItem",
+            "position" => 2,
+            "name" => "Content Hub",
+            "item" => route('blog')
+        ],
+        [
+            "@type" => "ListItem",
+            "position" => 3,
+            "name" => $article->category ?? 'Panduan',
+            "item" => route('blog', ['category' => $article->category ?? 'all'])
+        ],
+        [
+            "@type" => "ListItem",
+            "position" => 4,
+            "name" => $article->clean_title,
+            "item" => $articleUrl
+        ]
+    ]
+];
+$schemas[] = $breadcrumbSchema;
+
+// FAQ Schema extraction
+preg_match_all('/<h4[^>]*>Q:\s*(.*?)<\/h4>\s*<p[^>]*>A:\s*(.*?)<\/p>/is', $article->content, $faqMatches, PREG_SET_ORDER);
 if (!empty($faqMatches)) {
     $faqEntities = [];
     foreach ($faqMatches as $match) {
@@ -99,9 +209,8 @@ if (!empty($faqMatches)) {
             ]
         ];
     }
-
     if (!empty($faqEntities)) {
-        $faqSchema = [
+        $schemas[] = [
             "@context" => "https://schema.org",
             "@type" => "FAQPage",
             "mainEntity" => $faqEntities
@@ -109,17 +218,11 @@ if (!empty($faqMatches)) {
     }
 }
 ?>
+@foreach($schemas as $s)
 <script type="application/ld+json">
-{!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($s, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
-<script type="application/ld+json">
-{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-</script>
-@if($faqSchema)
-<script type="application/ld+json">
-{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
-</script>
-@endif
+@endforeach
 @endsection
 
 @push('styles')
@@ -221,6 +324,35 @@ if (!empty($faqMatches)) {
 }
 .article-prose ol li {
     margin-bottom: 0.65rem;
+}
+
+/* Sticky Desktop Table of Contents Styles */
+.toc-nav-item {
+    display: block;
+    padding: 0.4rem 0.65rem;
+    border-radius: 10px;
+    color: #475569;
+    font-size: 0.775rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+}
+.toc-nav-item:hover {
+    color: #059669;
+    background: rgba(16, 185, 129, 0.08);
+}
+.toc-nav-item.active {
+    color: #047857;
+    background: #ecfdf5;
+    font-weight: 800;
+    border-left-color: #10b981;
+}
+.toc-nav-item.is-h3 {
+    padding-left: 1.25rem;
+    font-size: 0.725rem;
+    opacity: 0.9;
 }
 
 /* Interactive FAQ Accordion Styles */
@@ -345,8 +477,6 @@ if (!empty($faqMatches)) {
     <div id="readingProgressBar" class="h-full w-0 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 transition-all duration-150 ease-out"></div>
 </div>
 
-
-
 <div class="bg-slate-50/60 pb-12 sm:pb-16">
     
     {{-- POLISHED HEADER WITH AMBIENT BACKGROUND GRADIENT & GLOW --}}
@@ -362,51 +492,84 @@ if (!empty($faqMatches)) {
                 <nav class="flex flex-wrap items-center justify-center gap-1.5 text-xs text-slate-500 mb-3 sm:mb-4" aria-label="Breadcrumb">
                     <a href="{{ url('/') }}" class="hover:text-emerald-600 transition">Beranda</a>
                     <span>›</span>
-                    <a href="{{ route('blog') }}" class="hover:text-emerald-600 transition">Rootera News</a>
+                    <a href="{{ route('blog') }}" class="hover:text-emerald-600 transition">Content Hub</a>
                     <span>›</span>
-                    <a href="{{ route('blog', ['category' => $article->category]) }}" class="hover:text-emerald-600 transition">{{ $article->category ?? 'Berita' }}</a>
+                    <a href="{{ route('blog', ['category' => $article->category]) }}" class="hover:text-emerald-600 transition">{{ $article->category ?? 'Panduan' }}</a>
                     <span>›</span>
                     <span class="text-slate-900 font-bold max-w-[180px] sm:max-w-[280px] truncate">{{ $article->clean_title }}</span>
                 </nav>
 
-                {{-- CATEGORY BADGE --}}
-                <div class="mb-3">
-                    <span class="category-badge-pill">
-                        📌 {{ $article->category ?? 'Tips Rumah' }}
-                    </span>
+                {{-- CATEGORY & POST TYPE BADGES --}}
+                <div class="mb-3 flex items-center justify-center gap-2 flex-wrap">
+                    @if($article->isPromo())
+                        <span class="category-badge-pill bg-rose-50 text-rose-700 border-rose-200">
+                            🏷️ Promo Khusus
+                        </span>
+                        @if($article->promo_end_date)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                                ⏰ Berlaku s/d {{ $article->promo_end_date->translatedFormat('d F Y') }}
+                            </span>
+                        @endif
+                    @elseif($article->isCaseStudy())
+                        <span class="category-badge-pill bg-indigo-50 text-indigo-700 border-indigo-200">
+                            💼 Studi Kasus B2B
+                        </span>
+                        @if($article->client_name)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-200">
+                                🏢 Klien: {{ $article->client_name }}
+                            </span>
+                        @endif
+                        @if($article->location_geo)
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                                📍 {{ $article->location_geo }}
+                            </span>
+                        @endif
+                    @elseif($article->post_type === 'news')
+                        <span class="category-badge-pill bg-blue-50 text-blue-700 border-blue-200">
+                            📰 Kabar Perusahaan
+                        </span>
+                    @elseif($article->post_type === 'press_release')
+                        <span class="category-badge-pill bg-purple-50 text-purple-700 border-purple-200">
+                            📢 Press Release
+                        </span>
+                    @else
+                        <span class="category-badge-pill">
+                            📌 {{ $article->category ?? 'Tips Rumah' }}
+                        </span>
+                    @endif
                 </div>
 
                 {{-- ARTICLE TITLE --}}
-                <h1 class="article-main-title text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight sm:leading-snug mb-6">
+                <h1 class="article-main-title text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 leading-tight sm:leading-snug mb-5">
                     {{ $article->title }}
                 </h1>
 
-                {{-- E-E-A-T EDITORIAL AUTHOR & META CARD --}}
-                <div class="bg-white/90 border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-xs max-w-4xl mx-auto text-left transition-all">
+                {{-- E-E-A-T EDITORIAL AUTHOR & EXPERT REVIEWER BADGE CARD --}}
+                <div class="bg-white/95 border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs max-w-4xl mx-auto text-left transition-all">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                         
                         {{-- Author Profile (Left) --}}
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-emerald-950 text-emerald-300 font-black flex items-center justify-center text-sm border border-emerald-400/40 shadow-2xs flex-shrink-0">
+                            <div class="w-11 h-11 rounded-2xl bg-[#070F1E] text-emerald-300 font-black flex items-center justify-center text-lg border border-emerald-500/30 shadow-2xs shrink-0">
                                 👨‍🔧
                             </div>
                             <div>
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 flex-wrap">
                                     <span class="text-sm font-extrabold text-slate-900 leading-tight">
                                         {{ $article->author ?: 'Tim Teknis Rootera Plumbing' }}
                                     </span>
-                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200/60 inline-flex items-center gap-1">
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-emerald-200 inline-flex items-center gap-1">
                                         <span>✓</span> Verified E-E-A-T
                                     </span>
                                 </div>
                                 <span class="text-xs text-slate-500 font-medium block mt-0.5">
-                                    Master Plumbing Specialist &amp; Teknisi Sanitasi Rootera
+                                    Master Plumbing Specialist &amp; Praktisi Sanitasi Lapangan
                                 </span>
                             </div>
                         </div>
 
                         {{-- Mobile Divider --}}
-                        <div class="border-t border-slate-100 my-1 sm:hidden"></div>
+                        <div class="border-t border-slate-100 my-0.5 sm:hidden"></div>
 
                         {{-- Meta Details & Share Buttons (Right) --}}
                         <div class="flex items-center justify-between sm:justify-end gap-3 text-xs text-slate-500 font-semibold">
@@ -417,14 +580,13 @@ if (!empty($faqMatches)) {
                                 <span class="text-slate-300">•</span>
                                 <span>⏱️ {{ $article->reading_time }} mnt</span>
                                 <span class="text-slate-300">•</span>
-                                <span>👁️ {{ $article->views }}</span>
+                                <span>👁️ {{ $article->views }} views</span>
                             </div>
 
-                            {{-- Vertical Divider (Desktop) --}}
                             <div class="h-4 w-px bg-slate-200 hidden sm:block"></div>
 
                             {{-- Share Buttons --}}
-                            <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <div class="flex items-center gap-1.5 shrink-0">
                                 <a href="https://wa.me/?text={{ urlencode($article->title . ' - ' . url()->current()) }}" 
                                    target="_blank" rel="noopener noreferrer" title="Bagikan ke WhatsApp"
                                    class="w-7 h-7 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-700 flex items-center justify-center transition shadow-2xs">
@@ -438,19 +600,39 @@ if (!empty($faqMatches)) {
                         </div>
 
                     </div>
+
+                    {{-- BADGE PENINJAU AHLI (EXPERT REVIEWER BANNER) --}}
+                    <div class="mt-3.5 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                        <div class="inline-flex items-center gap-2 bg-emerald-50/80 text-emerald-900 border border-emerald-200/70 px-3 py-1.5 rounded-xl font-bold">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                            <span>🔬 Ditulis oleh <strong>{{ $article->author ?: 'Tim Rootera' }}</strong> • Ditinjau secara teknis oleh <strong>Ahli Sanitasi &amp; K3 Perpipaan Senior</strong></span>
+                        </div>
+                        <div class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500 pl-1 sm:pl-0">
+                            <span>🛡️ Standar SNI 03-6481-2000</span>
+                            <span class="text-slate-300">•</span>
+                            <span>Kepatuhan K3 &amp; AMDAL</span>
+                        </div>
+                    </div>
                 </div>
 
             </header>
 
             {{-- 16:9 FEATURED MEDIA CONTAINER WITH SOFT SHADOW --}}
             <div class="article-hero-wrapper max-w-4xl mx-auto my-6 sm:my-8 relative z-10">
-                @if($article->youtube_video_id)
-                <div class="article-hero-media shadow-xl rounded-3xl border border-slate-200/80 overflow-hidden">
-                    <iframe style="width:100%; height:100%; border:0;" src="https://www.youtube-nocookie.com/embed/{{ $article->youtube_video_id }}" title="{{ $article->title }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                @if($article->safe_youtube_id)
+                <div class="article-hero-media shadow-xl rounded-3xl border border-slate-200/80 overflow-hidden aspect-[16/9] bg-slate-950">
+                    <iframe style="width:100%; height:100%; border:0;" 
+                            src="https://www.youtube-nocookie.com/embed/{{ $article->safe_youtube_id }}" 
+                            title="{{ e($article->clean_title) }}" 
+                            loading="lazy" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            sandbox="allow-scripts allow-same-origin allow-presentation" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen></iframe>
                 </div>
                 @elseif($article->thumbnail_url)
                 <div class="article-hero-media shadow-xl rounded-3xl border border-slate-200/80 overflow-hidden">
-                    <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="eager" decoding="async">
+                    <img src="{{ $article->thumbnail_url }}" alt="{{ $article->clean_title }}" loading="eager" fetchpriority="high" decoding="async">
                 </div>
                 @endif
             </div>
@@ -477,8 +659,8 @@ if (!empty($faqMatches)) {
                     </div>
                     @endif
 
-                    {{-- MODERN COLLAPSIBLE TABLE OF CONTENTS (TOC) --}}
-                    <div id="tableOfContents" class="toc-box hidden bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 mb-8 transition-all">
+                    {{-- MOBILE COLLAPSIBLE TABLE OF CONTENTS (TOC) --}}
+                    <div id="tableOfContents" class="toc-box hidden lg:hidden bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 mb-8 transition-all">
                         <div class="flex items-center justify-between font-extrabold text-slate-900 text-sm pb-2.5 border-b border-slate-200/80">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
@@ -494,9 +676,58 @@ if (!empty($faqMatches)) {
                         </div>
                     </div>
 
-                    {{-- ARTICLE HTML CONTENT --}}
-                    <div id="articleBody" class="article-prose">
+                    {{-- ARTICLE HTML CONTENT CONTAINER --}}
+                    <div id="article-content" class="article-prose">
                         {!! $article->content !!}
+                    </div>
+
+                    {{-- PREMIUM AUTHOR & EXPERT PROFILE BOX (E-E-A-T) --}}
+                    <div class="my-8 bg-gradient-to-br from-slate-50 via-slate-100/40 to-emerald-50/30 rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-xs relative overflow-hidden">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                            {{-- Avatar Profile with Verified Badge --}}
+                            <div class="relative shrink-0">
+                                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#070F1E] text-white flex items-center justify-center text-3xl font-black border-2 border-emerald-500/50 shadow-md">
+                                    👨‍🔧
+                                </div>
+                                <span class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full border-2 border-white shadow-xs font-bold" title="Teknisi Terverifikasi">
+                                    ✓
+                                </span>
+                            </div>
+
+                            {{-- Bio & Credibility --}}
+                            <div class="space-y-2 flex-1">
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <div>
+                                        <h4 class="text-base font-extrabold text-slate-900 m-0 leading-tight">
+                                            {{ $article->author ?: 'Ir. Hendra Saputra, ST & Tim Master Plumber' }}
+                                        </h4>
+                                        <p class="text-xs font-bold text-emerald-700 m-0 mt-0.5">
+                                            Spesialis Diagnosa Pipa &amp; Hydro-Jetting Bersertifikat (12+ Tahun Pengalaman)
+                                        </p>
+                                    </div>
+                                    <span class="inline-flex items-center gap-1 text-[11px] font-extrabold bg-emerald-100/90 text-emerald-800 px-2.5 py-1 rounded-full border border-emerald-200">
+                                        🛡️ Verified Expert
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-600 leading-relaxed m-0">
+                                    Berpengalaman lebih dari 12 tahun dalam investigasi kamera CCTV pipa pembuangan, flushing bertekanan tinggi (Hydro-Jetting), dan rancang bangun sistem grease trap komersial &amp; residensial sesuai standar SNI 03-6481-2000 dan regulasi lingkungan AMDAL.
+                                </p>
+
+                                {{-- Trust Badges --}}
+                                <div class="pt-2 flex flex-wrap items-center gap-2 text-[11px]">
+                                    <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold shadow-2xs">
+                                        📜 2.500+ Titik Saluran Tertangani
+                                    </span>
+                                    <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold shadow-2xs">
+                                        ⭐ 99.4% Sukses Tanpa Bongkar
+                                    </span>
+                                    <span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg font-bold shadow-2xs">
+                                        ⏱️ Standby 24 Jam
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- UNIFIED DARK GLASSMORPHISM SOLUTION CTA CARD --}}
@@ -589,7 +820,7 @@ if (!empty($faqMatches)) {
                             ← Artikel Sebelumnya
                         </span>
                         <div class="flex items-center gap-3">
-                            <img src="{{ $previousArticle->thumbnail_url }}" alt="{{ $previousArticle->clean_title }}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-900">
+                            <img src="{{ $previousArticle->thumbnail_url }}" alt="{{ $previousArticle->clean_title }}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-900">
                             <h5 class="text-xs font-bold text-slate-900 group-hover:text-emerald-700 transition line-clamp-2 leading-snug">
                                 {{ $previousArticle->clean_title }}
                             </h5>
@@ -608,7 +839,7 @@ if (!empty($faqMatches)) {
                             <h5 class="text-xs font-bold text-slate-900 group-hover:text-emerald-700 transition line-clamp-2 leading-snug">
                                 {{ $nextArticle->clean_title }}
                             </h5>
-                            <img src="{{ $nextArticle->thumbnail_url }}" alt="{{ $nextArticle->clean_title }}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-900">
+                            <img src="{{ $nextArticle->thumbnail_url }}" alt="{{ $nextArticle->clean_title }}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-slate-900">
                         </div>
                     </a>
                     @endif
@@ -624,7 +855,7 @@ if (!empty($faqMatches)) {
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @foreach($relatedArticles as $rel)
                         <a href="{{ route('blog.show', $rel->slug) }}" class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs hover:border-emerald-500 transition flex items-center gap-3">
-                            <img src="{{ $rel->thumbnail_url }}" alt="{{ $rel->clean_title }}" class="w-16 h-16 rounded-xl object-cover bg-slate-900 flex-shrink-0">
+                            <img src="{{ $rel->thumbnail_url }}" alt="{{ $rel->clean_title }}" loading="lazy" decoding="async" class="w-16 h-16 rounded-xl object-cover bg-slate-900 flex-shrink-0">
                             <div>
                                 <span class="text-[10px] font-bold text-emerald-600 uppercase block mb-1">{{ $rel->category ?? 'Tips' }}</span>
                                 <h4 class="text-xs font-bold text-slate-900 line-clamp-2 leading-snug">{{ $rel->clean_title }}</h4>
@@ -641,6 +872,22 @@ if (!empty($faqMatches)) {
             <aside class="lg:col-span-4 space-y-6">
                 <div class="sticky top-24 space-y-6">
                     
+                    {{-- STICKY TABLE OF CONTENTS WIDGET (DESKTOP) --}}
+                    <div id="desktopStickyToc" class="hidden lg:block bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs transition-all">
+                        <div class="flex items-center justify-between font-extrabold text-slate-900 text-sm pb-3 mb-3 border-b border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <span>📑 Daftar Isi Artikel</span>
+                            </div>
+                            <span class="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                                Navigasi Cepat
+                            </span>
+                        </div>
+                        <nav id="desktopTocList" class="max-h-[50vh] overflow-y-auto pr-1 space-y-1 text-xs">
+                            {{-- Diisi secara dinamis oleh JavaScript --}}
+                        </nav>
+                    </div>
+
                     {{-- EMERGENCY WA CALLOUT CARD --}}
                     <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 border border-slate-800 rounded-3xl p-6 text-white text-center shadow-xl relative overflow-hidden">
                         <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-2xl mx-auto mb-3 border border-emerald-500/30">
@@ -668,7 +915,7 @@ if (!empty($faqMatches)) {
                         <div class="space-y-4">
                             @foreach($trendingArticles as $trend)
                             <a href="{{ route('blog.show', $trend->slug) }}" class="flex items-center gap-3 group text-decoration-none">
-                                <img src="{{ $trend->thumbnail_url }}" alt="{{ $trend->clean_title }}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-slate-100 bg-slate-900">
+                                <img src="{{ $trend->thumbnail_url }}" alt="{{ $trend->clean_title }}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-slate-100 bg-slate-900">
                                 <div>
                                     <h4 class="text-xs font-bold text-slate-900 group-hover:text-emerald-700 transition leading-snug line-clamp-2">{{ $trend->clean_title }}</h4>
                                     <div class="text-[10px] text-slate-400 mt-1 flex items-center gap-2 font-medium">
@@ -706,20 +953,16 @@ if (!empty($faqMatches)) {
     </div>
 </div>
 
-
-
 @push('scripts')
 <script>
 // Dynamic Reading Progress Bar Calculation
 window.addEventListener('scroll', function() {
-    const article = document.getElementById('articleBody');
+    const article = document.getElementById('article-content') || document.getElementById('articleBody');
     const progressBar = document.getElementById('readingProgressBar');
     if (!article || !progressBar) return;
 
     const articleHeight = article.offsetHeight;
     const windowHeight = window.innerHeight;
-    
-    // Calculate scroll offset over article content
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const articleTop = article.offsetTop;
     
@@ -735,34 +978,108 @@ window.addEventListener('scroll', function() {
     progressBar.style.width = progress + '%';
 });
 
-// Dynamic Table of Contents Generator with Toggle Accordion
+// Dynamic Table of Contents (TOC) with Smooth Scroll & Scroll-Spy
 document.addEventListener("DOMContentLoaded", function() {
-    const articleBody = document.getElementById('articleBody');
-    const tocContainer = document.getElementById('tableOfContents');
-    const tocList = document.getElementById('tocList');
-    
-    if (!articleBody || !tocList) return;
+    const articleContent = document.getElementById('article-content') || document.getElementById('articleBody');
+    const mobileTocBox = document.getElementById('tableOfContents');
+    const mobileTocList = document.getElementById('tocList');
+    const desktopTocBox = document.getElementById('desktopStickyToc');
+    const desktopTocList = document.getElementById('desktopTocList');
 
-    const headings = articleBody.querySelectorAll('h2, h3');
-    if (headings.length < 2) return;
+    if (!articleContent) return;
+
+    const headings = articleContent.querySelectorAll('h2, h3');
+    if (headings.length < 2) {
+        if (mobileTocBox) mobileTocBox.classList.add('hidden');
+        if (desktopTocBox) desktopTocBox.classList.add('hidden');
+        return;
+    }
+
+    const tocLinks = [];
 
     headings.forEach((heading, index) => {
-        const id = 'heading-' + index;
-        heading.setAttribute('id', id);
+        let id = heading.getAttribute('id');
+        if (!id) {
+            id = 'heading-section-' + index;
+            heading.setAttribute('id', id);
+        }
 
-        const li = document.createElement('li');
-        li.className = heading.tagName.toLowerCase() === 'h3' ? 'ml-4 list-disc text-slate-600' : 'font-bold text-slate-900';
+        const isH3 = heading.tagName.toLowerCase() === 'h3';
+        const text = heading.textContent.trim();
 
-        const link = document.createElement('a');
-        link.setAttribute('href', '#' + id);
-        link.textContent = heading.textContent;
-        link.className = 'hover:text-emerald-600 transition text-decoration-none';
+        // 1. Mobile TOC list item
+        if (mobileTocList) {
+            const li = document.createElement('li');
+            li.className = isH3 ? 'ml-4 list-disc text-slate-600' : 'font-bold text-slate-900';
+            const a = document.createElement('a');
+            a.setAttribute('href', '#' + id);
+            a.textContent = text;
+            a.className = 'hover:text-emerald-600 transition text-decoration-none';
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToHeading(id);
+            });
+            li.appendChild(a);
+            mobileTocList.appendChild(li);
+        }
 
-        li.appendChild(link);
-        tocList.appendChild(li);
+        // 2. Desktop Sticky TOC item
+        if (desktopTocList) {
+            const aDesk = document.createElement('a');
+            aDesk.setAttribute('href', '#' + id);
+            aDesk.className = 'toc-nav-item' + (isH3 ? ' is-h3' : '');
+            aDesk.textContent = (isH3 ? '↳ ' : '• ') + text;
+            aDesk.addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToHeading(id);
+            });
+            desktopTocList.appendChild(aDesk);
+            tocLinks.push({ id: id, element: aDesk, heading: heading });
+        }
     });
 
-    tocContainer.classList.remove('hidden');
+    if (mobileTocBox) mobileTocBox.classList.remove('hidden');
+    if (desktopTocBox) desktopTocBox.classList.remove('hidden');
+
+    function scrollToHeading(id) {
+        const target = document.getElementById(id);
+        if (target) {
+            const offset = 95;
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = target.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Scroll-Spy: Active TOC Heading Highlighting
+    window.addEventListener('scroll', function() {
+        if (!tocLinks.length) return;
+        const scrollPosition = (window.scrollY || document.documentElement.scrollTop) + 120;
+
+        let activeId = null;
+        for (let i = 0; i < tocLinks.length; i++) {
+            const heading = tocLinks[i].heading;
+            if (heading.offsetTop <= scrollPosition) {
+                activeId = tocLinks[i].id;
+            } else {
+                break;
+            }
+        }
+
+        tocLinks.forEach(item => {
+            if (item.id === activeId) {
+                item.element.classList.add('active');
+            } else {
+                item.element.classList.remove('active');
+            }
+        });
+    });
 });
 
 function toggleToc() {
@@ -782,7 +1099,7 @@ function toggleToc() {
 
 // Interactive FAQ Accordion Builder (Responsive Mobile Optimization)
 document.addEventListener("DOMContentLoaded", function() {
-    const articleBody = document.getElementById('articleBody');
+    const articleBody = document.getElementById('article-content') || document.getElementById('articleBody');
     if (!articleBody) return;
 
     const h4s = Array.from(articleBody.querySelectorAll('h4'));
