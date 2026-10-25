@@ -83,7 +83,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("pseo_city_show_v8_{$citySlug}", 86400, function () use ($citySlug) {
+        $html = Cache::remember("pseo_city_show_v9_{$citySlug}", 86400, function () use ($citySlug) {
             // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
@@ -129,14 +129,14 @@ class AreaServiceController extends Controller
             // TUGAS 2: Dispatcher Physical Hub Resolver
             $physicalHub = PhysicalHubResolver::resolveHub($city);
 
-            // Priority Custom DB Meta Tags with Dynamic Fallback (City Hub Standard)
-            $title = !empty($city->meta_title)
+            // Priority High-Intent Transactional SEO Meta Tags
+            $title = !empty($city->meta_title) && str_contains($city->meta_title, 'Jasa Perbaikan')
                 ? $city->meta_title
-                : "Jasa Saluran Pipa Mampet {$city->name} 24 Jam Tanpa Bongkar — Rootera";
+                : "Jasa Perbaikan & Tukang Pipa Mampet {$city->name} 24 Jam Tanpa Bongkar — Rootera";
 
-            $description = !empty($city->meta_description)
+            $description = !empty($city->meta_description) && str_contains($city->meta_description, 'Tukang')
                 ? $city->meta_description
-                : "Pusat layanan pelancaran saluran pipa mampet 24 jam di {$city->name}. Atasi wastafel, kloset WC, floor drain & got tersumbat tanpa bongkar lantai. Bergaransi 30 hari.";
+                : "Jasa perbaikan saluran pipa mampet di {$city->name} 24 jam. Panggil tukang pipa mampet profesional tanpa bongkar lantai untuk wastafel, kloset WC, & got. Garansi resmi 30 hari!";
 
             $canonical = url("/jasa-saluran-mampet/{$city->slug}");
 
@@ -151,9 +151,12 @@ class AreaServiceController extends Controller
             // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
             $schemas = LocalSchemaService::buildSchemas($city, null, $physicalHub, null, $canonical, $faqs->toArray());
 
-            // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
+            // Spintax Dynamic Text Generation with Transactional Keywords (Anti-Duplicate & SXO Optimized)
             $seedKey = "city_hub_" . md5($canonical);
-            $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $city->full_name, $seedKey);
+            $heroHeadline = $this->spintaxService->parse(
+                "{Jasa Perbaikan & Tukang Pipa Mampet|Tukang Pipa Mampet & Jasa Perbaikan Saluran|Jasa Perbaikan Saluran & Tukang Pipa Mampet} <span class='text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200'>{$city->name}</span> — {100% Tanpa Bongkar|Solusi Tanpa Bongkar Lantai|Pengerjaan Tanpa Bongkar 24 Jam}",
+                $seedKey . '_h1'
+            );
             $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $city->full_name, $physicalHub['estimated_arrival'], $seedKey);
             $valueProps = $this->spintaxService->generateValueProps($city->name, $seedKey);
             $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $city->full_name, $seedKey);
@@ -235,7 +238,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}/{$districtSlug}"), 301);
         }
 
-        $html = Cache::remember("pseo_district_show_v5_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+        $html = Cache::remember("pseo_district_show_v6_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
             // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
@@ -300,14 +303,14 @@ class AreaServiceController extends Controller
             $estimatedArrival = $physicalHub['estimated_arrival'];
             $dispatchHub = $physicalHub['name'] . " (" . $physicalHub['locality'] . ")";
 
-            // Priority Custom DB Meta Tags with Dynamic Fallback (District Hub Standard)
-            $title = !empty($district->meta_title)
+            // Priority High-Intent Transactional SEO Meta Tags (District Hub)
+            $title = !empty($district->meta_title) && str_contains($district->meta_title, 'Jasa Perbaikan')
                 ? $district->meta_title
-                : "Jasa Saluran Pipa Mampet {$district->name}, {$city->name} 24 Jam — Rootera";
+                : "Jasa Perbaikan & Tukang Pipa Mampet {$district->name}, {$city->name} Tanpa Bongkar — Rootera";
 
-            $description = !empty($district->meta_description)
+            $description = !empty($district->meta_description) && str_contains($district->meta_description, 'Tukang')
                 ? $district->meta_description
-                : "Spesialis jasa saluran pipa mampet 24 jam di {$district->name}, {$city->name}. Pelancaran wastafel, kloset WC, floor drain & got tersumbat tanpa bongkar lantai. Bergaransi 30 hari!";
+                : "Cari tukang pipa mampet di {$district->name}, {$city->name}? Jasa perbaikan saluran pipa mampet 24 jam tanpa bongkar lantai untuk wastafel, WC, floor drain & got. Garansi tuntas 30 hari!";
 
             $canonical = url("/jasa-saluran-mampet/{$city->slug}/{$district->slug}");
 
@@ -322,9 +325,12 @@ class AreaServiceController extends Controller
             // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
             $schemas = LocalSchemaService::buildSchemas($city, $district, $physicalHub, null, $canonical, $faqs->toArray());
 
-            // Spintax Dynamic Text Generation for Anti-Duplicate Content Engine
+            // Spintax Dynamic Text Generation with Transactional Keywords (Anti-Duplicate & SXO Optimized)
             $seedKey = "district_hub_" . md5($canonical);
-            $heroHeadline = $this->spintaxService->generateHeroHeadline("Saluran Pipa Mampet", $district->name . ", " . $city->name, $seedKey);
+            $heroHeadline = $this->spintaxService->parse(
+                "{Jasa Perbaikan & Tukang Pipa Mampet|Tukang Pipa Mampet & Jasa Perbaikan Saluran|Jasa Perbaikan Saluran & Tukang Pipa Mampet} <span class='text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200'>{$district->name}</span>, {$city->name} — {100% Tanpa Bongkar|Solusi Tanpa Bongkar Lantai|Pengerjaan Tanpa Bongkar}",
+                $seedKey . '_h1'
+            );
             $heroSubtitle = $this->spintaxService->generateHeroSubtitle("Saluran Pipa Mampet", $district->name . ", " . $city->name, $estimatedArrival, $seedKey);
             $valueProps = $this->spintaxService->generateValueProps($district->name, $seedKey);
             $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro("pipa mampet", $district->name, $seedKey);

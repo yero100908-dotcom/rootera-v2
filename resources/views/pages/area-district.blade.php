@@ -32,10 +32,15 @@ $districtAddress = [
 $districtBusinessSchema = [
   "@type" => ["PlumbingService", "LocalBusiness", "EmergencyService"],
   "@id" => $districtCanonical . "#organization",
-  "name" => "Rootera Plumbing - Jasa Saluran Pipa Mampet " . $districtName,
-  "alternateName" => ["Rootera " . $districtName, "Jasa Saluran Pipa Mampet " . $districtName, "Tukang Pipa Mampet " . $districtName],
+  "name" => "Rootera Plumbing - Jasa Perbaikan & Tukang Pipa Mampet " . $districtName,
+  "alternateName" => ["Rootera " . $districtName, "Jasa Perbaikan Pipa Mampet " . $districtName, "Tukang Pipa Mampet " . $districtName],
   "description" => $seo['description'] ?? "Pusat layanan pelancaran saluran pipa mampet 24 jam di Kecamatan {$districtName}, {$cityNameClean} bergaransi resmi.",
   "url" => $districtCanonical,
+  "hasMap" => "https://maps.google.com/?cid=16012437648585635749",
+  "sameAs" => [
+    "https://maps.google.com/?cid=16012437648585635749",
+    "https://www.instagram.com/rootera_plumbing/"
+  ],
   "telephone" => "+" . $cityPhone,
   "logo" => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
   "image" => $seo['og_image'] ?? asset('images/JnJ.webp'),
@@ -51,7 +56,11 @@ $districtBusinessSchema = [
   "areaServed" => [
     [
       "@type" => "AdministrativeArea",
-      "name" => "Kecamatan " . $districtName
+      "name" => "Kecamatan " . $districtName,
+      "containedInPlace" => [
+        "@type" => "City",
+        "name" => $cityNameClean
+      ]
     ],
     [
       "@type" => "City",
@@ -78,7 +87,7 @@ $districtBusinessSchema = [
     "latitude" => $districtLat,
     "longitude" => $districtLng
   ],
-  "hasMap" => "https://www.google.com/maps?q={$districtLat},{$districtLng}",
+  "hasMap" => "https://maps.google.com/?cid=16012437648585635749",
   "hasOfferCatalog" => [
     "@type" => "OfferCatalog",
     "name" => "Katalog Layanan Pipa Mampet Kecamatan " . $districtName,
@@ -248,32 +257,55 @@ $graphSchema = [
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {{-- Left Column: Copywriting & CTA --}}
             <div class="lg:col-span-7">
-                <div class="inline-flex items-center gap-2 bg-[#169F81]/20 border border-[#169F81]/40 text-emerald-300 px-4 py-1.5 rounded-full text-xs font-bold mb-5 backdrop-blur-md shadow-lg shadow-emerald-950/30">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span>📍 Pos Hub Siaga Kecamatan {{ $districtName }}, {{ $cityNameClean }}</span>
+                <div class="inline-flex flex-wrap items-center gap-2.5 bg-gradient-to-r from-emerald-500/20 via-teal-500/15 to-emerald-500/20 border border-emerald-400/40 text-emerald-200 px-4 py-2 rounded-full text-xs font-extrabold mb-5 backdrop-blur-md shadow-lg shadow-emerald-950/40">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+                    </span>
+                    <span class="tracking-wide">🚨 Posko Armada Terdekat: Kecamatan {{ $districtName }}</span>
+                    <span class="hidden sm:inline-block text-emerald-400/60">•</span>
+                    <span class="text-amber-300 font-semibold flex items-center gap-1">
+                        ⚡ Tiba {{ $estimatedArrival ?? ($district->estimated_arrival ?? '20–35 Menit') }}
+                    </span>
                 </div>
 
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight mb-4 text-white font-['Plus_Jakarta_Sans',sans-serif]">
-                    {!! $heroHeadline ?? ("Spesialis Jasa Saluran Pipa Mampet <span class='text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200'>" . $districtName . "</span> 24 Jam") !!}
+                    {!! $heroHeadline ?? ("Jasa Perbaikan & Tukang Pipa Mampet <span class='text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200'>" . $districtName . "</span>, " . $cityNameClean . " — Tanpa Bongkar") !!}
                 </h1>
 
                 <p class="text-slate-200 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 max-w-2xl">
-                    {!! $heroSubtitle ?? ("Layanan pelancaran wastafel, kloset WC, floor drain kamar mandi &amp; got tersumbat di area <strong>Kecamatan " . $districtName . ", " . $cityNameClean . "</strong>. Dikerjakan tanpa bongkar lantai oleh <strong>Rootera Plumbing</strong> bergaransi tuntas 30 hari.") !!}
+                    {!! $heroSubtitle ?? ("Layanan darurat tukang pipa mampet profesional di <strong>Kecamatan " . $districtName . ", " . $cityNameClean . "</strong>. Mengatasi wastafel buntu, kloset WC, floor drain kamar mandi &amp; got tersumbat <strong>100% tanpa bongkar lantai</strong> dengan mesin rigid spiral buatan USA. <strong>Garansi Resmi 30 Hari</strong> (Tuntas Baru Bayar).") !!}
                 </p>
 
                 {{-- Quick Metrics Bar --}}
-                <div class="grid grid-cols-3 gap-3 mb-8 max-w-xl">
+                <div class="grid grid-cols-3 gap-3 mb-4 max-w-xl">
                     <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
-                        <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">{{ $district->estimated_arrival ?? '20-35 Mnt' }}</div>
-                        <div class="text-[10px] sm:text-xs text-slate-300">Respon Tiba</div>
+                        <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">{{ $estimatedArrival ?? ($district->estimated_arrival ?? '20-35 Mnt') }}</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300 font-medium">Estimasi Tiba Teknisi</div>
                     </div>
                     <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
                         <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">100% Safe</div>
-                        <div class="text-[10px] sm:text-xs text-slate-300">Tanpa Bongkar Ubin</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300 font-medium">Tanpa Bongkar Lantai</div>
                     </div>
                     <div class="bg-white/10 border border-white/15 rounded-2xl p-3 backdrop-blur-md text-center">
                         <div class="text-base sm:text-xl font-extrabold text-emerald-400 font-['Plus_Jakarta_Sans',sans-serif]">30 Hari</div>
-                        <div class="text-[10px] sm:text-xs text-slate-300">Garansi Resmi</div>
+                        <div class="text-[10px] sm:text-xs text-slate-300 font-medium">Garansi Resmi Tuntas</div>
+                    </div>
+                </div>
+
+                {{-- SXO Emergency Live Trust Strip --}}
+                <div class="flex flex-wrap items-center gap-y-2 gap-x-4 mb-8 text-xs text-slate-300 bg-white/5 border border-white/10 rounded-2xl px-4 py-2.5 backdrop-blur-sm max-w-xl">
+                    <div class="flex items-center gap-1.5 text-emerald-300 font-medium">
+                        <svg class="w-4 h-4 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Armada Siaga Posko <strong>{{ $districtName }}</strong></span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-amber-300 font-medium">
+                        <svg class="w-4 h-4 shrink-0 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Respon Darurat 24 Jam</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-teal-300 font-medium">
+                        <svg class="w-4 h-4 shrink-0 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <span>Tanpa Bongkar Keramik &amp; No Result No Pay</span>
                     </div>
                 </div>
 
@@ -316,7 +348,7 @@ $graphSchema = [
                     {{-- Floating Badge 1 --}}
                     <div class="absolute top-5 left-5 bg-slate-900/80 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-2xl text-xs font-semibold text-white shadow-xl flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                        <span>⚡ Posko Siaga {{ $districtName }}: {{ $estimatedArrival }} Tiba</span>
+                        <span>⚡ Posko Siaga {{ $districtName }}: {{ $estimatedArrival ?? '20-35 Menit' }} Tiba</span>
                     </div>
 
                     {{-- Floating Badge 2 --}}
@@ -325,7 +357,7 @@ $graphSchema = [
                             <span class="text-amber-400 text-sm">⭐⭐⭐⭐⭐</span>
                             <span class="font-bold text-xs">4.9 / 5.0</span>
                         </div>
-                        <div class="text-[11px] text-slate-300 font-medium mt-0.5">Penanganan Profesional {{ $districtName }}</div>
+                        <div class="text-[11px] text-emerald-300 font-semibold mt-0.5">🛡️ 100% Tanpa Bongkar &amp; Garansi 30 Hari</div>
                     </div>
                 </div>
             </div>

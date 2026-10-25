@@ -8,6 +8,9 @@ use App\Models\ServiceCategory;
 
 class LocalSchemaService
 {
+    public const GOOGLE_MAPS_CID_URL = 'https://maps.google.com/?cid=16012437648585635749';
+    public const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/rootera_plumbing/';
+
     /**
      * Build dynamic LocalBusiness/PlumbingService, Service, and FAQPage JSON-LD schemas.
      */
@@ -19,37 +22,85 @@ class LocalSchemaService
         string $canonical,
         array $localFaqs = []
     ): array {
-        $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
-        $serviceName = $category ? $category->name : "Jasa Saluran Pipa Mampet";
+        $cityName = $city->full_name ?? $city->name;
+        $locationName = $district ? "Kecamatan {$district->name}, {$cityName}" : $cityName;
+        $serviceName = $category ? $category->name : "Jasa Perbaikan & Tukang Pipa Mampet";
+
+        // Structured hierarchical areaServed
+        if ($district) {
+            $areaServed = [
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name' => "Kecamatan {$district->name}",
+                    'containedInPlace' => [
+                        '@type' => 'City',
+                        'name' => $cityName,
+                    ],
+                ],
+                [
+                    '@type' => 'City',
+                    'name' => $cityName,
+                ],
+            ];
+        } else {
+            $areaServed = [
+                [
+                    '@type' => 'City',
+                    'name' => $cityName,
+                ],
+            ];
+            if ($city->relationLoaded('districts') && $city->districts->isNotEmpty()) {
+                foreach ($city->districts as $d) {
+                    $areaServed[] = [
+                        '@type' => 'AdministrativeArea',
+                        'name' => "Kecamatan {$d->name}",
+                        'containedInPlace' => [
+                            '@type' => 'City',
+                            'name' => $cityName,
+                        ],
+                    ];
+                }
+            }
+        }
 
         // 1. PlumbingService / LocalBusiness Schema
         $plumbingSchema = [
             '@context' => 'https://schema.org',
-            '@type' => 'PlumbingService',
+            '@type' => ['PlumbingService', 'LocalBusiness', 'EmergencyService'],
             '@id' => $canonical . '#plumbing-service',
             'name' => "Rootera Plumbing - {$serviceName} {$locationName}",
+            'alternateName' => [
+                "Rootera Plumbing " . ($district ? $district->name : $cityName),
+                "Jasa Perbaikan Pipa Mampet " . ($district ? $district->name : $cityName),
+                "Tukang Pipa Mampet " . ($district ? $district->name : $cityName),
+            ],
             'image' => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
+            'logo' => asset('images/brand/logo-utama-rooteraplumbing-jasa-saluran-pipa-mampet.webp'),
             'url' => $canonical,
-            'telephone' => $hub['telephone'],
+            'hasMap' => self::GOOGLE_MAPS_CID_URL,
+            'sameAs' => [
+                self::GOOGLE_MAPS_CID_URL,
+                self::INSTAGRAM_PROFILE_URL,
+            ],
+            'telephone' => $hub['telephone'] ?? '+6281385404000',
             'priceRange' => 'Rp',
-            'description' => "Layanan pelancaran saluran pipa mampet 24 jam tanpa bongkar di {$locationName}. Bergaransi resmi 30 hari.",
+            'currenciesAccepted' => 'IDR',
+            'paymentAccepted' => 'Cash, Transfer Bank, QRIS',
+            'description' => "Layanan jasa perbaikan saluran pipa mampet 24 jam tanpa bongkar di {$locationName}. Panggil tukang pipa mampet profesional bergaransi resmi 30 hari.",
             'address' => [
                 '@type' => 'PostalAddress',
-                'streetAddress' => $hub['street_address'],
-                'addressLocality' => $hub['locality'],
-                'addressRegion' => $hub['province_name'],
-                'postalCode' => $hub['postal_code'],
+                'streetAddress' => $hub['street_address'] ?? "Pos Hub Armada {$locationName}",
+                'addressLocality' => $district ? "{$district->name}, {$cityName}" : $cityName,
+                'addressRegion' => $hub['province_name'] ?? ($city->province->name ?? 'Indonesia'),
+                'postalCode' => $district->postal_code ?? ($hub['postal_code'] ?? ($city->postal_code ?? '10000')),
                 'addressCountry' => 'ID',
             ],
             'geo' => [
                 '@type' => 'GeoCoordinates',
-                'latitude' => $hub['latitude'],
-                'longitude' => $hub['longitude'],
+                'latitude' => $district->latitude ?? ($hub['latitude'] ?? ($city->latitude ?? -6.3275975)),
+                'longitude' => $district->longitude ?? ($hub['longitude'] ?? ($city->longitude ?? 106.8627125)),
             ],
-            'areaServed' => [
-                '@type' => 'AdministrativeArea',
-                'name' => $locationName,
-            ],
+            'areaServed' => $areaServed,
             'openingHoursSpecification' => [
                 '@type' => 'OpeningHoursSpecification',
                 'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -69,11 +120,13 @@ class LocalSchemaService
                 '@type' => 'PlumbingService',
                 'name' => 'Rootera Plumbing',
                 'url' => route('home'),
+                'hasMap' => self::GOOGLE_MAPS_CID_URL,
+                'sameAs' => [
+                    self::GOOGLE_MAPS_CID_URL,
+                    self::INSTAGRAM_PROFILE_URL,
+                ],
             ],
-            'areaServed' => [
-                '@type' => 'AdministrativeArea',
-                'name' => $locationName,
-            ],
+            'areaServed' => $areaServed,
             'offers' => [
                 '@type' => 'Offer',
                 'priceCurrency' => 'IDR',
