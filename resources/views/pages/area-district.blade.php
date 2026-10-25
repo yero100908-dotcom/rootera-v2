@@ -365,45 +365,6 @@ $graphSchema = [
     </div>
 </section>
 
-@if(($city && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung') || ($district && $district->slug === 'kedaton'))
-    <x-workshop-posko-bandar-lampung :city="$city" :district="$district" />
-@endif
-
-@if(isset($physicalHub))
-<section class="py-8 bg-slate-900 text-white border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-slate-900 via-slate-850 to-blue-950 border border-slate-700/80 text-white rounded-3xl p-6 sm:p-8 shadow-2xl">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <div class="space-y-3 max-w-3xl">
-                    <div class="inline-flex items-center gap-2 bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                        <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
-                        <span>🏢 Transparansi Hub Fisik Penanggung Jawab Kecamatan {{ $districtName }}</span>
-                    </div>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-white">
-                        {{ $physicalHub['name'] }}
-                    </h3>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        📍 <strong>Alamat Pool Fisik Resmi:</strong> {{ $physicalHub['full_address'] }}<br>
-                        📡 <strong>Radius Siaga Layanan:</strong> Hingga {{ $physicalHub['radius_km'] }} KM (Cakupan: {{ $physicalHub['coverage_region'] }})
-                    </p>
-                    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-amber-300 font-semibold">
-                        <span>⏱️ Estimasi Waktu Tempuh Armada:</span>
-                        <span class="bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2.5 py-0.5 rounded-md font-bold">
-                            {{ $physicalHub['estimated_arrival'] }} ke area {{ $physicalHub['target_location'] }}
-                        </span>
-                    </div>
-                </div>
-                <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $physicalHub['telephone']) }}?text={{ urlencode('Halo Rootera, saya butuh layanan teknisi di area Kecamatan ' . $districtName . ' disiagakan dari ' . $physicalHub['name']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2">
-                        💬 Panggil Armada WA (24 Jam) →
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
 {{-- ========================================================================= --}}
 {{-- 2. KATALOG ALL-IN-ONE LAYANAN TERPADU KECAMATAN                           --}}
 {{-- ========================================================================= --}}
@@ -594,6 +555,48 @@ $graphSchema = [
 </div>
 
 {{-- ========================================================================= --}}
+{{-- 2.9. TRUST SIGNAL SEKUNDER: POOL ARMADA PUSAT & WORKSHOP RESMI            --}}
+{{-- ========================================================================= --}}
+@if(($city && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung') || ($district && $district->slug === 'kedaton'))
+    <x-workshop-posko-bandar-lampung :city="$city" :district="$district" />
+@endif
+
+@if(isset($physicalHub))
+<section class="py-12 sm:py-16 bg-slate-900 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-850 to-blue-950 border border-slate-700/80 text-white rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="space-y-3 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
+                        <span>🏢 Transparansi Hub Fisik Penanggung Jawab Kecamatan {{ $districtName }}</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                        {{ $physicalHub['name'] }}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        📍 <strong>Alamat Pool Fisik Resmi:</strong> {{ $physicalHub['full_address'] }}<br>
+                        📡 <strong>Radius Siaga Layanan:</strong> Hingga {{ $physicalHub['radius_km'] }} KM (Cakupan: {{ $physicalHub['coverage_region'] }})
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-amber-300 font-semibold">
+                        <span>⏱️ Estimasi Waktu Tempuh Armada:</span>
+                        <span class="bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2.5 py-0.5 rounded-md font-bold">
+                            {{ $physicalHub['estimated_arrival'] }} ke area {{ $physicalHub['target_location'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $physicalHub['telephone']) }}?text={{ urlencode('Halo Rootera, saya butuh layanan teknisi di area Kecamatan ' . $districtName . ' disiagakan dari ' . $physicalHub['name']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-decoration-none">
+                        💬 Panggil Armada WA (24 Jam) →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- ========================================================================= --}}
 {{-- 3. SEKSI MULTI-SEKTOR PROPERTI                                         --}}
 {{-- ========================================================================= --}}
 <x-multi-sector-grid :locationName="$districtName" :whatsappNumber="$city->whatsapp_number ?? '6281385404000'" />
@@ -677,32 +680,7 @@ $graphSchema = [
 </section>
 
 {{-- ========================================================================= --}}
-{{-- 6. CAKUPAN KECAMATAN SEKITAR (INTERLINKING SPOKE MESH)                     --}}
-{{-- ========================================================================= --}}
-@if(isset($siblingDistricts) && count($siblingDistricts) > 0)
-<section class="py-16 bg-slate-50 border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-10">
-            <span class="text-[#169F81] font-bold text-xs tracking-widest uppercase bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">JARINGAN POSKO TERDEKAT</span>
-            <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-['Plus_Jakarta_Sans',sans-serif]">
-                Area Kecamatan Tetangga di {{ $cityNameClean }}
-            </h2>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            @foreach($siblingDistricts as $sDist)
-            <a href="{{ url('/jasa-saluran-mampet/' . $citySlug . '/' . $sDist->slug) }}" 
-               class="bg-white hover:bg-[#169F81] hover:text-white text-slate-800 font-semibold text-xs p-3 rounded-xl border border-slate-200 text-center transition-all shadow-xs hover:shadow-md truncate">
-                📍 {{ $sDist->name }}
-            </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ========================================================================= --}}
-{{-- 7. FAQ ACCORDION & EMERGENCY CTA                                          --}}
+{{-- 6. FAQ ACCORDION & EMERGENCY CTA                                          --}}
 {{-- ========================================================================= --}}
 <section class="py-16 bg-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
@@ -721,5 +699,31 @@ $graphSchema = [
         </div>
     </div>
 </section>
+
+{{-- ========================================================================= --}}
+{{-- 7. CAKUPAN KECAMATAN SEKITAR (INTERLINKING SPOKE MESH / BOTTOM NAVIGATION) --}}
+{{-- ========================================================================= --}}
+@if(isset($siblingDistricts) && count($siblingDistricts) > 0)
+<section class="py-12 sm:py-16 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+            <span class="text-[#169F81] font-bold text-xs tracking-widest uppercase bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">JARINGAN POSKO TERDEKAT</span>
+            <h2 class="text-xl sm:text-3xl font-extrabold text-slate-900 mt-2 font-['Plus_Jakarta_Sans',sans-serif]">
+                Area Kecamatan Tetangga di {{ $cityNameClean }}
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Armada teknisi Rootera juga siaga melayani kecamatan sekitar:</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            @foreach($siblingDistricts as $sDist)
+            <a href="{{ url('/jasa-saluran-mampet/' . $citySlug . '/' . $sDist->slug) }}" 
+               class="bg-white hover:bg-[#169F81] hover:text-white text-slate-800 font-semibold text-xs p-3 rounded-xl border border-slate-200 text-center transition-all shadow-xs hover:shadow-md truncate text-decoration-none">
+                📍 {{ $sDist->name }}
+            </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
 
 @endsection

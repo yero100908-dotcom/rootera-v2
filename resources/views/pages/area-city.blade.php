@@ -444,78 +444,6 @@ $graphSchema = [
     </div>
 </section>
 
-@if((isset($city) && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung'))
-    <x-workshop-posko-bandar-lampung :city="$city" />
-@endif
-
-@if(isset($physicalHub))
-<section class="py-8 bg-slate-900 text-white border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-slate-900 via-slate-850 to-blue-950 border border-slate-700/80 text-white rounded-3xl p-6 sm:p-8 shadow-2xl">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <div class="space-y-3 max-w-3xl">
-                    <div class="inline-flex items-center gap-2 bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                        <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
-                        <span>🏢 Transparansi Hub Fisik Penanggung Jawab Armada {{ $cityNameClean }}</span>
-                    </div>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-white">
-                        {{ $physicalHub['name'] }}
-                    </h3>
-                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        📍 <strong>Alamat Pool Fisik Resmi:</strong> {{ $physicalHub['full_address'] }}<br>
-                        📡 <strong>Radius Siaga Layanan:</strong> Hingga {{ $physicalHub['radius_km'] }} KM (Cakupan: {{ $physicalHub['coverage_region'] }})
-                    </p>
-                    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-amber-300 font-semibold">
-                        <span>⏱️ Estimasi Waktu Tempuh Armada:</span>
-                        <span class="bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2.5 py-0.5 rounded-md font-bold">
-                            {{ $physicalHub['estimated_arrival'] }} ke area {{ $physicalHub['target_location'] }}
-                        </span>
-                    </div>
-                </div>
-                <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
-                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $physicalHub['telephone']) }}?text={{ urlencode('Halo Rootera, saya butuh layanan teknisi di area ' . $physicalHub['target_location'] . ' disiagakan dari ' . $physicalHub['name']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2">
-                        💬 Panggil Armada WA (24 Jam) →
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-@endif
-
-{{-- ========================================================================= --}}
-{{-- 2. CAKUPAN AREA & DIREKTORI KECAMATAN TERPADU                             --}}
-{{-- ========================================================================= --}}
-<section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200" id="jangkauan-area">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-8">
-            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold mb-2 border border-emerald-300">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span>Teknisi Siaga Hari Ini di {{ $cityNameClean }}</span>
-            </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
-                Direktori Kecamatan Siaga di {{ $cityNameClean }}
-            </h2>
-            <p class="text-slate-600 text-xs sm:text-sm mt-1.5">
-                Pilih kecamatan lokasi Anda untuk informasi armada terdekat, estimasi biaya, dan pemanggilan teknisi 24 jam:
-            </p>
-        </div>
-
-        {{-- Interactive Chips --}}
-        @if(isset($city->districts) && $city->districts->isNotEmpty())
-        <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-8">
-            @foreach($city->districts as $district)
-                <a href="{{ url('/jasa-saluran-mampet/' . $city->slug . '/' . $district->slug) }}" 
-                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
-                    <span>📍 Kecamatan {{ $district->name }}</span>
-                    <span class="text-emerald-600">→</span>
-                </a>
-            @endforeach
-        </div>
-        @endif
-    </div>
-</section>
-
 {{-- ========================================================================= --}}
 {{-- 2. ESTIMASI BIAYA & POPULAR HIGHLIGHT (PURE WHITE #FFFFFF)                --}}
 {{-- ========================================================================= --}}
@@ -1011,6 +939,48 @@ $graphSchema = [
     <x-media-documentation :relatedArticles="$relatedArticles ?? $articles ?? collect()" :projectShowcases="$projectShowcases ?? collect()" :locationName="$cityNameClean" />
 </div>
 
+{{-- ========================================================================= --}}
+{{-- 6. TRUST SIGNAL SEKUNDER: POOL ARMADA PUSAT & WORKSHOP RESMI              --}}
+{{-- ========================================================================= --}}
+@if((isset($city) && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung'))
+    <x-workshop-posko-bandar-lampung :city="$city" />
+@endif
+
+@if(isset($physicalHub))
+<section class="py-12 sm:py-16 bg-slate-900 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-850 to-blue-950 border border-slate-700/80 text-white rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <div class="space-y-3 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 bg-teal-500/20 text-teal-300 border border-teal-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <span class="w-2.5 h-2.5 rounded-full bg-teal-400 animate-pulse"></span>
+                        <span>🏢 Transparansi Hub Fisik Penanggung Jawab Armada {{ $cityNameClean }}</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-white font-['Plus_Jakarta_Sans',sans-serif]">
+                        {{ $physicalHub['name'] }}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        📍 <strong>Alamat Pool Fisik Resmi:</strong> {{ $physicalHub['full_address'] }}<br>
+                        📡 <strong>Radius Siaga Layanan:</strong> Hingga {{ $physicalHub['radius_km'] }} KM (Cakupan: {{ $physicalHub['coverage_region'] }})
+                    </p>
+                    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs text-amber-300 font-semibold">
+                        <span>⏱️ Estimasi Waktu Tempuh Armada:</span>
+                        <span class="bg-amber-400/20 border border-amber-400/40 text-amber-200 px-2.5 py-0.5 rounded-md font-bold">
+                            {{ $physicalHub['estimated_arrival'] }} ke area {{ $physicalHub['target_location'] }}
+                        </span>
+                    </div>
+                </div>
+                <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
+                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $physicalHub['telephone']) }}?text={{ urlencode('Halo Rootera, saya butuh layanan teknisi di area ' . $physicalHub['target_location'] . ' disiagakan dari ' . $physicalHub['name']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-decoration-none">
+                        💬 Panggil Armada WA (24 Jam) →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endif
+
 
 
 {{-- ========================================================================= --}}
@@ -1114,7 +1084,40 @@ $graphSchema = [
 </section>
 
 {{-- ========================================================================= --}}
-{{-- 8. SEO SILO & REGIONAL INTERLINKING                                       --}}
+{{-- 8. DIREKTORI KECAMATAN SIAGA (BOTTOM NAVIGATION)                          --}}
+{{-- ========================================================================= --}}
+<section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200" id="jangkauan-area">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+            <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-3.5 py-1 rounded-full text-xs font-bold mb-2 border border-emerald-300">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Teknisi Siaga Hari Ini di {{ $cityNameClean }}</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-['Plus_Jakarta_Sans',sans-serif]">
+                Direktori Kecamatan Siaga di {{ $cityNameClean }}
+            </h2>
+            <p class="text-slate-600 text-xs sm:text-sm mt-1.5">
+                Pilih kecamatan lokasi Anda untuk informasi armada terdekat, estimasi biaya, dan pemanggilan teknisi 24 jam:
+            </p>
+        </div>
+
+        {{-- Interactive Chips --}}
+        @if(isset($city->districts) && $city->districts->isNotEmpty())
+        <div class="flex flex-wrap justify-center gap-2.5 max-w-5xl mx-auto mb-4">
+            @foreach($city->districts as $district)
+                <a href="{{ url('/jasa-saluran-mampet/' . $city->slug . '/' . $district->slug) }}" 
+                   class="bg-white border border-slate-200 hover:border-[#169F81] hover:bg-emerald-50/50 text-slate-800 hover:text-emerald-700 text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-1.5 text-decoration-none hover:scale-105">
+                    <span>📍 Kecamatan {{ $district->name }}</span>
+                    <span class="text-emerald-600">→</span>
+                </a>
+            @endforeach
+        </div>
+        @endif
+    </div>
+</section>
+
+{{-- ========================================================================= --}}
+{{-- 9. SEO SILO & REGIONAL INTERLINKING                                       --}}
 {{-- ========================================================================= --}}
 @php
     $uniqueSiblingCities = isset($siblingCities) ? $siblingCities->unique('slug') : collect();
