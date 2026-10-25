@@ -35,7 +35,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cek-kondisi-pipa', [DiagnosticController::class, 'index'])->name('diagnostic.index');
 Route::post('/diagnosa-pipa/capture-lead', [DiagnosticController::class, 'captureLead'])->middleware('throttle:10,1')->name('diagnostic.capture-lead');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
-Route::get('/sitemap-index.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::redirect('/sitemap-index.xml', '/sitemap.xml', 301)->name('sitemap.index');
 Route::get('/sitemap.xsl', [SitemapController::class, 'xsl'])->name('sitemap.xsl');
 Route::redirect('/sitemap-main.xml', '/sitemap-pages.xml', 301);
 Route::get('/sitemap-pages.xml', [SitemapController::class, 'pages'])->name('sitemap.pages');
@@ -47,9 +47,9 @@ Route::get('/sitemap-blog.xml', [BlogController::class, 'sitemap'])->name('sitem
 Route::get('/sitemap-gallery.xml', [SitemapController::class, 'gallery'])->name('sitemap.gallery');
 Route::get('/sitemap-videos.xml', [SitemapController::class, 'videos'])->name('sitemap.videos');
 Route::get('/sitemap-clusters.xml', [SitemapController::class, 'clusters'])->name('sitemap.clusters');
-Route::get('/sitemap-static.xml',   [SitemapController::class, 'serveStaticFile'])->name('sitemap.static');
-Route::get('/sitemap-pseo.xml',     [SitemapController::class, 'serveStaticFile'])->name('sitemap.pseo');
-Route::get('/sitemap-articles.xml', [SitemapController::class, 'serveStaticFile'])->name('sitemap.articles');
+Route::redirect('/sitemap-static.xml', '/sitemap.xml', 301);
+Route::redirect('/sitemap-pseo.xml', '/sitemap.xml', 301);
+Route::redirect('/sitemap-articles.xml', '/sitemap-blog.xml', 301);
 Route::redirect('/sitemap-cuci-toren-cities.xml', '/sitemap.xml', 301);
 Route::redirect('/sitemap-cuci-toren-districts.xml', '/sitemap.xml', 301);
 
@@ -57,13 +57,15 @@ Route::get('/layanan', [ServiceController::class, 'index'])->name('layanan');
 Route::get('/jasa-cuci-toren-air', [ServiceController::class, 'cuciToren'])->name('services.cuci-toren');
 Route::get('/layanan/{slug}', [ServiceController::class, 'show'])->name('layanan.show');
 
-// New High-Intent Keyword-Rich Routes & Problem Hub
+// =========================================================================
+// RUTE UTAMA KANONIKAL WILAYAH (Single Source of Truth untuk Local SEO)
+// =========================================================================
 Route::get('/jasa-saluran-mampet', [AreaServiceController::class, 'indexDirectory'])->name('area-layanan');
 Route::get('/jasa-saluran-mampet/{citySlug}', [AreaServiceController::class, 'showCity'])->name('area.city');
 Route::get('/jasa-saluran-mampet/{citySlug}/{districtSlug}', [AreaServiceController::class, 'showDistrict'])->name('area.district');
 Route::get('/area-jasa-pipa-mampet/{regionSlug}', [AreaServiceController::class, 'showRegion'])->name('area.region');
-Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.city');
-Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', [ProgrammaticSeoController::class, 'show'])->name('layanan.district');
+
+// Layanan Cuci Toren Terpadu
 Route::get('/jasa-cuci-toren/{citySlug}', [ProgrammaticSeoController::class, 'cuciTorenCity'])->name('pseo.cuci-toren.city');
 Route::get('/layanan-cuci-toren/{citySlug}/{districtSlug}', [ProgrammaticSeoController::class, 'cuciTorenDistrict'])->name('pseo.cuci-toren.district');
 Route::get('/solusi/{problemSlug}/{citySlug?}', [App\Http\Controllers\ProblemHubController::class, 'show'])->name('solusi.problem');
@@ -82,20 +84,43 @@ Route::get('/kategori-properti', [App\Http\Controllers\PropertyTypeController::c
 Route::get('/solusi-properti/{propertyTypeSlug}', [App\Http\Controllers\PropertyTypeController::class, 'show'])->name('property.show');
 Route::get('/solusi-properti/{propertyTypeSlug}/{citySlug}', [App\Http\Controllers\PropertyTypeController::class, 'showCity'])->name('property.city');
 
-// Canonical pSEO routes: /layanan/{service_slug}/{city_slug} → showService()
-// These must be defined BEFORE the 301 redirect rules below so they take priority.
-// Hyper-local residential cluster pSEO (dedicated prefix → no conflict with /layanan/*)
+// Hyper-local residential cluster pSEO
 Route::get('/area-perumahan/{clusterSlug}', [App\Http\Controllers\ClusterSeoController::class, 'show'])
     ->where('clusterSlug', '[a-z0-9-]+')->name('cluster.show');
 Route::get('/area-perumahan/{clusterSlug}/{categorySlug}', [App\Http\Controllers\ClusterSeoController::class, 'service'])
     ->where(['clusterSlug' => '[a-z0-9-]+', 'categorySlug' => '[a-z0-9-]+'])->name('cluster.service');
 
-Route::get('/layanan/{serviceSlug}/{citySlug}', [ProgrammaticSeoController::class, 'showService'])->name('pseo.service.city');
+// Programmatic category x city routes (with 301 redirection for pipe unclogging services to prevent cannibalization)
+Route::get('/layanan/{serviceSlug}/{citySlug}', function ($serviceSlug, $citySlug) {
+    $pipeServices = [
+        'pipa-mampet', 'saluran-mampet', 'jasa-pipa-mampet', 'pelancar-pipa', 'jasa-saluran-mampet',
+        'wastafel-mampet', 'kamar-mandi-mampet', 'wc-toilet-mampet', 'got-saluran-pembuangan',
+        'inspeksi-pipa-kamera', 'pipa-industri-pabrik'
+    ];
+    if (in_array($serviceSlug, $pipeServices)) {
+        return redirect("/jasa-saluran-mampet/{$citySlug}", 301);
+    }
+    return app(ProgrammaticSeoController::class)->showService($serviceSlug, $citySlug);
+})->name('pseo.service.city');
 
-// Legacy & Canonical Consolidation 301 Permanent Redirects for SEO Backlinks & Indexing
+// =========================================================================
+// 301 PERMANENT REDIRECTS (Pembersihan Duplikasi & Pengalihan Link Equity)
+// =========================================================================
 Route::redirect('/area-layanan', '/jasa-saluran-mampet', 301)->name('area.legacy.index');
 Route::redirect('/area-layanan/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301)->name('area.legacy.city');
-Route::redirect('/layanan-pipa-mampet/pipa-mampet/{citySlug}', '/jasa-saluran-mampet/{citySlug}', 301);
+Route::get('/area-layanan/{citySlug}/{districtSlug}', function ($citySlug, $districtSlug) {
+    return redirect("/jasa-saluran-mampet/{$citySlug}/{$districtSlug}", 301);
+});
+
+// Redirect seluruh variasi /layanan-pipa-mampet/... ke rute kanonikal resmi
+Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}/{districtSlug}', function ($categorySlug, $citySlug, $districtSlug) {
+    return redirect("/jasa-saluran-mampet/{$citySlug}/{$districtSlug}", 301);
+});
+Route::get('/layanan-pipa-mampet/{categorySlug}/{citySlug}', function ($categorySlug, $citySlug) {
+    return redirect("/jasa-saluran-mampet/{$citySlug}", 301);
+});
+
+// Redirect alias kota legacy
 Route::redirect('/jasa-saluran-mampet/solo', '/jasa-saluran-mampet/surakarta', 301);
 
 Route::get('/tentang-kami', [AboutController::class, 'index'])->name('tentang-kami');

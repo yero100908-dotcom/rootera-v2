@@ -46,8 +46,18 @@ class ProgrammaticSeoController extends Controller
      * ProjectGallery (filtered by city), localised FAQs, and Testimonials.
      * Generates dynamic meta title/description and injects three JSON-LD blocks.
      */
-    public function showService(string $serviceSlug, string $citySlug): \Illuminate\Http\Response
+    public function showService(string $serviceSlug, string $citySlug): \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
     {
+        // Redirect pipe unclogging service requests to canonical city directory hub
+        $pipeServices = [
+            'pipa-mampet', 'saluran-mampet', 'jasa-pipa-mampet', 'pelancar-pipa', 'jasa-saluran-mampet',
+            'wastafel-mampet', 'kamar-mandi-mampet', 'wc-toilet-mampet', 'got-saluran-pembuangan',
+            'inspeksi-pipa-kamera', 'pipa-industri-pabrik'
+        ];
+        if (in_array($serviceSlug, $pipeServices)) {
+            return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
+        }
+
         // Resolve the canonical URL for this pattern
         $canonicalUrl = url("/layanan/{$serviceSlug}/{$citySlug}");
         $cacheKey     = "pseo_service_v1_{$serviceSlug}_{$citySlug}";
@@ -191,198 +201,14 @@ class ProgrammaticSeoController extends Controller
             'gresik'           => 'surabaya',
         ];
 
-        if (isset($aliasMap[$citySlug])) {
-            $targetUrl = $districtSlug
-                ? url("/layanan-pipa-mampet/{$categorySlug}/{$aliasMap[$citySlug]}/{$districtSlug}")
-                : url("/layanan-pipa-mampet/{$categorySlug}/{$aliasMap[$citySlug]}");
-            return redirect($targetUrl, 301);
-        }
+        $effectiveCitySlug = $aliasMap[$citySlug] ?? $citySlug;
 
-        if (!$districtSlug && $categorySlug === 'pipa-mampet') {
-            return redirect(url("/jasa-saluran-mampet/{$citySlug}"), 301);
-        }
+        // Redirect directly to the single canonical directory route
+        $canonicalTarget = $districtSlug
+            ? url("/jasa-saluran-mampet/{$effectiveCitySlug}/{$districtSlug}")
+            : url("/jasa-saluran-mampet/{$effectiveCitySlug}");
 
-        $cacheKey = "prog_seo_v10_{$categorySlug}_{$citySlug}_" . ($districtSlug ?? 'all');
-
-        // Cache rendered HTML string for 24 Hours (86400s) to prevent any model unserialization errors & provide instant responses
-        $html = Cache::remember($cacheKey, 86400, function () use ($categorySlug, $citySlug, $districtSlug) {
-            $category = ServiceCategory::where('slug', $categorySlug)
-                ->where('is_active', true)
-                ->firstOrFail();
-
-            $city = City::where('slug', $citySlug)
-                ->where('is_active', true)
-                ->with(['province', 'districts' => function ($q) {
-                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
-                }])
-                ->firstOrFail();
-
-            $district = null;
-            if ($districtSlug) {
-                $district = District::where('city_id', $city->id)
-                    ->where('slug', $districtSlug)
-                    ->where('is_active', true)
-                    ->firstOrFail();
-            }
-
-            // Neighboring districts in the same city for spoke linking
-            $siblingDistricts = $city->districts->filter(function ($d) use ($district) {
-                return !$district || $d->id !== $district->id;
-            })->take(12)->values();
-
-            // Neighboring cities in the same province for regional linking
-            $siblingCities = City::where('province_id', $city->province_id)
-                ->where('id', '!=', $city->id)
-                ->where('is_active', true)
-                ->get();
-
-            // All active service categories for cross-service linking
-            $allCategories = ServiceCategory::where('is_active', true)
-                ->where('id', '!=', $category->id)
-                ->orderBy('sort_order')
-                ->get();
-
-            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
-            $localProjects = ProjectGallery::getLocalShowcases($city->id, $district ? $district->id : null, 3);
-            $projectShowcases = $localProjects;
-
-            $relatedArticles = \App\Models\Article::published()
-                ->latest('published_at')
-                ->take(3)
-                ->get();
-
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->get();
-            $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
-
-            // TUGAS 2: Dispatcher Physical Hub Resolver
-            $physicalHub = PhysicalHubResolver::resolveHub($city, $district);
-
-            $locationName = $district ? "{$district->name}, {$city->full_name}" : $city->full_name;
-            $locationShort = $district ? $district->name : $city->name;
-            $estimatedArrival = $physicalHub['estimated_arrival'];
-            $dispatchHub = $physicalHub['name'] . " (" . $physicalHub['locality'] . ")";
-            $travelTime = $estimatedArrival;
-            $nearbyLandmarks = $this->villageService->getVillagesForDistrict($district ? $district->slug : null, $city->slug, $locationShort);
-
-            $firstLandmark = !empty($nearbyLandmarks) ? $nearbyLandmarks[0] : $locationShort;
-            $secondLandmark = (count($nearbyLandmarks) > 1) ? $nearbyLandmarks[1] : $locationShort;
-
-            $localFaqs = [
-                [
-                    'question' => "Berapa lama estimasi waktu kedatangan teknisi Rootera di area {$locationShort}?",
-                    'answer' => "Teknisi terdekat kami disiagakan di {$dispatchHub} dengan estimasi waktu tempuh rata-rata {$travelTime} melayani seluruh area {$locationShort} hingga kawasan kelurahan {$firstLandmark}."
-                ],
-                [
-                    'question' => "Apakah pengerjaan jasa {$category->name} di {$locationShort} membutuhkan pembongkaran lantai?",
-                    'answer' => "Tidak ada pembongkaran. Kami menggunakan teknologi spiral rotary cable & Hydro Jetting tekanan tinggi yang melancarkan saluran {$category->name} 100% tanpa merusak keramik di {$locationShort}."
-                ],
-                [
-                    'question' => "Apakah penanganan {$category->name} di area {$locationShort} dilengkapi garansi?",
-                    'answer' => "Ya, seluruh pengerjaan di area {$locationShort} (termasuk kelurahan {$firstLandmark}, {$secondLandmark}, dan sekitarnya) dilengkapi garansi resmi 30 hari pasca pengerjaan (Tuntas Baru Bayar)."
-                ]
-            ];
-
-            // Generate Dynamic Transactional SEO Metadata (Title: 50-60 chars, Meta Desc: 140-155 chars)
-            $seedKey = "spintax_" . md5($district ? url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}/{$district->slug}") : url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}"));
-            
-            $title = $this->spintaxService->generateMetaTitle($category->name, $locationName, $district ? $district->name : null, $seedKey, $category->id);
-            $description = $this->spintaxService->generateMetaDescription($category->name, $locationName, $estimatedArrival, $seedKey, $category->id);
-
-            if ($district) {
-                // Consolidate thin legacy district URLs to City Hub & set noindex
-                $canonical = url("/jasa-saluran-mampet/{$city->slug}");
-                $isIndexable = false;
-            } else {
-                if ($category->slug === 'pipa-mampet') {
-                    $canonical = url("/jasa-saluran-mampet/{$city->slug}");
-                } else {
-                    $canonical = url("/layanan-pipa-mampet/{$category->slug}/{$city->slug}");
-                }
-                $isIndexable = true;
-            }
-
-            // TUGAS 3: Dynamic JSON-LD Schema (AEO/GEO Ready)
-            // Build both the legacy LocalSchemaService format AND the new SchemaGeneratorService JSON-LD strings
-            $schemas = LocalSchemaService::buildSchemas($city, $district, $physicalHub, $category, $canonical, $localFaqs);
-
-            // Generate JSON-LD strings via SchemaGeneratorService for <x-seo-head> injection
-            $jsonLdSchemas = $this->schemaGenerator->buildPseoSchemas($city, $category, $localFaqs);
-
-            $catSlug = strtolower($category->slug ?? '');
-            if (str_contains($catSlug, 'cctv') || str_contains($catSlug, 'inspeksi') || str_contains($catSlug, 'deteksi')) {
-                $ogImage = secure_url('images/og/cctv.jpeg');
-            } elseif (str_contains($catSlug, 'wastafel') || str_contains($catSlug, 'sink')) {
-                $ogImage = secure_url('images/og/wastafel.jpg');
-            } elseif (str_contains($catSlug, 'wc') || str_contains($catSlug, 'kloset') || str_contains($catSlug, 'toilet')) {
-                $ogImage = secure_url('images/og/kloset.jpeg');
-            } elseif (str_contains($catSlug, 'kamar-mandi') || str_contains($catSlug, 'floor-drain')) {
-                $ogImage = secure_url('images/og/floor-drain.jpeg');
-            } elseif (str_contains($catSlug, 'got') || str_contains($catSlug, 'saluran-pembuangan') || str_contains($catSlug, 'bak-kontrol')) {
-                $ogImage = secure_url('images/og/gutter.jpg');
-            } elseif (str_contains($catSlug, 'industri') || str_contains($catSlug, 'b2b') || str_contains($catSlug, 'pabrik')) {
-                $ogImage = secure_url('images/og/industri.jpeg');
-            } elseif (str_contains($catSlug, 'pipa') || str_contains($catSlug, 'mampet')) {
-                $ogImage = secure_url('images/og/pipamampet.jpg');
-            } else {
-                $ogImage = secure_url('images/og/rootera-default.jpg');
-            }
-
-            $seo = [
-                'title'        => $title,
-                'description'  => $description,
-                'canonical'    => $canonical,
-                'og_image'     => $ogImage,
-                'is_indexable' => $isIndexable,
-            ];
-
-            // Generate Spintax Variations for Anti-Duplicate Content Engine
-            $seedKey = "spintax_" . md5($canonical);
-            $heroHeadline = $this->spintaxService->generateHeroHeadline($category->name, $locationName, $seedKey, $category->id);
-            $heroSubtitle = $this->spintaxService->generateHeroSubtitle($category->name, $locationName, $estimatedArrival, $seedKey, $category->id);
-            $valueProps = $this->spintaxService->generateValueProps($locationShort, $seedKey);
-            $areaTechnicalIntro = $this->spintaxService->generateAreaTechnicalIntro($category->name, $locationName, $seedKey, $nearbyLandmarks, $category->id);
-            $guaranteeCallout = $this->spintaxService->generateGuaranteeCallout($locationShort, $seedKey);
-            $sectionOrder = $this->spintaxService->getSectionOrder($seedKey);
-            $technicalContext = $this->getTechnicalContext($category->slug, $locationShort);
-
-            return view('pages.programmatic-landing', compact(
-                'category',
-                'city',
-                'district',
-                'siblingDistricts',
-                'siblingCities',
-                'allCategories',
-                'projectShowcases',
-                'localProjects',
-                'physicalHub',
-                'schemas',
-                'jsonLdSchemas',
-                'relatedArticles',
-                'faqs',
-                'technologies',
-                'locationName',
-                'locationShort',
-                'estimatedArrival',
-                'dispatchHub',
-                'travelTime',
-                'nearbyLandmarks',
-                'localFaqs',
-                'title',
-                'description',
-                'canonical',
-                'ogImage',
-                'seo',
-                'heroHeadline',
-                'heroSubtitle',
-                'valueProps',
-                'areaTechnicalIntro',
-                'guaranteeCallout',
-                'sectionOrder',
-                'technicalContext'
-            ))->render();
-        });
-
-        return response($html);
+        return redirect($canonicalTarget, 301);
     }
 
     /**

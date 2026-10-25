@@ -92,36 +92,21 @@ class SitemapController extends Controller
         $content = Cache::remember(self::CACHE_KEYS['sitemap_index'], 86400, function () {
             $latestArticle  = Article::published()->latest('updated_at')->first();
             $latestCluster  = ResidentialCluster::indexable()->latest('updated_at')->first();
+            $latestCity     = City::where('is_active', true)->latest('updated_at')->first();
 
             $lastmodNow = now()->tz('UTC')->toAtomString();
-
-            // Reflect actual mtime of artisan-generated static sitemaps
-            $staticFile   = public_path('sitemap-static.xml');
-            $pseoFile     = public_path('sitemap-pseo.xml');
-            $articlesFile = public_path('sitemap-articles.xml');
-
-            $clusterFile  = public_path('sitemap-clusters.xml');
-
-            $lastmodStatic = file_exists($staticFile)
-                ? \Carbon\Carbon::createFromTimestamp(filemtime($staticFile))->tz('UTC')->toAtomString()
+            $lastmodBlog = $latestArticle
+                ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString()
                 : $lastmodNow;
-            $lastmodPseo = file_exists($pseoFile)
-                ? \Carbon\Carbon::createFromTimestamp(filemtime($pseoFile))->tz('UTC')->toAtomString()
+            $lastmodClusters = $latestCluster
+                ? ($latestCluster->updated_at ?? now())->tz('UTC')->toAtomString()
                 : $lastmodNow;
-            $lastmodBlog = file_exists($articlesFile)
-                ? \Carbon\Carbon::createFromTimestamp(filemtime($articlesFile))->tz('UTC')->toAtomString()
-                : ($latestArticle
-                    ? ($latestArticle->updated_at ?? $latestArticle->published_at)->tz('UTC')->toAtomString()
-                    : $lastmodNow);
-            $lastmodClusters = file_exists($clusterFile)
-                ? \Carbon\Carbon::createFromTimestamp(filemtime($clusterFile))->tz('UTC')->toAtomString()
-                : ($latestCluster
-                    ? ($latestCluster->updated_at ?? now())->tz('UTC')->toAtomString()
-                    : $lastmodNow);
+            $lastmodCities = $latestCity
+                ? ($latestCity->updated_at ?? now())->tz('UTC')->toAtomString()
+                : $lastmodNow;
 
             return view('sitemap-index', compact(
-                'lastmodBlog', 'lastmodNow', 'lastmodClusters',
-                'lastmodStatic', 'lastmodPseo'
+                'lastmodBlog', 'lastmodNow', 'lastmodClusters', 'lastmodCities'
             ))->render();
         });
 
