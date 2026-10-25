@@ -83,7 +83,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("pseo_city_show_v10_{$citySlug}", 86400, function () use ($citySlug) {
+        $html = Cache::remember("pseo_city_show_v11_{$citySlug}", 86400, function () use ($citySlug) {
             // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
@@ -238,7 +238,7 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}/{$districtSlug}"), 301);
         }
 
-        $html = Cache::remember("pseo_district_show_v7_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+        $html = Cache::remember("pseo_district_show_v8_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
             // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)

@@ -940,7 +940,7 @@ $graphSchema = [
 </div>
 
 {{-- ========================================================================= --}}
-{{-- 6. TRUST SIGNAL SEKUNDER: POOL ARMADA PUSAT & WORKSHOP RESMI              --}}
+{{-- 6. TRUST SIGNAL SEKUNDER: POOL ARMADA & TRANSPARANSI HUB FISIK            --}}
 {{-- ========================================================================= --}}
 @if((isset($city) && $city->slug === 'bandar-lampung') || (isset($city->province) && $city->province->slug === 'lampung'))
     <x-workshop-posko-bandar-lampung :city="$city" />
@@ -969,6 +969,18 @@ $graphSchema = [
                             {{ $physicalHub['estimated_arrival'] }} ke area {{ $physicalHub['target_location'] }}
                         </span>
                     </div>
+
+                    {{-- Khusus Wilayah Jabodetabek: Wajib mencantumkan keterangan Kantor Pusat Operasional Cijantung --}}
+                    @if(!empty($physicalHub['is_jabodetabek']))
+                    <div class="mt-4 pt-3.5 border-t border-slate-700/80 flex flex-col sm:flex-row items-start sm:items-center gap-2 text-xs text-slate-300">
+                        <div class="inline-flex items-center gap-1.5 font-bold text-sky-400 shrink-0">
+                            <span>🏛️ Kantor Pusat Operasional:</span>
+                        </div>
+                        <div class="text-slate-300 leading-normal">
+                            Cijantung, Pasar Rebo, Jakarta Timur <span class="text-slate-400 text-[11px]">(Gg. Mawar No.6B.1, Cijantung, Pasar Rebo, Jakarta Timur, DKI Jakarta 13770)</span>
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 <div class="shrink-0 flex flex-col sm:flex-row lg:flex-col gap-3">
                     <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $physicalHub['telephone']) }}?text={{ urlencode('Halo Rootera, saya butuh layanan teknisi di area ' . $physicalHub['target_location'] . ' disiagakan dari ' . $physicalHub['name']) }}" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-2xl shadow-lg transition-all text-center flex items-center justify-center gap-2 text-decoration-none">
