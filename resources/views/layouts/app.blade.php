@@ -325,6 +325,51 @@
 
     <style>[x-cloak] { display: none !important; }</style>
 
+    {{-- Critical CSS: Mobile Sticky Emergency CTA for Instant 0ms Render & CLS Prevention --}}
+    <style id="critical-mobile-sticky-cta">
+        @media (max-width: 767px) {
+            #mobile-sticky-cta-bar {
+                position: fixed !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                z-index: 9990 !important;
+                background-color: rgba(6, 20, 52, 0.96) !important;
+                border-top: 1px solid rgba(16, 185, 129, 0.35) !important;
+                box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.5) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                padding: 8px 12px !important;
+                display: block !important;
+                box-sizing: border-box !important;
+            }
+            #mobile-sticky-cta-bar .grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 8px !important;
+            }
+            #mobile-sticky-cta-bar a {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-height: 42px !important;
+                border-radius: 12px !important;
+                font-weight: 800 !important;
+                font-size: 12px !important;
+                text-decoration: none !important;
+            }
+            body {
+                padding-bottom: 76px !important;
+            }
+        }
+        @media (min-width: 768px) {
+            #mobile-sticky-cta-bar {
+                display: none !important;
+            }
+        }
+    </style>
+
     {{-- Styles --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

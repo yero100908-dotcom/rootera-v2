@@ -61,6 +61,7 @@ class ProjectGallery extends Model
      * Get local project showcases with hierarchical fallback from unified Gallery & ProjectGallery data:
      * 1. Primary: Match from Gallery model (90+ real admin entries)
      * 2. Secondary: Fallback to ProjectGallery records if needed
+     * Eager-loads relations efficiently with column selection.
      */
     public static function getLocalShowcases(?int $cityId = null, ?int $districtId = null, int $limit = 3)
     {
@@ -84,7 +85,7 @@ class ProjectGallery extends Model
             $pgQuery->where('city_id', $cityId);
         }
 
-        $pgMatch = $pgQuery->with(['district', 'city', 'serviceCategory'])
+        $pgMatch = $pgQuery->with(['district:id,name,slug', 'city:id,name,slug', 'serviceCategory:id,name,slug'])
             ->latest()
             ->take($limit - $results->count())
             ->get();
@@ -97,7 +98,7 @@ class ProjectGallery extends Model
         if ($results->count() < $limit) {
             $pgFallback = static::where('is_active', true)
                 ->whereNotIn('title', $results->pluck('title')->toArray())
-                ->with(['district', 'city', 'serviceCategory'])
+                ->with(['district:id,name,slug', 'city:id,name,slug', 'serviceCategory:id,name,slug'])
                 ->latest()
                 ->take($limit - $results->count())
                 ->get();
@@ -146,34 +147,16 @@ class ProjectGallery extends Model
 
         $cleanPath = ltrim($rawPath, '/');
 
-        if (file_exists(public_path($cleanPath))) {
+        // Eliminasi Disk I/O: Pemetaan deterministik tanpa file_exists() sinkron
+        if (\Illuminate\Support\Str::startsWith($cleanPath, ['images/', 'assets/', 'storage/', 'build/'])) {
             return asset($cleanPath);
         }
 
-        if (!\Illuminate\Support\Str::startsWith($cleanPath, 'storage/')) {
-            $storagePath = 'storage/' . $cleanPath;
-            if (file_exists(public_path($storagePath))) {
-                return asset($storagePath);
-            }
+        if (str_contains($cleanPath, '/')) {
+            return asset('storage/' . $cleanPath);
         }
 
-        if (!\Illuminate\Support\Str::startsWith($cleanPath, 'images/')) {
-            $imagesPath = 'images/' . $cleanPath;
-            if (file_exists(public_path($imagesPath))) {
-                return asset($imagesPath);
-            }
-            $dokumentasiPath = 'images/dokumentasi/' . basename($cleanPath);
-            if (file_exists(public_path($dokumentasiPath))) {
-                return asset($dokumentasiPath);
-            }
-        }
-
-        $appPublicPath = storage_path('app/public/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
-        if (file_exists($appPublicPath)) {
-            return asset('storage/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
-        }
-
-        return asset($fallback);
+        return asset('images/dokumentasi/' . $cleanPath);
     }
 
     public function getAfterImageUrlAttribute(): string

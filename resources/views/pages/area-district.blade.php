@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('preloads')
+    <link rel="preload" as="image" href="{{ $heroImage ?? asset('images/dokumentasi/teknisi-rootera-stasiun-kai-jateng.webp') }}" type="image/webp" fetchpriority="high">
+@endpush
+
 @section('schema-markup')
 <?php
 $citySlug = (isset($city) && is_object($city) && isset($city->slug)) ? $city->slug : '';
@@ -302,7 +306,8 @@ $graphSchema = [
                          alt="Teknisi Rootera Plumbing Kecamatan {{ $districtName }}" 
                          width="600"
                          height="440"
-                         loading="lazy"
+                         loading="eager"
+                         fetchpriority="high"
                          decoding="async"
                          class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition-transform duration-700">
 

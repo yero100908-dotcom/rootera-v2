@@ -83,12 +83,18 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}"), 301);
         }
 
-        $html = Cache::remember("pseo_city_show_v6_{$citySlug}", 86400, function () use ($citySlug) {
+        $html = Cache::remember("pseo_city_show_v8_{$citySlug}", 86400, function () use ($citySlug) {
+            // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
-                ->with(['province', 'districts' => function ($q) {
-                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
-                }])
+                ->with([
+                    'province:id,name,slug',
+                    'districts' => function ($q) {
+                        $q->where('is_active', true)
+                            ->orderBy('sort_order')
+                            ->orderBy('name');
+                    }
+                ])
                 ->firstOrFail();
 
             $heroImage = $this->assetResolver->resolveHeroImage($city);
@@ -96,6 +102,7 @@ class AreaServiceController extends Controller
             $siblingCities = City::where('province_id', $city->province_id)
                 ->where('id', '!=', $city->id)
                 ->where('is_active', true)
+                ->select('id', 'province_id', 'name', 'slug')
                 ->orderBy('name')
                 ->take(8)
                 ->get();
@@ -104,16 +111,20 @@ class AreaServiceController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
+            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback (B-tree Indexed & Eager Loaded)
             $localProjects = ProjectGallery::getLocalShowcases($city->id, null, 3);
             $projectShowcases = $localProjects;
 
             $relatedArticles = Article::published()
+                ->select('id', 'title', 'slug', 'thumbnail', 'published_at', 'read_time', 'excerpt')
                 ->latest('published_at')
                 ->take(3)
                 ->get();
 
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(4)->get();
+            $faqs = Faq::where('is_active', true)
+                ->orderBy('sort_order')
+                ->take(4)
+                ->get();
 
             // TUGAS 2: Dispatcher Physical Hub Resolver
             $physicalHub = PhysicalHubResolver::resolveHub($city);
@@ -224,18 +235,25 @@ class AreaServiceController extends Controller
             return redirect(url("/jasa-saluran-mampet/{$aliasMap[$citySlug]}/{$districtSlug}"), 301);
         }
 
-        $html = Cache::remember("pseo_district_show_v3_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+        $html = Cache::remember("pseo_district_show_v5_{$citySlug}_{$districtSlug}", 86400, function () use ($citySlug, $districtSlug) {
+            // Eager loading relasi City & Districts
             $city = City::where('slug', $citySlug)
                 ->where('is_active', true)
-                ->with(['province', 'districts' => function ($q) {
-                    $q->where('is_active', true)->orderBy('sort_order')->orderBy('name');
-                }])
+                ->with([
+                    'province:id,name,slug',
+                    'districts' => function ($q) {
+                        $q->where('is_active', true)
+                            ->orderBy('sort_order')
+                            ->orderBy('name');
+                    }
+                ])
                 ->firstOrFail();
 
             $district = District::where('city_id', $city->id)
                 ->where('slug', $districtSlug)
                 ->where('is_active', true)
                 ->firstOrFail();
+            $district->setRelation('city', $city);
 
             $heroImage = $this->assetResolver->resolveHeroImage($city, $district);
 
@@ -246,6 +264,7 @@ class AreaServiceController extends Controller
             $siblingCities = City::where('province_id', $city->province_id)
                 ->where('id', '!=', $city->id)
                 ->where('is_active', true)
+                ->select('id', 'province_id', 'name', 'slug')
                 ->orderBy('name')
                 ->take(8)
                 ->get();
@@ -254,17 +273,24 @@ class AreaServiceController extends Controller
                 ->orderBy('sort_order')
                 ->get();
 
-            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback
+            $technologies = Technology::where('is_active', true)
+                ->orderBy('sort_order')
+                ->get();
+
+            // TUGAS 1: Dynamic Proof Injection with Hierarchical Fallback (B-tree Indexed & Eager Loaded)
             $localProjects = ProjectGallery::getLocalShowcases($city->id, $district->id, 3);
             $projectShowcases = $localProjects;
 
             $relatedArticles = Article::published()
+                ->select('id', 'title', 'slug', 'thumbnail', 'published_at', 'read_time', 'excerpt')
                 ->latest('published_at')
                 ->take(3)
                 ->get();
 
-            $faqs = Faq::where('is_active', true)->orderBy('sort_order')->take(5)->get();
-            $technologies = Technology::where('is_active', true)->orderBy('sort_order')->get();
+            $faqs = Faq::where('is_active', true)
+                ->orderBy('sort_order')
+                ->take(5)
+                ->get();
 
             // TUGAS 2: Dispatcher Physical Hub Resolver
             $physicalHub = PhysicalHubResolver::resolveHub($city, $district);

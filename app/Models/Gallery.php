@@ -19,6 +19,8 @@ class Gallery extends Model
         'media_file_path',
         'external_media_url',
         'before_image_path',
+        'city_id',
+        'district_id',
         'location_tag',
         'related_service_url',
         'description',
@@ -34,6 +36,16 @@ class Gallery extends Model
         'sort_order',
         'published_at',
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
 
     protected $casts = [
         'is_featured'   => 'boolean',
@@ -95,38 +107,16 @@ class Gallery extends Model
 
         $cleanPath = ltrim($rawPath, '/');
 
-        // 1. Direct public path check
-        if (file_exists(public_path($cleanPath))) {
+        // Eliminasi Disk I/O: Pemetaan deterministik tanpa file_exists() sinkron
+        if (Str::startsWith($cleanPath, ['images/', 'assets/', 'storage/', 'build/'])) {
             return asset($cleanPath);
         }
 
-        // 2. Storage prefix check
-        if (!Str::startsWith($cleanPath, 'storage/')) {
-            $storagePath = 'storage/' . $cleanPath;
-            if (file_exists(public_path($storagePath))) {
-                return asset($storagePath);
-            }
+        if (str_contains($cleanPath, '/')) {
+            return asset('storage/' . $cleanPath);
         }
 
-        // 3. Images prefix & dokumentasi check
-        if (!Str::startsWith($cleanPath, 'images/')) {
-            $imagesPath = 'images/' . $cleanPath;
-            if (file_exists(public_path($imagesPath))) {
-                return asset($imagesPath);
-            }
-            $dokumentasiPath = 'images/dokumentasi/' . basename($cleanPath);
-            if (file_exists(public_path($dokumentasiPath))) {
-                return asset($dokumentasiPath);
-            }
-        }
-
-        // 4. Fallback check for storage/app/public physical location
-        $appPublicPath = storage_path('app/public/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
-        if (file_exists($appPublicPath)) {
-            return asset('storage/' . ltrim(preg_replace('#^storage/#', '', $cleanPath), '/'));
-        }
-
-        return asset($fallback);
+        return asset('images/dokumentasi/' . $cleanPath);
     }
 
     public function getDisplayThumbnailAttribute(): string
@@ -164,19 +154,17 @@ class Gallery extends Model
 
     /**
      * Get local showcases with hierarchical fallback from 90+ real gallery records.
+     * Uses B-tree indexed lookups on (is_active, district_id) and (is_active, city_id)
+     * without full table scan LIKE '%...%' queries.
      */
     public static function getLocalShowcases(?int $cityId = null, ?int $districtId = null, int $limit = 3)
     {
-        $city = $cityId ? \App\Models\City::find($cityId) : null;
-        $district = $districtId ? \App\Models\District::find($districtId) : null;
-
         $results = collect();
 
-        // 1. Match by District location_tag
-        if ($district) {
-            $districtName = $district->name;
+        // 1. Primary B-tree Index lookup by District ID
+        if ($districtId) {
             $matched = static::where('is_active', true)
-                ->where('location_tag', 'like', "%{$districtName}%")
+                ->where('district_id', $districtId)
                 ->latest('published_at')
                 ->latest('id')
                 ->take($limit)
@@ -188,25 +176,24 @@ class Gallery extends Model
             }
         }
 
-        // 2. Match by City location_tag
-        if ($results->count() < $limit && $city) {
+        // 2. Secondary B-tree Index lookup by City ID
+        if ($results->count() < $limit && $cityId) {
             $existingIds = $results->pluck('id')->toArray();
-            $cityName = $city->name;
             $matched = static::where('is_active', true)
                 ->whereNotIn('id', $existingIds)
-                ->where('location_tag', 'like', "%{$cityName}%")
+                ->where('city_id', $cityId)
                 ->latest('published_at')
                 ->latest('id')
                 ->take($limit - $results->count())
                 ->get();
 
             foreach ($matched as $g) {
-                $g->is_fallback = $district ? true : false;
+                $g->is_fallback = $districtId ? true : false;
                 $results->push($g);
             }
         }
 
-        // 3. Fallback to featured active galleries
+        // 3. Fallback to featured active galleries (using compound index: is_active, is_featured)
         if ($results->count() < $limit) {
             $existingIds = $results->pluck('id')->toArray();
             $featured = static::where('is_active', true)
@@ -218,12 +205,12 @@ class Gallery extends Model
                 ->get();
 
             foreach ($featured as $g) {
-                $g->is_fallback = ($district || $city) ? true : false;
+                $g->is_fallback = ($districtId || $cityId) ? true : false;
                 $results->push($g);
             }
         }
 
-        // 4. Ultimate fallback to active galleries
+        // 4. Ultimate fallback to latest active galleries
         if ($results->count() < $limit) {
             $existingIds = $results->pluck('id')->toArray();
             $general = static::where('is_active', true)
@@ -234,7 +221,7 @@ class Gallery extends Model
                 ->get();
 
             foreach ($general as $g) {
-                $g->is_fallback = ($district || $city) ? true : false;
+                $g->is_fallback = ($districtId || $cityId) ? true : false;
                 $results->push($g);
             }
         }
